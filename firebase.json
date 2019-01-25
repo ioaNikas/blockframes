@@ -1,11 +1,7 @@
 {
   "hosting": {
-    "public": "dist/script-upload",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "public": "dist/apps/script-upload/script-upload",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
