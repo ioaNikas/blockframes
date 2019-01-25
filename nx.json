@@ -7,5 +7,15 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "script-upload": {
+      "tags": [
+        "script",
+        "upload"
+      ]
+    },
+    "script-upload-e2e": {
+      "tags": []
+    }
+  }
 }
