@@ -1,7 +1,7 @@
 <ng-container *ngIf="(user$ | async) as user; else showLogin">
-  <button (click)="logout()">Logout</button>
+  <button mat-button (click)="logout()">Logout</button>
 </ng-container>
 
 <ng-template #showLogin>
-  <button (click)="login()">Login Anonymously</button>
+  <button mat-button (click)="login()">Login Anonymously</button>
 </ng-template>

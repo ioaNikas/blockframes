@@ -7,15 +7,11 @@ export interface User {
 }
 
 export interface AuthState {
-  islogged: boolean;
-  loading: boolean;
   user: User;
 }
 
 export function createInitialState(): AuthState {
   return {
-    islogged: false,
-    loading: false,
     user: null
   };
 }

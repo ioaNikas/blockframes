@@ -1,2 +1,4 @@
-<auth-login></auth-login>
-<input type="file" accept=".pdf" (change)="upload($event.target.files)" />
+<mat-toolbar> <auth-login></auth-login> </mat-toolbar>
+<mat-card fxLayout="column" fxLayoutAlign="center center">
+  <input type="file" accept=".pdf" (change)="upload($event.target.files)" />
+</mat-card>

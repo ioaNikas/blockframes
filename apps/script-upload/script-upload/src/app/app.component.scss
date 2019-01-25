@@ -1,0 +1,8 @@
+:host {
+  height: 100%;
+}
+
+mat-card {
+  height: calc(100% - 64px - 20px);
+  margin: 10px;
+}
