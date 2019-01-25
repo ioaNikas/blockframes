@@ -132,7 +132,7 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics"
+    "defaultCollection": "akita-schematics"
   },
   "defaultProject": "script-upload"
 }
