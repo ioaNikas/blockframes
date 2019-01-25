@@ -16,6 +16,9 @@
     ],
     "baseUrl": ".",
     "paths": {
+      "@blockframes/script": [
+        "libs/script/src/index.ts"
+      ]
     }
   },
   "exclude": [

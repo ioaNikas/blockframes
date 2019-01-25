@@ -16,6 +16,11 @@
     },
     "script-upload-e2e": {
       "tags": []
+    },
+    "script": {
+      "tags": [
+        "script"
+      ]
     }
   }
 }
