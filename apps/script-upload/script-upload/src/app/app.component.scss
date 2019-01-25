@@ -3,6 +3,7 @@
 }
 
 mat-card {
+  border: dashed 3px rgba(50, 50, 50, 0.3);
   height: calc(100% - 64px - 20px);
   margin: 10px;
 }
