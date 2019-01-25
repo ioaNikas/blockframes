@@ -11,6 +11,9 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 
+// Libraries
+import { AuthModule } from '@blockframes/auth';
+
 // Components
 import { AppComponent } from './app.component';
 
@@ -18,9 +21,10 @@ import { AppComponent } from './app.component';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    AuthModule,
+    RouterModule.forRoot([]),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    RouterModule.forRoot([]),
     environment.production
       ? []
       : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]

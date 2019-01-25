@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
+export interface User {
+  uid: string;
+  email: string;
+}
+
 export interface AuthState {
   islogged: boolean;
   loading: boolean;
-  user: {
-    uid: string;
-    email: string;
-  };
+  user: User;
 }
 
 export function createInitialState(): AuthState {

@@ -7,4 +7,8 @@ export class AuthQuery extends Query<AuthState> {
   constructor(protected store: AuthStore) {
     super(store);
   }
+
+  get user() {
+    return this.getSnapshot().user;
+  }
 }
