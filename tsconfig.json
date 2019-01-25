@@ -21,6 +21,9 @@
       ],
       "@blockframes/auth": [
         "libs/auth/src/index.ts"
+      ],
+      "@blockframes/ui": [
+        "libs/ui/src/index.ts"
       ]
     }
   },

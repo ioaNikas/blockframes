@@ -27,6 +27,12 @@
         "auth",
         "wallet"
       ]
+    },
+    "ui": {
+      "tags": [
+        "ui",
+        "shared"
+      ]
     }
   }
 }
