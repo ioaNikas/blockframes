@@ -13,21 +13,25 @@ import { environment } from '../environments/environment';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
+import { MaterialLayoutModule } from '@blockframes/ui';
 
 // Components
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     AuthModule,
+    MaterialLayoutModule,
     RouterModule.forRoot([]),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     environment.production
       ? []
-      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
+      : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -27,6 +27,7 @@
               "apps/script-upload/script-upload/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/script-upload/script-upload/src/styles.scss"
             ],
             "scripts": []
