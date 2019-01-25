@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyCx3IsE1RdkJAy9SDAuaJy3JS1emDsBWR8',
+    authDomain: 'blockframes-test.firebaseapp.com',
+    databaseURL: 'https://blockframes-test.firebaseio.com',
+    projectId: 'blockframes-test',
+    storageBucket: 'blockframes-test.appspot.com',
+    messagingSenderId: '902486579222'
+  }
 };
 
 /*
