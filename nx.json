@@ -21,6 +21,12 @@
       "tags": [
         "script"
       ]
+    },
+    "auth": {
+      "tags": [
+        "auth",
+        "wallet"
+      ]
     }
   }
 }

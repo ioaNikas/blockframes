@@ -18,6 +18,9 @@
     "paths": {
       "@blockframes/script": [
         "libs/script/src/index.ts"
+      ],
+      "@blockframes/auth": [
+        "libs/auth/src/index.ts"
       ]
     }
   },
