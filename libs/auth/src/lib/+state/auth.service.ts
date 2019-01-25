@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthStore } from './auth.store';
+import { AuthStore, createUser } from './auth.store';
+import { map, filter } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private store: AuthStore, private afAuth: AngularFireAuth) {}
-
-  public async login() {
-    try {
-      const cred = await this.afAuth.auth.signInAnonymously();
-      const { uid, email } = cred.user;
-      this.store.update({ user: { uid, email } });
-    } catch (err) {
-      throw err;
-    }
+  constructor(private store: AuthStore, private afAuth: AngularFireAuth) {
+    this.afAuth.authState
+      .pipe(map(user => (user ? createUser(user) : null)))
+      .subscribe(user => this.store.update({ user }));
   }
 
-  public async logout() {
-    this.afAuth.auth.signOut();
+  public signin(mail: string, pwd: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(mail, pwd);
+  }
+
+  public signup(mail: string, pwd: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(mail, pwd);
+  }
+
+  public logout() {
+    return this.afAuth.auth.signOut();
   }
 }

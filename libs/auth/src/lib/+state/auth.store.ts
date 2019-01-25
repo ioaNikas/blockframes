@@ -6,13 +6,27 @@ export interface User {
   email: string;
 }
 
+export interface UserForm {
+  email: string;
+  pwd: string;
+}
+
 export interface AuthState {
   user: User;
+  form: UserForm;
+}
+
+export function createUser({ uid, email }: firebase.User) {
+  return { uid, email } as User;
 }
 
 export function createInitialState(): AuthState {
   return {
-    user: null
+    user: null,
+    form: {
+      email: '',
+      pwd: ''
+    }
   };
 }
 
