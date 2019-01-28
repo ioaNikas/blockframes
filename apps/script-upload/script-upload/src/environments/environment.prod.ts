@@ -7,5 +7,6 @@ export const environment = {
     projectId: 'blockframes',
     storageBucket: 'blockframes.appspot.com',
     messagingSenderId: '1080507348015'
-  }
+  },
+  network: 'kovan'
 };

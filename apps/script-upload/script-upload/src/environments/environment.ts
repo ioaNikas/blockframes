@@ -11,7 +11,8 @@ export const environment = {
     projectId: 'blockframes-test',
     storageBucket: 'blockframes-test.appspot.com',
     messagingSenderId: '902486579222'
-  }
+  },
+  network: 'kovan'
 };
 
 /*
