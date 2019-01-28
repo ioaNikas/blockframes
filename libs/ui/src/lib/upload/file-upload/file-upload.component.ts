@@ -1,4 +1,11 @@
-import { Component, Input, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostListener,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +20,7 @@ export class FileUploadComponent {
   @Input() public accept: string;
   @Input() private path: string;
   @Input() private types: string[];
+  @Output() private uploaded = new EventEmitter<ArrayBuffer>();
 
   public task: AngularFireUploadTask;
   public percentage: Observable<number>;
@@ -68,5 +76,9 @@ export class FileUploadComponent {
     // Success
     this.state = 'success';
     this.downloadURL = snapshot.downloadURL;
+
+    const reader = new FileReader();
+    reader.addEventListener('loadend', _ => this.uploaded.emit(reader.result as ArrayBuffer));
+    reader.readAsArrayBuffer(file);
   }
 }

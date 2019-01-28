@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { keccak256 } from 'ethers/utils';
 import { AuthQuery, User } from '@blockframes/auth';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'script-root',
@@ -13,13 +13,15 @@ import { Observable } from 'rxjs';
 export class AppComponent implements OnInit {
   public user$: Observable<User>;
 
-  constructor(
-    private storage: AngularFireStorage,
-    private auth: AuthQuery,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private auth: AuthQuery, public snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.user$ = this.auth.select(state => state.user);
+  }
+
+  public uploaded(content: ArrayBuffer) {
+    const bytes = new Uint8Array(content);
+    const hash = keccak256(bytes);
+    this.snackBar.open(`Your hash: ${hash}`, 'close');
   }
 }
