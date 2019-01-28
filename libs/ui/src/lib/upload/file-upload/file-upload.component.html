@@ -23,7 +23,7 @@
   </section>
 
   <!-- Success -->
-  <section>
+  <section *ngSwitchCase="'success'">
     <h3>Success !!</h3>
     <a *ngIf="downloadURL as url" [href]="url" target="_blank" rel="noopener">
       <button mat-button>Download Me!</button>
