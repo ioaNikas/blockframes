@@ -225,6 +225,40 @@
           }
         }
       }
+    },
+    "ethers": {
+      "root": "libs/ethers",
+      "sourceRoot": "libs/ethers/src",
+      "projectType": "library",
+      "prefix": "blockframes",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ethers/tsconfig.lib.json",
+            "project": "libs/ethers/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ethers/tsconfig.lib.json",
+              "libs/ethers/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/ethers/jest.config.js",
+            "tsConfig": "libs/ethers/tsconfig.spec.json"
+          }
+        }
+      }
     }
   },
   "cli": {

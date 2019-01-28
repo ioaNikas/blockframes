@@ -33,6 +33,12 @@
         "ui",
         "shared"
       ]
+    },
+    "ethers": {
+      "tags": [
+        "ethereum",
+        "smart-contract"
+      ]
     }
   }
 }
