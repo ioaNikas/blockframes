@@ -24,7 +24,8 @@
             "tsConfig": "apps/script-upload/script-upload/tsconfig.app.json",
             "assets": [
               "apps/script-upload/script-upload/src/favicon.ico",
-              "apps/script-upload/script-upload/src/assets"
+              "apps/script-upload/script-upload/src/assets",
+              "apps/script-upload/script-upload/src/manifest.json"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -55,7 +56,8 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true
             }
           }
         },
