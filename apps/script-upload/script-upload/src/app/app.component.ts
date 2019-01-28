@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { AuthQuery } from '@blockframes/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthQuery, User } from '@blockframes/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'script-root',
@@ -9,20 +10,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  public user$: Observable<User>;
+
   constructor(
     private storage: AngularFireStorage,
     private auth: AuthQuery,
     private snackBar: MatSnackBar
   ) {}
 
-  public upload(files: FileList) {
-    if (!this.auth.user) {
-      this.snackBar.open('Please login before', 'Ok', { duration: 1500 });
-      return;
-    }
-    const file = files.item(0);
-    const filePath = `${this.auth.user.uid}/${file.name}`;
-    const task = this.storage.upload(filePath, file);
+  ngOnInit() {
+    this.user$ = this.auth.select(state => state.user);
   }
 }

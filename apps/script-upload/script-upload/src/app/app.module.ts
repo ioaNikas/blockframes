@@ -20,6 +20,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
+import { UploadModule } from '@blockframes/ui';
 
 // Components
 import { AppComponent } from './app.component';
@@ -30,6 +31,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
   imports: [
     BrowserModule,
     AuthModule,
+    UploadModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([]),

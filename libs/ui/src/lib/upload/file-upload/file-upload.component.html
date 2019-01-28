@@ -1,0 +1,32 @@
+<ng-container [ngSwitch]="state">
+  <!-- Waiting -->
+  <section *ngSwitchCase="'waiting'">
+    <h3>Upload Your File</h3>
+
+    <label>
+      <mat-icon>upload_file</mat-icon>
+      <input [accept]="accept" type="file" (change)="upload($event.target.files)" />
+    </label>
+  </section>
+
+  <!-- Hovering -->
+  <section *ngSwitchCase="'hovering'"><mat-icon>cloud_upload</mat-icon></section>
+
+  <!-- Uploading -->
+  <section *ngSwitchCase="'uploading'">
+    <div class="progress" *ngIf="(percentage | async) as pct">
+      <mat-progress-bar mode="determinate" [value]="pct"></mat-progress-bar>
+      <p>{{ pct }} %</p>
+    </div>
+
+    <button mat-button (click)="task.cancel()">Cancel</button>
+  </section>
+
+  <!-- Success -->
+  <section>
+    <h3>Success !!</h3>
+    <a *ngIf="downloadURL as url" [href]="url" target="_blank" rel="noopener">
+      <button mat-button>Download Me!</button>
+    </a>
+  </section>
+</ng-container>
