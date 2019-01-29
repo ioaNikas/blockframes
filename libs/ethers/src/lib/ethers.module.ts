@@ -1,11 +1,15 @@
-import { NgModule, ModuleWithProviders, InjectionToken, APP_INITIALIZER } from '@angular/core';
+import { NgModule, ModuleWithProviders, APP_INITIALIZER } from '@angular/core';
 import { ethers, Contract, providers } from 'ethers';
 import { Addresses } from './types';
 import { NgWallet } from './wallet';
-import { NETWORK, PROVIDER, METAMASK } from './tokens';
+import { NETWORK, PROVIDER } from './tokens';
 
-export function createProvider(network: string) {
+export function createProvider(network: keyof Addresses) {
   return ethers.getDefaultProvider(network);
+}
+
+export function createWeb3Provider(network: keyof Addresses) {
+  return new providers.Web3Provider((<any>window).ethereum, network);
 }
 
 export function withMetaMask(): () => Promise<any> {
@@ -16,10 +20,7 @@ export function withMetaMask(): () => Promise<any> {
 
 @NgModule({})
 export class EthersModule {
-  static forRoot(
-    network: keyof Addresses,
-    contracts?: { addresses: Addresses; abi: string[]; token: InjectionToken<Contract> }[]
-  ): ModuleWithProviders<EthersModule> {
+  static forRoot(network: keyof Addresses): ModuleWithProviders<EthersModule> {
     return {
       ngModule: EthersModule,
       providers: [
@@ -32,20 +33,12 @@ export class EthersModule {
           deps: [NETWORK],
           useFactory: createProvider
         },
-        NgWallet,
-        ...contracts.map(({ token, addresses, abi }) => ({
-          provide: token,
-          deps: [NgWallet],
-          useFactory: (wallet: NgWallet) => {
-            const address = addresses[wallet.provider.network.name];
-            return new Contract(address, abi, wallet);
-          }
-        }))
+        NgWallet
       ]
     };
   }
 
-  static withMetaMask(network: string, contracts): ModuleWithProviders<EthersModule> {
+  static withMetaMask(network: string): ModuleWithProviders<EthersModule> {
     return {
       ngModule: EthersModule,
       providers: [
@@ -55,17 +48,14 @@ export class EthersModule {
           useFactory: withMetaMask
         },
         {
-          provide: METAMASK,
-          useFactory: () => new providers.Web3Provider((<any>window).ethereum, network)
+          provide: NETWORK,
+          useValue: network
         },
-        ...contracts.map(({ token, addresses, abi }) => ({
-          provide: token,
-          deps: [METAMASK],
-          useFactory: (provider: providers.Web3Provider) => {
-            const address = addresses[provider.network.name];
-            return new Contract(address, abi, provider.getSigner());
-          }
-        }))
+        {
+          provide: PROVIDER,
+          deps: [NETWORK],
+          useFactory: createWeb3Provider
+        }
       ]
     };
   }

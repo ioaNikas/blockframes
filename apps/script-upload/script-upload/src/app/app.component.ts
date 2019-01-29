@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthQuery, User } from '@blockframes/auth';
+import { ScriptHashService } from '@blockframes/script';
 import { Observable } from 'rxjs';
 import { utils } from 'ethers';
-import { SCRIPTHASH, ScriptHash } from '@blockframes/script';
 
 @Component({
   selector: 'script-root',
@@ -16,11 +16,11 @@ export class AppComponent implements OnInit {
 
   constructor(
     private auth: AuthQuery,
-    public snackBar: MatSnackBar,
-    @Inject(SCRIPTHASH) private scripts: ScriptHash
+    private snackBar: MatSnackBar,
+    private scripts: ScriptHashService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.user$ = this.auth.select(state => state.user);
   }
 
