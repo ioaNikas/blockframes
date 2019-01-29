@@ -1,0 +1,44 @@
+{
+  "npmScope": "blockframes",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "script-upload": {
+      "tags": [
+        "script",
+        "upload"
+      ]
+    },
+    "script-upload-e2e": {
+      "tags": []
+    },
+    "script": {
+      "tags": [
+        "script"
+      ]
+    },
+    "auth": {
+      "tags": [
+        "auth",
+        "wallet"
+      ]
+    },
+    "ui": {
+      "tags": [
+        "ui",
+        "shared"
+      ]
+    },
+    "ethers": {
+      "tags": [
+        "ethereum",
+        "smart-contract"
+      ]
+    }
+  }
+}

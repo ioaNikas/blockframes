@@ -1,0 +1,248 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "",
+  "projects": {
+    "script-upload": {
+      "root": "apps/script-upload/script-upload/",
+      "sourceRoot": "apps/script-upload/script-upload/src",
+      "projectType": "application",
+      "prefix": "script",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/script-upload/script-upload",
+            "index": "apps/script-upload/script-upload/src/index.html",
+            "main": "apps/script-upload/script-upload/src/main.ts",
+            "polyfills": "apps/script-upload/script-upload/src/polyfills.ts",
+            "tsConfig": "apps/script-upload/script-upload/tsconfig.app.json",
+            "assets": [
+              "apps/script-upload/script-upload/src/favicon.ico",
+              "apps/script-upload/script-upload/src/assets",
+              "apps/script-upload/script-upload/src/manifest.json"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/script-upload/script-upload/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/script-upload/script-upload/src/environments/environment.ts",
+                  "with": "apps/script-upload/script-upload/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "serviceWorker": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "script-upload:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "script-upload:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "script-upload:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/script-upload/script-upload/tsconfig.app.json",
+              "apps/script-upload/script-upload/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/script-upload/script-upload/jest.config.js",
+            "tsConfig": "apps/script-upload/script-upload/tsconfig.spec.json",
+            "setupFile": "apps/script-upload/script-upload/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "script-upload-e2e": {
+      "root": "apps/script-upload/script-upload-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/script-upload/script-upload-e2e/cypress.json",
+            "tsConfig": "apps/script-upload/script-upload-e2e/tsconfig.e2e.json",
+            "devServerTarget": "script-upload:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "script-upload:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    },
+    "script": {
+      "root": "libs/script",
+      "sourceRoot": "libs/script/src",
+      "projectType": "library",
+      "prefix": "script",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/script/tsconfig.lib.json",
+            "project": "libs/script/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/script/tsconfig.lib.json", "libs/script/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/script/jest.config.js",
+            "tsConfig": "libs/script/tsconfig.spec.json",
+            "setupFile": "libs/script/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "auth": {
+      "root": "libs/auth",
+      "sourceRoot": "libs/auth/src",
+      "projectType": "library",
+      "prefix": "auth",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/auth/tsconfig.lib.json",
+            "project": "libs/auth/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/auth/tsconfig.lib.json", "libs/auth/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/auth/jest.config.js",
+            "tsConfig": "libs/auth/tsconfig.spec.json",
+            "setupFile": "libs/auth/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "ui": {
+      "root": "libs/ui",
+      "sourceRoot": "libs/ui/src",
+      "projectType": "library",
+      "prefix": "blockframes",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/ui/tsconfig.lib.json", "libs/ui/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/ui/jest.config.js",
+            "tsConfig": "libs/ui/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "ethers": {
+      "root": "libs/ethers",
+      "sourceRoot": "libs/ethers/src",
+      "projectType": "library",
+      "prefix": "wallet",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ethers/tsconfig.lib.json",
+            "project": "libs/ethers/ng-package.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/ethers/tsconfig.lib.json", "libs/ethers/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/ethers/jest.config.js",
+            "tsConfig": "libs/ethers/tsconfig.spec.json"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "akita-schematics"
+  },
+  "defaultProject": "script-upload"
+}

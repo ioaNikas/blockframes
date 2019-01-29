@@ -1,0 +1,16 @@
+<mat-toolbar fxLayout="row-reverse"> <auth-logger></auth-logger> </mat-toolbar>
+<mat-card fxLayout="column" fxLayoutAlign="center center">
+  <ng-container *ngIf="(user$ | async) as user; else connexion">
+    <file-upload
+      accept=".pdf"
+      [path]="user.email"
+      [types]="['application/pdf']"
+      (uploaded)="uploaded($event)"
+    ></file-upload>
+  </ng-container>
+  <ng-template #connexion>
+    <h4>Login</h4>
+    <p>You should be logged to upload a File</p>
+    <auth-logger></auth-logger>
+  </ng-template>
+</mat-card>
