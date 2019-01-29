@@ -21,6 +21,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // Libraries
 import { AuthModule } from '@blockframes/auth';
 import { UploadModule } from '@blockframes/ui';
+import { EthersModule } from '@blockframes/ethers';
+import { scriptHashContract } from '@blockframes/script';
 
 // Components
 import { AppComponent } from './app.component';
@@ -34,6 +36,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     UploadModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
+    EthersModule.withMetaMask('ropsten', [scriptHashContract]),
     RouterModule.forRoot([]),
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),

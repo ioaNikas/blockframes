@@ -1,24 +1,22 @@
-import { Signer } from 'ethers';
-import { Provider } from 'ethers/providers';
-import { Addresses, INgContract, NgContract } from '@blockframes/ethers';
+import { Contract } from 'ethers';
+import { InjectionToken } from '@angular/core';
 
-const addresses: Addresses = {
-  ropsten: ''
-};
-
-interface ScriptHash extends INgContract {
+export type ScriptHash = Contract & {
   scriptsOwner(hash: string): Promise<string>;
   scriptsFrom(address: string): Promise<string[]>;
-  addScript(hash: string): Promise<void>;
-}
+  addScript(hash: string): Promise<any>;
+};
 
-const abi = [
-  'mapping(bytes32 => address) scriptsOwner',
-  'function addScript(bytes32 _hash)',
-  'function scriptsFrom(address _owner) public returns (bytes32[])'
-];
+export const SCRIPTHASH = new InjectionToken<ScriptHash>('Script Hash Contract');
 
-export function scriptHash(provider: Signer | Provider, network: keyof Addresses) {
-  const address = addresses[network];
-  return new NgContract<ScriptHash>(address, abi, provider);
-}
+export const scriptHashContract = {
+  token: SCRIPTHASH,
+  addresses: {
+    ropsten: '0x3a7bfeb49b2fd1399a38e748b3a18ab2a76b042a'
+  },
+  abi: [
+    'function scriptsOwner(bytes32) public returns(address)',
+    'function addScript(bytes32 _hash)',
+    'function scriptsFrom(address _owner) public returns (bytes32[])'
+  ]
+};

@@ -15,7 +15,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/apps/script-upload/script-upload",
             "index": "apps/script-upload/script-upload/src/index.html",
@@ -62,7 +62,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-builders/dev-server:generic",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "script-upload:build"
           },
@@ -211,7 +211,7 @@
       "root": "libs/ethers",
       "sourceRoot": "libs/ethers/src",
       "projectType": "library",
-      "prefix": "blockframes",
+      "prefix": "wallet",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
