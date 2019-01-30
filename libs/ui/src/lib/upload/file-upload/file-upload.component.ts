@@ -20,7 +20,7 @@ export class FileUploadComponent {
   @Input() public accept: string;
   @Input() private path: string;
   @Input() private types: string[];
-  @Output() private uploaded = new EventEmitter<ArrayBuffer>();
+  @Output() private uploaded = new EventEmitter<Uint8Array>();
 
   public task: AngularFireUploadTask;
   public percentage: Observable<number>;
@@ -61,11 +61,8 @@ export class FileUploadComponent {
       return;
     }
 
-    // The storage path
-    const path = `${this.path}/${file.name}`;
-
-    // The main task
-    this.task = this.afStorage.upload(path, file);
+    const storagePath = `${this.path}/${file.name}`;
+    this.task = this.afStorage.upload(storagePath, file);
 
     // Progress monitoring
     this.state = 'uploading';
@@ -78,7 +75,10 @@ export class FileUploadComponent {
     this.downloadURL = snapshot.downloadURL;
 
     const reader = new FileReader();
-    reader.addEventListener('loadend', _ => this.uploaded.emit(reader.result as ArrayBuffer));
+    reader.addEventListener('loadend', _ => {
+      const buffer = new Uint8Array(reader.result as ArrayBuffer);
+      this.uploaded.emit(buffer);
+    });
     reader.readAsArrayBuffer(file);
   }
 }
