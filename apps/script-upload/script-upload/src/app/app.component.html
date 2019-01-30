@@ -5,11 +5,11 @@
   </mat-sidenav>
   <!-- Content -->
   <mat-sidenav-content>
-    <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-toolbar fxLayout="row-reverse" fxLayoutAlign="space-between center">
+      <auth-logger></auth-logger>
       <button *ngIf="!!(user$ | async)" mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <auth-logger></auth-logger>
     </mat-toolbar>
     <main>
       <router-outlet></router-outlet>
