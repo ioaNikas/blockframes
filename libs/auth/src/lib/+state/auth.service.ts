@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthStore, createUser } from './auth.store';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
