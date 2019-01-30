@@ -1,16 +1,18 @@
-<mat-toolbar fxLayout="row-reverse"> <auth-logger></auth-logger> </mat-toolbar>
-<mat-card fxLayout="column" fxLayoutAlign="center center">
-  <ng-container *ngIf="(user$ | async) as user; else connexion">
-    <file-upload
-      accept=".pdf"
-      [path]="user.email"
-      [types]="['application/pdf']"
-      (uploaded)="uploaded($event)"
-    ></file-upload>
-  </ng-container>
-  <ng-template #connexion>
-    <h4>Login</h4>
-    <p>You should be logged to upload a File</p>
-    <auth-logger></auth-logger>
-  </ng-template>
-</mat-card>
+<mat-sidenav-container>
+  <!-- Sidenav -->
+  <mat-sidenav #sidenav [opened]="!!(user$ | async)" mode="side">
+    <script-list></script-list>
+  </mat-sidenav>
+  <!-- Content -->
+  <mat-sidenav-content>
+    <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+      <button *ngIf="!!(user$ | async)" mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <auth-logger></auth-logger>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

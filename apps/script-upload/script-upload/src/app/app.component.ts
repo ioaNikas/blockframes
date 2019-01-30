@@ -14,22 +14,9 @@ import { utils } from 'ethers';
 export class AppComponent implements OnInit {
   public user$: Observable<User>;
 
-  constructor(
-    private auth: AuthQuery,
-    private snackBar: MatSnackBar,
-    private scripts: ScriptHashService
-  ) {}
+  constructor(private auth: AuthQuery) {}
 
   async ngOnInit() {
     this.user$ = this.auth.select(state => state.user);
-  }
-
-  public async uploaded(content: ArrayBuffer) {
-    const bytes = new Uint8Array(content);
-    const hash = utils.keccak256(bytes);
-    this.snackBar.open(`Your hash: ${hash}`, 'close');
-
-    const receipt = await this.scripts.addScript(hash);
-    this.snackBar.open(`Your TX hash: ${receipt.hash}`, 'close');
   }
 }
