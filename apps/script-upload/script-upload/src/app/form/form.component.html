@@ -1,0 +1,9 @@
+<mat-card>
+  <file-upload
+    accept=".pdf"
+    [path]="user.email"
+    [types]="['application/pdf']"
+    (uploaded)="uploaded($event)"
+  ></file-upload>
+</mat-card>
+
