@@ -11,7 +11,9 @@ if (environment.production) {
   enableAkitaProdMode();
 }
 
-persistState();
+persistState({
+  exclude: ['router']
+});
 
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
