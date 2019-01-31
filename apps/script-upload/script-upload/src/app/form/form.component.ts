@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ScriptHashService } from '@blockframes/script';
+import { ScriptHashContract } from '@blockframes/script';
 import { utils } from 'ethers';
 import { User, AuthQuery } from '@blockframes/auth';
 
@@ -15,7 +15,7 @@ export class FormComponent implements OnInit {
   constructor(
     private auth: AuthQuery,
     private snackBar: MatSnackBar,
-    private scripts: ScriptHashService
+    private scripts: ScriptHashContract
   ) {}
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class FormComponent implements OnInit {
     this.snackBar.open(`Your hash: ${hash}`, 'close');
 
     await (<any>window).ethereum.enable()
-    const receipt = await this.scripts.addScript(hash);
+    const receipt = await this.scripts.functions.addScript(hash);
     this.snackBar.open(`Your TX hash: ${receipt.hash}`, 'close');
   }
 }

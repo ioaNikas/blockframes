@@ -1,15 +1,10 @@
-import { Contract, providers } from 'ethers';
-import { InjectionToken, Injectable, Inject } from '@angular/core';
-import { PROVIDER, NgWallet } from '@blockframes/ethers';
+import { Injectable } from '@angular/core';
+import { ContractConfig, NgContract, INgContract } from '@blockframes/ethers';
 
-export type ScriptHash = Contract & {
+export interface ScriptHash extends INgContract {
   scriptsOwner(hash: string): Promise<string>;
   scriptsFrom(address: string): Promise<string[]>;
   addScript(hash: string): Promise<any>;
-};
-
-export const addresses = {
-  ropsten: '0x3a7bfeb49b2fd1399a38e748b3a18ab2a76b042a'
 };
 
 export const abi = [
@@ -18,12 +13,6 @@ export const abi = [
   'function scriptsFrom(address _owner) public returns (bytes32[])'
 ];
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ScriptHashService extends Contract {
-  constructor(wallet: NgWallet) {
-    const address = addresses[wallet.provider.network.name];
-    super(address, abi, wallet);
-  }
-}
+@Injectable({ providedIn: 'root' })
+@ContractConfig('scriptHash', abi)
+export class ScriptHashContract extends NgContract<ScriptHash> {}
