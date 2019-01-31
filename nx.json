@@ -39,6 +39,9 @@
         "ethereum",
         "smart-contract"
       ]
+    },
+    "eth-events-service": {
+      "tags": []
     }
   }
 }
