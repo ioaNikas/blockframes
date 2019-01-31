@@ -1,9 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthQuery, User } from '@blockframes/auth';
-import { ScriptHashService } from '@blockframes/script';
+import { NgWallet } from '@blockframes/ethers';
 import { Observable } from 'rxjs';
-import { utils } from 'ethers';
 
 @Component({
   selector: 'script-root',
@@ -19,4 +17,5 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.user$ = this.auth.select(state => state.user);
   }
+
 }

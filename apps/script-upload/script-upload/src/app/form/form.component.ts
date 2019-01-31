@@ -26,6 +26,7 @@ export class FormComponent implements OnInit {
     const hash = utils.keccak256(content);
     this.snackBar.open(`Your hash: ${hash}`, 'close');
 
+    await (<any>window).ethereum.enable()
     const receipt = await this.scripts.addScript(hash);
     this.snackBar.open(`Your TX hash: ${receipt.hash}`, 'close');
   }

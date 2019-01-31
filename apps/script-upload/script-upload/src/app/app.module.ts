@@ -26,7 +26,7 @@ import { MatRippleModule } from '@angular/material/core';
 // Libraries
 import { AuthModule, AuthGuard } from '@blockframes/auth';
 import { UploadModule } from '@blockframes/ui';
-import { EthersModule } from '@blockframes/ethers';
+import { EthersModule, WalletModule } from '@blockframes/ethers';
 
 // Components
 import { AppComponent } from './app.component';
@@ -44,7 +44,8 @@ import { HomeComponent } from './home/home.component';
     UploadModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    EthersModule.withMetaMask('ropsten'),
+    EthersModule.withMetaMask(environment.network),
+    WalletModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
       { path: 'form', component: FormComponent, canActivate: [AuthGuard] }
