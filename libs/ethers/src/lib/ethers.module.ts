@@ -14,7 +14,7 @@ export function createWeb3Provider(network: keyof Addresses) {
 
 @NgModule({})
 export class EthersModule {
-  static forRoot(network: keyof Addresses): ModuleWithProviders<EthersModule> {
+  static useWallet(network: keyof Addresses): ModuleWithProviders<EthersModule> {
     return {
       ngModule: EthersModule,
       providers: [
