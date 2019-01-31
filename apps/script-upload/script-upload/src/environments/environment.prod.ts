@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'blockframes.appspot.com',
     messagingSenderId: '1080507348015'
   },
-  network: 'ropsten'
+  network: 'ropsten' as 'ropsten'
 };

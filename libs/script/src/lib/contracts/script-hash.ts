@@ -1,6 +1,6 @@
 import { Contract, providers } from 'ethers';
 import { InjectionToken, Injectable, Inject } from '@angular/core';
-import { PROVIDER } from '@blockframes/ethers';
+import { PROVIDER, NgWallet } from '@blockframes/ethers';
 
 export type ScriptHash = Contract & {
   scriptsOwner(hash: string): Promise<string>;
@@ -22,8 +22,8 @@ export const abi = [
   providedIn: 'root'
 })
 export class ScriptHashService extends Contract {
-  constructor(@Inject(PROVIDER) provider: providers.Web3Provider) {
-    const address = addresses[provider.network.name];
-    super(address, abi, provider.getSigner());
+  constructor(wallet: NgWallet) {
+    const address = addresses[wallet.provider.network.name];
+    super(address, abi, wallet);
   }
 }

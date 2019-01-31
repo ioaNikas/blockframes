@@ -44,7 +44,7 @@ import { HomeComponent } from './home/home.component';
     UploadModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    EthersModule.withMetaMask(environment.network),
+    EthersModule.forRoot(environment.network),
     WalletModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },

@@ -12,7 +12,7 @@ export const environment = {
     storageBucket: 'blockframes-test.appspot.com',
     messagingSenderId: '902486579222'
   },
-  network: 'ropsten'
+  network: 'ropsten' as 'ropsten'
 };
 
 /*
