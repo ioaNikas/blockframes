@@ -44,7 +44,6 @@ import { HomeComponent } from './home/home.component';
     UploadModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
-    EthersModule.useWallet(environment.network),
     WalletModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent },
