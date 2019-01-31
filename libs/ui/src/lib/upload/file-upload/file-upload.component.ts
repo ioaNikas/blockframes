@@ -72,7 +72,7 @@ export class FileUploadComponent {
 
     // Success
     this.state = 'success';
-    this.downloadURL = snapshot.downloadURL;
+    this.downloadURL = await snapshot.ref.getDownloadURL();
 
     const reader = new FileReader();
     reader.addEventListener('loadend', _ => {
