@@ -1,4 +1,4 @@
-import { ContractFunction, Contract } from 'ethers';
+import { ContractFunction } from 'ethers';
 
 export interface INgContract {
   [methods: string]: ContractFunction;
@@ -12,6 +12,3 @@ export interface Addresses {
   local?: string;
 }
 
-export class NgContract<T extends INgContract> extends Contract {
-  functions: { [key in keyof T]: T[key] };
-}

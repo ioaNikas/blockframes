@@ -41,7 +41,7 @@
     "@angular/pwa": "^0.12.3",
     "@angular/router": "^7.0.0",
     "@angular/service-worker": "^7.0.0",
-    "@datorama/akita": "^1.24.3",
+    "@datorama/akita": "^2.1.1",
     "@nrwl/nx": "7.0.2",
     "core-js": "^2.5.4",
     "ethers": "^4.0.23",
