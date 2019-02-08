@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 
 // Guard
 import { AuthGuard } from '@blockframes/auth';
+import { IpResolver } from '@blockframes/ip';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,13 +15,16 @@ export const routes: Routes = [
     path: 'form/:id',
     component: FormComponent,
     canActivate: [AuthGuard],
-    data: { fallback: '' }
+    data: { fallback: '' },
+    resolve: {
+      ip: IpResolver
+    }
   },
   {
     path: 'form',
     component: FormComponent,
     canActivate: [AuthGuard],
-    data: { fallback: '' }
+    data: { fallback: '', ip: null }
   }
 ]
 
