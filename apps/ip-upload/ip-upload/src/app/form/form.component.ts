@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IpHashContract, IP_TYPES, IpService } from '@blockframes/ip';
+import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery } from '@blockframes/ip';
 import { User, AuthQuery } from '@blockframes/auth';
+import { PersistNgFormPlugin } from '@datorama/akita';
 import { utils } from 'ethers';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'ip-form',
@@ -11,7 +13,8 @@ import { utils } from 'ethers';
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
+  public persistForm: PersistNgFormPlugin<IpState>;
   public user: User;
   public form: FormGroup;
   public TYPES = IP_TYPES;
@@ -19,10 +22,11 @@ export class FormComponent implements OnInit {
 
   constructor(
     private service: IpService,
+    private query: IpQuery,
     private auth: AuthQuery,
     private snackBar: MatSnackBar,
     private contract: IpHashContract,
-    private builder: FormBuilder
+    private builder: FormBuilder,
   ) {}
 
   ngOnInit() {
@@ -41,6 +45,12 @@ export class FormComponent implements OnInit {
       'signer': [''],
       'isan': ['']
     });
+    this.persistForm = new PersistNgFormPlugin(this.query, 'form');
+    this.persistForm.setForm(this.form);
+  }
+
+  ngOnDestroy() {
+    this.persistForm.destroy();
   }
 
   ///////////
@@ -83,11 +93,25 @@ export class FormComponent implements OnInit {
     this.form.setValue({ txHash });
   }
 
-  public submit() {
+  /** Add a new IP to the list of ips */
+  public async submit() {
     if (!this.form.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 1000 });
       throw new Error('Invalid form');
     }
-    this.service.add(this.form.value);
+    await this.service.add(this.form.value);
+    this.form.reset();
+    this.persistForm.reset();
+  }
+
+  /** Clear current form with cancellation */
+  public clear() {
+    const oldState = this.form.value;
+    this.form.reset();
+    this.persistForm.reset();
+    this.snackBar.open('Cleared', 'Cancel', { duration: 1000 })
+      .onAction()
+      .pipe(first())
+      .subscribe(_ => this.form.setValue(oldState));
   }
 }

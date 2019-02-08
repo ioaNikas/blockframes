@@ -8,11 +8,13 @@ import { Observable } from 'rxjs';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
-  public scripts$: Observable<Ip[]>;
+  public ipList$: Observable<Ip[]>;
+  public ipForm$: Observable<Ip>;
 
   constructor(private query: IpQuery) {}
 
   ngOnInit() {
-    this.scripts$ = this.query.selectAll();
+    this.ipList$ = this.query.selectAll();
+    this.ipForm$ = this.query.form$;
   }
 }
