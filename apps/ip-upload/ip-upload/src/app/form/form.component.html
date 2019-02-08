@@ -49,6 +49,7 @@
 
 
 
-<mat-toolbar class="mat-elevation-z8">
-  <button mat-button (click)="submit()">Save</button>
+<mat-toolbar fxLayout="row" fxLayoutAlign="end center" class="mat-elevation-z8">
+  <button mat-raised-button color="primary" (click)="submit()">Save</button>
+  <button mat-button (click)="clear()">Clear</button>
 </mat-toolbar>

@@ -12,4 +12,7 @@ export class IpQuery extends QueryEntity<IpState, Ip> {
     super(store);
   }
 
+  get form$() {
+    return this.select(state => state.form);
+  }
 }
