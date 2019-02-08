@@ -5,7 +5,7 @@ import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery } from '@blockfra
 import { User, AuthQuery } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { utils } from 'ethers';
-import { first, takeWhile, switchMap } from 'rxjs/operators';
+import { first, takeWhile, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -51,10 +51,9 @@ export class FormComponent implements OnInit, OnDestroy {
     });
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
-    this.route.params.pipe(
-      takeWhile(_ => this.alive),
-      switchMap(params => this.query.selectEntity(params['id']))
-    ).subscribe(ip => this.form.setValue(ip));
+    this.route.data
+      .pipe(takeWhile(_ => this.alive))
+      .subscribe(({ip}) => ip ? this.form.setValue(ip) : this.form.reset());
   }
 
   ngOnDestroy() {
