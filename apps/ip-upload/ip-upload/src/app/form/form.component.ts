@@ -5,7 +5,8 @@ import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery } from '@blockfra
 import { User, AuthQuery } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { utils } from 'ethers';
-import { first } from 'rxjs/operators';
+import { first, takeWhile, switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ip-form',
@@ -14,6 +15,7 @@ import { first } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormComponent implements OnInit, OnDestroy {
+  private alive = true;
   public persistForm: PersistNgFormPlugin<IpState>;
   public user: User;
   public form: FormGroup;
@@ -27,11 +29,13 @@ export class FormComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private contract: IpHashContract,
     private builder: FormBuilder,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.user = this.auth.user;
     this.form = this.builder.group({
+      'id': [''],
       'title': ['', [Validators.required]],
       'synopsis': [''],
       'version': ['0.0.0', [Validators.required]],
@@ -47,9 +51,14 @@ export class FormComponent implements OnInit, OnDestroy {
     });
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
+    this.route.params.pipe(
+      takeWhile(_ => this.alive),
+      switchMap(params => this.query.selectEntity(params['id']))
+    ).subscribe(ip => this.form.setValue(ip));
   }
 
   ngOnDestroy() {
+    this.alive = false;
     this.persistForm.destroy();
   }
 
@@ -93,6 +102,10 @@ export class FormComponent implements OnInit, OnDestroy {
     this.form.setValue({ txHash });
   }
 
+  /////////////
+  // ACTIONS //
+  /////////////
+
   /** Add a new IP to the list of ips */
   public async submit() {
     if (!this.form.valid) {
@@ -100,6 +113,7 @@ export class FormComponent implements OnInit, OnDestroy {
       throw new Error('Invalid form');
     }
     await this.service.add(this.form.value);
+    this.snackBar.open(`Created ${this.form.get('title').value}`, 'close', {duration: 1000});
     this.form.reset();
     this.persistForm.reset();
   }

@@ -3,8 +3,8 @@
   <h2>New Ip</h2>
 </mat-toolbar>
 
-<mat-list>
-  <mat-list-item *ngFor="let ip of (ipList$ | async)">
+<mat-nav-list>
+  <mat-list-item [routerLink]="['form', ip.id]" *ngFor="let ip of (ipList$ | async)">
     <mat-checkbox (click)="$event.stopPropagation()"></mat-checkbox>
     <p >{{ ip.title }}</p>
   </mat-list-item>
@@ -12,4 +12,4 @@
     <mat-icon mat-list-icon>create</mat-icon>
     <p>{{ title }}</p>
   </mat-list-item>
-</mat-list>
+</mat-nav-list>
