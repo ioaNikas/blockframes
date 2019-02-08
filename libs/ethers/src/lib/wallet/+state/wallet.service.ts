@@ -37,11 +37,11 @@ export class NgWallet extends Signer {
   }
 
   get address() {
-    return this.query.getSnapshot().address;
+    return this.query.getValue().address;
   }
   // TODO : Change private key with keystore everywhere
   get privateKey() {
-    return this.query.getSnapshot().privateKey;
+    return this.query.getValue().privateKey;
   }
 
   /** Create a wallet with a random mnemonic */

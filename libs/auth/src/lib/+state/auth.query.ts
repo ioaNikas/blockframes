@@ -15,6 +15,6 @@ export class AuthQuery extends Query<AuthState> {
   }
 
   get user() {
-    return this.getSnapshot().user;
+    return this.getValue().user;
   }
 }
