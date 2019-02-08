@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  hmr: true,
   firebase: {
     apiKey: 'AIzaSyCx3IsE1RdkJAy9SDAuaJy3JS1emDsBWR8',
     authDomain: 'blockframes-test.firebaseapp.com',
