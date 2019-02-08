@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -28,6 +29,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
@@ -57,6 +59,7 @@ import { HomeComponent } from './home/home.component';
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
+    AngularFirestoreModule,
     // Material
     MatSnackBarModule,
     MatCardModule,
@@ -71,6 +74,7 @@ import { HomeComponent } from './home/home.component';
     MatInputModule,
     MatSelectModule,
     MatChipsModule,
+    MatCheckboxModule,
     // Akita
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     // Service Worker
