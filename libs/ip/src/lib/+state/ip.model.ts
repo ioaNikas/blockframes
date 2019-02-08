@@ -17,6 +17,6 @@ export interface Ip {
 /**
  * A factory function that creates Ip
  */
-export function createIp(params?: Partial<Ip>, id?: string) {
-  return { ...params, id, date: Date.now().toString() } as Ip;
+export function createIp(params?: Partial<Ip>) {
+  return { ...params, date: Date.now().toString() } as Ip;
 }

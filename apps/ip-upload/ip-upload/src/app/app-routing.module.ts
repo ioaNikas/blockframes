@@ -11,6 +11,12 @@ import { AuthGuard } from '@blockframes/auth';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
+    path: 'form/:id',
+    component: FormComponent,
+    canActivate: [AuthGuard],
+    data: { fallback: '' }
+  },
+  {
     path: 'form',
     component: FormComponent,
     canActivate: [AuthGuard],
