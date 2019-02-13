@@ -3,11 +3,26 @@
   <h2>New Ip</h2>
 </mat-toolbar>
 
+<!-- Action on all selected -->
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-checkbox [checked]="isAllSelected" [indeterminate]="isIndeterminate" (change)="toggleAll($event)"></mat-checkbox>
+  <div *ngIf="selected.length > 0">
+    <button (click)="remove(selected)" mat-icon-button>
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- List of IPs -->
 <mat-nav-list>
-  <mat-list-item [routerLink]="['form', ip.id]" *ngFor="let ip of (ipList$ | async)">
-    <mat-checkbox (click)="$event.stopPropagation()"></mat-checkbox>
-    <p >{{ ip.title }}</p>
+  <mat-list-item [routerLink]="['form', ip.id]" *ngFor="let ip of (ipList$ | async); let i = index">
+    <mat-checkbox [checked]="selected.includes(ip.id)" (change)="toggleOne($event, ip.id)" (click)="$event.stopPropagation()"></mat-checkbox>
+    <p>{{ ip.title }}</p>
   </mat-list-item>
+</mat-nav-list>
+
+<!-- Current IP form -->
+<mat-nav-list>
   <mat-list-item routerLink="form" *ngIf="(ipForm$ | async)?.title as title">
     <mat-icon mat-list-icon>create</mat-icon>
     <p>{{ title }}</p>

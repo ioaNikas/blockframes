@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery } from '@blockframes/ip';
+import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery, createIp } from '@blockframes/ip';
 import { User, AuthQuery } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { utils } from 'ethers';
@@ -47,13 +47,13 @@ export class FormComponent implements OnInit, OnDestroy {
       'txHash': [''],
       'date': [''],
       'signer': [''],
-      'isan': ['']
+      'isan': [''],
     });
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
     this.route.data
       .pipe(takeWhile(_ => this.alive))
-      .subscribe(({ip}) => ip ? this.form.setValue(ip) : this.form.reset());
+      .subscribe(({ip}) => ip ? this.form.setValue(createIp(ip)) : this.form.reset());
   }
 
   ngOnDestroy() {
