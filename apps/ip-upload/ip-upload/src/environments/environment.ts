@@ -2,25 +2,13 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { production, firebase, contracts, hmr } from '@env';
+
 export const environment = {
-  production: false,
-  hmr: true,
-  firebase: {
-    apiKey: "AIzaSyD1qjU9feHzxAFg96L4VouE9_nt9nFGg0s",
-    authDomain: "blockframes-francois.firebaseapp.com",
-    databaseURL: "https://blockframes-francois.firebaseio.com",
-    projectId: "blockframes-francois",
-    storageBucket: "blockframes-francois.appspot.com",
-    messagingSenderId: "309694417970"
-  },
-  network: 'ropsten' as 'ropsten',
-  contracts: {
-    ipHash: '0x6f77765b18deac65dc55c3a38a112c9583e25185'
-  },
-  pubsub: {
-    projectID: 'blockframes-francois',
-    topicRootName: 'eth-events'
-  }
+  production,
+  firebase,
+  contracts,
+  hmr,
 };
 
 /*

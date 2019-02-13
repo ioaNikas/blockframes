@@ -37,6 +37,10 @@
             "production": {
               "fileReplacements": [
                 {
+                  "replace": "env/env.ts",
+                  "with": "env/env.prod.ts"
+                },
+                {
                   "replace": "apps/ip-upload/ip-upload/src/environments/environment.ts",
                   "with": "apps/ip-upload/ip-upload/src/environments/environment.prod.ts"
                 }
@@ -61,6 +65,10 @@
             },
             "staging": {
               "fileReplacements": [
+                {
+                  "replace": "env/env.ts",
+                  "with": "env/env.staging.ts"
+                },
                 {
                   "replace": "apps/ip-upload/ip-upload/src/environments/environment.ts",
                   "with": "apps/ip-upload/ip-upload/src/environments/environment.staging.ts"
@@ -308,6 +316,10 @@
               "extractLicenses": true,
               "fileReplacements": [
                 {
+                  "replace": "env/env.ts",
+                  "with": "env/env.prod.ts"
+                },
+                {
                   "replace": "apps/eth-events-server/src/environments/environment.ts",
                   "with": "apps/eth-events-server/src/environments/environment.prod.ts"
                 }
@@ -317,6 +329,10 @@
               "optimization": true,
               "extractLicenses": true,
               "fileReplacements": [
+                {
+                  "replace": "env/env.ts",
+                  "with": "env/env.staging.ts"
+                },
                 {
                   "replace": "apps/eth-events-server/src/environments/environment.ts",
                   "with": "apps/eth-events-server/src/environments/environment.staging.ts"

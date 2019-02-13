@@ -1,4 +1,4 @@
-import { environment } from "@env/environment";
+import { contracts } from "@env";
 import { NgWallet } from "./wallet/+state";
 import { Contract } from "ethers";
 import { INgContract } from "./types";
@@ -7,7 +7,7 @@ import { INgContract } from "./types";
 export class NgContract<T extends INgContract> extends Contract {
   functions: { [key in keyof T]: T[key] };
   constructor(name: string, abi: string[], wallet: NgWallet) {
-    const address = environment.contracts[name]
+    const address = contracts[name]
     super(address, abi, wallet)
   }
 }
