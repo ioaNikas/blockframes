@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { contracts } from '@env';
 import { Injectable } from '@angular/core';
 import { NgContract, INgContract, NgWallet } from '@blockframes/ethers';
 import { Contract, providers } from 'ethers';
@@ -27,7 +27,7 @@ export class IpHashContractReadOnly extends Contract {
   static NAME = 'IpHash';
 
   constructor(provider: providers.BaseProvider) {
-    const address = environment.contracts[IpHashContractReadOnly.NAME];
+    const address = contracts[IpHashContractReadOnly.NAME];
     super(address, abi, provider);
   }
 }
