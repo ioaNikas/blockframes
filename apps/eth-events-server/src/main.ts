@@ -2,6 +2,7 @@ import * as express from 'express';
 import { Contract, ethers } from 'ethers';
 import { PubSub } from '@google-cloud/pubsub';
 import { environment } from './environments/environment';
+import { network, contracts, firebase } from '@env';
 
 const PUBSUB_ERROR_CODE_ALREADY_EXISTS = 6;
 
@@ -23,12 +24,10 @@ app.listen(port, (err) => {
 
 // Eth Events Service will take care of pushing eth events to our pubsub topics.
 const ethEventsService = async () => {
-  // TODO: split env into sharedEnv and local app's env
-  const { network, contracts } = environment;
-  const { topicRootName, projectID } = environment.pubsub;
+  const { topicRootName } = environment.pubsub;
 
   const provider = ethers.getDefaultProvider(network);
-  const pubsub = new PubSub({ projectID });
+  const pubsub = new PubSub({ projectID: firebase.projectId });
 
   const subs = Object.entries(contracts)
     .map(async ([name, addr]) => {
