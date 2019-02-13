@@ -6,19 +6,19 @@ export const environment = {
   production: false,
   hmr: true,
   firebase: {
-    apiKey: 'AIzaSyCx3IsE1RdkJAy9SDAuaJy3JS1emDsBWR8',
-    authDomain: 'blockframes-test.firebaseapp.com',
-    databaseURL: 'https://blockframes-test.firebaseio.com',
-    projectId: 'blockframes-test',
-    storageBucket: 'blockframes-test.appspot.com',
-    messagingSenderId: '902486579222'
+    apiKey: "AIzaSyD1qjU9feHzxAFg96L4VouE9_nt9nFGg0s",
+    authDomain: "blockframes-francois.firebaseapp.com",
+    databaseURL: "https://blockframes-francois.firebaseio.com",
+    projectId: "blockframes-francois",
+    storageBucket: "blockframes-francois.appspot.com",
+    messagingSenderId: "309694417970"
   },
   network: 'ropsten' as 'ropsten',
   contracts: {
     ipHash: '0x6f77765b18deac65dc55c3a38a112c9583e25185'
   },
   pubsub: {
-    projectID: 'blockframes-laurent-230215',
+    projectID: 'blockframes-francois',
     topicRootName: 'eth-events'
   }
 };
