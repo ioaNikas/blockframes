@@ -6,10 +6,9 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class IpResolver implements Resolve<Ip> {
 
-  constructor(private store: IpStore, private query: IpQuery) {}
+  constructor(private query: IpQuery) {}
 
   resolve(route: ActivatedRouteSnapshot): Ip {
-    this.store.setActive(route.params['id']);
-    return this.query.getActive() as Ip;
+    return this.query.getEntity(route.params['id']);
   }
 }
