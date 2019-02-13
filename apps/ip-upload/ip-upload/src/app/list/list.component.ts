@@ -12,7 +12,7 @@ import { tap, map, takeWhile } from 'rxjs/operators';
 export class ListComponent implements OnInit {
   public ipList$: Observable<Ip[]>;
   public ipForm$: Observable<Ip>;
-  public selected: string[] = ['fDnkMRGAEvaCm7I7NZPh'];
+  public selected: string[] = [];
 
   constructor(private service: IpService, private query: IpQuery) {}
 
@@ -31,7 +31,6 @@ export class ListComponent implements OnInit {
 
   // Select / Unselect
   public toggleOne({ checked }, id: string) {
-    console.log(this.selected);
     checked
       ? this.selected.push(id)
       : this.selected.splice(this.selected.indexOf(id), 1);
