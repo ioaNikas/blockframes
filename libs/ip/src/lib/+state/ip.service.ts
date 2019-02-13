@@ -24,7 +24,7 @@ export class IpService {
     this.store.update(id, ip);
   }
 
-  public remove(id: ID) {
+  public remove(id: ID | ID[]) {
     this.store.remove(id);
   }
 }
