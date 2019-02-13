@@ -9,14 +9,30 @@ export interface Ip {
   fileUrl: string,
   ipHash: string,
   txHash: string,
-  date: string,
+  date: number,
   signer: string,
   isan: string,
+  // UI
+  active?: boolean
 }
 
 /**
  * A factory function that creates Ip
  */
 export function createIp(params?: Partial<Ip>) {
-  return { ...params, date: Date.now().toString() } as Ip;
+  return params ? {
+    id: params.id || '',
+    title: params.title,
+    synopsis: params.synopsis,
+    version: params.version,
+    genres: params.genres || [],
+    type: params.type,
+    authors: params.authors || [],
+    fileUrl: params.fileUrl,
+    ipHash: params.ipHash,
+    txHash: params.txHash,
+    date: Date.now(),
+    signer: params.signer,
+    isan: params.isan,
+  } : {} as Ip;
 }
