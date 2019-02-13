@@ -22,6 +22,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+      - run: cp env/env.template.ts env/env.ts
       - run: npm run build
       - persist_to_workspace:
           root: ~/repo
