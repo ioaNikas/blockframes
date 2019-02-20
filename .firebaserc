@@ -3,6 +3,7 @@
     "default": "blockframes-test",
     "laurent": "blockframes-laurent",
     "francois": "blockframes-francois",
+    "bruce": "blockframes-bruce",
     "staging": "blockframes-staging"
   }
 }
