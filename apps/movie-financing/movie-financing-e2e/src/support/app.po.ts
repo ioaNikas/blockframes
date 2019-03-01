@@ -90,7 +90,8 @@ export class HomePage {
   }
 
   findMovieItemByTitle(title: string) {
-    cy.contains(title);
+    cy.get('mat-nav-list')
+      .contains(title);
   }
 
 }

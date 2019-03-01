@@ -1,6 +1,7 @@
 <mat-sidenav-container>
   <!-- Sidenav -->
   <mat-sidenav #sidenav [opened]="!!(user$ | async)" mode="side">
+    <movie-financing-list></movie-financing-list>
   </mat-sidenav>
   <!-- Content -->
   <mat-sidenav-content>

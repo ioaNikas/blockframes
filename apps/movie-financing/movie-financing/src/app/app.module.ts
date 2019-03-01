@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { environment } from '../environments/environment';
-import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
@@ -15,7 +15,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 // Libraries
 import { AuthModule } from '@blockframes/auth';
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -27,6 +28,8 @@ import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
+import { AppRoutingModule } from './app-routing.module';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -37,9 +40,8 @@ import { ViewComponent } from './view/view.component';
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
-    RouterModule.forRoot([
-      {path: '', component: HomeComponent}
-    ], { initialNavigation: 'enabled' }),
+    FormsModule,
+    ReactiveFormsModule,
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
     // Material
@@ -49,11 +51,15 @@ import { ViewComponent } from './view/view.component';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
     // Librairies
     AuthModule,
     UploadModule,
     UiFormModule,
     WalletModule,
+    AppRoutingModule,
   ],
   bootstrap: [AppComponent]
 })

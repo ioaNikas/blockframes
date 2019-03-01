@@ -6,8 +6,8 @@ import { Landing } from '../support/app.po';
 describe('Hello Movie Financing', () => {
   beforeEach(() => cy.visit('/'));
 
-  it.skip('should display welcome message', () => {
-    getGreeting().contains('Welcome to movie-financing!');
+  it('should display welcome message', () => {
+    getGreeting().contains('Welcome to the Movie Financing App!');
   });
 });
 
@@ -34,7 +34,7 @@ describe('story 2: Je peux me connecter et créer un Film', () => {
     cy.viewport('macbook-15');
   });
 
-  it.skip('', () => {
+  it('', () => {
     let p: any = new Landing();
     // User Story authentication
     p = p.clickConnection();

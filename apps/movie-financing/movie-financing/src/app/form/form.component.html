@@ -1,3 +1,72 @@
-<p>
-  form works!
-</p>
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+  <mat-card class="movie-card">
+    <mat-card-header>
+      <mat-card-title>Add movie</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Title" formControlName="title">
+            <mat-error *ngIf="movieForm.controls['title'].hasError('required')">
+              Title is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Production company" formControlName="productionCompany">
+            <mat-error *ngIf="movieForm.controls['productionCompany'].hasError('required')">
+              Production company is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Director" formControlName="director">
+            <mat-error *ngIf="movieForm.controls['director'].hasError('required')">
+              Director is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Cast" formControlName="cast">
+            <mat-error *ngIf="movieForm.controls['cast'].hasError('required')">
+              Cast is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Genre" formControlName="genre">
+              <mat-option *ngFor="let genre of genres" [value]="genre">
+                {{ genre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="movieForm.controls['genre'].hasError('required')">
+              Genre is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <textarea matInput #logline maxlength="180" placeholder="Logline" type="string" formControlName="logline"></textarea>
+            <mat-hint align="end">{{ logline.value.length }} / 180</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
