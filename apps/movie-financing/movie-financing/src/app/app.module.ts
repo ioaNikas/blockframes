@@ -7,6 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+
+// Akita
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 
 // Material
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -17,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+
 // Libraries
 import { AuthModule } from '@blockframes/auth';
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -34,6 +39,7 @@ import { MatInputModule } from '@angular/material/input';
 
 
 
+
 @NgModule({
   declarations: [AppComponent, HomeComponent, FormComponent, ListComponent, ViewComponent],
   imports: [
@@ -44,6 +50,9 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    // Akita
+    environment.production ? [] : [AkitaNgDevtools.forRoot()],
     // Material
     MatSnackBarModule,
     MatCardModule,
@@ -61,6 +70,7 @@ import { MatInputModule } from '@angular/material/input';
     WalletModule,
     AppRoutingModule,
   ],
+  providers: [{ provide: FirestoreSettingsToken, useValue: {} }], // TODO: Remove when @angular/fire is updated
   bootstrap: [AppComponent]
 })
 export class AppModule {}
