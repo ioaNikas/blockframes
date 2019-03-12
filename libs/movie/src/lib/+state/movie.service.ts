@@ -2,25 +2,28 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MovieStore } from './movie.store';
 import { Movie, createMovie } from './movie.model';
+import { takeWhile } from 'rxjs/operators';
 
 
 @Injectable({ providedIn: 'root' })
 export class MovieService {
   private collection: AngularFirestoreCollection<Movie>;
+  private initiated = false;
 
   constructor(
   private store: MovieStore,
   private firestore: AngularFirestore,
   ) {
     this.collection = this.firestore.collection('movie');
-    this.fetch();
   }
 
   fetch() {
-    this.collection.valueChanges().subscribe((movies: Movie[]) => {
-      this.store.set(movies);
-    });
-    // TODO: takewhile user connected
+    if(this.initiated) return;
+    this.initiated = true;
+    this.collection.valueChanges().pipe(
+      takeWhile(_ => this.initiated)
+    ).subscribe(movies => this.store.set(movies));
+    // TODO: this.initated = false when user disconect ... 
   }
 
   public add(movie: Movie) {

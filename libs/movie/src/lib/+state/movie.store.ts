@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig, ActiveState } from '@datorama/akita';
 import { Movie } from './movie.model';
 
-export interface MovieState extends EntityState<Movie> {}
+export interface MovieState extends EntityState<Movie>, ActiveState<string> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'movie' })

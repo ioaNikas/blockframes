@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { MovieQuery, Movie, MovieService } from '@blockframes/movie';
+import { Observable } from 'rxjs';
 
 @Component({
 // tslint:disable-next-line: component-selector
@@ -8,7 +10,17 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
-  constructor() {}
+
+  movies$: Observable<Movie[]>;
+
+  constructor(
+    private movieQuery: MovieQuery,
+    private movieService: MovieService
+  ) {
+    this.movieService.fetch();
+    this.movies$ = this.movieQuery.selectAll();
+  }
 
   ngOnInit() {}
 }
+

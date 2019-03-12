@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Movie, MovieQuery } from '@blockframes/movie';
+
 
 @Component({
   selector: 'movie-financing-view',
@@ -8,9 +11,13 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ViewComponent implements OnInit {
 
-  constructor() { }
+  movie$: Observable<Movie>;
+
+  constructor(
+    private query: MovieQuery,
+  ) { }
 
   ngOnInit() {
+    this.movie$ = this.query.selectActive();
   }
-
 }
