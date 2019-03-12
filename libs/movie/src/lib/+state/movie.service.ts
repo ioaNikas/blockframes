@@ -13,19 +13,27 @@ export class MovieService {
   private firestore: AngularFirestore,
   ) {
     this.collection = this.firestore.collection('movie');
+    this.fetch();
+  }
+
+  fetch() {
+    this.collection.valueChanges().subscribe((movies: Movie[]) => {
+      this.store.set(movies);
+    });
+    // TODO: takewhile user connected
   }
 
   public add(movie: Movie) {
     const id = this.firestore.createId();
-    this.store.add(createMovie({...movie, id}));
+    this.collection.doc(id).set((createMovie({...movie, id})));
   }
 
   public update(id: string, movie: Partial<Movie>) {
-    this.store.update(id, movie);
+    this.collection.doc(id).update(movie);
   }
 
-  public remove(id: string | string[]) {
-    this.store.remove(id);
+  public remove(id: string) {
+    this.collection.doc(id).delete()
   }
 
 }
