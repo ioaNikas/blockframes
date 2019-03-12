@@ -116,14 +116,20 @@
       </div>
 
       <!-- KEYWORDS -->
-      <chips-autocomplete
-      placeholder="Add some keywords"
-      (added)="keywords.push($event)"
-      (removed)="keywords.removeAt(keywords.value.indexOf($event))"
-      [keys]="keywords.valueChanges | async"
-      [items]="keywords"
-      >
-      </chips-autocomplete>
+      <mat-form-field class="full-width">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let keyword of keywords.valueChanges | async; let i = index;" [selectable]="true"
+                   [removable]="true" (removed)="remove(i)">
+            {{ keyword.name }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Keywords"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="true"
+                 (matChipInputTokenEnd)="addChipKeyword($event)">
+        </mat-chip-list>
+      </mat-form-field>
 
       <!-- LOGLINE -->
       <mat-form-field class="full-width">

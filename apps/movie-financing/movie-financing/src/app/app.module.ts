@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import {MatChipsModule} from '@angular/material/chips';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
@@ -63,6 +64,7 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatChipsModule,
     // Librairies
     AuthModule,
     UploadModule,

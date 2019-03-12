@@ -1,6 +1,8 @@
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
 import { MovieService, staticModels } from '@blockframes/movie';
+import {MatChipInputEvent} from '@angular/material';
 
 @Component({
   selector: 'movie-financing-form',
@@ -13,6 +15,7 @@ export class FormComponent implements OnInit {
   public credits: FormArray;
   public stakeholders: FormArray;
   public promotionalElements: FormArray;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   public movieForm: FormGroup;
 
@@ -33,7 +36,7 @@ export class FormComponent implements OnInit {
       status: [''],
       poster: [''],
       types: [''],
-      keywords: this.builder.array(['']),
+      keywords: this.builder.array([ this.createKeyword('') ]),
       logline: ['', Validators.maxLength(180)],
       synopsis: ['', Validators.maxLength(500)],
       directorNote: ['', Validators.maxLength(1000)],
@@ -102,9 +105,36 @@ export class FormComponent implements OnInit {
 
 // KEYWORDS
 
-public get keywords() {
-  return this.movieForm.get('keywords') as FormArray;
-}
+  public get keywords() {
+    return this.movieForm.get('keywords') as FormArray;
+  }
+
+  public createKeyword(keywordName: string): FormGroup {
+    return this.builder.group({name: keywordName});
+  }
+
+  public addKeyword(keywordName: string): void {
+    this.keywords.push(this.createKeyword(keywordName));
+  }
+
+  public addChipKeyword(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add keyword
+    if ((value || '').trim()) {
+      this.addKeyword(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  public remove(index: number): void {
+    this.keywords.removeAt(index);
+  }
 
 // PROMOTIONAL ELEMENTS
 
