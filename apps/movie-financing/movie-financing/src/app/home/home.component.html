@@ -1,17 +1,1 @@
-<div fxLayout="row" fxLayoutAlign="space-around center">
-  <mat-card mat-card *ngFor="let movie of movies$ | async" class="movie-card">
-    <mat-card-header>
-      <mat-card-title>
-        {{ movie.title }}
-      </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-        {{movie.logline}}
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button routerLink="/movie/{{movie.id}}">ACCESS</button>
-    </mat-card-actions>
-  </mat-card>
-</div>
+<movie-financing-list></movie-financing-list>

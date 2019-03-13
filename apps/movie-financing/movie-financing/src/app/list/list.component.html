@@ -1,5 +1,27 @@
-<mat-toolbar matRipple routerLink="form">
-  <mat-icon>add</mat-icon>
-  <h2>New Movie</h2>
-</mat-toolbar>
+<button color="primary" mat-icon-button matRipple routerLink="form">
+  <mat-icon>add_circle</mat-icon>
+</button>
 
+<div fxLayout="row" fxLayoutAlign="space-around center">
+  <mat-card fxFlex="40" *ngFor="let movie of movies$ | async">
+    <mat-card-header>
+      <mat-card-title>
+        {{ movie.title }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{movie.logline}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button color="primary" mat-button routerLink="/movie/{{movie.id}}">ACCESS</button>
+      <button color="primary" mat-icon-button>
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button color="primary" mat-icon-button>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

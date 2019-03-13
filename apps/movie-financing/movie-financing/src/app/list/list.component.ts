@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { MovieQuery, Movie, MovieService } from '@blockframes/movie';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'movie-financing-list',
@@ -8,7 +10,16 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  movies$: Observable<Movie[]>;
+
+  constructor(
+    private query: MovieQuery,
+    private service: MovieService
+  )
+  {
+    this.service.fetch();
+    this.movies$ = this.query.selectAll();
+  }
 
   ngOnInit() {
   }

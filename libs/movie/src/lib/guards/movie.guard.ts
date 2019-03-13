@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import { Movie, MovieStore } from '../+state';
-import { Observable } from 'rxjs';
-
+import { MovieStore } from '../+state';
 
 @Injectable({
   providedIn: 'root'
