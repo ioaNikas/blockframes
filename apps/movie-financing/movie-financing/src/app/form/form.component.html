@@ -46,7 +46,7 @@
         </button>
       </div>
 
-      <!-- CREDITS -->
+      <!-- STAKEHOLDERS -->
       <h3> Stakeholders </h3>
       <div formArrayName="stakeholders"
       *ngFor="let stakholder of movieStakeholders.controls; let i = index;">
@@ -239,7 +239,9 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+      <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </mat-card-actions>
 
   </mat-card>

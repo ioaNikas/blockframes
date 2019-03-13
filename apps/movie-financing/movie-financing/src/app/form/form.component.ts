@@ -1,8 +1,10 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
-import { MovieService, staticModels } from '@blockframes/movie';
-import {MatChipInputEvent} from '@angular/material';
+import { MovieStore, MovieQuery, MovieService, staticModels, createMovie } from '@blockframes/movie';
+import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { PersistNgFormPlugin } from '@datorama/akita';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'movie-financing-form',
@@ -10,22 +12,29 @@ import {MatChipInputEvent} from '@angular/material';
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements OnInit, OnDestroy {
   public staticModels: any;
   public credits: FormArray;
   public stakeholders: FormArray;
   public promotionalElements: FormArray;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-
+  public persistForm: PersistNgFormPlugin;
   public movieForm: FormGroup;
+  private isModifying = false;
+  private activeId: string;
 
   constructor(
+    private query: MovieQuery,
     private service: MovieService,
     private builder: FormBuilder,
-  ) { }
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private store: MovieStore,
+  ) {}
 
   ngOnInit() {
     this.staticModels = staticModels;
+
     this.movieForm = this.builder.group({
       title: ['', Validators.required],
       ipId: [''],
@@ -52,13 +61,52 @@ export class FormComponent implements OnInit {
       potentialRevenues: [null],
       selectionCategories: ['']
     });
+    // Akita Persist Form
+    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
+
+    //In case of modification of an existing movie, load the form with current data stored.
+    if(this.query.hasActive()) {
+      this.isModifying = true;
+      this.activeId = this.query.getActiveId();
+      this.movieForm.patchValue(createMovie(this.query.getActive()));
+    }
   }
 
+  ngOnDestroy() {
+    this.store.setActive(null);
+    this.clear();
+    this.persistForm.destroy();
+    this.isModifying = false;
+  }
+
+// ACTIONS
+
   public onSubmit(){
-    console.log(this.movieForm.value);
-    this.service.add(this.movieForm.value);
+    if(!this.movieForm.valid) {
+      this.snackBar.open('form invalid', 'close', { duration: 2000 });
+      throw new Error('Invalid form');
+    }
+    if(this.isModifying){
+      this.snackBar.open(`Modified ${this.movieForm.get('title').value}`, 'close', {duration: 2000});
+      this.service.update(this.activeId, this.movieForm.value);
+    } else {
+      this.snackBar.open(`Created ${this.movieForm.get('title').value}`, 'close', {duration: 2000});
+      this.service.add(this.movieForm.value);
+    }
+    this.router.navigateByUrl('');
+    this.clear();
+  }
+
+  public clear() {
+    this.persistForm.reset();
     this.movieForm.reset();
   }
+
+  public cancel() {
+    this.clear();
+    this.router.navigateByUrl('');
+  }
+
 
 // CREDITS
 
@@ -149,4 +197,7 @@ export class FormComponent implements OnInit {
     this.promotionalElements = this.movieForm.get('promotionalElements') as FormArray;
     this.promotionalElements.push(this.createPromotionalElement());
   }
+
+
+
 }

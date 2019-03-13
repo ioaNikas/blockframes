@@ -15,13 +15,15 @@ export class ListComponent implements OnInit {
   constructor(
     private query: MovieQuery,
     private service: MovieService
-  )
-  {
+  ) {}
+
+  ngOnInit() {
     this.service.fetch();
     this.movies$ = this.query.selectAll();
   }
 
-  ngOnInit() {
+  public delete(id: string) {
+    this.service.remove(id);
   }
 
 }

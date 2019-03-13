@@ -16,10 +16,10 @@
     </mat-card-content>
     <mat-card-actions>
       <button color="primary" mat-button routerLink="/movie/{{movie.id}}">ACCESS</button>
-      <button color="primary" mat-icon-button>
+      <button color="primary" mat-icon-button routerLink="/form/{{movie.id}}">
         <mat-icon>edit</mat-icon>
       </button>
-      <button color="primary" mat-icon-button>
+      <button color="primary" mat-icon-button (click)="delete(movie.id)">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-card-actions>

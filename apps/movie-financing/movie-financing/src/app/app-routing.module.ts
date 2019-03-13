@@ -12,6 +12,11 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   {path: 'form', component: FormComponent },
   {
+    path: 'form/:id',
+    component: FormComponent,
+    canActivate: [MovieGuard]
+  },
+  {
     path: 'movie/:id',
     component: ViewComponent,
     canActivate: [MovieGuard]
