@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { User, AuthQuery } from '@blockframes/auth';
+import { AuthService } from '@blockframes/auth';
+import { MovieService } from '@blockframes/movie';
 
 @Component({
   selector: 'movie-financing-root',
@@ -10,15 +10,18 @@ import { User, AuthQuery } from '@blockframes/auth';
 })
 
 export class AppComponent implements OnInit {
-  public user$: Observable<User>;
 
-  constructor(private auth: AuthQuery, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private movieService: MovieService,
+    private router: Router,
+  ) {}
 
-  async ngOnInit() {
-    this.user$ = this.auth.select(state => state.user);
-  }
+  ngOnInit() {}
 
   public logout() {
-    this.router.navigate([''])
+    this.authService.logout();
+    this.router.navigate(['']);
+    this.movieService.initiated = false;
   }
 }
