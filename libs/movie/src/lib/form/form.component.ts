@@ -1,11 +1,12 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormArray } from '@angular/forms';
-import { MovieStore, MovieQuery, MovieService, staticModels, createMovie } from '@blockframes/movie';
+import { MovieStore, MovieQuery, MovieService, createMovie } from '../+state';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
 import { AuthQuery, User } from '@blockframes/auth';
+import staticModels from '../staticModels.json';
 
 @Component({
   selector: 'movie-financing-form',

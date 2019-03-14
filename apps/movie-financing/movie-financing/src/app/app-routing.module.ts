@@ -1,45 +1,29 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-// Components
-import { FormComponent } from './form/form.component';
-import { HomeComponent } from './home/home.component';
-import { ViewComponent } from './view/view.component';
-
-// Guards
-import { MovieGuard } from '@blockframes/movie';
-import { AuthGuard } from '@blockframes/auth';
-
+// import { AuthGuard } from '@blockframes/auth';
+import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-    /*
-  GUARDS
-  AuthGuard: check if user signed in
-  MovieGuard: set active the Movie id in Akita
-  */
+  { path:'', redirectTo: 'layout', pathMatch:'full' },
+ // { path: 'auth', loadChildren: '' }, // loadChildren should lead to the Auth Module
   {
-    path: 'form',
-    component: FormComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '' },
-  },
-  {
-    path: 'form/:id',
-    component: FormComponent,
-    canActivate: [AuthGuard, MovieGuard],
-    data: { fallback: '' },
-  },
-  {
-    path: 'movie/:id',
-    component: ViewComponent,
-    canActivate: [AuthGuard, MovieGuard],
-    data: { fallback: '' },
-  },
-]
+    path: 'layout',
+    component: LayoutComponent,
+    //canActivate: [AuthGuard],
+    children: [
+      { path: '', redirectTo: 'explorer', pathMatch: 'full' },
+      { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' }, // loadChildren should lead to the Movie Module
+     // { path: 'organization', loadChildren: '' }, // loadChildren should lead to the Organization Module
+      //{ path: 'account', loadChildren: '' }, // loadChildren should lead to the Account Module
+      { path: ':id', loadChildren: './financing/financing.module#FinancingModule' } // should lead to the specific App
+    ]
+  }
+  // {path: '**', component: ErrorComponent}, //  should lead to the 404 Component
+];
 
 @NgModule({
-  imports : [RouterModule.forRoot(routes)],
-  exports : [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

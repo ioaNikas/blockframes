@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { MovieQuery, Movie, MovieService } from '@blockframes/movie';
+import { MovieQuery, Movie, MovieService } from '../+state';
 import { Observable } from 'rxjs';
 
 @Component({
