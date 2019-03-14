@@ -1,1 +1,9 @@
-<movie-financing-list></movie-financing-list>
+<div *ngIf="isLogged$ | async; else disconnected">
+  <movie-financing-list></movie-financing-list>
+</div>
+
+<ng-template #disconnected>
+  <div fxLayoutAlign="center center">
+    <h1>Welcome!</h1>
+  </div>
+</ng-template>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { MovieQuery, Movie, MovieService } from '@blockframes/movie';
+import { AuthQuery } from '@blockframes/auth';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,16 +11,12 @@ import { Observable } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
 
-  movies$: Observable<Movie[]>;
+  isLogged$: Observable<boolean>;
 
-  constructor(
-    private movieQuery: MovieQuery,
-    private movieService: MovieService
-  ) {
-    this.movieService.fetch();
-    this.movies$ = this.movieQuery.selectAll();
+  constructor(private auth: AuthQuery) {}
+
+  ngOnInit() {
+    this.isLogged$ = this.auth.isLogged$;
   }
-
-  ngOnInit() {}
 }
 
