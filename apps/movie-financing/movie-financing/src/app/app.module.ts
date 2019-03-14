@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { environment } from '../environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
 
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -21,7 +23,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
@@ -34,12 +37,6 @@ import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
-import { AppRoutingModule } from './app-routing.module';
-import { MatInputModule } from '@angular/material/input';
-
-
-
-
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, FormComponent, ListComponent, ViewComponent],
@@ -52,6 +49,7 @@ import { MatInputModule } from '@angular/material/input';
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireStorageModule,
     // Akita
     environment.production ? [] : [AkitaNgDevtools.forRoot()],
     // Material

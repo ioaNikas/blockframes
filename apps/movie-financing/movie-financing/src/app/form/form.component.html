@@ -14,6 +14,15 @@
         </mat-error>
       </mat-form-field>
 
+      <!-- POSTER -->
+      <h3> Poster </h3>
+      <file-upload
+        accept="['.jpg', '.png']"
+        [path]="user.email"
+        [types]="['image/jpeg', 'image/png']"
+        (storeUploaded)="addPoster($event)"
+      ></file-upload>
+
       <!-- CREDITS -->
       <h3> Credits </h3>
         <div formArrayName="credits"

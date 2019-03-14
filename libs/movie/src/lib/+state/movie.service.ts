@@ -23,7 +23,7 @@ export class MovieService {
     this.collection.valueChanges().pipe(
       takeWhile(_ => this.initiated)
     ).subscribe(movies => this.store.set(movies));
-    // TODO: this.initated = false when user disconect ...
+    // TODO: this.initated = false when user disconect 
   }
 
   public add(movie: Movie) {

@@ -5,6 +5,7 @@ import { MovieStore, MovieQuery, MovieService, staticModels, createMovie } from 
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
+import { AuthQuery, User } from '@blockframes/auth';
 
 @Component({
   selector: 'movie-financing-form',
@@ -22,6 +23,7 @@ export class FormComponent implements OnInit, OnDestroy {
   public movieForm: FormGroup;
   private isModifying = false;
   private activeId: string;
+  public user: User;
 
   constructor(
     private query: MovieQuery,
@@ -30,9 +32,11 @@ export class FormComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private store: MovieStore,
+    private auth: AuthQuery,
   ) {}
 
   ngOnInit() {
+    this.user = this.auth.user;
     this.staticModels = staticModels;
 
     this.movieForm = this.builder.group({
@@ -107,6 +111,12 @@ export class FormComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('');
   }
 
+// POSTER
+
+  public addPoster(poster: string) {
+    this.movieForm.patchValue({poster});
+  }
+  // TODO: rezise and rename
 
 // CREDITS
 

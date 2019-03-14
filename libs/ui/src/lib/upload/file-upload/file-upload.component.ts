@@ -17,15 +17,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FileUploadComponent {
-  @Input() public accept: string;
+  @Input() public accept: string[];
   @Input() private path: string;
   @Input() private types: string[];
   @Output() private uploaded = new EventEmitter<Uint8Array>();
+  @Output() private storeUploaded = new EventEmitter<string>();
 
   public task: AngularFireUploadTask;
   public percentage: Observable<number>;
   public downloadURL: string;
   public state: 'waiting' | 'hovering' | 'uploading' | 'success' = 'waiting';
+
 
   constructor(private afStorage: AngularFireStorage, private snackBar: MatSnackBar) {}
 
@@ -73,6 +75,7 @@ export class FileUploadComponent {
     // Success
     this.state = 'success';
     this.downloadURL = await snapshot.ref.getDownloadURL();
+    this.storeUploaded.emit(this.downloadURL);
 
     const reader = new FileReader();
     reader.addEventListener('loadend', _ => {
