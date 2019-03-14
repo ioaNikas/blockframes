@@ -5,21 +5,36 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormComponent } from './form/form.component';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
+
+// Guards
 import { MovieGuard } from '@blockframes/movie';
+import { AuthGuard } from '@blockframes/auth';
 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  {path: 'form', component: FormComponent },
+    /*
+  GUARDS
+  AuthGuard: check if user signed in
+  MovieGuard: set active the Movie id in Akita
+  */
+  {
+    path: 'form',
+    component: FormComponent,
+    canActivate: [AuthGuard],
+    data: { fallback: '' },
+  },
   {
     path: 'form/:id',
     component: FormComponent,
-    canActivate: [MovieGuard]
+    canActivate: [AuthGuard, MovieGuard],
+    data: { fallback: '' },
   },
   {
     path: 'movie/:id',
     component: ViewComponent,
-    canActivate: [MovieGuard]
+    canActivate: [AuthGuard, MovieGuard],
+    data: { fallback: '' },
   },
 ]
 

@@ -8,7 +8,7 @@ import { takeWhile } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class MovieService {
   private collection: AngularFirestoreCollection<Movie>;
-  private initiated = false;
+  public initiated = false;
 
   constructor(
   private store: MovieStore,
@@ -17,13 +17,16 @@ export class MovieService {
     this.collection = this.firestore.collection('movie');
   }
 
+  /*
+  Initiate Movies
+  this.initiated turns false when user logout
+  */
   fetch() {
     if(this.initiated) return;
     this.initiated = true;
     this.collection.valueChanges().pipe(
       takeWhile(_ => this.initiated)
     ).subscribe(movies => this.store.set(movies));
-    // TODO: this.initated = false when user disconect 
   }
 
   public add(movie: Movie) {

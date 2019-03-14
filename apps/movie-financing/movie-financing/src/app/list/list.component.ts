@@ -17,6 +17,7 @@ export class ListComponent implements OnInit {
     private service: MovieService
   ) {}
 
+  // Initiate the Movies in Akita
   ngOnInit() {
     this.service.fetch();
     this.movies$ = this.query.selectAll();

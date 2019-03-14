@@ -68,7 +68,11 @@ export class FormComponent implements OnInit, OnDestroy {
     // Akita Persist Form
     this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
 
-    //In case of modification of an existing movie, load the form with current data stored.
+    /*
+    MODIFICATION OF A MOVIE
+    In case of modification of an existing movie,
+    load the form with current data stored in the active Movie.
+    */
     if(this.query.hasActive()) {
       this.isModifying = true;
       this.activeId = this.query.getActiveId();
@@ -76,6 +80,10 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  /*
+  MODIFICATION OF A MOVIE
+  Kill the active Movie to reset the modification process.
+  */
   ngOnDestroy() {
     this.store.setActive(null);
     this.clear();
@@ -85,6 +93,12 @@ export class FormComponent implements OnInit, OnDestroy {
 
 // ACTIONS
 
+  /*
+  SAVING THE FORM
+  Case 1 = invalid form refused.
+  Case 2 = modification of a Movie.
+  Case 3 = new Movie.
+  */
   public onSubmit(){
     if(!this.movieForm.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
@@ -118,6 +132,10 @@ export class FormComponent implements OnInit, OnDestroy {
   }
   // TODO: rezise and rename
 
+
+  /*
+  FormArray parts of the FormGroup with same methods
+  */
 // CREDITS
 
   public get movieCredits() {
@@ -194,7 +212,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.keywords.removeAt(index);
   }
 
-// PROMOTIONAL ELEMENTS
+// PROMOTIONAL ELEMENTS: not implemented yet
 
   public createPromotionalElement(): FormGroup {
     return this.builder.group({

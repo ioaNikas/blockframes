@@ -1,7 +1,9 @@
+<!-- ADD A NEW MOVIE BUTTON -->
 <button color="primary" mat-icon-button matRipple routerLink="form">
   <mat-icon>add_circle</mat-icon>
 </button>
 
+<!-- MOVIE CARDS -->
 <div fxLayout="row" fxLayoutAlign="space-around center">
   <mat-card fxFlex="40" *ngFor="let movie of movies$ | async">
     <mat-card-header>
