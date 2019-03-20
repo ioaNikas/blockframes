@@ -23,4 +23,5 @@ import { MovieModule } from '@blockframes/movie';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}
