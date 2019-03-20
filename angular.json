@@ -121,9 +121,7 @@
               "apps/ip-upload/ip-upload/tsconfig.app.json",
               "apps/ip-upload/ip-upload/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -158,9 +156,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/ip-upload/ip-upload-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -181,13 +177,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/ip/tsconfig.lib.json",
-              "libs/ip/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["libs/ip/tsconfig.lib.json", "libs/ip/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -216,13 +207,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/auth/tsconfig.lib.json",
-              "libs/auth/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["libs/auth/tsconfig.lib.json", "libs/auth/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -244,13 +230,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/ui/tsconfig.lib.json",
-              "libs/ui/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["libs/ui/tsconfig.lib.json", "libs/ui/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -278,13 +259,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/ethers/tsconfig.lib.json",
-              "libs/ethers/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["libs/ethers/tsconfig.lib.json", "libs/ethers/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -354,9 +330,7 @@
               "apps/eth-events-server/tsconfig.app.json",
               "apps/eth-events-server/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -391,9 +365,7 @@
               "apps/movie-financing/movie-financing/src/favicon.ico",
               "apps/movie-financing/movie-financing/src/assets"
             ],
-            "styles": [
-              "apps/movie-financing/movie-financing/src/styles.scss"
-            ],
+            "styles": ["apps/movie-financing/movie-financing/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -447,9 +419,7 @@
               "apps/movie-financing/movie-financing/tsconfig.app.json",
               "apps/movie-financing/movie-financing/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -484,9 +454,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/movie-financing/movie-financing-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -507,13 +475,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "libs/movie/tsconfig.lib.json",
-              "libs/movie/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["libs/movie/tsconfig.lib.json", "libs/movie/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         },
         "test": {
@@ -521,6 +484,124 @@
           "options": {
             "jestConfig": "libs/movie/jest.config.js",
             "tsConfig": "libs/movie/tsconfig.spec.json"
+          }
+        }
+      }
+    },
+    "delivery-delivery": {
+      "root": "apps/delivery/delivery/",
+      "sourceRoot": "apps/delivery/delivery/src",
+      "projectType": "application",
+      "prefix": "blockframes",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/delivery/delivery",
+            "index": "apps/delivery/delivery/src/index.html",
+            "main": "apps/delivery/delivery/src/main.ts",
+            "polyfills": "apps/delivery/delivery/src/polyfills.ts",
+            "tsConfig": "apps/delivery/delivery/tsconfig.app.json",
+            "assets": [
+              "apps/delivery/delivery/src/favicon.ico",
+              "apps/delivery/delivery/src/assets"
+            ],
+            "styles": ["apps/delivery/delivery/src/styles.scss"],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/delivery/delivery/src/environments/environment.ts",
+                  "with": "apps/delivery/delivery/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "delivery-delivery:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "delivery-delivery:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "delivery-delivery:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/delivery/delivery/tsconfig.app.json",
+              "apps/delivery/delivery/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/delivery/delivery/jest.config.js",
+            "tsConfig": "apps/delivery/delivery/tsconfig.spec.json",
+            "setupFile": "apps/delivery/delivery/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "delivery-delivery-e2e": {
+      "root": "apps/delivery/delivery-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/delivery/delivery-e2e/cypress.json",
+            "tsConfig": "apps/delivery/delivery-e2e/tsconfig.e2e.json",
+            "devServerTarget": "delivery-delivery:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "delivery-delivery:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/delivery/delivery-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

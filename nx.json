@@ -9,36 +9,22 @@
   },
   "projects": {
     "ip-upload": {
-      "tags": [
-        "ip",
-        "upload"
-      ]
+      "tags": ["ip", "upload"]
     },
     "ip-upload-e2e": {
       "tags": []
     },
     "ip": {
-      "tags": [
-        "ip"
-      ]
+      "tags": ["ip"]
     },
     "auth": {
-      "tags": [
-        "auth",
-        "wallet"
-      ]
+      "tags": ["auth", "wallet"]
     },
     "ui": {
-      "tags": [
-        "ui",
-        "shared"
-      ]
+      "tags": ["ui", "shared"]
     },
     "ethers": {
-      "tags": [
-        "ethereum",
-        "smart-contract"
-      ]
+      "tags": ["ethereum", "smart-contract"]
     },
     "eth-events-server": {
       "tags": []
@@ -50,9 +36,13 @@
       "tags": []
     },
     "movie": {
-      "tags": [
-        "movie"
-      ]
+      "tags": ["movie"]
+    },
+    "delivery-delivery": {
+      "tags": []
+    },
+    "delivery-delivery-e2e": {
+      "tags": []
     }
   }
 }
