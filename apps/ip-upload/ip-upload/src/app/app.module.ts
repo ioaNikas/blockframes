@@ -43,7 +43,7 @@ import { ViewComponent } from './view/view.component';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ListComponent, ViewComponent, HomeComponent],
+  declarations: [AppComponent, FormComponent, ListComponent, ViewComponent, HomeComponent,],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
