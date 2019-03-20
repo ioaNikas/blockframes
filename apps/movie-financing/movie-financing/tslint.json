@@ -4,13 +4,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "movie-financing",
+      "financing",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "movie-financing",
+      "financing",
       "kebab-case"
     ]
   }

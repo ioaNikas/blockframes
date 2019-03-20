@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'blockframes-layout',
+  selector: 'financing-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
