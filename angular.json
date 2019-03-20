@@ -550,7 +550,7 @@
       },
       "schematics": {}
     },
-    "delivery-delivery": {
+    "delivery": {
       "root": "apps/delivery/delivery/",
       "sourceRoot": "apps/delivery/delivery/src",
       "projectType": "application",
@@ -607,18 +607,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "delivery-delivery:build"
+            "browserTarget": "delivery:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "delivery-delivery:build:production"
+              "browserTarget": "delivery:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "delivery-delivery:build"
+            "browserTarget": "delivery:build"
           }
         },
         "lint": {
@@ -641,7 +641,7 @@
         }
       }
     },
-    "delivery-delivery-e2e": {
+    "delivery-e2e": {
       "root": "apps/delivery/delivery-e2e",
       "projectType": "application",
       "prefix": "",
@@ -651,11 +651,11 @@
           "options": {
             "cypressConfig": "apps/delivery/delivery-e2e/cypress.json",
             "tsConfig": "apps/delivery/delivery-e2e/tsconfig.e2e.json",
-            "devServerTarget": "delivery-delivery:serve"
+            "devServerTarget": "delivery:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "delivery-delivery:serve:production"
+              "devServerTarget": "delivery:serve:production"
             }
           }
         },
