@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { firebase } from '@env';
 // Angular Fire
 import { AngularFirestoreModule, FirestoreSettingsToken } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
@@ -29,6 +29,7 @@ import { FormComponent } from './form/form.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
+import { AngularFireModule } from '@angular/fire';
 
 @NgModule({
   declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent],
@@ -39,6 +40,7 @@ import { MovieRoutingModule } from './movie-routing.module';
     ReactiveFormsModule,
     MovieRoutingModule,
     // Angular Fire
+    AngularFireModule.initializeApp(firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
     // Material
