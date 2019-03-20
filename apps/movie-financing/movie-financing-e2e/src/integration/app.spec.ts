@@ -35,7 +35,7 @@ describe('story 2: Je peux me connecter et créer un Film', () => {
     cy.viewport('macbook-15');
   });
 
-  it('', () => {
+  it.skip('', () => {
     let p: any = new Landing();
     /*
     // User Story authentication
@@ -47,13 +47,8 @@ describe('story 2: Je peux me connecter et créer un Film', () => {
     // User Story creation of a film begins here
     p = p.clickNewMovie();
     p.fillTitle('Akira 2');
-    p.fillProductionCompany('Tohei');
-    p.fillInternationalSalesCompany('Buena Vista');
-    p.fillDirector('Akira Kurosawa');
-    p.fillWriter('Hayayo Myiazaki');
-    p.fillCast('Toshiro Mifune');
-    p.selectGenre('Animation');
-    p.selectStatus('In Completion');
+    p.selectGenre('Action');
+    p.selectStatus('Financing');
     p.fillLogline('A secret military project endangers Neo-Tokyo when it turns a biker gang member into a rampaging psychic psychopath that only two teenagers and a group of psychics can stop.');
     /*
     Part of the form specific to Movie Financing

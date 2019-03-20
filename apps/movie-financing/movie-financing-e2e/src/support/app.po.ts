@@ -11,28 +11,8 @@ export class NewMoviePage {
     return cy.get('input[formcontrolname="title"]').type(title);
   }
 
-  fillProductionCompany(productionCompany: string): any {
-    return cy.get('input[formcontrolname="productionCompany"]').type(productionCompany);
-  }
-
-  fillInternationalSalesCompany(internationaSalesCompany: string): any {
-    return cy.get('input[formcontrolname="internationaSalesCompany"]').type(internationaSalesCompany);
-  }
-
-  fillDirector(director: string): any {
-    return cy.get('input[formcontrolname="director"]').type(director);
-  }
-
-  fillWriter(writer: string): any {
-    return cy.get('input[formcontrolname="writer"]').type(writer);
-  }
-
-  fillCast(cast: string): any {
-    return cy.get('input[formcontrolname="cast"]').type(cast);
-  }
-
   selectGenre(genre: string): any {
-    return cy.get('input[formcontrolname="genre"]').type(genre);
+    return cy.get('input[formcontrolname="genres"]').type(genre);
   }
 
   selectStatus(status: string): any {
@@ -83,14 +63,13 @@ export class HomePage {
   }
 
   clickNewMovie(): any {
-    cy.get('mat-toolbar')
-      .contains('New Movie')
+    cy.get('button')
       .click({force: true});
     return new NewMoviePage();
   }
 
   findMovieItemByTitle(title: string) {
-    cy.get('mat-nav-list')
+    cy.get('mat-card-title')
       .contains(title);
   }
 
