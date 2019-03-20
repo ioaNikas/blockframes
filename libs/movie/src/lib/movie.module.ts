@@ -1,6 +1,5 @@
 // Angular
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,8 +33,7 @@ import { MovieRoutingModule } from './movie-routing.module';
 @NgModule({
   declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+    CommonModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,4 +58,4 @@ import { MovieRoutingModule } from './movie-routing.module';
   ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }], // TODO: Remove when @angular/fire is updated
 })
-export class AppModule {}
+export class MovieModule {}

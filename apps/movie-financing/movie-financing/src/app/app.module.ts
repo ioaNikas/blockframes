@@ -8,6 +8,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutComponent } from './layout/layout.component';
+// tslint:disable-next-line: nx-enforce-module-boundaries
+import { MovieModule } from '@blockframes/movie';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -15,6 +17,7 @@ import { LayoutComponent } from './layout/layout.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MovieModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
