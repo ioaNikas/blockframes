@@ -554,10 +554,10 @@
       "root": "apps/delivery/delivery/",
       "sourceRoot": "apps/delivery/delivery/src",
       "projectType": "application",
-      "prefix": "blockframes",
+      "prefix": "delivery",
       "schematics": {
-        "@nrwl/schematics:component": {
-          "style": "scss"
+        "@schematics/angular:component": {
+          "styleext": "scss"
         }
       },
       "architect": {
@@ -573,13 +573,19 @@
               "apps/delivery/delivery/src/favicon.ico",
               "apps/delivery/delivery/src/assets"
             ],
-            "styles": ["apps/delivery/delivery/src/styles.scss"],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/delivery/delivery/src/styles.scss"
+            ],
+            "scripts": []
           },
           "configurations": {
             "production": {
               "fileReplacements": [
+                {
+                  "replace": "env/env.ts",
+                  "with": "env/env.prod.ts"
+                },
                 {
                   "replace": "apps/delivery/delivery/src/environments/environment.ts",
                   "with": "apps/delivery/delivery/src/environments/environment.prod.ts"
@@ -600,7 +606,37 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "env/env.ts",
+                  "with": "env/env.staging.ts"
+                },
+                {
+                  "replace": "apps/delivery/delivery/src/environments/environment.ts",
+                  "with": "apps/delivery/delivery/src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "serviceWorker": true
             }
           }
         },
@@ -611,6 +647,9 @@
           },
           "configurations": {
             "production": {
+              "browserTarget": "delivery:build:production"
+            },
+            "staging": {
               "browserTarget": "delivery:build:production"
             }
           }
