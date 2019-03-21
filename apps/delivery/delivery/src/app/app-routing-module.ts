@@ -14,6 +14,8 @@ export const routes: Routes = [
     path: 'layout', component: LayoutComponent,
     //canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'explorer', pathMatch: 'full' },
+      { path: 'explorer', loadChildren: 'libs/movie/src/lib/movie.module#MovieModule' },
       {
         path: 'organization',
         loadChildren: '@blockframes/organization#OrganizationModule'

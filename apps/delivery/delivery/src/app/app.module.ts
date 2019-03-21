@@ -19,6 +19,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { WalletModule } from '@blockframes/ethers';
+import { MovieModule } from '@blockframes/movie';
 // TODO: find the correct way to pass lint'ing when we import OrganizationModule
 // tslint:disable-next-line
 import { OrganizationModule } from '@blockframes/organization';
@@ -68,6 +69,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     WalletModule,
     OrganizationModule,
     ToolbarModule,
+    MovieModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
