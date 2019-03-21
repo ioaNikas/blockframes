@@ -8,10 +8,20 @@ import { LayoutComponent } from './layout/layout.component';
 export const routes: Routes = [
   {path: '', redirectTo: "layout", pathMatch: 'full'},
   //{path: 'auth', loadChildren: '@blockframes/auth#AuthModule'},
+
+
   {
     path: 'layout', component: LayoutComponent,
     //canActivate: [AuthGuard],
     children: [
+      {
+        path: 'organization',
+        loadChildren: '@blockframes/organization#OrganizationModule'
+      },
+      {
+        path: 'account',
+        loadChildren: '@blockframes/account#AccountModule'
+      },
       // { path: '', redirectTo: 'explorer', pathMatch: 'full'},
       // { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
       // { path: 'account', loadChildren: '@blockframes/account#AccountModule' },

@@ -5,10 +5,11 @@ import { RouterModule } from '@angular/router';
 
 // Components
 import { TemplateComponent } from './template/template.component';
+import { TemplateListComponent } from './template-list/template-list.component';
 
 
 @NgModule({
-  declarations: [TemplateComponent,],
+  declarations: [TemplateComponent, TemplateListComponent,],
   imports: [
     CommonModule,
     RouterModule.forChild([
