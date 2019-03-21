@@ -18,7 +18,7 @@ export const routes: Routes = [
       // { path: 'organization', loadChildren: '@blockframes/organization#OrganizationModule' },
       { path: 'template', loadChildren: './template/template.module#TemplateModule' },
       { path: ':movieId', children: [
-        { path: 'delivery', loadChildren: './delivery/delivery.module#DeliveryModule'},
+       // { path: 'delivery', loadChildren: './delivery/delivery.module#DeliveryModule'},
       ] },
     ]
   }
