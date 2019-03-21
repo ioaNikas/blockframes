@@ -49,6 +49,9 @@
     },
     "delivery-delivery-e2e": {
       "tags": []
+    },
+    "libs-delivery": {
+      "tags": []
     }
   }
 }

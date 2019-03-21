@@ -1,0 +1,27 @@
+<button mat-raised-button color="warn" (click)="goBack()">Back</button>
+
+<section *ngIf="(movie$ | async) as movie" fxLayout="column">
+  <h4>{{ movie.title }}</h4>
+  <p>{{ movie.logline }}</p>
+  <mat-divider></mat-divider>
+  <p>{{movie.synopsis}}</p>
+</section>
+<!-- <section *ngIf="(movie$ | async) as movie" fxLayout="row wrap">
+    <mat-list
+      *ngFor="let delivery of (deliveries$ | async |keyvalue)"
+      class="checkboxes-block"
+    >
+      <h3 mat-subheader>{{(delivery.key) | uppercase}}</h3>
+      <mat-list-item *ngFor="let material of delivery.value">
+        <mat-icon mat-list-icon>assignment</mat-icon>
+        <h4 mat-line>
+          <mat-checkbox
+            [(ngModel)]="material.delivered"
+            (click)="deliveredToggle(material, movie.id)"
+            >{{ material.value }}</mat-checkbox
+          >
+        </h4>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </section> -->

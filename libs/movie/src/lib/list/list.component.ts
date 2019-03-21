@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MovieQuery, Movie, MovieService } from '../+state';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'movie-financing-list',
@@ -14,7 +15,8 @@ export class ListComponent implements OnInit {
 
   constructor(
     private query: MovieQuery,
-    private service: MovieService
+    private service: MovieService,
+    private router: Router,
   ) {}
 
   // Initiate the Movies in Akita
@@ -25,6 +27,10 @@ export class ListComponent implements OnInit {
 
   public delete(id: string) {
     this.service.remove(id);
+  }
+
+  public movieDelivery(id: string) {
+    this.router.navigate(['/layout/explorer/delivery/', id])
   }
 
 }

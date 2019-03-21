@@ -20,6 +20,7 @@ import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { WalletModule } from '@blockframes/ethers';
 import { MovieModule } from '@blockframes/movie';
+import { DeliveryModule } from '@blockframes/delivery';
 // TODO: find the correct way to pass lint'ing when we import OrganizationModule
 // tslint:disable-next-line
 import { OrganizationModule } from '@blockframes/organization';
@@ -70,12 +71,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     OrganizationModule,
     ToolbarModule,
     MovieModule,
+    DeliveryModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
 
-        // Akita
-        environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
+    // Akita
+    environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
   bootstrap: [AppComponent]

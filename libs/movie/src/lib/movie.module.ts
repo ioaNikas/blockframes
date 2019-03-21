@@ -19,6 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -30,9 +33,10 @@ import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
+import { ViewDeliveryComponent } from 'apps/delivery/delivery/src/app/delivery/view/view.component';
 
 @NgModule({
-  declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent],
+  declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent, ViewDeliveryComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,
@@ -54,6 +58,9 @@ import { AngularFireModule } from '@angular/fire';
     MatFormFieldModule,
     MatSelectModule,
     MatChipsModule,
+    MatListModule,
+    MatDividerModule,
+    MatCheckboxModule,
     // Librairies
     UploadModule,
     UiFormModule,
