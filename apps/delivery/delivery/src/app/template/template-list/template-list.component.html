@@ -1,3 +1,30 @@
-<p>
-  template-list works!
-</p>
+<section class="container" fxLayout="row wrap" fxLayoutAlign="space-around">
+  <article fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex="100">
+    <mat-card class="example-card">
+      <button color="primary" mat-icon-button matRipple routerLink="">
+        <mat-icon>add_circle</mat-icon>
+        Add Template
+      </button>
+      <mat-card-content>
+        <mat-card-title>
+          super
+        </mat-card-title>
+      </mat-card-content>
+    </mat-card>
+  </article>
+  <article
+    fxFlex.gt-md="25"
+    fxFlex.gt-sm="50"
+    fxFlex="100"
+    *ngFor="let template of (templates$ | async)"
+  >
+    <mat-card class="example-card">
+      <img mat-card-image src="https://via.placeholder.com/300.png" alt="Preview of template" />
+      <mat-card-content>
+        <mat-card-title>
+          {{ template.name }}
+        </mat-card-title>
+      </mat-card-content>
+    </mat-card>
+  </article>
+</section>
