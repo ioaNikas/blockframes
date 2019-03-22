@@ -8,7 +8,6 @@ import { ViewComponent } from './view/view.component';
 
 // Guards
 import { MovieGuard } from './guards/movie.guard';
-import { ViewDeliveryComponent } from 'apps/delivery/delivery/src/app/delivery/view/view.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -29,11 +28,7 @@ export const routes: Routes = [
     component: ViewComponent,
     canActivate: [MovieGuard],
   },
-  {
-    path: 'layout/explorer/delivery/:id',
-    component: ViewDeliveryComponent,
-    canActivate: [MovieGuard],
-  },
+  { path: ':id', loadChildren: 'apps/delivery/delivery/src/app/app.module' },
 ]
 
 @NgModule({

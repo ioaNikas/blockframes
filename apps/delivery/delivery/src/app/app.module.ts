@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -12,6 +13,12 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './delivery/home/home.component';
+import { MovieMaterialsComponent } from './delivery/movie-materials/movie-materials.component';
+import { ListComponent } from './delivery/list/list.component';
+import { ViewComponent } from './delivery/view/view.component';
+
+// Firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -43,11 +50,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [AppComponent, LayoutComponent, HomeComponent, MovieMaterialsComponent, ListComponent, ViewComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FormsModule,
 
     // Material
     MatSnackBarModule,

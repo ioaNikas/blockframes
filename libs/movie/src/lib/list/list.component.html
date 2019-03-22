@@ -5,27 +5,35 @@
 
 <!-- MOVIE CARDS -->
 <div fxLayout="row" fxLayoutAlign="space-around center">
-  <mat-card fxFlex="40" *ngFor="let movie of movies$ | async">
-    <mat-card-header>
+  <mat-card fxFlex="40" *ngFor="let movie of (movies$ | async)">
+    <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
       <mat-card-title>
         {{ movie.title }}
       </mat-card-title>
+      <mat-card-content>
+        <button mat-icon-button color="primary" [matMenuTriggerFor]="apps">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #apps="matMenu">
+          <button mat-menu-item [routerLink]="['/delivery', movie.id]">
+            <mat-icon>camera</mat-icon>
+            <span>Open with Delivery App</span>
+          </button>
+        </mat-menu>
+      </mat-card-content>
     </mat-card-header>
     <mat-card-content>
       <p>
-        {{movie.logline}}
+        {{ movie.logline }}
       </p>
     </mat-card-content>
     <mat-card-actions>
       <button color="primary" mat-button routerLink="movie/{{movie.id}}">ACCESS</button>
-      <button color="primary" mat-icon-button routerLink="form/{{movie.id}}">
+      <button color="primary" mat-icon-button routerLink="form/{{ movie.id }}">
         <mat-icon>edit</mat-icon>
       </button>
       <button color="primary" mat-icon-button (click)="delete(movie.id)">
         <mat-icon>delete</mat-icon>
-      </button>
-      <button color="accent" mat-icon-button (click)="movieDelivery(movie.id)">
-        <mat-icon>camera</mat-icon>
       </button>
     </mat-card-actions>
   </mat-card>

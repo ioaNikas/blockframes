@@ -29,8 +29,4 @@ export class ListComponent implements OnInit {
     this.service.remove(id);
   }
 
-  public movieDelivery(id: string) {
-    this.router.navigate(['/layout/explorer/delivery/', id])
-  }
-
 }
