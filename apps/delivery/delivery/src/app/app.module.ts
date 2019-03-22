@@ -40,6 +40,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -63,7 +64,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSelectModule,
     MatChipsModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
 
+
+    // Libraries
     AuthModule,
     UploadModule,
     UiFormModule,

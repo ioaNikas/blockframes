@@ -12,7 +12,8 @@ import { DeliveryService } from '@blockframes/delivery';
 })
 export class ViewDeliveryComponent implements OnInit {
 
-  public movie$ : Observable<Movie>;
+  public movie$: Observable<Movie>;
+  public materials$: Observable<Object>;
 
   constructor(
     private movieQuery: MovieQuery,
@@ -22,6 +23,7 @@ export class ViewDeliveryComponent implements OnInit {
 
   ngOnInit() {
     this.movie$ = this.movieQuery.selectActive();
+    this.materials$ = this.deliveryService.deliveryMaterialsByActiveMovie();
   }
 
   public deliveredToggle(material: Material, movieId: string) {
