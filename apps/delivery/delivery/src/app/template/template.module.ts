@@ -14,17 +14,20 @@ import { MatButtonModule, MatIconModule, MatInputModule, MatMenuModule } from '@
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDialogModule} from '@angular/material/dialog';
 import { TemplateFormComponent } from './template-form/template-form.component';
+import { MaterialFormComponent } from '../material/material-form/material-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
 @NgModule({
-  declarations: [TemplateComponent, TemplateListComponent, AddTemplateDialog, TemplateFormComponent,],
+  declarations: [TemplateComponent, TemplateListComponent, AddTemplateDialog, TemplateFormComponent, MaterialFormComponent],
   imports: [
     CommonModule,
     MatCardModule,
     FlexLayoutModule,
     MatIconModule,
     MatDialogModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
