@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -56,6 +57,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
+    FlexLayoutModule,
 
     // Material
     MatSnackBarModule,

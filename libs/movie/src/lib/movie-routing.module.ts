@@ -28,7 +28,6 @@ export const routes: Routes = [
     component: ViewComponent,
     canActivate: [MovieGuard],
   },
-  { path: ':id', loadChildren: 'apps/delivery/delivery/src/app/app.module' },
 ]
 
 @NgModule({

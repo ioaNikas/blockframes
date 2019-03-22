@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MovieQuery, Movie } from '@blockframes/movie';
+import { DeliveryService, Delivery } from '@blockframes/delivery';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'delivery-list',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  public movie$: Observable<Movie>;
+  public deliveries$: Observable<Delivery[]>
+
+  constructor(
+    private movieQuery: MovieQuery,
+    private deliveryService: DeliveryService,
+    private location: Location,
+  ) { }
 
   ngOnInit() {
+    this.movie$ = this.movieQuery.selectActive();
+    this.deliveries$ = this.deliveryService.deliveriesByActiveMovie();
+    this.deliveries$.subscribe(x => console.log(x))
+  }
+
+  public goBack() {
+    this.location.back();
   }
 
 }

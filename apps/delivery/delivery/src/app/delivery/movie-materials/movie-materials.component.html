@@ -1,4 +1,4 @@
-<!-- <button mat-raised-button color="warn" (click)="goBack()" fxLayout="row">Back</button> -->
+<button mat-raised-button color="warn" (click)="goBack()">Back</button>
 <h2 *ngIf="(movie$ | async) as movie" mat-subheader>{{movie.title}}</h2>
 <section *ngIf="(movie$ | async) as movie" class="view-body" fxLayout="row" fxLayoutGap="5%">
   <article fxFlex="30" fxLayout="column" >
@@ -6,12 +6,11 @@
       <mat-card-content>
         <h2 class="example-h2">Progression</h2>
         <p>{{movie.synopsis}}</p>
-        <img src="{{movie.poster}}">
         <p>PROGRESSION SPINNER HERE</p>
       </mat-card-content>
     </mat-card>
   </article>
-  <article fxLayout="column">
+  <article fxFlex="70" fxLayout="column">
     <mat-card *ngFor="let category of (materials$ | async | keyvalue)">
       <mat-card-title>{{ category.key | uppercase }}</mat-card-title>
       <mat-card-content *ngFor="let material of category.value">
