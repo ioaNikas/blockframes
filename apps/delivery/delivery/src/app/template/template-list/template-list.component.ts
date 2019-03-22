@@ -21,7 +21,7 @@ export class TemplateListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.organizationStore.setActive('eclAGMAMPl6l5lPov2ql');
+    this.organizationStore.setActive('eclAGMAMPl6l5lPov2ql');  // while organization does not stay active
     this.service.subscribeOnOrganizationTemplates$.subscribe();
 
     this.templates$ = this.query.selectAll();
