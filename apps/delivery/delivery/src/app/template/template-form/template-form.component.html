@@ -1,9 +1,7 @@
-
-
-<mat-card>
-  <mat-card-title>Category :</mat-card-title>
+<mat-card #{{materials[0].category}}>
+  <mat-card-title>Category : {{materials[0].category}}</mat-card-title>
   <mat-card-content>
-    <div cdkDrag *ngFor="let material of (materials$ | async)">
+    <div cdkDrag *ngFor="let material of materials">
       <material-form [material]="material"></material-form>
     </div>
   </mat-card-content>

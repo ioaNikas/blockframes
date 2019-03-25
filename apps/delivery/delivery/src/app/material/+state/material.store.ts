@@ -1,10 +1,14 @@
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+import { EntityState, EntityStore, StoreConfig, MultiActiveState } from '@datorama/akita';
 import { Injectable } from '@angular/core';
 import { Material } from './material.model';
 
 
-export interface State extends EntityState<Material> {
+export interface State extends EntityState<Material>, MultiActiveState<string[]> {
 }
+
+const initialState = {
+  active: []
+};
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +16,7 @@ export interface State extends EntityState<Material> {
 @StoreConfig({ name: 'materials', idKey: 'id' })
 export class MaterialStore extends EntityStore<State, Material> {
   constructor() {
-    super();
+    super(initialState);
   }
 
 }

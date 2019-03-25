@@ -25,7 +25,6 @@ export class MaterialFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.material)
     this.form.setValue({value: this.material.value, description: this.material.description});
 
   }
@@ -39,7 +38,7 @@ export class MaterialFormComponent implements OnInit {
   }
 
   public addMaterial() {
-    this.service.addMaterial();
+    this.service.addMaterial(this.material.category);
   }
 
 
