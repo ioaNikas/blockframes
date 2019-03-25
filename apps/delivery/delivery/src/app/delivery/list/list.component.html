@@ -3,7 +3,7 @@
 <section *ngFor="let delivery of deliveries$ | async" fxLayout="column">
   <mat-card>
     <mat-card-content>
-      <mat-card-header [routerLink]="[delivery.id]"><h4>{{delivery.id}}</h4></mat-card-header>
+      <mat-card-header [routerLink]="[delivery.id]" style="cursor:pointer;"><h4>{{delivery.id}}</h4></mat-card-header>
     </mat-card-content>
   </mat-card>
 </section>
