@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -12,6 +13,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
+
+// Firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
@@ -20,6 +23,7 @@ import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { WalletModule } from '@blockframes/ethers';
 import { MovieModule } from '@blockframes/movie';
+import { DeliveryModule } from '@blockframes/delivery';
 // TODO: find the correct way to pass lint'ing when we import OrganizationModule
 // tslint:disable-next-line
 import { OrganizationModule } from '@blockframes/organization';
@@ -39,6 +43,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -46,6 +51,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FlexLayoutModule,
 
     // Material
     MatSnackBarModule,
@@ -62,7 +68,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSelectModule,
     MatChipsModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
 
+
+    // Libraries
     AuthModule,
     UploadModule,
     UiFormModule,
@@ -70,12 +79,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     OrganizationModule,
     ToolbarModule,
     MovieModule,
+    DeliveryModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
 
-        // Akita
-        environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
+    // Akita
+    environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
   bootstrap: [AppComponent]

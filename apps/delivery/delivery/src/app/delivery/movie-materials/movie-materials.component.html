@@ -1,0 +1,33 @@
+<button mat-raised-button color="warn" (click)="goBack()">Back</button>
+<h2 *ngIf="(movie$ | async) as movie" mat-subheader>{{movie.title}}</h2>
+<section *ngIf="(movie$ | async) as movie" class="view-body" fxLayout="row" fxLayoutGap="5%">
+  <article fxFlex="30" fxLayout="column" >
+    <mat-card>
+      <mat-card-content>
+        <h2 class="example-h2">Progression</h2>
+        <p>{{movie.synopsis}}</p>
+        <p>PROGRESSION SPINNER HERE</p>
+      </mat-card-content>
+    </mat-card>
+  </article>
+  <article fxFlex="70" fxLayout="column">
+    <mat-card *ngFor="let category of (materials$ | async | keyvalue)">
+      <mat-card-title>{{ category.key | uppercase }}</mat-card-title>
+      <mat-card-content *ngFor="let material of category.value">
+        <span
+          ><h4 mat-line>
+            <mat-checkbox
+              [(ngModel)]="material.delivered"
+              (click)="deliveredToggle(material, movie.id)"
+              ><b>{{ material.value }}</b></mat-checkbox
+            >
+          </h4></span
+        >
+        <p mat-line class="description-text">
+          <i>{{ material.description }}</i>
+        </p>
+        <mat-divider></mat-divider>
+      </mat-card-content>
+    </mat-card>
+  </article>
+</section>

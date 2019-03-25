@@ -1,17 +1,20 @@
 // Angular
-import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
 
+// Guards
+import { MovieGuard } from '@blockframes/movie';
+
 export const routes: Routes = [
-  {path: '', redirectTo: "layout", pathMatch: 'full'},
+  { path: '', redirectTo: 'delivery', pathMatch: 'full' },
   //{path: 'auth', loadChildren: '@blockframes/auth#AuthModule'},
 
-
   {
-    path: 'layout', component: LayoutComponent,
+    path: 'delivery',
+    component: LayoutComponent,
     //canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'explorer', pathMatch: 'full' },
@@ -24,21 +27,16 @@ export const routes: Routes = [
         path: 'account',
         loadChildren: '@blockframes/account#AccountModule'
       },
-      // { path: '', redirectTo: 'explorer', pathMatch: 'full'},
-      // { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
-      // { path: 'account', loadChildren: '@blockframes/account#AccountModule' },
-      // { path: 'organization', loadChildren: '@blockframes/organization#OrganizationModule' },
+      { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
       { path: 'template', loadChildren: './template/template.module#TemplateModule' },
-      { path: ':movieId', children: [
-       // { path: 'delivery', loadChildren: './delivery/delivery.module#DeliveryModule'},
-      ] },
+      {
+        path: ':id', canActivate: [MovieGuard], loadChildren: './delivery/delivery.module#DeliveryModule' },
     ]
   }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-
 export class AppRoutingModule {}

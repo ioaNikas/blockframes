@@ -706,6 +706,37 @@
           }
         }
       }
+    },
+    "libs-delivery": {
+      "root": "libs/delivery",
+      "sourceRoot": "libs/delivery/src",
+      "projectType": "library",
+      "prefix": "blockframes",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/delivery/tsconfig.lib.json",
+              "libs/delivery/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "libs/delivery/jest.config.js",
+            "tsConfig": "libs/delivery/tsconfig.spec.json",
+            "setupFile": "libs/delivery/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

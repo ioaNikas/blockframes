@@ -19,6 +19,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule} from '@angular/material/menu';
 
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -54,6 +58,10 @@ import { AngularFireModule } from '@angular/fire';
     MatFormFieldModule,
     MatSelectModule,
     MatChipsModule,
+    MatListModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatMenuModule,
     // Librairies
     UploadModule,
     UiFormModule,
