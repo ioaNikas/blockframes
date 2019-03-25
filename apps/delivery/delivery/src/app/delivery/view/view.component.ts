@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Material } from '../../material/+state';
 import { Observable } from 'rxjs';
 import { DeliveryService } from '@blockframes/delivery';
 import { Location } from '@angular/common';
@@ -12,14 +11,13 @@ import { Location } from '@angular/common';
 })
 export class ViewComponent implements OnInit {
   public materials$: Observable<Object>;
+  public progressionValue$: Observable<number>;
 
-  constructor(
-    private deliveryService: DeliveryService,
-    private location: Location,
-    ) {}
+  constructor(private deliveryService: DeliveryService, private location: Location) {}
 
   ngOnInit() {
-    this.materials$ = this.deliveryService.sortedDeliveryMaterials();
+    this.materials$ = this.deliveryService.getSortedDeliveryMaterials();
+    this.progressionValue$ = this.deliveryService.getDeliveryProgression();
   }
 
   public goBack() {

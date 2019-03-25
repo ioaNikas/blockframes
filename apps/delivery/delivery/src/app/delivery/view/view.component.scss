@@ -25,6 +25,10 @@ p {
   margin-bottom: 1rem;
 }
 
-.view-body {
-  margin: auto;
+.progress-value {
+  position: relative;
+  top: -120px;
+  color: #F44336;
+  font-weight: bolder;
+  font-size: 2.5rem;
 }
