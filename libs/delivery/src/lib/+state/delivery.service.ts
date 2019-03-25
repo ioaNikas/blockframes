@@ -69,10 +69,23 @@ export class DeliveryService {
         materials.forEach(material => {
           if (!!material && material.deliveriesIds.includes(id)) {
             deliveryMaterials.push(material);
-          }
-        })
-        return deliveryMaterials;
-      })
+          };
+        });
+        return deliveryMaterials
+      }),
+    )
+  }
+
+
+  public sortedDeliveryMaterials() {
+    // Sort the active delivery's materials by category
+    return this.materialsByActiveDelivery().pipe(
+      map(materials => materials.reduce((acc, item) => {
+        return {
+          ...acc,
+          [item.category.toUpperCase()]: [...(acc[item.category.toUpperCase()] || []), item]
+        };
+      }, {}))
     )
   }
 }

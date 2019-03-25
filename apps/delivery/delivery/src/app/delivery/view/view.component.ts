@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Material } from '../../material/+state';
 import { Observable } from 'rxjs';
 import { DeliveryService } from '@blockframes/delivery';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'delivery-view',
@@ -10,13 +11,18 @@ import { DeliveryService } from '@blockframes/delivery';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewComponent implements OnInit {
+  public materials$: Observable<Object>;
 
-  public materials$: Observable<Material[]>;
-
-  constructor(private deliveryService: DeliveryService) { }
+  constructor(
+    private deliveryService: DeliveryService,
+    private location: Location,
+    ) {}
 
   ngOnInit() {
-    this.deliveryService.materialsByActiveDelivery().subscribe(x => console.log(x));
+    this.materials$ = this.deliveryService.sortedDeliveryMaterials();
   }
 
+  public goBack() {
+    this.location.back();
+  }
 }
