@@ -11,6 +11,7 @@ export class ViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('coucou')
   }
 
 }
