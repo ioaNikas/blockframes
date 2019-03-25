@@ -32,10 +32,10 @@ export class MaterialService {
     this.db.doc<Material>(`orgs/${idOrg}/materials/${material.id}`).update({...material, ...form});
   }
 
-  public addMaterial() {
+  public addMaterial(category: string) {
     const idOrg = this.organizationQuery.getActiveId();
     const idMaterial = this.db.createId();
-    const material = createMaterial({id: idMaterial});
+    const material = createMaterial({id: idMaterial, category});
     this.db.doc<Material>(`orgs/${idOrg}/materials/${idMaterial}`).set(material);
   }
 
