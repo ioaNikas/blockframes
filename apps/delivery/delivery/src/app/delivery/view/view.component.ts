@@ -1,4 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Material } from '../../material/+state';
+import { Observable } from 'rxjs';
+import { DeliveryService } from '@blockframes/delivery';
 
 @Component({
   selector: 'delivery-view',
@@ -8,10 +11,12 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ViewComponent implements OnInit {
 
-  constructor() { }
+  public materials$: Observable<Material[]>;
+
+  constructor(private deliveryService: DeliveryService) { }
 
   ngOnInit() {
-    console.log('coucou')
+    this.deliveryService.materialsByActiveDelivery().subscribe(x => console.log(x));
   }
 
 }
