@@ -45,6 +45,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
   imports: [
+    // Angular
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -65,6 +66,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatChipsModule,
     MatCheckboxModule,
 
+    // Modules
     AuthModule,
     UploadModule,
     UiFormModule,
@@ -73,6 +75,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ToolbarModule,
     MovieModule,
 
+    // Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
 
