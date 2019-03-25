@@ -28,6 +28,7 @@ export class TemplateFormComponent implements OnInit {
 
     this.materialService.subscribeOnOrganizationMaterials$.pipe(takeWhile(() => this.isAlive)).subscribe();
 
+    // query MaterialsByTemplate()
     this.materials$ = this.route.params.pipe(
       switchMap(params => this.materialQuery.selectAll())
     );
