@@ -4,6 +4,6 @@ describe('Hello Nx', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
-    getGreeting().contains('Welcome to delivery-delivery!');
+    getGreeting().contains('Welcome to delivery!');
   });
 });
