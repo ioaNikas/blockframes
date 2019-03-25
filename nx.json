@@ -44,10 +44,10 @@
     "account": {
       "tags": []
     },
-    "delivery-delivery": {
-      "tags": []
+    "delivery": {
+      "tags": ["delivery"]
     },
-    "delivery-delivery-e2e": {
+    "delivery-e2e": {
       "tags": []
     },
     "libs-delivery": {

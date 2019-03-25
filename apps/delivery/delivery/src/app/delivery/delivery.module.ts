@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DeliveryGuard } from './delivery.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,9 +28,9 @@ export const routes: Routes = [
   },
   {
     path: 'delivery-list',
-    component: ListComponent,
     children: [
-      { path: ':deliveryId', component: ViewComponent }
+      { path: '', component: ListComponent },
+      { path: ':id', canActivate: [DeliveryGuard], component: ViewComponent }
     ]
   }
 ];

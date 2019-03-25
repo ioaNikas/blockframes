@@ -14,6 +14,7 @@ export class MovieMaterialsComponent implements OnInit {
 
   public movie$: Observable<Movie>;
   public materials$: Observable<Object>;
+  public progressionValue$: Observable<number>;
 
   constructor(
     private movieQuery: MovieQuery,
@@ -23,7 +24,8 @@ export class MovieMaterialsComponent implements OnInit {
 
   ngOnInit() {
     this.movie$ = this.movieQuery.selectActive();
-    this.materials$ = this.deliveryService.deliveryMaterialsByActiveMovie();
+    this.materials$ = this.deliveryService.getDeliveryMaterialsByActiveMovie();
+    this.progressionValue$ = this.deliveryService.getMovieProgression();
   }
 
   public deliveredToggle(material: Material, movieId: string) {
