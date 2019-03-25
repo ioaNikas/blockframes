@@ -4,10 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
-import { MovieMaterialsComponent } from './delivery/movie-materials/movie-materials.component';
-import { HomeComponent } from './delivery/home/home.component';
-import { ListComponent } from './delivery/list/list.component';
-import { ViewComponent } from './delivery/view/view.component';
 
 // Guards
 import { MovieGuard } from '@blockframes/movie';
@@ -34,18 +30,7 @@ export const routes: Routes = [
       { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
       { path: 'template', loadChildren: './template/template.module#TemplateModule' },
       {
-        path: ':id',
-        canActivate: [MovieGuard],
-        children: [
-          { path: '', component: HomeComponent },
-          { path: 'movie-materials', component: MovieMaterialsComponent },
-          {
-            path: 'delivery-list',
-            component: ListComponent,
-            children: [{ path: ':deliveryId', component: ViewComponent }]
-          }
-        ]
-      }
+        path: ':id', canActivate: [MovieGuard], loadChildren: './delivery/delivery.module#DeliveryModule' },
     ]
   }
 ];

@@ -2,7 +2,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 // Akita
@@ -14,10 +13,6 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
-import { HomeComponent } from './delivery/home/home.component';
-import { MovieMaterialsComponent } from './delivery/movie-materials/movie-materials.component';
-import { ListComponent } from './delivery/list/list.component';
-import { ViewComponent } from './delivery/view/view.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -51,12 +46,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent, HomeComponent, MovieMaterialsComponent, ListComponent, ViewComponent],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    FormsModule,
     FlexLayoutModule,
 
     // Material
