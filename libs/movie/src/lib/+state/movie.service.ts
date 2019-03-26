@@ -14,7 +14,7 @@ export class MovieService {
   private store: MovieStore,
   private firestore: AngularFirestore,
   ) {
-    this.collection = this.firestore.collection('movie');
+    this.collection = this.firestore.collection('movies');
   }
 
   /*

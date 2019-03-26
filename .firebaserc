@@ -4,6 +4,8 @@
     "laurent": "blockframes-laurent",
     "francois": "blockframes-francois",
     "bruce": "blockframes-bruce",
-    "staging": "blockframes-staging"
+    "staging": "blockframes-staging",
+    "hugo": "blockframes-hugo",
+    "yohann": "blockframes-hugo"
   }
 }
