@@ -1,0 +1,16 @@
+<mat-card class="container" fxLayout="row" fxLayoutAlign="start center">
+    <form fxFlex="80" [formGroup]="form" class="container" fxLayout="column" fxLayoutAlign="center">
+      <mat-form-field>
+        <input class="value" formControlName="value" matInput />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input formControlName="description" matInput />
+      </mat-form-field>
+    </form>
+    <span fxFlex="20">
+      <button mat-icon-button (click)="updateMaterial()"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="addMaterial()"><mat-icon>add</mat-icon></button>
+      <button mat-icon-button (click)="deleteMaterial()"><mat-icon>delete</mat-icon></button>
+    </span>
+  </mat-card>

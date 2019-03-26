@@ -9,6 +9,8 @@ export interface Template {
  */
 export function createTemplate(params: Partial<Template>) {
   return {
-
+    id: params.id,
+    name: params.name,
+    materialsId: params.materialsId || []
   } as Template;
 }

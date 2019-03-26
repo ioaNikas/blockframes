@@ -5,16 +5,42 @@ import { RouterModule } from '@angular/router';
 
 // Components
 import { TemplateComponent } from './template/template.component';
-import { TemplateListComponent } from './template-list/template-list.component';
+import { TemplateListComponent, AddTemplateDialog } from './template-list/template-list.component';
+
+// Material
+import {MatCardModule} from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule, MatIconModule, MatInputModule, MatMenuModule, MatSidenavModule, MatListModule } from '@angular/material';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialogModule} from '@angular/material/dialog';
+import { TemplateFormComponent } from './template-form/template-form.component';
+import { MaterialFormComponent } from '../material/material-form/material-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CategoryListComponent, AddCategoryDialog } from './category-list/category-list.component';
+
 
 
 @NgModule({
-  declarations: [TemplateComponent, TemplateListComponent,],
+  declarations: [TemplateComponent, TemplateListComponent, AddTemplateDialog, TemplateFormComponent, MaterialFormComponent, CategoryListComponent, AddCategoryDialog],
   imports: [
     CommonModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatListModule,
+    MatButtonModule,
+    MatMenuModule,
     RouterModule.forChild([
-      { path: '', component: TemplateComponent }
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      { path: 'list', component: TemplateListComponent },
+      { path: ':templateId', component: TemplateComponent},
     ])
-  ]
+  ],
+  entryComponents: [AddTemplateDialog, AddCategoryDialog],
 })
 export class TemplateModule { }

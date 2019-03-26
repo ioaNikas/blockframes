@@ -12,8 +12,8 @@ export type Material = {
 export function createMaterial(material: Partial<Material>) {
   return {
     id: material.id,
-    category: material.category,
-    value: material.value,
-    description: material.description
+    category: material.category || '',
+    value: material.value || '',
+    description: material.description || ''
   } as Material;
 }
