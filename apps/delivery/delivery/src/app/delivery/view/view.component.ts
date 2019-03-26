@@ -16,8 +16,8 @@ export class ViewComponent implements OnInit {
   constructor(private deliveryService: DeliveryService, private location: Location) {}
 
   ngOnInit() {
-    this.materials$ = this.deliveryService.getSortedDeliveryMaterials();
-    this.progressionValue$ = this.deliveryService.getDeliveryProgression();
+    this.materials$ = this.deliveryService.sortedDeliveryMaterials$;
+    this.progressionValue$ = this.deliveryService.deliveryProgression$;
   }
 
   public goBack() {
