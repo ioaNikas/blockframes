@@ -1,9 +1,18 @@
 <button mat-raised-button color="warn" (click)="goBack()">Back</button>
 <h2 *ngIf="(movie$ | async) as movie" mat-subheader>{{ movie.title }}</h2>
-<section *ngFor="let delivery of deliveries$ | async" fxLayout="column">
+<section *ngFor="let delivery of (deliveries$ | async)" fxLayout="column">
   <mat-card>
-    <mat-card-content>
-      <mat-card-header [routerLink]="[delivery.id]" style="cursor:pointer;"><h4>{{delivery.id}}</h4></mat-card-header>
+    <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-card-header [routerLink]="[delivery.id]" style="cursor:pointer;"
+        ><h4>{{ delivery.id }}</h4></mat-card-header
+      >
+      <mat-icon
+        [class.green-dot]="delivery.delivered == true && delivery.validated.length == 2"
+        [class.grey-dot]="delivery.validated.length == 2 && delivery.delivered == false"
+        [class.blue-dot]="delivery.validated.length == 1"
+        [class.orange-dot]="delivery.validated.length == 0"
+        >fiber_manual_record</mat-icon
+      >
     </mat-card-content>
   </mat-card>
 </section>

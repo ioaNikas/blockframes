@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Movie, MovieQuery } from '@blockframes/movie';
 import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
@@ -9,7 +9,7 @@ import { DeliveryService } from '@blockframes/delivery';
   selector: 'delivery-movie-materials',
   templateUrl: './movie-materials.component.html',
   styleUrls: ['./movie-materials.component.scss'],
-  ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieMaterialsComponent implements OnInit {
 
