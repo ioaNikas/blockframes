@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { TemplateQuery, TemplateService } from '../+state';
 import { MaterialStore, MaterialService } from '../../material/+state';
 import { template } from '@angular/core/src/render3';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { AddTemplateDialog } from '../template-list/template-list.component';
 
 @Component({
   selector: 'category-list',
@@ -21,6 +22,7 @@ export class CategoryListComponent implements OnInit {
     private materialStore: MaterialStore,
     private service: TemplateService,
     private materialService: MaterialService,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -34,8 +36,11 @@ export class CategoryListComponent implements OnInit {
     this.materialStore.setActive(materialsIds);
   }
 
-  public addCategory(category: string) {
-    this.materialService.addMaterial(category);
+
+  public addCategory(): void {
+    this.dialog.open(AddCategoryDialog, {
+      width: '400px'
+    });
   }
 
 }
@@ -52,7 +57,7 @@ export class CategoryListComponent implements OnInit {
     </div>
     <div mat-dialog-actions fxLayoutAlign="center">
       <button mat-stroked-button color="primary" (click)="close()">Cancel</button>
-      <button mat-raised-button color="primary" (click)="addTemplate(category.value)">Create</button>
+      <button mat-raised-button color="primary" (click)="addCategory(category.value)">Create</button>
     </div>
   `
 })
@@ -62,7 +67,7 @@ export class AddCategoryDialog {
     private service: MaterialService,
     ) {}
 
-  public addTemplate(category) {
+  public addCategory(category) {
     this.service.addMaterial(category)
     this.close();
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { OrganizationStore } from '@blockframes/organization';
-import { MaterialService } from '../../material/+state';
+import { MaterialService, MaterialQuery } from '../../material/+state';
 import { takeWhile, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -23,6 +23,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
     private materialService: MaterialService,
     private route: ActivatedRoute,
     private query: TemplateQuery,
+    private materialQuery: MaterialQuery,
   ) { }
 
   ngOnInit() {
@@ -32,7 +33,7 @@ export class TemplateComponent implements OnInit, OnDestroy {
 
     // todo materials by template
     this.template$ = this.route.params.pipe(
-      switchMap(params => this.query.materialsByTemplate$(params.templateId))
+      switchMap(params => this.query.templates$())
     );
   }
 

@@ -16,12 +16,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { TemplateFormComponent } from './template-form/template-form.component';
 import { MaterialFormComponent } from '../material/material-form/material-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CategoryListComponent } from './category-list/category-list.component';
+import { CategoryListComponent, AddCategoryDialog } from './category-list/category-list.component';
 
 
 
 @NgModule({
-  declarations: [TemplateComponent, TemplateListComponent, AddTemplateDialog, TemplateFormComponent, MaterialFormComponent, CategoryListComponent],
+  declarations: [TemplateComponent, TemplateListComponent, AddTemplateDialog, TemplateFormComponent, MaterialFormComponent, CategoryListComponent, AddCategoryDialog],
   imports: [
     CommonModule,
     MatCardModule,
@@ -41,6 +41,6 @@ import { CategoryListComponent } from './category-list/category-list.component';
       { path: ':templateId', component: TemplateComponent},
     ])
   ],
-  entryComponents: [AddTemplateDialog,],
+  entryComponents: [AddTemplateDialog, AddCategoryDialog],
 })
 export class TemplateModule { }

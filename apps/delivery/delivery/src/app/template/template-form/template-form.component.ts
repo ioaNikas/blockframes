@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Material } from '../../material/+state';
+import { TemplateService } from '../+state';
 
 
 @Component({
@@ -11,13 +12,22 @@ import { Material } from '../../material/+state';
 export class TemplateFormComponent implements OnInit {
 
   @Input() materials: Material[];
+  @Input() category: string;
 
-  constructor() { }
+  constructor(
+    private service: TemplateService,
+  ) { }
 
   ngOnInit() {
   }
 
-  ngOnDestroy() {
+  public updateCategory(newCategory) {
+    this.service.updateCategory(newCategory, this.materials);
   }
+
+  public deleteCategory() {
+    this.service.deleteCategory(this.materials);
+  }
+
 
 }
