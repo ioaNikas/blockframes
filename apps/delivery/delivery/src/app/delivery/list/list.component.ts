@@ -15,6 +15,9 @@ export class ListComponent implements OnInit {
   public movie$: Observable<Movie>;
   public deliveries$: Observable<Delivery[]>;
 
+  // Material table
+  public displayedColumns: string[] = ['icon', 'stakeholder1', 'stakeholder2', 'status'];
+
   constructor(
     private movieQuery: MovieQuery,
     private deliveryService: DeliveryService,
