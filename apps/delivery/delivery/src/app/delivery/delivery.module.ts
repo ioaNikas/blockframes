@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { DeliveryGuard } from './delivery.guard';
+
 
 import { MovieMaterialsComponent } from './movie-materials/movie-materials.component';
 import { ListComponent } from './list/list.component';
@@ -17,8 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DeliveryGuard } from './delivery.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -50,9 +50,7 @@ export const routes: Routes = [
     MatDividerModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatTableModule,
 
-    RouterModule.forChild(routes),
-  ]
+    RouterModule.forChild(routes)]
 })
 export class DeliveryModule {}
