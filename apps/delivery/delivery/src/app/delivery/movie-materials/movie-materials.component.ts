@@ -25,8 +25,8 @@ export class MovieMaterialsComponent implements OnInit {
 
   ngOnInit() {
     this.movie$ = this.movieQuery.selectActive();
-    this.materials$ = this.deliveryService.getDeliveryMaterialsByActiveMovie();
-    this.progressionValue$ = this.deliveryService.getMovieProgression();
+    this.materials$ = this.deliveryService.deliveryMaterialsByActiveMovie$;
+    this.progressionValue$ = this.deliveryService.movieProgression$;
   }
 
   public deliveredToggle(material: Material, movieId: string) {
