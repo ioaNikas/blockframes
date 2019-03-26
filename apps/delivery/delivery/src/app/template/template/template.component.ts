@@ -10,7 +10,8 @@ import { TemplateQuery, TemplateStore } from '../+state';
   styleUrls: ['./template.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TemplateComponent implements OnInit {
+export class TemplateComponent implements OnInit, OnDestroy {
+  private isAlive = true;
 
   public template$: Observable<any>;
 
