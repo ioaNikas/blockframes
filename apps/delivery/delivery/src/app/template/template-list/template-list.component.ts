@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { TemplateService, Template, TemplateQuery } from '../+state';
-import { OrganizationStore } from '@blockframes/organization';
 import { Observable } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { MaterialService } from '../../material/+state';
@@ -16,14 +15,12 @@ export class TemplateListComponent implements OnInit {
 
   constructor(
     private service: TemplateService,
-    private organizationStore: OrganizationStore,
     private query: TemplateQuery,
     public dialog: MatDialog,
     private materialService: MaterialService,
   ) {}
 
   ngOnInit() {
-    this.organizationStore.setActive('eclAGMAMPl6l5lPov2ql');  // while organization does not stay active
     this.service.subscribeOnOrganizationTemplates$.subscribe(); //todo unsubscribe
     this.materialService.subscribeOnOrganizationMaterials$.subscribe(); //todo unsubscribe
 

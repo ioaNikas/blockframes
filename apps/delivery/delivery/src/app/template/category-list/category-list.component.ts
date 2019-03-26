@@ -8,7 +8,7 @@ import { MatDialogRef, MatDialog } from '@angular/material';
   styleUrls: ['./category-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent {
 
   @Input() template;
 
@@ -17,9 +17,6 @@ export class CategoryListComponent implements OnInit {
     private materialStore: MaterialStore,
     public dialog: MatDialog,
   ) { }
-
-  ngOnInit() {
-  }
 
   public selectCategory(materials) {
     const materialsIds = [];

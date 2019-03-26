@@ -34,7 +34,7 @@ export class OrgWidgetComponent implements OnInit, OnDestroy {
     this.orgList$ = this.query.selectAll();
   }
 
-  setActive(id: string) {
+  public setActive(id: string) {
     this.store.setActive(id);
   }
 

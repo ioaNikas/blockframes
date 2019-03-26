@@ -7,10 +7,10 @@ export interface Template {
 /**
  * A factory function that creates Template
  */
-export function createTemplate(params: Partial<Template>) {
-  return {
-    id: params.id,
-    name: params.name,
-    materialsId: params.materialsId || []
-  } as Template;
+export function createTemplate(template: Partial<Template>) {
+  return template ? {
+    materialsId: [],
+    ...template
+  } as Template : {} as Template
 }
+
