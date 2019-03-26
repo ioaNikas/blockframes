@@ -24,9 +24,7 @@ export class DeliveryService {
 
   public deliveredToggle(material: Material, movieId: string) {
     // Change material 'delivered' property value to true or false when triggered
-    return this.firestore
-      .collection<Movie>(`movies/${movieId}/materials/`)
-      .doc(material.id)
+    return this.firestore.doc<Material>(`movies/${movieId}/materials/${material.id}`)
       .update({ delivered: !material.delivered });
   }
 
