@@ -21,7 +21,7 @@ export class TemplateFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  public updateCategory(newCategory) {
+  public updateCategory(newCategory: string) {
     this.service.updateCategory(newCategory, this.materials);
   }
 

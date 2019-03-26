@@ -21,14 +21,14 @@ export class TemplateService {
     private materialService: MaterialService,
   ) {}
 
-  public addTemplate(templateName) {
+  public addTemplate(templateName: string) {
     const idOrg = this.organizationQuery.getActiveId();
     const idTemplate = this.db.createId();
     const template = createTemplate({ id: idTemplate, name: templateName });
     this.db.doc<Template>(`orgs/${idOrg}/templates/${idTemplate}`).set(template);
   }
 
-  public deleteTemplate(id) {
+  public deleteTemplate(id: string) {
     console.log(id)
     const idOrg = this.organizationQuery.getActiveId();
     this.db.doc<Template>(`orgs/${idOrg}/templates/${id}`).delete();
@@ -36,7 +36,7 @@ export class TemplateService {
 
   public updateCategory(newCategory: string, materials: Material[]) {
     for(const material of materials) {
-      this.materialService.updateMaterial(material, {category: newCategory})
+      this.materialService.updateMaterial(material, {category: newCategory} as Material)
     }
   }
 

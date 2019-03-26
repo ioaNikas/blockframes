@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { MaterialStore, MaterialService } from '../../material/+state';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { MaterialStore, MaterialService, Material } from '../../material/+state';
 import { MatDialogRef, MatDialog } from '@angular/material';
 
 @Component({
@@ -12,13 +12,12 @@ export class CategoryListComponent {
 
   @Input() template;
 
-
   constructor(
     private materialStore: MaterialStore,
     public dialog: MatDialog,
   ) { }
 
-  public selectCategory(materials) {
+  public selectCategory(materials : Material[]) {
     const materialsIds = [];
     for (const material of materials) {
       materialsIds.push(material.id)
@@ -57,7 +56,7 @@ export class AddCategoryDialog {
     private service: MaterialService,
     ) {}
 
-  public addCategory(category) {
+  public addCategory(category: string) {
     this.service.addMaterial(category)
     this.close();
   }

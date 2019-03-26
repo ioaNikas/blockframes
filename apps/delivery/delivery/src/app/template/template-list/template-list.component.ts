@@ -33,8 +33,7 @@ export class TemplateListComponent implements OnInit {
     });
   }
 
-  public deleteTemplate(id) {
-    console.log(id)
+  public deleteTemplate(id: string) {
     this.service.deleteTemplate(id);
   }
 }
@@ -61,7 +60,7 @@ export class AddTemplateDialog {
     private service: TemplateService,
     ) {}
 
-  public addTemplate(templateName) {
+  public addTemplate(templateName: string) {
     this.service.addTemplate(templateName);
     this.close();
   }

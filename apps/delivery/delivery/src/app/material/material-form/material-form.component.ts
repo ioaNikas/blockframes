@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Material, MaterialService } from '../+state';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'material-form',
@@ -17,16 +17,12 @@ export class MaterialFormComponent implements OnInit {
     description: new FormControl()
   });
 
-
-
   constructor(
-    private builder: FormBuilder,
     private service: MaterialService,
   ) { }
 
   ngOnInit() {
     this.form.setValue({value: this.material.value, description: this.material.description});
-
   }
 
   public deleteMaterial() {

@@ -24,7 +24,7 @@ export class MaterialService {
     private templateQuery: TemplateQuery
   ) {}
 
-  public deleteMaterial(id) {
+  public deleteMaterial(id: string) {
     const idOrg = this.organizationQuery.getActiveId();
 
     // delete materialId of materialsId of sub-collection template
@@ -37,7 +37,7 @@ export class MaterialService {
     this.db.doc<Material>(`orgs/${idOrg}/materials/${id}`).delete();
   }
 
-  public updateMaterial(material, form) {
+  public updateMaterial(material: Material, form: Material) {
     const idOrg = this.organizationQuery.getActiveId();
     this.db
       .doc<Material>(`orgs/${idOrg}/materials/${material.id}`)
