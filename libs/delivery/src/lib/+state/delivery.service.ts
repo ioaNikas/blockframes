@@ -10,6 +10,15 @@ import { DeliveryStore } from './delivery.store';
 import { Delivery } from '@blockframes/delivery';
 import { DeliveryQuery } from './delivery.query';
 
+function materialsByCategory(materials: Material[]) {
+  return materials.reduce((acc, item) => {
+    return {
+      ...acc,
+      [item.category.toUpperCase()]: [...(acc[item.category.toUpperCase()] || []), item]
+    };
+  }, {})
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -35,13 +44,7 @@ export class DeliveryService {
       switchMap(movie =>
         this.firestore.collection<Material>(`movies/${movie.id}/materials`).valueChanges()
       ),
-      map(materials =>
-        materials.reduce((acc, item) => {
-          return {
-            ...acc,
-            [item.category.toUpperCase()]: [...(acc[item.category.toUpperCase()] || []), item]
-          };
-        }, {})
+      map(materials => materialsByCategory(materials)
       )
     );
   }
@@ -83,14 +86,8 @@ export class DeliveryService {
 
   public get sortedDeliveryMaterials$() {
     // Sort the active delivery's materials by category
-    return this.getMaterialsByActiveDelivery().pipe(
-      map(materials =>
-        materials.reduce((acc, item) => {
-          return {
-            ...acc,
-            [item.category.toUpperCase()]: [...(acc[item.category.toUpperCase()] || []), item]
-          };
-        }, {})
+    return this.materialsByActiveDelivery$.pipe(
+      map(materials => materialsByCategory(materials)
       )
     );
   }
