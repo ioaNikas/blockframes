@@ -8,7 +8,8 @@ import { DeliveryService } from '@blockframes/delivery';
 @Component({
   selector: 'delivery-movie-materials',
   templateUrl: './movie-materials.component.html',
-  styleUrls: ['./movie-materials.component.scss']
+  styleUrls: ['./movie-materials.component.scss'],
+  ChangeDetectionStrategy.OnPush
 })
 export class MovieMaterialsComponent implements OnInit {
 
