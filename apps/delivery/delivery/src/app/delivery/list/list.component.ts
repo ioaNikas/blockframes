@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit  } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MovieQuery, Movie } from '@blockframes/movie';
 import { DeliveryService, Delivery } from '@blockframes/delivery';
@@ -8,12 +8,12 @@ import { Location } from '@angular/common';
   selector: 'delivery-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  changeDectectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit {
 
   public movie$: Observable<Movie>;
-  public deliveries$: Observable<Delivery[]>
+  public deliveries$: Observable<Delivery[]>;
 
   constructor(
     private movieQuery: MovieQuery,
