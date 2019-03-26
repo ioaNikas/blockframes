@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
+import { TemplatesDialog } from './delivery/list/templates.dialog';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -46,7 +47,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [AppComponent, LayoutComponent, TemplatesDialog],
   imports: [
     // Angular
     BrowserModule,
@@ -89,6 +90,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [TemplatesDialog]
 })
 export class AppModule {}
