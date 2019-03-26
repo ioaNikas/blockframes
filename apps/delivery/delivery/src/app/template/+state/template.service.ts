@@ -4,7 +4,7 @@ import { switchMap, tap, map, filter } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TemplateStore } from './template.store';
 import { Template, createTemplate } from './template.model';
-import { Material, MaterialStore } from '../../material/+state';
+import { Material, MaterialStore, MaterialService } from '../../material/+state';
 
 @Injectable({ providedIn: 'root' })
 export class TemplateService {
@@ -18,7 +18,7 @@ export class TemplateService {
     private organizationQuery: OrganizationQuery,
     private db: AngularFirestore,
     private store: TemplateStore,
-    private materialStore: MaterialStore,
+    private materialService: MaterialService,
   ) {}
 
   public addTemplate(templateName) {
@@ -32,6 +32,18 @@ export class TemplateService {
     console.log(id)
     const idOrg = this.organizationQuery.getActiveId();
     this.db.doc<Template>(`orgs/${idOrg}/templates/${id}`).delete();
+  }
+
+  public updateCategory(newCategory: string, materials: Material[]) {
+    for(const material of materials) {
+      this.materialService.updateMaterial(material, {category: newCategory})
+    }
+  }
+
+  public deleteCategory(materials: Material[]) {
+    for(const material of materials) {
+      this.materialService.deleteMaterial(material.id)
+    }
   }
 
 }

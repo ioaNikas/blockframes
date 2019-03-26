@@ -3,12 +3,9 @@ import { Injectable } from '@angular/core';
 import { Material } from './material.model';
 
 
-export interface State extends EntityState<Material>, MultiActiveState<string[]> {
+export interface State extends EntityState<Material> {
 }
 
-const initialState = {
-  active: []
-};
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +13,7 @@ const initialState = {
 @StoreConfig({ name: 'materials', idKey: 'id' })
 export class MaterialStore extends EntityStore<State, Material> {
   constructor() {
-    super(initialState);
+    super();
   }
 
 }
