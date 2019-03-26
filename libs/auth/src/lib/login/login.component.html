@@ -1,0 +1,22 @@
+<section>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Please Login to continue</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="signin()" fxLayout="column">
+          <mat-form-field>
+            <input matInput type="email" placeholder="Email" formControlName="email" />
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput type="password" placeholder="Password" formControlName="pwd" />
+          </mat-form-field>
+          <button color="primary" mat-raised-button>Login</button>
+        </form>
+        <mat-card-actions>
+            Don't have an account ? 
+          <button mat-raised-button color="secondary" routerLink="/auth/signup">Sign up</button>
+        </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+</section>

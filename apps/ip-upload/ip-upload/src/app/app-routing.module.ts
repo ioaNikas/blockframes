@@ -8,7 +8,12 @@ import { AuthGuard } from '@blockframes/auth';
 import { IpResolver } from '@blockframes/ip';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+    data: { fallback: '' },
+  },
   {
     path: 'form/:id',
     component: FormComponent,
@@ -31,6 +36,10 @@ export const routes: Routes = [
   {
     path: 'account',
     loadChildren: '@blockframes/account#AccountModule'
+  },
+  {
+    path: 'auth',
+    loadChildren: '@blockframes/auth#AuthModule'
   }
 ];
 

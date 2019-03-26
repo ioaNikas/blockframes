@@ -5,7 +5,7 @@
   </mat-sidenav>
   <!-- Content -->
   <mat-sidenav-content>
-    <toolbar-header></toolbar-header>
+    <toolbar-header *ngIf="!!(user$ | async)" ></toolbar-header>
     <main>
       <router-outlet></router-outlet>
     </main>

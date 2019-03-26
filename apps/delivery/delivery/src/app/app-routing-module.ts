@@ -26,6 +26,10 @@ export const routes: Routes = [
         path: 'account',
         loadChildren: '@blockframes/account#AccountModule'
       },
+      {
+        path: 'auth',
+        loadChildren: '@blockframes/auth#AuthModule'
+      },
       { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
       { path: 'template', loadChildren: './template/template.module#TemplateModule' },
       {

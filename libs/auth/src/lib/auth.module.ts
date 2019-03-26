@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RouterModule, Routes } from '@angular/router';
 
 // Angular Fire
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -17,6 +18,22 @@ import { MatMenuModule } from '@angular/material/menu';
 
 // Component
 import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
+import { MatCardModule } from '@angular/material';
+
+
+export const AuthRoutes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent,
+    data: { fallback: '', org: null }
+  },
+  {
+    path: 'signup',
+    component: SignupComponent,
+    data: { fallback: '', org: null }
+  }
+];
 
 @NgModule({
   imports: [
@@ -26,15 +43,17 @@ import { SignupComponent } from './signup/signup.component';
     FlexLayoutModule,
     // Material
     MatTabsModule,
+    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    RouterModule.forChild(AuthRoutes),
   ],
-  entryComponents: [SignupComponent],
-  declarations: [SignupComponent],
-  exports: [SignupComponent]
+  entryComponents: [SignupComponent, LoginComponent],
+  declarations: [SignupComponent, LoginComponent],
+  exports: [SignupComponent, LoginComponent],
 })
 export class AuthModule {}

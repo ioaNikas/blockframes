@@ -28,7 +28,7 @@ export class AuthService {
       await this.afAuth.auth.createUserWithEmailAndPassword(mail, pwd);
       this.wallet.createRandom();
     } catch (err) {
-      throw new Error(err);
+      throw new Error(err.message);
     }
   }
 
@@ -48,18 +48,17 @@ export class AuthService {
 
   public logout() {
     this.afAuth.auth.signOut();
-    this.store.update({ user: null })
+    this.store.update({ user: null });
   }
 
   public async delete() {
     const uid = this.afAuth.auth.currentUser.uid;
     try {
-      await Promise.all([
-        this.authCollection.doc(uid).delete(),
-        this.afAuth.auth.currentUser.delete()
-        // @todo create function to delete user sub collections
-      ])
-      this.store.update({ user: null })
+      // using then instead of promise.all to prevent
+      // multiple store update due to previous subscriptions (subscribeOnUser)
+      return this.authCollection.doc(uid).delete()
+      .then(() => this.afAuth.auth.currentUser.delete())
+      .then(() => this.store.update({ user: null }));
     } catch (e) {
       throw new Error('Error while deleting account.');
     }
