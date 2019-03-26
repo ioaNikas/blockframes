@@ -1,4 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { TemplateQuery, TemplateStore } from '../+state';
 
 @Component({
   selector: 'delivery-template',
@@ -8,9 +12,20 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class TemplateComponent implements OnInit {
 
-  constructor() { }
+  public template$: Observable<any>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private store: TemplateStore,
+    private query: TemplateQuery
+  ) {}
 
   ngOnInit() {
+    this.template$ = this.route.params.pipe(
+      switchMap(params => {
+        this.store.setActive(params.templateId);
+        return this.query.materialsByTemplate$;
+      })
+    );
   }
-
 }

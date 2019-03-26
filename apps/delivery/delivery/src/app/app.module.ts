@@ -48,6 +48,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
   imports: [
+    // Angular
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -70,7 +71,6 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatCheckboxModule,
     MatProgressSpinnerModule,
 
-
     // Libraries
     AuthModule,
     UploadModule,
@@ -81,6 +81,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MovieModule,
     DeliveryModule,
 
+    // Firebase
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
 
