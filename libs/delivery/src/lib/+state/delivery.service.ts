@@ -28,7 +28,7 @@ export class DeliveryService {
       .update({ delivered: !material.delivered });
   }
 
-  public getDeliveryMaterialsByActiveMovie() {
+  public get deliveryMaterialsByActiveMovie$() {
     // Get and sort the active movie's delivery's materials by category
     return this.movieQuery.selectActive().pipe(
       filter(movie => !!movie),
@@ -46,7 +46,7 @@ export class DeliveryService {
     );
   }
 
-  public getDeliveriesByActiveMovie() {
+  public get deliveriesByActiveMovie$() {
     // Get a list of deliveries for the active movie
     return this.movieQuery.selectActiveId().pipe(
       filter(id => !!id),
@@ -59,7 +59,7 @@ export class DeliveryService {
     );
   }
 
-  public getMaterialsByActiveDelivery() {
+  public get materialsByActiveDelivery$() {
     // Get the movie materials for the active delivery (with 'delivered' property)
     return this.movieQuery.selectActive().pipe(
       filter(movie => !!movie),
@@ -81,7 +81,7 @@ export class DeliveryService {
     );
   }
 
-  public getSortedDeliveryMaterials() {
+  public get sortedDeliveryMaterials$() {
     // Sort the active delivery's materials by category
     return this.getMaterialsByActiveDelivery().pipe(
       map(materials =>
@@ -95,7 +95,7 @@ export class DeliveryService {
     );
   }
 
-  public getDeliveryProgression() {
+  public get deliveryProgression$() {
     // Get the progression % of the delivery
     return this.movieQuery.selectActive().pipe(
       filter(movie => !!movie),
@@ -121,7 +121,7 @@ export class DeliveryService {
     );
   }
 
-  public getMovieProgression() {
+  public get movieProgression$() {
     // Get the progression % of the movie's deliveries
     return this.movieQuery.selectActive().pipe(
       filter(movie => !!movie),
