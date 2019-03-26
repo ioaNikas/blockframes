@@ -23,7 +23,7 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.movie$ = this.movieQuery.selectActive();
-    this.deliveries$ = this.deliveryService.getDeliveriesByActiveMovie();
+    this.deliveries$ = this.deliveryService.deliveriesByActiveMovie$;
   }
 
   public goBack() {
