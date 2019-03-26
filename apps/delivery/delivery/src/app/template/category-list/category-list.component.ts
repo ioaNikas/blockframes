@@ -1,10 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { TemplateQuery, TemplateService } from '../+state';
 import { MaterialStore, MaterialService } from '../../material/+state';
-import { template } from '@angular/core/src/render3';
 import { MatDialogRef, MatDialog } from '@angular/material';
-import { AddTemplateDialog } from '../template-list/template-list.component';
 
 @Component({
   selector: 'category-list',
@@ -18,10 +14,7 @@ export class CategoryListComponent implements OnInit {
 
 
   constructor(
-    private query: TemplateQuery,
     private materialStore: MaterialStore,
-    private service: TemplateService,
-    private materialService: MaterialService,
     public dialog: MatDialog,
   ) { }
 

@@ -36,7 +36,7 @@ import { CategoryListComponent, AddCategoryDialog } from './category-list/catego
     MatButtonModule,
     MatMenuModule,
     RouterModule.forChild([
-      { path: '', component: TemplateComponent },
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
       { path: 'list', component: TemplateListComponent },
       { path: ':templateId', component: TemplateComponent},
     ])
