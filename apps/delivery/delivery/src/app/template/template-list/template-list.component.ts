@@ -3,6 +3,7 @@ import { TemplateService, Template, TemplateQuery } from '../+state';
 import { OrganizationStore } from '@blockframes/organization';
 import { Observable } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
+import { MaterialService } from '../../material/+state';
 
 @Component({
   selector: 'template-list',
@@ -18,11 +19,13 @@ export class TemplateListComponent implements OnInit {
     private organizationStore: OrganizationStore,
     private query: TemplateQuery,
     public dialog: MatDialog,
+    private materialService: MaterialService,
   ) {}
 
   ngOnInit() {
     this.organizationStore.setActive('eclAGMAMPl6l5lPov2ql');  // while organization does not stay active
-    this.service.subscribeOnOrganizationTemplates$.subscribe();
+    this.service.subscribeOnOrganizationTemplates$.subscribe(); //todo unsubscribe
+    this.materialService.subscribeOnOrganizationMaterials$.subscribe(); //todo unsubscribe
 
     this.templates$ = this.query.selectAll();
   }
