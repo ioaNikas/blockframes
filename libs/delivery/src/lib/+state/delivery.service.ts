@@ -4,11 +4,12 @@ import {
   Material,
   MaterialStore
 } from '../../../../../apps/delivery/delivery/src/app/material/+state';
-import { Movie, MovieQuery } from '@blockframes/movie';
+import { MovieQuery } from '@blockframes/movie';
 import { filter, switchMap, map, tap } from 'rxjs/operators';
 import { DeliveryStore } from './delivery.store';
 import { Delivery } from '@blockframes/delivery';
 import { DeliveryQuery } from './delivery.query';
+import { AuthQuery } from '@blockframes/auth';
 
 function materialsByCategory(materials: Material[]) {
   return materials.reduce((acc, item) => {
@@ -25,10 +26,11 @@ function materialsByCategory(materials: Material[]) {
 export class DeliveryService {
   constructor(
     private firestore: AngularFirestore,
+    private authQuery: AuthQuery,
     private movieQuery: MovieQuery,
     private deliveryQuery: DeliveryQuery,
     private deliveryStore: DeliveryStore,
-    private materialStore: MaterialStore
+    private materialStore: MaterialStore,
   ) {}
 
   public deliveredToggle(material: Material, movieId: string) {
