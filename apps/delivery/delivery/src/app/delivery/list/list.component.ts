@@ -7,7 +7,8 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'delivery-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
+  changeDectectionStrategy.OnPush
 })
 export class ListComponent implements OnInit {
 
