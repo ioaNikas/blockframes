@@ -59,7 +59,7 @@ export class EditComponent implements OnInit, OnDestroy {
     .subscribe(params => {
       this.ip = this.query.getEntity(params.id);
       
-      if (this.ip !== undefined ) {console.log(createIp(this.ip));
+      if (this.ip !== undefined ) {
         this.form.setValue(createIp(this.ip));
       } else {
         this.form.reset();
