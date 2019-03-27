@@ -9,42 +9,6 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'delivery-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class ListComponent implements OnInit {
-
-  public movie$: Observable<Movie>;
-  public deliveries$: Observable<Delivery[]>;
-
-  // Material table
-  public displayedColumns: string[] = ['icon', 'stakeholder1', 'stakeholder2', 'status'];
-
-  constructor(
-    private movieQuery: MovieQuery,
-    private deliveryService: DeliveryService,
-    private location: Location,
-    private dialog: MatDialog,
-  ) { }
-
-  ngOnInit() {
-    this.movie$ = this.movieQuery.selectActive();
-    this.deliveries$ = this.deliveryService.deliveriesByActiveMovie$;
-  }
-
-  public openDialog() {
-    this.dialog.open(ChooseTemplateDialogComponent, {width: "80%", height: "80%"});
-  }
-
-  public goBack() {
-    this.location.back();
-  }
-
-}
-
-@Component({
   selector: 'choose-template-dialog',
   template: `
   <section *ngIf="movie$ | async as movie" mat-dialog-content fxLayout="row wrap" fxLayoutAlign="space-around">
@@ -114,4 +78,41 @@ export class ChooseTemplateDialogComponent implements OnInit {
     this.router.navigate([`delivery/${movie.id}/delivery-form`]);
     this.dialogRef.close();
   }
+}
+
+
+@Component({
+  selector: 'delivery-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ListComponent implements OnInit {
+
+  public movie$: Observable<Movie>;
+  public deliveries$: Observable<Delivery[]>;
+
+  // Material table
+  public displayedColumns: string[] = ['icon', 'stakeholder1', 'stakeholder2', 'status'];
+
+  constructor(
+    private movieQuery: MovieQuery,
+    private deliveryService: DeliveryService,
+    private location: Location,
+    private dialog: MatDialog,
+  ) { }
+
+  ngOnInit() {
+    this.movie$ = this.movieQuery.selectActive();
+    this.deliveries$ = this.deliveryService.deliveriesByActiveMovie$;
+  }
+
+  public openDialog() {
+    this.dialog.open(ChooseTemplateDialogComponent, {width: "80%", height: "80%"});
+  }
+
+  public goBack() {
+    this.location.back();
+  }
+
 }

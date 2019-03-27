@@ -1,31 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Template, TemplateQuery, TemplateService } from '../../template/+state';
+import { TemplateQuery, TemplateService } from '../../template/+state';
 import { Observable } from 'rxjs';
 import { MatDialogRef, MatDialog } from '@angular/material';
-
-@Component({
-  selector: 'delivery-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class FormComponent implements OnInit {
-  public template$: Observable<any>;
-
-  constructor(
-    private templateQuery: TemplateQuery,
-    private templateService: TemplateService,
-    private dialog: MatDialog
-  ) {}
-
-  ngOnInit() {
-    this.template$ = this.templateQuery.materialsByTemplate$;
-  }
-
-  public openDialog() {
-    this.dialog.open(NewTemplateDialogComponent);
-  }
-}
 
 @Component({
   selector: 'new-template-dialog',
@@ -58,5 +34,28 @@ export class NewTemplateDialogComponent {
 
   public close() {
     this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'delivery-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class FormComponent implements OnInit {
+  public template$: Observable<any>;
+
+  constructor(
+    private templateQuery: TemplateQuery,
+    private dialog: MatDialog
+  ) {}
+
+  ngOnInit() {
+    this.template$ = this.templateQuery.materialsByTemplate$;
+  }
+
+  public openDialog() {
+    this.dialog.open(NewTemplateDialogComponent);
   }
 }
