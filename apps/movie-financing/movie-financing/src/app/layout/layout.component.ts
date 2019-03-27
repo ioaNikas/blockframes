@@ -1,19 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User, AuthQuery } from '@blockframes/auth';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'financing-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit {
-  public user$: Observable<User>;
+export class LayoutComponent {
 
-  constructor(private auth: AuthQuery, private router: Router) {}
+  constructor() {}
 
-  async ngOnInit() {
-    this.user$ = this.auth.user$();
-  }
 }
