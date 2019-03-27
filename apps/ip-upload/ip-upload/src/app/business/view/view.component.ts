@@ -4,7 +4,7 @@ import { takeWhile } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'business-view',
+  selector: 'ip-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })

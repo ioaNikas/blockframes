@@ -9,7 +9,7 @@ import { first, takeWhile} from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'business-edit',
+  selector: 'ip-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
