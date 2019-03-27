@@ -15,7 +15,7 @@ export class LayoutComponent implements OnInit {
   constructor(private auth: AuthQuery, private router: Router) {}
 
   async ngOnInit() {
-    this.user$ = this.auth.select(state => state.user);
+    this.user$ = this.auth.user$();
   }
 
 }
