@@ -1,4 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Template, TemplateQuery, TemplateService } from '../../template/+state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'delivery-form',
@@ -8,9 +10,15 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-  constructor() { }
+  public template$: Observable<any>;
+
+  constructor(
+    private templateQuery: TemplateQuery,
+    ) { }
 
   ngOnInit() {
+    this.template$ = this.templateQuery.materialsByTemplate$
   }
+
 
 }

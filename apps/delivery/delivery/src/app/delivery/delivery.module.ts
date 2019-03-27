@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MovieMaterialsComponent } from './movie-materials/movie-materials.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { HomeComponent } from './home/home.component';
+import { FormComponent } from './form/form.component';
+import { CategoryListComponent } from '../template/category-list/category-list.component';
 import { DeliveryGuard } from './delivery.guard';
 
 // Material
@@ -20,7 +22,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule, MatMenuModule, MatSidenavModule } from '@angular/material';
-import { FormComponent } from './form/form.component';
+import { MatFormFieldModule } from '@angular/material';
+import { TemplateFormComponent } from '../template/template-form/template-form.component';
+import { MaterialFormComponent } from '../material/material-form/material-form.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -39,11 +43,12 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MovieMaterialsComponent, ListComponent, ViewComponent, HomeComponent, FormComponent],
+  declarations: [MovieMaterialsComponent, ListComponent, ViewComponent, HomeComponent, FormComponent, CategoryListComponent, TemplateFormComponent, MaterialFormComponent],
   imports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
+    ReactiveFormsModule,
 
     // Material
     MatCardModule,
@@ -57,6 +62,7 @@ export const routes: Routes = [
     MatInputModule,
     MatMenuModule,
     MatSidenavModule,
+    MatFormFieldModule,
 
     RouterModule.forChild(routes)
   ],

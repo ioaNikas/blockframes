@@ -21,13 +21,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TemplateFormComponent } from './template-form/template-form.component';
 import { MaterialFormComponent } from '../material/material-form/material-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddCategoryDialogComponent, CategoryListComponent } from './category-list/category-list.component';
-
+import { CategoryListComponent, AddCategoryDialogComponent } from './category-list/category-list.component';
 
 @NgModule({
   declarations: [
-    TemplateComponent, TemplateListComponent, AddTemplateDialogComponent,
-    TemplateFormComponent, MaterialFormComponent, CategoryListComponent, AddCategoryDialogComponent
+    TemplateComponent,
+    TemplateListComponent,
+    AddTemplateDialogComponent,
+    TemplateFormComponent,
+    MaterialFormComponent,
+    CategoryListComponent,
+    AddCategoryDialogComponent
   ],
   imports: [
     CommonModule,
