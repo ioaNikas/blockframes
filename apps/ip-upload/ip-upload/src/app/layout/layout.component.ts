@@ -17,8 +17,4 @@ export class LayoutComponent implements OnInit {
   async ngOnInit() {
     this.user$ = this.auth.select(state => state.user);
   }
-
-  public logout() {
-    this.router.navigate([''])
-  }
 }

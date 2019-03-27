@@ -18,8 +18,4 @@ export class LayoutComponent implements OnInit {
     this.user$ = this.auth.select(state => state.user);
   }
 
-  public logout() {
-    this.router.navigate([''])
-  }
-
 }
