@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Component
-import { FormComponent } from './form/form.component';
-import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 
 // Guard
 import { AuthGuard } from '@blockframes/auth';
-import { IpResolver } from '@blockframes/ip';
+import { IpGuard } from '@blockframes/ip'
 
 export const routes: Routes = [
   { 
@@ -24,27 +22,19 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      {
+      { 
         path: '',
-        component: HomeComponent,
-        canActivate: [AuthGuard],
-        data: { fallback: '' },
+        redirectTo: 'explorer',
+        pathMatch: 'full'
       },
       {
-        path: 'form/:id',
-        component: FormComponent,
-        canActivate: [AuthGuard],
-        data: { fallback: '' },
-        resolve: {
-          ip: IpResolver
-        }
+        path: 'ip/:id',
+        canActivate: [IpGuard],
+        loadChildren: './business/business.module#BusinessModule'
       },
       {
-        path: 'form',
-        component: FormComponent,
-        canActivate: [AuthGuard],
-        data: { fallback: '', ip: null }
+        path: 'explorer',
+        loadChildren: '@blockframes/ip#IpModule'
       },
       {
         path: 'organization',
@@ -56,6 +46,7 @@ export const routes: Routes = [
       }
     ]
   }
+  // @todo handle 404 errors
 ];
 
 @NgModule({
