@@ -17,9 +17,9 @@ export class IpGuard implements CanActivate {
     const ipId = this.query.getEntity(route.params['id']);
 
     if (ipId !== undefined ) {
-      // @todo check if actually exists in store
-      // @todo use IpResolver (import { IpResolver } from '@blockframes/ip';)
-      this.store.setActive(ipId); // @todo not working
+      // @todo bruce check if actually exists in store
+      // @todo bruce use IpResolver (import { IpResolver } from '@blockframes/ip';)
+      this.store.setActive(ipId); // @todo bruce not working
       return true;
     } else {
       const fallbackUrl = route.data.fallback !== '' &&  route.data.fallback !== undefined ? route.data.fallback : '/layout/explorer';
