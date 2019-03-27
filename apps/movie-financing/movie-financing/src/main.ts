@@ -4,17 +4,21 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { persistState, enableAkitaProdMode } from '@datorama/akita';
 import { hmrBootstrap } from './hmr';
 
 const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 
+// Akita Persite State in LocalStorage
+persistState({
+  exclude: ['router']
+});
+
+// Production Environment
 if (environment.production) {
   enableProdMode();
+  enableAkitaProdMode();
 }
-
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch(err => console.error(err));
 
 // Hot Module Reload Envionment
 if (environment.hmr) {

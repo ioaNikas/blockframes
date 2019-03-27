@@ -1,15 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User, AuthQuery } from '@blockframes/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'financing-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit {
+  public user$: Observable<User>;
 
-  constructor() { }
+  constructor(private auth: AuthQuery, private router: Router) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.user$ = this.auth.select(state => state.user);
   }
 
+  public logout() {
+    this.router.navigate([''])
+  }
 }

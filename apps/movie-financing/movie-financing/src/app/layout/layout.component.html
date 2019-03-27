@@ -1,2 +1,7 @@
-<header> APPBAR TO COME</header>
-<router-outlet></router-outlet>
+<header>
+  <toolbar-header *ngIf="!!(user$ | async)" ></toolbar-header>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>
+
