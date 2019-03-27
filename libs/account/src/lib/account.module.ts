@@ -6,7 +6,6 @@ import { AccountProfileComponent } from './account-profile/account-profile.compo
 import { AccountViewComponent } from './account-view/account-view.component';
 import { AccountDeleteComponent } from './account-delete/account-delete.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@blockframes/auth';
 
 // Material
 import { 
