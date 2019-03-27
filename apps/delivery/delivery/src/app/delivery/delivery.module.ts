@@ -19,6 +19,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
+import { MatInputModule, MatMenuModule, MatSidenavModule } from '@angular/material';
+import { FormComponent } from './form/form.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +28,7 @@ export const routes: Routes = [
     path: 'movie-materials',
     component: MovieMaterialsComponent
   },
+  { path: 'delivery-form', component: FormComponent},
   {
     path: 'delivery-list',
     children: [
@@ -36,7 +39,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MovieMaterialsComponent, ListComponent, ViewComponent, HomeComponent],
+  declarations: [MovieMaterialsComponent, ListComponent, ViewComponent, HomeComponent, FormComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -51,8 +54,11 @@ export const routes: Routes = [
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatTableModule,
+    MatInputModule,
+    MatMenuModule,
+    MatSidenavModule,
 
     RouterModule.forChild(routes)
-  ]
+  ],
 })
 export class DeliveryModule {}

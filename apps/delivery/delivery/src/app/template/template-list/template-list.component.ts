@@ -71,5 +71,6 @@ export class TemplateListComponent implements OnInit {
   public deleteTemplate(id: string) {
     this.service.deleteTemplate(id);
   }
+
 }
 

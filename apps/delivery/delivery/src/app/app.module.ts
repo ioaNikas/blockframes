@@ -29,7 +29,7 @@ import { DeliveryModule } from '@blockframes/delivery';
 import { OrganizationModule } from '@blockframes/organization';
 
 // Material
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule, MatMenuModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -44,9 +44,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ChooseTemplateDialogComponent } from './delivery/list/list.component';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [AppComponent, LayoutComponent, ChooseTemplateDialogComponent],
   imports: [
     // Angular
     BrowserModule,
@@ -70,6 +71,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatChipsModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatMenuModule,
 
     // Libraries
     AuthModule,
@@ -89,6 +91,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
+  entryComponents: [ChooseTemplateDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
