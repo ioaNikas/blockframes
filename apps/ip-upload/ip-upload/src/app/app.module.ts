@@ -14,7 +14,7 @@ import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 // Material
 
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbarModule, MatListModule, MatIconModule } from '@angular/material';
 // Libraries
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
@@ -47,6 +47,8 @@ import { LayoutComponent } from './layout/layout.component';
     AngularFirestoreModule,
     // Material
     MatToolbarModule,
+    MatListModule,
+    MatIconModule,
     // Akita
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     // Service Worker
