@@ -15,9 +15,10 @@ export class IpService {
     this.collection = this.firestore.collection('ip');
   }
 
-  public async add(ip: Ip) {
+  public async add(ip: Partial<Ip>) {
     const id = this.firestore.createId();
-    this.store.add(createIp({...ip, id}));
+    await this.store.add(createIp({...ip, id}));
+    return id;
   }
 
   public update(id, ip: Partial<Ip>) {

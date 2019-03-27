@@ -13,20 +13,8 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 // Material
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatCardModule } from '@angular/material/card';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatRippleModule } from '@angular/material/core';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 // Libraries
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
@@ -37,14 +25,10 @@ import { OrganizationModule } from '@blockframes/organization';
 // Components
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { FormComponent } from './form/form.component';
-import { ListComponent } from './list/list.component';
-import { ViewComponent } from './view/view.component';
-import { HomeComponent } from './home/home.component';
 import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ListComponent, ViewComponent, HomeComponent, LayoutComponent],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
@@ -62,20 +46,7 @@ import { LayoutComponent } from './layout/layout.component';
     AngularFireStorageModule,
     AngularFirestoreModule,
     // Material
-    MatSnackBarModule,
-    MatCardModule,
     MatToolbarModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatButtonModule,
-    MatListModule,
-    MatRippleModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatChipsModule,
-    MatCheckboxModule,
     // Akita
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()],
     // Service Worker
