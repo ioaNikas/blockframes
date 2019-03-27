@@ -1,36 +1,33 @@
 <mat-toolbar class="mat-elevation-z2" fxLayout="row-reverse" fxLayoutAlign="space-between center">
-    <span>Blockframes</span>
-
-    <span class="example-fill-remaining-space"></span>
-
-    <button mat-icon-button [matMenuTriggerFor]="apps">
-        <mat-icon>dialpad</mat-icon>
+  <span>Blockframes</span>
+  <span class="example-fill-remaining-space"></span>
+  <button mat-icon-button [matMenuTriggerFor]="apps">
+    <mat-icon>dialpad</mat-icon>
+  </button>
+  <mat-menu #apps="matMenu">
+    <button mat-menu-item>
+      <mat-icon>cloud_upload</mat-icon>
+      <span>Ip upload</span>
     </button>
-    <mat-menu #apps="matMenu">
-        <button mat-menu-item>
-            <mat-icon>cloud_upload</mat-icon>
-            <span>Ip upload</span>
-        </button>
-        <button mat-menu-item>
-            <mat-icon>local_post_office</mat-icon>
-            <span>Delivery app</span>
-        </button>
-    </mat-menu>
+    <button mat-menu-item>
+      <mat-icon>local_post_office</mat-icon>
+      <span>Delivery app</span>
+    </button>
+  </mat-menu>
 
-    <ng-container *ngIf="(user$ | async) as user;">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
-            <mat-icon>account_circle</mat-icon>
-        </button>
-    </ng-container>
+  <ng-container *ngIf="(user$ | async) as user;">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </ng-container>
 
-    <mat-menu #menu="matMenu">
-        <mat-list>
-            <account-widget></account-widget>
-            <mat-divider></mat-divider>
-            <org-widget></org-widget>
-            <mat-divider></mat-divider>
-            <ng-container (loggedOut)="logout()"><button mat-menu-item (click)="logout()">Logout</button></ng-container>
-        </mat-list>
-    </mat-menu>
-
+  <mat-menu #menu="matMenu">
+    <mat-list>
+      <account-widget></account-widget>
+      <mat-divider></mat-divider>
+      <org-widget></org-widget>
+      <mat-divider></mat-divider>
+      <ng-container (loggedOut)="logout()"><button mat-menu-item (click)="logout()">Logout</button></ng-container>
+    </mat-list>
+  </mat-menu>
 </mat-toolbar>
