@@ -1,7 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User, AuthQuery } from '@blockframes/auth';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'delivery-layout',
@@ -9,13 +6,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit {
-  public user$: Observable<User>;
+export class LayoutComponent {
 
-  constructor(private auth: AuthQuery, private router: Router) {}
-
-  async ngOnInit() {
-    this.user$ = this.auth.user$();
-  }
+  constructor() {}
 
 }
