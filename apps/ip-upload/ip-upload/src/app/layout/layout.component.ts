@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User, AuthQuery } from '@blockframes/auth';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthQuery, User } from '@blockframes/auth';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'financing-layout',
+  selector: 'ip-upload-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss']
+  styleUrls: ['./layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LayoutComponent implements OnInit {
   public user$: Observable<User>;

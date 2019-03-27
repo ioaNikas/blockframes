@@ -3,7 +3,7 @@
   <div *ngFor="let org of (orgList$ | async); let i = index">
     <mat-card [routerLink]="['../', org.id]">
       <mat-card-header>
-        <mat-card-title>{{ org.name }}</mat-card-title>
+        <mat-card-title><a [routerLink]="['organization/',org.id]">{{ org.name }}</a></mat-card-title>
         <mat-card-subtitle>
           {{org.id}}
         </mat-card-subtitle>

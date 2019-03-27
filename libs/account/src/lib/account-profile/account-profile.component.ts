@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./account-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountProfileComponent implements OnInit, OnDestroy {
+export class AccountProfileComponent implements OnInit {
   @Output() loggedOut = new EventEmitter();
 
   public accountForm: FormGroup;
@@ -71,14 +71,13 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result === this.authQuery.user.email) {
-        this.snackBar.open(`account deleted`, 'close', { duration: 5000 });
+        this.snackBar.open('Account deleted', 'close', { duration: 5000 });
         this.loggedOut.emit();
-        this.router.navigate(['']);
         this.authService.delete();
+        this.router.navigate(['/auth/signup']);
+      } else if (result !== undefined) {
+        this.snackBar.open('Type in your email to confirm deletion', 'close', { duration: 5000 });
       }
     });
-  }
-
-  ngOnDestroy() {
   }
 }

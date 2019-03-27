@@ -8,16 +8,16 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'auth-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
+  selector: 'auth-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public persistForm: PersistNgFormPlugin<UserForm>;
   destroySubject$: Subject<void> = new Subject();
-  
+
   constructor(
     private builder: FormBuilder,
     private service: AuthService,
@@ -35,10 +35,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.persistForm.setForm(this.form);
   }
 
-  public async signup() {
+  public async signin() {
     try {
       const { email, pwd } = this.form.value;
-      await this.service.signup(email, pwd);
+      await this.service.signin(email, pwd);
 
       // redirect to home only when user is actually connected
       // without that, we cannot pass the home guards
@@ -47,14 +47,12 @@ export class SignupComponent implements OnInit, OnDestroy {
       .subscribe((user: User) => {
         if (user !== null) {
           this.router.navigate(['']);
-          this.snackBar.open('Account created sucessfully!', 'close', { duration: 2000 });
+          this.snackBar.open('Login successful!', 'close', { duration: 2000 });
         }
       });
 
     } catch (err) {
       this.snackBar.open(err.message, 'close', { duration: 2000 });
-      // @todo handle error
-      console.error(err);
     }
   }
 

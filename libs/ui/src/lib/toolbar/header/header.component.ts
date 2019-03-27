@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthQuery, User, AuthService, SignupComponent } from '@blockframes/auth';
+import { AuthQuery, User, AuthService} from '@blockframes/auth';
 import { Observable } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -11,14 +11,18 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
   @Output() loggedOut = new EventEmitter();
 
   public user$: Observable<User>;
 
-  constructor(private service: AuthService, private auth: AuthQuery, private router: Router, private dialog: MatDialog) {
-  }
+  constructor(
+    private service: AuthService,
+    private auth: AuthQuery,
+    private router: Router,
+    private snackBar: MatSnackBar,
+  ) {}
 
 
   ngOnInit() {
@@ -28,13 +32,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public async logout() {
     await this.service.logout();
     this.loggedOut.emit();
-    this.router.navigate([''])
+    this.router.navigate(['/auth/login']);
+    this.snackBar.open('Successful logged out!', 'close', { duration: 2000 });
   }
 
-  public openLogin() {
-    this.dialog.open(SignupComponent);
-  }
-
-  ngOnDestroy() {
-  }
 }
