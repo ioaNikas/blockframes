@@ -7,15 +7,18 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Guards
 import { MovieGuard } from '@blockframes/movie';
+import { AuthGuard } from '@blockframes/auth';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'delivery', pathMatch: 'full' },
-  //{path: 'auth', loadChildren: '@blockframes/auth#AuthModule'},
-
+  {
+    path: 'auth',
+    loadChildren: '@blockframes/auth#AuthModule'
+  },
   {
     path: 'delivery',
     component: LayoutComponent,
-    //canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'explorer', pathMatch: 'full' },
       {
@@ -25,10 +28,6 @@ export const routes: Routes = [
       {
         path: 'account',
         loadChildren: '@blockframes/account#AccountModule'
-      },
-      {
-        path: 'auth',
-        loadChildren: '@blockframes/auth#AuthModule'
       },
       { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' },
       { path: 'template', loadChildren: './template/template.module#TemplateModule' },
