@@ -14,7 +14,7 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
     return this.query.isLogged$.pipe(
       map((isLogged) => {
-        const fallbackUrl = route.data.fallback !== '' ? route.data.fallback : 'auth/login';
+        const fallbackUrl = route.data.fallback !== '' &&  route.data.fallback !== undefined ? route.data.fallback : '/auth/login';
         return isLogged ? isLogged : this.router.parseUrl(fallbackUrl);
       })
     );
