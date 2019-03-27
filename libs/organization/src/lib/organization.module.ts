@@ -14,7 +14,7 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard, AuthModule } from '@blockframes/auth';
+import { AuthModule } from '@blockframes/auth';
 import { OrgFormComponent } from './org-form/org-form.component';
 import { OrgListComponent } from './org-list/org-list.component';
 import { OrgShowComponent } from './org-show/org-show.component';
@@ -25,20 +25,15 @@ export const organizationRoutes: Routes = [
   {
     path: 'new',
     component: OrgFormComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '', org: null }
+    data: { org: null }
   },
   {
     path: 'list',
     component: OrgListComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '' }
   },
   {
     path: ':id',
     component: OrgShowComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '' }
   }
 ];
 

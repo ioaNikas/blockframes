@@ -25,14 +25,12 @@ export const accountRoutes: Routes = [
   {
     path: 'profile',
     component: AccountProfileComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '', org: null }
+    data: { org: null }
   },
   {
     path: '',
     component: AccountViewComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '', org: null }
+    data: { org: null }
   }
 ];
 
