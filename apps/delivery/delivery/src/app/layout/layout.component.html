@@ -1,5 +1,28 @@
 <header>
-  <toolbar-header *ngIf="!!(user$ | async)" ></toolbar-header>
+  <toolbar-header>
+
+    <section class="top-toolbar-mat-icon">
+      <mat-icon>local_post_office</mat-icon>
+    </section>
+
+    <!-- @todo bruce transform into context-menu component 
+      and use 
+      const deliveryContextMenu = {
+        '' : [
+        { name: 'movie list', route: 'explorer' },
+        { name: 'templates', route: 'templates' }
+        ] 
+      }
+    -->
+    <section class="top-toolbar-context-menu">
+      <mat-nav-list>
+        <mat-list-item>
+          <a [routerLink]="['/delivery/explorer']">Explorer</a>
+        </mat-list-item>
+      </mat-nav-list>
+    </section>
+
+  </toolbar-header>
 </header>
 <main>
   <router-outlet></router-outlet>
