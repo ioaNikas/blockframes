@@ -13,6 +13,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
+import { ChooseTemplateDialogComponent } from './delivery/list/list.component';
+import { NewTemplateDialogComponent } from './delivery/form/form.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -44,11 +46,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { ChooseTemplateDialogComponent } from './delivery/list/list.component';
-import { AddCategoryDialog } from './template/category-list/category-list.component';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent, ChooseTemplateDialogComponent],
+  declarations: [AppComponent, LayoutComponent, ChooseTemplateDialogComponent, NewTemplateDialogComponent],
   imports: [
     // Angular
     BrowserModule,
@@ -92,7 +92,7 @@ import { AddCategoryDialog } from './template/category-list/category-list.compon
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
-  entryComponents: [ChooseTemplateDialogComponent],
+  entryComponents: [ChooseTemplateDialogComponent, NewTemplateDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

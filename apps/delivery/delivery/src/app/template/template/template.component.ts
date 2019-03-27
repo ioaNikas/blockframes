@@ -28,4 +28,8 @@ export class TemplateComponent implements OnInit {
       })
     );
   }
+
+  public onSave() {
+    alert("Coucou c'est template");
+  }
 }

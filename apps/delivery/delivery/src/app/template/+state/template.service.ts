@@ -49,7 +49,7 @@ export class TemplateService {
     }
   }
 
-  public async saveTemplate() {
+  public async saveTemplate(templateName?: string) {
     const idOrg = this.organizationQuery.getActiveId();
     const template = this.query.getActive();
     const materials = this.query.unsortedMaterialsByTemplate();
@@ -60,6 +60,12 @@ export class TemplateService {
       promises.push(promise);
     }
     await Promise.all(promises);
-    this.db.doc<Template>(`orgs/${idOrg}/templates/${template.id}`).update({ materialsId: template.materialsId });
+    if (!!templateName) {
+      const newTemplateId = this.db.createId();
+      const newTemplate = createTemplate({ id: newTemplateId, name: templateName, materialsId: template.materialsId });
+      this.db.doc<Template>(`orgs/${idOrg}/templates/${newTemplateId}`).set(newTemplate);
+    } else {
+      this.db.doc<Template>(`orgs/${idOrg}/templates/${template.id}`).update({ materialsId: template.materialsId });
+    }
   }
 }
