@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Ip, IpStore, IpQuery } from '../+state';
-import { Observable } from 'rxjs';
+import { Ip, IpQuery } from '../+state';
 
 @Injectable({ providedIn: 'root' })
 export class IpResolver implements Resolve<Ip> {
