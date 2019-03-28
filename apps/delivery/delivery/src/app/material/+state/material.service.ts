@@ -5,7 +5,8 @@ import { createMaterial, Material } from './material.model';
 import { OrganizationQuery } from '@blockframes/organization';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MaterialStore } from './material.store';
-import { TemplateStore, TemplateQuery } from '../../template/+state';
+import { TemplateQuery } from '../../template/+state/template.query';
+import { TemplateStore } from '../../template/+state/template.store';
 
 @Injectable({
   providedIn: 'root'

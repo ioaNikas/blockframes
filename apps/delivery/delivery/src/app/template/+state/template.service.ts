@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // tslint:disable-next-line
 import { OrganizationQuery } from '@blockframes/organization';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap, filter, map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TemplateStore } from './template.store';
 import { createTemplate, Template } from './template.model';
@@ -32,7 +32,6 @@ export class TemplateService {
   }
 
   public deleteTemplate(id: string) {
-    console.log(id);
     const idOrg = this.organizationQuery.getActiveId();
     this.db.doc<Template>(`orgs/${idOrg}/templates/${id}`).delete();
   }
@@ -50,6 +49,8 @@ export class TemplateService {
   }
 
   public async saveTemplate(templateName?: string) {
+
+  public async saveTemplate() {
     const idOrg = this.organizationQuery.getActiveId();
     const template = this.query.getActive();
     const materials = this.query.unsortedMaterialsByTemplate();
