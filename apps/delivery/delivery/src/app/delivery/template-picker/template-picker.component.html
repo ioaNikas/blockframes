@@ -1,0 +1,34 @@
+<section
+  *ngIf="(movie$ | async) as movie"
+  mat-dialog-content
+  fxLayout="row wrap"
+  fxLayoutAlign="space-around"
+>
+  <article fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex="100">
+    <mat-card class="card-add" mat-card>
+      <mat-card-actions>
+        <button color="primary" mat-icon-button matRipple>
+          <mat-icon>add_circle</mat-icon>
+          Add Template
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </article>
+  <article
+    fxFlex.gt-md="25"
+    fxFlex.gt-sm="50"
+    fxFlex="100"
+    *ngFor="let template of (templates$ | async)"
+  >
+    <mat-card (click)="selectTemplate(template.id)">
+      <img mat-card-image src="https://via.placeholder.com/150.png" alt="Preview of template" />
+      <mat-card-content>
+        <mat-card-title>
+          {{ template.name }}
+        </mat-card-title>
+      </mat-card-content>
+    </mat-card>
+  </article>
+  <button mat-raised-button color="warn" (click)="close()">CANCEL</button>
+  <button mat-raised-button color="primaty" (click)="goToForm(movie)">OK !</button>
+</section>

@@ -4,11 +4,14 @@
   </button>
   <h2 mat-subheader>Categories :</h2>
   <div *ngFor="let template of (template | keyvalue)">
-    <mat-list-item [routerLink]="['./']" fragment="{{template.key}}">
+    <mat-list-item>
       {{ template.key }}
     </mat-list-item>
   </div>
-  <button mat-raised-button color="primary" (click)="saveTemplate()">
-    Save Template
-  </button>
+  <article class="buttons" fxLayout="column">
+    <button mat-raised-button color="primary" (click)="save.emit()">Save as new template</button>
+    <button *ngIf="name === 'Delivery'" mat-raised-button color="accent" (click)="save.emit()">
+      Submit {{ name }}
+    </button>
+  </article>
 </mat-nav-list>

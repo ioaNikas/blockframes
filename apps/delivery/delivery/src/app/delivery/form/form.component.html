@@ -2,7 +2,7 @@
   <!-- Sidenav -->
   <!-- <mat-sidenav #sidenav [opened]="!!(user$ | async)" mode="side"> -->
   <mat-sidenav [opened]="true" mode="side">
-    <category-list *ngIf="(template$ | async) as template" [template]="template" name="Template" (save)="onSave()"></category-list>
+    <category-list *ngIf="(template$ | async) as template" [template]="template" name="Delivery" (save)="openDialog()"></category-list>
   </mat-sidenav>
   <!-- Content -->
   <mat-sidenav-content>
@@ -10,7 +10,6 @@
       *ngFor="let materials of (template$ | async | keyvalue)"
       [materials]="materials.value"
       [category]="materials.key"
-      id="{{materials.key}}"
     ></template-form>
   </mat-sidenav-content>
 </mat-sidenav-container>

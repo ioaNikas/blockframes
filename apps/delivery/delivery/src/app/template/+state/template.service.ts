@@ -5,8 +5,9 @@ import { switchMap, tap, filter, map } from 'rxjs/operators';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { TemplateStore } from './template.store';
 import { createTemplate, Template } from './template.model';
-import { Material, MaterialService } from '../../material/+state';
+import { Material} from '../../material/+state/material.model';
 import { TemplateQuery } from './template.query';
+import { MaterialService } from '../../material/+state/material.service';
 
 @Injectable({ providedIn: 'root' })
 export class TemplateService {
@@ -48,6 +49,8 @@ export class TemplateService {
     }
   }
 
+  public async saveTemplate(templateName?: string) {
+
   public async saveTemplate() {
     const idOrg = this.organizationQuery.getActiveId();
     const template = this.query.getActive();
@@ -59,6 +62,12 @@ export class TemplateService {
       promises.push(promise);
     }
     await Promise.all(promises);
-    this.db.doc<Template>(`orgs/${idOrg}/templates/${template.id}`).update({ materialsId: template.materialsId });
+    if (!!templateName) {
+      const newTemplateId = this.db.createId();
+      const newTemplate = createTemplate({ id: newTemplateId, name: templateName, materialsId: template.materialsId });
+      this.db.doc<Template>(`orgs/${idOrg}/templates/${newTemplateId}`).set(newTemplate);
+    } else {
+      this.db.doc<Template>(`orgs/${idOrg}/templates/${template.id}`).update({ materialsId: template.materialsId });
+    }
   }
 }

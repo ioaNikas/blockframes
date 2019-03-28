@@ -1,0 +1,38 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialogRef } from "@angular/material";
+import { TemplateService } from "../../template/+state/template.service";
+
+@Component({
+  selector: 'new-template-dialog',
+  template: `
+    <div mat-dialog-content>
+      <h2>Save as a new template</h2>
+      <mat-form-field appearance="outline" fxLayoutAlign="center">
+        <mat-label>File name</mat-label>
+        <input #templateName matInput placeholder="New template name" />
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="center">
+      <button mat-stroked-button color="primary" (click)="close()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="saveTemplate(templateName.value)">
+        Save Template
+      </button>
+    </div>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class NewTemplateComponent {
+  constructor(
+    public dialogRef: MatDialogRef<NewTemplateComponent>,
+    private templateService: TemplateService,
+  ) {}
+
+  public saveTemplate(templateName) {
+    this.templateService.saveTemplate(templateName);
+    this.dialogRef.close();
+  }
+
+  public close() {
+    this.dialogRef.close();
+  }
+}

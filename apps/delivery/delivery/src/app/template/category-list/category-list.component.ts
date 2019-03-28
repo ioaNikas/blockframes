@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { MaterialStore, MaterialService, Material } from '../../material/+state';
-import { MatDialogRef, MatDialog } from '@angular/material';
+import { ChangeDetectionStrategy, Component, Input, Output } from '@angular/core';
+import { Material, MaterialService, MaterialStore } from '../../material/+state';
 import { TemplateService } from '../+state';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'add-category-dialog',
@@ -45,6 +46,8 @@ export class AddCategoryDialogComponent {
 export class CategoryListComponent {
 
   @Input() template;
+  @Input() name;
+  @Output() save = new EventEmitter<any>();
 
   constructor(
     private materialStore: MaterialStore,
