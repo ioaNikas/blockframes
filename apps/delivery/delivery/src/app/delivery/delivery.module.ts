@@ -32,7 +32,7 @@ export const routes: Routes = [
     path: 'movie-materials',
     component: MovieMaterialsComponent
   },
-  { path: 'delivery-form', component: FormComponent},
+  { path: 'delivery-form', component: FormComponent },
   {
     path: 'delivery-list',
     children: [
@@ -43,7 +43,16 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MovieMaterialsComponent, ListComponent, ViewComponent, HomeComponent, FormComponent, CategoryListComponent, TemplateFormComponent, MaterialFormComponent],
+  declarations: [
+    MovieMaterialsComponent,
+    ListComponent,
+    ViewComponent,
+    HomeComponent,
+    FormComponent,
+    CategoryListComponent,
+    TemplateFormComponent,
+    MaterialFormComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,

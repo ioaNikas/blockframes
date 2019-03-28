@@ -13,8 +13,6 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
-import { ChooseTemplateDialogComponent } from './delivery/list/list.component';
-import { NewTemplateDialogComponent } from './delivery/form/form.component';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
@@ -45,10 +43,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TemplatePickerComponent } from './delivery/template-picker/template-picker.component';
+import { NewTemplateComponent } from './delivery/form/new-template.component';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent, ChooseTemplateDialogComponent, NewTemplateDialogComponent],
+  declarations: [AppComponent, LayoutComponent, TemplatePickerComponent, NewTemplateComponent],
   imports: [
     // Angular
     BrowserModule,
@@ -92,7 +92,7 @@ import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     environment.production ? [] : [AkitaNgDevtools.forRoot(), AkitaNgRouterStoreModule.forRoot()]
   ],
   providers: [],
-  entryComponents: [ChooseTemplateDialogComponent, NewTemplateDialogComponent],
+  entryComponents: [TemplatePickerComponent, NewTemplateComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
