@@ -1,8 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-// tslint:disable-next-line
-import { AuthQuery, User } from '@blockframes/auth';
-import { Observable } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'ip-upload-layout',
@@ -10,12 +6,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LayoutComponent implements OnInit {
-  public user$: Observable<User>;
+export class LayoutComponent {
 
-  constructor(private auth: AuthQuery, private router: Router) {}
+  constructor() {}
 
-  async ngOnInit() {
-    this.user$ = this.auth.user$();
-  }
 }

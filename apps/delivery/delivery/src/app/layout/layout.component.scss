@@ -1,7 +1,4 @@
-header {
-  overflow: hidden;
- }
- main {
-  margin-top: 64px;
-  overflow: auto;
- }
+toolbar-header .mat-nav-list .mat-list-item {
+  display: inline-block;
+  width: 110px;
+}

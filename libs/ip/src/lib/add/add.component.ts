@@ -2,19 +2,19 @@ import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 export interface DialogData {
-  email: string;
+  title: string;
 }
 
 @Component({
-  selector: 'account-delete',
-  templateUrl: './account-delete.component.html',
-  styleUrls: ['./account-delete.component.scss'],
+  selector: 'ip-add',
+  templateUrl: './add.component.html',
+  styleUrls: ['./add.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountDeleteComponent  {
+export class AddComponent  {
 
   constructor(
-    private dialogRef: MatDialogRef<AccountDeleteComponent>,
+    private dialogRef: MatDialogRef<AddComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 

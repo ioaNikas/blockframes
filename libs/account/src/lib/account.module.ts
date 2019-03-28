@@ -6,7 +6,6 @@ import { AccountProfileComponent } from './account-profile/account-profile.compo
 import { AccountViewComponent } from './account-view/account-view.component';
 import { AccountDeleteComponent } from './account-delete/account-delete.component';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@blockframes/auth';
 
 // Material
 import { 
@@ -25,14 +24,12 @@ export const accountRoutes: Routes = [
   {
     path: 'profile',
     component: AccountProfileComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '', org: null }
+    data: { org: null }
   },
   {
     path: '',
     component: AccountViewComponent,
-    canActivate: [AuthGuard],
-    data: { fallback: '', org: null }
+    data: { org: null }
   }
 ];
 

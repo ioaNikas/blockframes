@@ -1,6 +1,8 @@
-<mat-toolbar matRipple routerLink="form">
+
+<h2>Ip explorer</h2>
+<mat-toolbar (click)="add()">
   <mat-icon>add</mat-icon>
-  <h2>New Ip</h2>
+  <h3>New Ip</h3>
 </mat-toolbar>
 
 <!-- Action on all selected -->
@@ -15,7 +17,7 @@
 
 <!-- List of IPs -->
 <mat-nav-list>
-  <mat-list-item [routerLink]="['form', ip.id]" *ngFor="let ip of (ipList$ | async); let i = index">
+  <mat-list-item [routerLink]="['/layout', 'ip', ip.id]" *ngFor="let ip of (ipList$ | async); let i = index">
     <mat-checkbox [checked]="selected.includes(ip.id)" (change)="toggleOne($event, ip.id)" (click)="$event.stopPropagation()"></mat-checkbox>
     <p>{{ ip.title }}</p>
   </mat-list-item>

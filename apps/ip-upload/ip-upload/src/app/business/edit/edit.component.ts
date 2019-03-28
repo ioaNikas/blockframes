@@ -1,26 +1,27 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery, createIp } from '@blockframes/ip';
+import { IpHashContract, IP_TYPES, IpService, IpState, IpQuery, Ip, createIp } from '@blockframes/ip';
 import { User, AuthQuery } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { utils } from 'ethers';
-import { first, takeWhile, switchMap, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { first, takeWhile} from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'ip-form',
-  templateUrl: './form.component.html',
-  styleUrls: ['./form.component.scss'],
+  selector: 'ip-edit',
+  templateUrl: './edit.component.html',
+  styleUrls: ['./edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class EditComponent implements OnInit, OnDestroy {
   private alive = true;
   public persistForm: PersistNgFormPlugin<IpState>;
   public user: User;
   public form: FormGroup;
   public TYPES = IP_TYPES;
   public GENRES = ['horror'];
+  public ip: Ip;
 
   constructor(
     private service: IpService,
@@ -30,6 +31,7 @@ export class FormComponent implements OnInit, OnDestroy {
     private contract: IpHashContract,
     private builder: FormBuilder,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -51,9 +53,19 @@ export class FormComponent implements OnInit, OnDestroy {
     });
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
-    this.route.data
-      .pipe(takeWhile(_ => this.alive))
-      .subscribe(({ip}) => ip ? this.form.setValue(createIp(ip)) : this.form.reset());
+
+    this.route.params
+    .pipe(takeWhile(_ => this.alive))
+    .subscribe(params => {
+      this.ip = this.query.getEntity(params.id);
+      
+      if (this.ip !== undefined ) {
+        this.form.setValue(createIp(this.ip));
+      } else {
+        this.form.reset();
+      }
+     
+    });
   }
 
   ngOnDestroy() {
@@ -111,10 +123,9 @@ export class FormComponent implements OnInit, OnDestroy {
       this.snackBar.open('form invalid', 'close', { duration: 1000 });
       throw new Error('Invalid form');
     }
-    await this.service.add(this.form.value);
-    this.snackBar.open(`Created ${this.form.get('title').value}`, 'close', {duration: 1000});
-    this.form.reset();
-    this.persistForm.reset();
+    await this.service.update(this.ip.id, this.form.value);
+    this.snackBar.open(`Updated ${this.form.get('title').value}`, 'close', {duration: 1000});
+    this.router.navigate(['/layout/ip', this.ip.id]);
   }
 
   /** Clear current form with cancellation */
