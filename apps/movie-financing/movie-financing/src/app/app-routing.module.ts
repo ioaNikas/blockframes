@@ -26,8 +26,15 @@ export const routes: Routes = [
       { path: 'account', loadChildren: '@blockframes/account#AccountModule' }, // loadChildren should lead to the Account Module
       { path: ':id', loadChildren: './financing/financing.module#FinancingModule' } // should lead to the specific App
     ]
+  },
+  { 
+    path: 'not-found',
+    loadChildren: '@blockframes/ui#ErrorNotFoundModule'
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
   }
-  // {path: '**', component: ErrorComponent}, //  should lead to the 404 Component
 ];
 
 @NgModule({
