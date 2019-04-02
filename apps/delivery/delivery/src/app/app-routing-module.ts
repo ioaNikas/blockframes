@@ -37,6 +37,14 @@ export const routes: Routes = [
         loadChildren: '@blockframes/material#DeliveryModule'
       },
     ]
+  },
+  { 
+    path: 'not-found',
+    loadChildren: '@blockframes/ui#ErrorNotFoundModule'
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
   }
 ];
 
