@@ -46,15 +46,15 @@ export class ContextMenuQuery extends QueryEntity<ContextMenuState, ContextMenu>
   private applyParams (menuId: string, snapshot: RouterStateSnapshot) {
     return this.selectEntity(menuId).pipe(
       map(menu => {
-        const items = [];
-        menu.items.forEach((item: MenuItem) => {
+        const items = menu.items.map(item => {
           const i = { ...item } as MenuItem;
           // replace param kays by param values
           Object.keys(snapshot.root.params).forEach((paramKey) => {
             i.path = i.path.replace(`:${paramKey}`, snapshot.root.params[paramKey]);
           });
-          items.push(i);
-        })
+          return i;
+        });
+
         return { items };
       })
     )
