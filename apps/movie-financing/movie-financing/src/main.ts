@@ -10,7 +10,8 @@ import { hmrBootstrap } from './hmr';
 const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 
 persistState({
-  exclude: ['router']
+  exclude: ['router'],
+  key: 'movie-financing'
 });
 
 // Production Environment

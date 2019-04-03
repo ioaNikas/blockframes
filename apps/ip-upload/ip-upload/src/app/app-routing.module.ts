@@ -24,7 +24,7 @@ export const routes: Routes = [
     children: [
       { 
         path: '',
-        redirectTo: 'explorer',
+        redirectTo: 'home',
         pathMatch: 'full'
       },
       {
@@ -33,7 +33,7 @@ export const routes: Routes = [
         loadChildren: './business/business.module#BusinessModule'
       },
       {
-        path: 'explorer',
+        path: 'home',
         loadChildren: '@blockframes/ip#IpModule'
       },
       {
@@ -45,8 +45,15 @@ export const routes: Routes = [
         loadChildren: '@blockframes/account#AccountModule'
       }
     ]
+  },
+  { 
+    path: 'not-found',
+    loadChildren: '@blockframes/ui#ErrorNotFoundModule'
+  },
+  { 
+    path: '**',
+    redirectTo: 'not-found'
   }
-  // @todo bruce handle 404 errors
 ];
 
 @NgModule({
