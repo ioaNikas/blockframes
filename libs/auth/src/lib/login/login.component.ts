@@ -5,7 +5,6 @@ import { UserForm, AuthQuery, AuthService, User } from '../+state';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'auth-login',
@@ -39,18 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     try {
       const { email, pwd } = this.form.value;
       await this.service.signin(email, pwd);
-
-      // redirect to home only when user is actually connected
-      // without that, we cannot pass the home guards
-      this.query.user$()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((user: User) => {
-        if (user !== null) {
-          this.router.navigate(['']);
-          this.snackBar.open('Login successful!', 'close', { duration: 2000 });
-        }
-      });
-
+      const route = this.query.requestedRoute || 'layout';
+      this.router.navigate([route]);
     } catch (err) {
       this.snackBar.open(err.message, 'close', { duration: 2000 });
     }
