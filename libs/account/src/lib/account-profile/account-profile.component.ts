@@ -31,7 +31,7 @@ export class AccountProfileComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.user$ = this.authQuery.user$();
+    this.user$ = this.authQuery.user$;
 
     this.accountForm = this.builder.group({
       uid: new FormControl({ value: this.authQuery.user.uid, disabled: true }),
@@ -49,11 +49,11 @@ export class AccountProfileComponent implements OnInit {
       this.snackBar.open('form invalid', 'close', { duration: 1000 });
       throw new Error('Invalid form');
     }
-    
+
     try {
       const { firstName, lastName, biography } = this.accountForm.value;
 
-      this.authService.updateUser(this.authQuery.user.uid, { firstName, lastName, biography })
+      this.authService.update(this.authQuery.user.uid, { firstName, lastName, biography })
       .then(() => {
         this.snackBar.open(`account updated`, 'close', { duration: 2000 });
         //this.accountForm.reset();

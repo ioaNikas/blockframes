@@ -17,7 +17,7 @@ export class AccountViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.user$ = this.authQuery.user$();
+    this.user$ = this.authQuery.user$;
   }
 
   ngOnDestroy() {
