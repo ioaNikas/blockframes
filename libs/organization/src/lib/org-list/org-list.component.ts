@@ -22,8 +22,8 @@ export class OrgListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    
-    this.auth.user$().subscribe((user: User) => {
+
+    this.auth.user$.subscribe((user: User) => {
       // @todo remove observable on ngDestroy
       this.service.subscribeUserOrgs(user.uid);
     });

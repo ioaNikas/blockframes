@@ -1,66 +1,66 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AuthStore, User, createUser } from './auth.store';
-import { filter, switchMap, map } from 'rxjs/operators';
-import { NgWallet } from '@blockframes/ethers';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AuthStore, User, createUser } from './auth.store';
+import { AuthQuery } from './auth.query';
+import { switchMap,takeUntil } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  public authCollection: AngularFirestoreCollection<User>;
 
   constructor(
     private store: AuthStore,
+    private query: AuthQuery,
     private afAuth: AngularFireAuth,
-    private wallet: NgWallet,
-    private db: AngularFirestore,
-  ) {
-    this.authCollection = this.db.collection<User>("users");
+    private db: AngularFirestore
+  ) {}
+
+  //////////
+  // AUTH //
+  //////////
+  public async signin(mail: string, pwd: string) {
+    await this.afAuth.auth.signInWithEmailAndPassword(mail, pwd);
     this.subscribeOnUser();
   }
 
-  public signin(mail: string, pwd: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(mail, pwd);
-  }
-
   public async signup(mail: string, pwd: string) {
-    try {
-      await this.afAuth.auth.createUserWithEmailAndPassword(mail, pwd);
-      this.wallet.createRandom();
-    } catch (err) {
-      throw new Error(err.message);
-    }
+    const user = await this.afAuth.auth.createUserWithEmailAndPassword(mail, pwd);
+    await this.create(user.user);
+    this.subscribeOnUser();
   }
 
-  public updateUser(uid: string, account: any) {
-    return this.db.collection('users').doc(uid).update(account);
-  }
-
-  private subscribeOnUser() {
-    this.afAuth.authState
-      .pipe(
-        filter(user => !!user),
-        switchMap(({ uid }) => this.authCollection.doc(uid).valueChanges())
-      )
-      .pipe(map(user => (user ? createUser(user) : null)))
-      .subscribe((user: User) => this.store.update({ user }));
-  }
-
-  public logout() {
-    this.afAuth.auth.signOut();
+  public async logout() {
+    await this.afAuth.auth.signOut();
     this.store.update({ user: null });
   }
 
+  //////////
+  // USER //
+  //////////
+  /** Listen on user changes */
+  public subscribeOnUser() {
+    this.afAuth.authState.pipe(
+      takeUntil(this.query.isLoggedOut$),
+      switchMap(({ uid }) => this.db.doc<User>(`users/${uid}`).valueChanges())
+    ).subscribe(user => this.store.update({ user }))
+  }
+
+  /** Create a user based on firebase user */
+  public create({ email, uid }: firebase.User) {
+    const user = createUser({ email, uid })
+    return this.db.doc<User>(`users/${uid}`).set(user);
+  }
+
+  /** Upate a user */
+  public update(uid: string, user: Partial<User>) {
+    return this.db.doc<User>(`users/${uid}`).update(user);
+  }
+
+  /** Delete the current User */
   public async delete() {
     const uid = this.afAuth.auth.currentUser.uid;
-    try {
-      // using then instead of promise.all to prevent
-      // multiple store update due to previous subscriptions (subscribeOnUser)
-      return this.authCollection.doc(uid).delete()
-      .then(() => this.afAuth.auth.currentUser.delete())
-      .then(() => this.store.update({ user: null }));
-    } catch (e) {
-      throw new Error('Error while deleting account.');
-    }
+    this.store.update({ user: null });
+    await this.afAuth.auth.currentUser.delete();
+    await this.db.doc<User>(`users/${uid}`).delete();
   }
 }

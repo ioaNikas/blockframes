@@ -17,7 +17,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public persistForm: PersistNgFormPlugin<UserForm>;
   destroySubject$: Subject<void> = new Subject();
-  
+
   constructor(
     private builder: FormBuilder,
     private service: AuthService,
@@ -39,18 +39,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     try {
       const { email, pwd } = this.form.value;
       await this.service.signup(email, pwd);
-
-      // redirect to home only when user is actually connected
-      // without that, we cannot pass the home guards
-      this.query.user$()
-      .pipe(takeUntil(this.destroySubject$))
-      .subscribe((user: User) => {
-        if (user !== null) {
-          this.router.navigate(['']);
-          this.snackBar.open('Account created sucessfully!', 'close', { duration: 2000 });
-        }
-      });
-
+      const route = this.query.requestedRoute || 'layout';
+      this.router.navigate([route]);
     } catch (err) {
       this.snackBar.open(err.message, 'close', { duration: 2000 });
       // @todo handle error
