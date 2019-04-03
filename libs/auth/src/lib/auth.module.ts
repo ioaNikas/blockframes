@@ -17,8 +17,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 
 // Component
-import { SignupComponent } from './signup/signup.component';
-import { LoginComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material';
 import { AuthRootComponent } from './root/root.component';
 
@@ -34,18 +32,11 @@ export const AuthRoutes: Routes = [
     AngularFireAuthModule,
     FlexLayoutModule,
     // Material
-    MatTabsModule,
-    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDialogModule,
-    MatIconModule,
-    MatMenuModule,
     RouterModule.forChild(AuthRoutes),
   ],
-  entryComponents: [SignupComponent, LoginComponent],
-  declarations: [SignupComponent, LoginComponent, AuthRootComponent],
-  exports: [SignupComponent, LoginComponent],
+  declarations: [AuthRootComponent],
 })
 export class AuthModule {}
