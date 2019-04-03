@@ -1,18 +1,16 @@
-import { createContextMenu, createMenuItem } from '@blockframes/ui'
-
 export const CONTEXT_MENU = [
-  createContextMenu({route: 'default', items: [
-    createMenuItem({name: 'explorer', path: '/layout/home'}),
-    createMenuItem({name: 'example', path: '/layout/account/profile'}),
-  ]}),
-  createContextMenu({route: '/layout/home/movie/:id', items: [
-    createMenuItem({name: 'explorer', path: '/layout/home', exact: true}),
-    createMenuItem({name: 'view', path: '/layout/home/movie/:id', exact: true}),
-    createMenuItem({name: 'edit', path: '/layout/home/form/:id/edit', exact: true})
-  ]}),
-  createContextMenu({route: '/layout/home/form/:id', items: [
-    createMenuItem({name: 'explorer', path: '/layout/home', exact: true}),
-    createMenuItem({name: 'view', path: '/layout/home/movie/:id', exact: true}),
-    createMenuItem({name: 'edit', path: '/layout/home/form/:id/edit', exact: true})
-  ]}),
+  {route: 'default', items: [
+    {name: 'explorer', path: '/layout/home'},
+    {name: 'example', path: '/layout/account/profile'},
+  ]},
+  {route: '/layout/:id', items: [
+    {name: 'explorer', path: '/layout/home', exact: true},
+    {name: 'view', path: '/layout/:id', exact: true},
+    {name: 'edit', path: '/layout/home/form/:id/edit', exact: true}
+  ]},
+  {route: '/layout/home/form/:id', items: [
+    {name: 'explorer', path: '/layout/home', exact: true},
+    {name: 'view', path: '/layout/:id', exact: true},
+    {name: 'edit', path: '/layout/home/form/:id/edit', exact: true}
+  ]},
 ];
