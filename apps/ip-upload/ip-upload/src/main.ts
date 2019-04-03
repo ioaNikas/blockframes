@@ -11,7 +11,8 @@ const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 
 // Akita Persite State in LocalStorage
 persistState({
-  exclude: ['router']
+  exclude: ['router'],
+  key: 'ip-upload'
 });
 
 // Production Environment

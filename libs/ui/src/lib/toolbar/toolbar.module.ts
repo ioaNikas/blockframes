@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 
 import { OrganizationModule} from '@blockframes/organization';
 import { AuthModule} from '@blockframes/auth';
@@ -12,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
+import { MatTabsModule, MatListModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -25,9 +26,10 @@ import { MatListModule } from '@angular/material/list';
     MatMenuModule,
     MatButtonModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatTabsModule,
   ],
-  declarations: [HeaderComponent],
-  exports: [HeaderComponent]
+  declarations: [HeaderComponent, ContextMenuComponent],
+  exports: [HeaderComponent, ContextMenuComponent]
 })
 export class ToolbarModule {}

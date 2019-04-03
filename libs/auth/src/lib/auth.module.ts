@@ -24,6 +24,11 @@ import { MatCardModule } from '@angular/material';
 
 export const AuthRoutes: Routes = [
   {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
     path: 'login',
     component: LoginComponent,
     data: { fallback: '', org: null }

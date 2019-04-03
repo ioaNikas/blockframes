@@ -6,7 +6,8 @@ import { environment } from './environments/environment';
 import { persistState } from '@datorama/akita';
 
 persistState({
-  exclude: ['router']
+  exclude: ['router'],
+  key: 'delivery'
 });
 
 if (environment.production) {

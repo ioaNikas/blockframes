@@ -3,9 +3,11 @@
 
   <!-- Dynamic content -->
   <section class="app-icon-container-toolbar">
-    <ng-content select=".top-toolbar-mat-icon"></ng-content>
+    <ng-content select="[app-icon]"></ng-content>
   </section>
-  <ng-content select=".top-toolbar-context-menu"></ng-content>
+
+  <!-- Contextual menu -->
+  <context-menu></context-menu>
 
   <span class="example-fill-remaining-space"></span>
   <button mat-icon-button [matMenuTriggerFor]="apps">
@@ -38,26 +40,3 @@
     </mat-list>
   </mat-menu>
 </mat-toolbar>
-
-
-
-<!--
-<mat-toolbar>
-  <div>
-    <mat-icon *ngIf="hasArrow">arrow_right</mat-icon>
-    <ng-content select="app-icon"></ng-content>
-  </div>
-  
-  <div>
-    <ng-content select="context-menu"></ng-content>
-
-    <ng-content select="search-bar"></ng-content>
-  </div>
-
-  <div>
-    <!-- Application List 
-    <app-widget></app-widget>
-    <notification-widget></notification-widget>
-    <user-widget></user-widget>
-  </div>
-</mat-toolbar> -->
