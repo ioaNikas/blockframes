@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ContextMenuQuery} from '../+state/context-menu.query'
 import { Router } from '@angular/router';
-import { MenuItem } from '../+state';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'context-menu',
@@ -10,19 +10,15 @@ import { MenuItem } from '../+state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContextMenuComponent implements OnInit {
-  public items: Array<MenuItem>;
+  public items$: Observable<any>;
 
   constructor(
     private query: ContextMenuQuery,
     private router: Router,
-    private ref: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-    this.query.menu$.subscribe(menu => {
-      this.items = menu.items;
-      this.ref.markForCheck();
-    });
+    this.items$ = this.query.menu$;
   }
 
   isActive(instruction: any[], exact: boolean): boolean {
