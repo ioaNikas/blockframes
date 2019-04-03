@@ -30,6 +30,6 @@ import { MatTabsModule, MatListModule } from '@angular/material';
     MatTabsModule,
   ],
   declarations: [HeaderComponent, ContextMenuComponent],
-  exports: [HeaderComponent, ContextMenuComponent]
+  exports: [HeaderComponent]
 })
 export class ToolbarModule {}
