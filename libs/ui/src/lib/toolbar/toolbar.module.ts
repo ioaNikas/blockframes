@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule, MatListModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { MatTabsModule, MatListModule } from '@angular/material';
     MatDividerModule,
     MatListModule,
     MatTabsModule,
+    RouterModule,
   ],
   declarations: [HeaderComponent, ContextMenuComponent],
   exports: [HeaderComponent]

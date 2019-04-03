@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { AuthQuery, User } from '@blockframes/auth';
 import { Organization, OrganizationQuery, OrganizationService } from '../+state';
 import { Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'org-list',

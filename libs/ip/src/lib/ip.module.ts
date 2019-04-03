@@ -21,8 +21,6 @@ export const ipRoutes: Routes = [
     component: ExplorerComponent,
     data: { org: null }
   },
-  // @ todo { createComponent } ie simple create ip form that redirect to 
-  // corresponding business module 
 ];
 
 @NgModule({
