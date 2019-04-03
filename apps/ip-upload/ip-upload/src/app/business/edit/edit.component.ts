@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditComponent implements OnInit, OnDestroy {
-  private alive = true;
   public persistForm: PersistNgFormPlugin<IpState>;
   public user: User;
   public form: FormGroup;
@@ -30,7 +29,6 @@ export class EditComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private contract: IpHashContract,
     private builder: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
   ) {}
 
@@ -54,22 +52,16 @@ export class EditComponent implements OnInit, OnDestroy {
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
 
-    this.route.params
-    .pipe(takeWhile(_ => this.alive))
-    .subscribe(params => {
-      this.ip = this.query.getEntity(params.id);
-      
-      if (this.ip !== undefined ) {
-        this.form.setValue(createIp(this.ip));
-      } else {
-        this.form.reset();
-      }
-     
-    });
+    this.ip = this.query.getActive() as Ip;
+    
+    if (this.ip !== undefined ) {
+      this.form.setValue(createIp(this.ip));
+    } else {
+      this.form.reset();
+    }
   }
 
   ngOnDestroy() {
-    this.alive = false;
     this.persistForm.destroy();
   }
 
