@@ -69,12 +69,7 @@ export const organizationRoutes: Routes = [
     OrgWidgetComponent
   ],
   exports: [
-    OrgListComponent,
-    OrgFormComponent,
-    OrgShowComponent,
-    OrgMembersShowComponent,
-    OrgWidgetComponent,
-    RouterModule
+    OrgWidgetComponent
   ]
 })
 export class OrganizationModule {

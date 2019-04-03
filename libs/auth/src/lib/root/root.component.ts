@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthService, AuthQuery } from '../+state';
@@ -7,11 +7,14 @@ import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'auth-root',
   templateUrl: './root.component.html',
-  styleUrls: ['./root.component.scss']
+  styleUrls: ['./root.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class AuthRootComponent implements OnInit {
   public signinForm: FormGroup;
   public signupForm: FormGroup;
+  private snackbarDuration = 2000;
 
   constructor(
     private builder: FormBuilder,
@@ -35,7 +38,7 @@ export class AuthRootComponent implements OnInit {
 
   public async signin() {
     if (this.signinForm.invalid) {
-      this.snackBar.open('Information not valid');
+      this.snackBar.open('Information not valid', 'close', { duration: this.snackbarDuration });
       return;
     }
     try {
@@ -44,13 +47,13 @@ export class AuthRootComponent implements OnInit {
       const route = this.query.requestedRoute || 'layout';
       this.router.navigate([route]);
     } catch (err) {
-      this.snackBar.open(err.message, 'close', { duration: 2000 });
+      this.snackBar.open(err.message, 'close', { duration: this.snackbarDuration });
     }
   }
 
   public async signup() {
-    if (this.signinForm.invalid) {
-      this.snackBar.open('Information not valid');
+    if (this.signupForm.invalid) {
+      this.snackBar.open('Information not valid', 'close', { duration: this.snackbarDuration });
       return;
     }
     try {
@@ -59,7 +62,7 @@ export class AuthRootComponent implements OnInit {
       const route = this.query.requestedRoute || 'layout';
       this.router.navigate([route]);
     } catch (err) {
-      this.snackBar.open(err.message, 'close', { duration: 2000 });
+      this.snackBar.open(err.message, 'close', { duration: this.snackbarDuration });
     }
   }
 }

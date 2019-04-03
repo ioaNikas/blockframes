@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
-import { IpQuery, IpStore } from '../+state';
-import { IpResolver } from '@blockframes/ip';
+import { IpStore } from '../+state';
+import { IpResolver } from './ip.resolver';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IpGuard implements CanActivate {
   constructor(
-    private query: IpQuery,
     private router: Router,
     private store: IpStore,
     private ipResolver: IpResolver,

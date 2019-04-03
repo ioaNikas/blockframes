@@ -6,6 +6,7 @@ import { PersistNgFormPlugin } from '@datorama/akita';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { AccountDeleteComponent } from './../account-delete/account-delete.component'
 import { Router } from '@angular/router';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'account-profile',
@@ -13,12 +14,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./account-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountProfileComponent implements OnInit {
+export class AccountProfileComponent implements OnInit, OnDestroy {
   @Output() loggedOut = new EventEmitter();
 
   public accountForm: FormGroup;
   public persistForm: PersistNgFormPlugin<AccountForm>;
   public user$: Observable<User>;
+  private alive= true;
 
   constructor(
     private authQuery: AuthQuery,
@@ -30,18 +32,23 @@ export class AccountProfileComponent implements OnInit {
   ) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.user$ = this.authQuery.user$;
 
-    this.accountForm = this.builder.group({
-      uid: new FormControl({ value: this.authQuery.user.uid, disabled: true }),
-      email: new FormControl({ value: this.authQuery.user.email, disabled: true }),
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      biography: ''
+    this.user$.pipe(takeWhile(_ => this.alive))
+    .subscribe(user => {
+      if (user !== null ) {
+        this.accountForm = this.builder.group({
+          uid: new FormControl({ value: user.uid, disabled: true }),
+          email: new FormControl({ value: user.email, disabled: true }),
+          firstName: ['', Validators.required],
+          lastName: ['', Validators.required],
+          biography: ''
+        });
+        this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
+        this.persistForm.setForm(this.accountForm);
+      }
     });
-    this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
-    this.persistForm.setForm(this.accountForm);
   }
 
   public updateProfile() {
@@ -79,5 +86,9 @@ export class AccountProfileComponent implements OnInit {
         this.snackBar.open('Type in your email to confirm deletion', 'close', { duration: 5000 });
       }
     });
+  }
+
+  ngOnDestroy () {
+    this.alive = false;
   }
 }

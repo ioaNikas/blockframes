@@ -24,12 +24,10 @@ export const accountRoutes: Routes = [
   {
     path: 'profile',
     component: AccountProfileComponent,
-    data: { org: null }
   },
   {
     path: '',
     component: AccountViewComponent,
-    data: { org: null }
   }
 ];
 
