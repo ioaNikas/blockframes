@@ -1,21 +1,35 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, UrlTree, RouterStateSnapshot } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthQuery, AuthStore, AuthService } from '../+state';
 import { Observable } from 'rxjs';
-import { AuthQuery } from '../+state';
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private query: AuthQuery, private router: Router) {
-  }
+  constructor(
+    private afAuth: AngularFireAuth,
+    private store: AuthStore,
+    private query: AuthQuery,
+    private service: AuthService,
+    private router: Router
+  ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
-    return this.query.isLogged$.pipe(
-      map((isLogged) => {
-        const fallbackUrl = route.data.fallback !== '' &&  route.data.fallback !== undefined ? route.data.fallback : '/auth/login';
-        return isLogged ? isLogged : this.router.parseUrl(fallbackUrl);
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean | UrlTree> {
+    // Connected on the app
+    if (!!this.query.user) return true;
+    // Wait for the server to give first answer
+    return this.afAuth.authState.pipe(
+      map(auth => {
+        if (auth) { // Connected on Firebase
+          this.service.subscribeOnUser();
+          return true;
+        } else {    // Not connected
+          this.store.update({ requestedRoute: state.url })
+          return this.router.parseUrl('/auth')
+        }
       })
     );
   }
