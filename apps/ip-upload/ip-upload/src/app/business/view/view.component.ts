@@ -1,35 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IpQuery, Ip } from '@blockframes/ip';
-import { takeWhile } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'ip-view',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.scss']
 })
-export class ViewComponent implements OnInit, OnDestroy {
-
-  private alive = true;
+export class ViewComponent implements OnInit {
   public ip: Ip;
 
   constructor(
-    private query: IpQuery,
-    private route: ActivatedRoute,
+    private query: IpQuery
   ) {}
 
   ngOnInit() {
-
-    this.route.params
-    .pipe(takeWhile(_ => this.alive))
-    .subscribe(params => {
-      this.ip = this.query.getEntity(params.id);
-    });
-
-  }
-
-  ngOnDestroy() {
-    this.alive = false;
+    this.ip = this.query.getActive() as Ip;
   }
 
 }
