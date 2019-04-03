@@ -20,24 +20,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { MatCardModule } from '@angular/material';
+import { AuthRootComponent } from './root/root.component';
 
 
 export const AuthRoutes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: { fallback: '', org: null }
-  },
-  {
-    path: 'signup',
-    component: SignupComponent,
-    data: { fallback: '', org: null }
-  }
+  { path: '', component: AuthRootComponent }
 ];
 
 @NgModule({
@@ -58,7 +45,7 @@ export const AuthRoutes: Routes = [
     RouterModule.forChild(AuthRoutes),
   ],
   entryComponents: [SignupComponent, LoginComponent],
-  declarations: [SignupComponent, LoginComponent],
+  declarations: [SignupComponent, LoginComponent, AuthRootComponent],
   exports: [SignupComponent, LoginComponent],
 })
 export class AuthModule {}
