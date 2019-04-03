@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthStore, User, createUser } from './auth.store';
-import { AuthQuery } from './auth.query';
-import { switchMap,takeUntil } from 'rxjs/operators';
+import { switchMap, takeWhile } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
   constructor(
     private store: AuthStore,
-    private query: AuthQuery,
     private afAuth: AngularFireAuth,
     private db: AngularFirestore
   ) {}
@@ -40,7 +38,7 @@ export class AuthService {
   /** Listen on user changes */
   public subscribeOnUser() {
     this.afAuth.authState.pipe(
-      takeUntil(this.query.isLoggedOut$),
+      takeWhile(user => !!user),
       switchMap(({ uid }) => this.db.doc<User>(`users/${uid}`).valueChanges())
     ).subscribe(user => this.store.update({ user }))
   }
