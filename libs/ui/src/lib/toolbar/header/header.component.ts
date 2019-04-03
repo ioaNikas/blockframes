@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthQuery, User, AuthService} from '@blockframes/auth';
 import { Observable } from 'rxjs';

@@ -25,8 +25,8 @@
 
 <!-- Current IP form -->
 <mat-nav-list>
-  <mat-list-item routerLink="form" *ngIf="(ipForm$ | async)?.title as title">
+  <mat-list-item [routerLink]="['/layout', 'ip', ip.id, 'edit']" *ngIf="(ipForm$ | async) as ip">
     <mat-icon mat-list-icon>create</mat-icon>
-    <p>{{ title }}</p>
+    <p>{{ ip.title }}</p>
   </mat-list-item>
 </mat-nav-list>

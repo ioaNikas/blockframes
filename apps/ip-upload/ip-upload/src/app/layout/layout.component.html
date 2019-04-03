@@ -1,27 +1,8 @@
 <header>
   <toolbar-header>
-
-    <section class="top-toolbar-mat-icon">
+    <section app-icon>
       <mat-icon>cloud_upload</mat-icon>
     </section>
-
-    <!-- @todo bruce transform into context-menu component 
-      and use 
-      const deliveryContextMenu = {
-        '' : [
-        { name: 'movie list', route: 'explorer' },
-        { name: 'templates', route: 'templates' }
-        ] 
-      }
-    -->
-    <section class="top-toolbar-context-menu">
-      <mat-nav-list>
-        <mat-list-item>
-          <a [routerLink]="['/layout/explorer']">Explorer</a>
-        </mat-list-item>
-      </mat-nav-list>
-    </section>
-
   </toolbar-header>
 </header>
 <main>

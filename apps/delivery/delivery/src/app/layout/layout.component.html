@@ -1,35 +1,9 @@
 <header>
   <toolbar-header>
-
-    <section class="top-toolbar-mat-icon">
+    <section app-icon>
       <mat-icon>local_post_office</mat-icon>
     </section>
-
-    <!-- @todo bruce transform into context-menu component
-      and use
-      const deliveryContextMenu = {
-        '' : [
-        { name: 'movie list', route: 'explorer' },
-        { name: 'templates', route: 'templates' }
-        ]
-      }
-    -->
-    <section class="top-toolbar-context-menu">
-      <mat-nav-list>
-        <mat-list-item>
-          <a routerLink="/layout/home">Home</a>
-        </mat-list-item>
-        <mat-list-item>
-          <a routerLink="/layout/template">Template</a>
-        </mat-list-item>
-        <mat-list-item *ngIf="(movie$ | async) as movie">
-          <a [routerLink]="['/layout', movie.id, 'movie-materials']">Movie materials</a>
-        </mat-list-item>
-      </mat-nav-list>
-    </section>
-
   </toolbar-header>
-
 </header>
 <main>
   <router-outlet></router-outlet>
