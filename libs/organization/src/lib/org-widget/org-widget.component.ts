@@ -22,7 +22,7 @@ export class OrgWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.user$ = this.auth.user$();
+    this.user$ = this.auth.user$;
 
     this.user$.subscribe((user: User) => {
       // @todo remove observable on ngDestroy

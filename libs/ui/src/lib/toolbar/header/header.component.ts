@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
     await this.service.logout();
     this.loggedOut.emit();
     this.router.navigate(['/auth/login']);
-    this.snackBar.open('Successful logged out!', 'close', { duration: 2000 });
   }
 
 }

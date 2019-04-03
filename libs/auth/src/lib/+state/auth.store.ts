@@ -24,37 +24,30 @@ export interface AuthState {
   user: User;
   form: UserForm;
   accountForm: AccountForm;
+  requestedRoute?: string;
 }
 
 export function createUser(user: Partial<User>) {
-  return {
-    uid: user.uid,
-    email: user.email,
-    lastName: user.lastName,
-    firstName: user.firstName,
-    biography: user.biography,
-  } as User;
+  return { ...user } as User;
 }
 
-export function createInitialState(): AuthState {
-  return {
-    user: null,
-    form: {
-      email: '',
-      pwd: ''
-    },
-    accountForm: {
-      lastName: '',
-      firstName: '',
-      biography: '',
-    }
-  };
+const initialState: AuthState = {
+  user: null,
+  form: {
+    email: '',
+    pwd: ''
+  },
+  accountForm: {
+    lastName: '',
+    firstName: '',
+    biography: '',
+  }
 }
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'auth' })
 export class AuthStore extends Store<AuthState> {
   constructor() {
-    super(createInitialState());
+    super(initialState);
   }
 }
