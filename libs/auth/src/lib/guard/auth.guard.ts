@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean | UrlTree> {
+    this.store.update({ requestedRoute: null })
     // Connected on the app
     if (!!this.query.user) return true;
     // Wait for the server to give first answer

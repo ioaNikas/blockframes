@@ -26,13 +26,13 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {
-    this.user$ = this.auth.select(state => state.user);
+    this.user$ = this.auth.user$;
   }
 
   public async logout() {
     await this.service.logout();
     this.loggedOut.emit();
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/auth']);
   }
 
 }
