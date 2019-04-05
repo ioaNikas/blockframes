@@ -66,6 +66,37 @@ export const findUserByMail = functions.https
   });
 
 /**
+ * Trigger: REST call to find a list of orgs by name.
+ */
+export const findOrgByName = functions.https
+  .onCall((data, context) => {
+    const prefix: string = decodeURIComponent(data.prefix);
+
+    // Leave if the prefix is too short (do not search every users in the universe).
+    if (prefix.length < 2) {
+      return [];
+    }
+
+    // String magic to figure out a prefixEnd
+    // Say prefix is 'aaa'. We want to search all strings between 'aaa' (prefix) and 'aab' (prefixEnd)
+    // this will match: 'aaa', 'aaaa', 'aaahello', 'aaazerty', etc.
+    const incLast: string = String.fromCharCode(prefix.slice(-1).charCodeAt(0) + 1);
+    const prefixEnd: string = prefix.slice(0, -1) + incLast;
+
+    return db.collection('orgs')
+      .where('name', '>=', prefix)
+      .where('name', '<', prefixEnd)
+      .get()
+      .then(q => {
+        // leave if there are too many results.
+        if (q.size > 10) {
+          return [];
+        }
+
+        return q.docs.map(d => ({ id: d.id, name: d.data().name }));
+      });
+  });
+/**
  * Trigger: REST call to get or create a user.
  */
 export const getOrCreateUserByMail = functions.https
