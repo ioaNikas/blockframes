@@ -73,4 +73,12 @@ export class StakeholderService {
     return sh.id;
   }
 
+  public update(movieId: string, stakeholder: Partial<Stakeholder>) {
+    this.firestore.doc<Stakeholder>(`movies/${movieId}/stakeholders/${stakeholder.id}`).update(stakeholder);
+  }
+
+  public remove(movieId: string, stakeholderId: string) {
+    this.firestore.doc<Stakeholder>(`movies/${movieId}/stakeholders/${stakeholderId}`).delete();
+  }
+
 }
