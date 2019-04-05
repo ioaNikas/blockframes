@@ -50,7 +50,8 @@ export class DeliveryService {
    *
    * @param templateId if templateId is present, the materials sub-collection is populated with materials from this template
    */
-  public addDelivery(id: string, templateId?: string) {
+  public addDelivery(templateId?: string) {
+    const id = this.query.getActiveId();
     const orgId = this.organizationQuery.getActiveId();
     const stakeholderId = this.db.createId();
     const delivery = createDelivery({ id, movieId: this.movieQuery.getActiveId() });
@@ -61,7 +62,8 @@ export class DeliveryService {
     this.db.doc<Stakeholder>(`deliveries/${id}/stakeholders/${stakeholderId}`).set(stakeholder);
     this.store.setActive(id);
     if (!!templateId) {
-      const filterByMaterialId = material => this.templateQuery.getActive().materialsId.includes(material.id);
+      const filterByMaterialId = material =>
+        this.templateQuery.getActive().materialsId.includes(material.id);
       const materials = this.materialQuery.getAll({ filterBy: filterByMaterialId });
       return Promise.all(
         materials.map(material =>
@@ -91,5 +93,11 @@ export class DeliveryService {
     batch.commit();
 
     this.store.setActive(null);
+  }
+
+  public addStakeholder(stakeholder: Stakeholder, authorization: string) {
+    this.db
+      .doc<Stakeholder>(`deliveries/${this.query.getActiveId()}/stakeholders/${stakeholder.id}`)
+      .set({ ...stakeholder, authorizations: [authorization] });
   }
 }
