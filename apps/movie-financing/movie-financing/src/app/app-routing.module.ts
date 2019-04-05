@@ -27,7 +27,7 @@ export const routes: Routes = [
       { path: ':id', loadChildren: './financing/financing.module#FinancingModule' } // should lead to the specific App
     ]
   },
-  { 
+  {
     path: 'not-found',
     loadChildren: '@blockframes/ui#ErrorNotFoundModule'
   },
@@ -39,7 +39,6 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule,
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
