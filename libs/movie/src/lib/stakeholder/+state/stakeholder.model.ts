@@ -11,8 +11,10 @@ export interface Stakeholder {
 
 export function createStakeholder(params?: Partial<Stakeholder>) {
   if (params.organization) delete params.organization
-  return params ? {
+  return {
     authorizations: [],
+    orgMovieRole: '',
+    role: '',
     ...params,
-  } : {} as Stakeholder;
+  } as Stakeholder;
 }
