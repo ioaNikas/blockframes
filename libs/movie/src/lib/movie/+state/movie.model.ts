@@ -1,7 +1,9 @@
+import { Organization } from "@blockframes/organization";
+
 export interface Movie {
   id: string,
   title: string[],
-  orgId?: string,
+  org?: Organization,
   ipId: string,
   credits: {firstName: string, lastName: string, creditRole: string}[],
   stakeholderIds: string[],

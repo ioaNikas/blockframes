@@ -1,8 +1,8 @@
 <div fxLayout="column" class="container">
-  <div *ngFor="let org of (orgs$ | async)" fxLayout="row wrap" fxLayoutAlign="start space-between">
+  <div *ngFor="let org of (orgs$ | async)" fxLayout="row wrap" fxLayoutAlign="start space-between" fxLayoutGap="50px">
     <h1 fxFlex="100" class="mat-h1">{{ org.name }}</h1>
     <!-- ADD A NEW MOVIE BUTTON -->
-    <mat-card fxFlex="1 1 33%" class="add-new movie-card">
+    <mat-card class="movie-card">
       <mat-card-content fxFlex="100" fxFlexAlign="center" class="center">
           <button color="primary" mat-icon-button matRipple (click)="addNewMovie()">
             <mat-icon style="font-size: 40px; margin-left: -20px;">add_circle_outline</mat-icon>
@@ -10,9 +10,9 @@
           <h3 class="mat-h3">ADD A MOVIE</h3>
       </mat-card-content>
     </mat-card>
-    <div *ngFor="let movie of (movies$ | async)" fxFlex="1 1 33%">
+    <div *ngFor="let movie of (movies$ | async)" class="movie-card">
       <!-- MOVIE CARDS -->
-      <mat-card *ngIf="org.id === movie.orgId" class="movie-card">
+      <mat-card *ngIf="org.id === movie.organization.id">
         <div class="img-container">
           <img mat-card-image src="https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/default-poster.png?alt=media&token=f7e29d28-aa16-4cd6-921f-e88e7cafb6d4">
           <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -27,10 +27,6 @@
               <mat-icon color="primary">edit</mat-icon>
               <span>Edit</span>
             </button>
-            <button mat-menu-item>
-                <mat-icon color="primary">share</mat-icon>
-                <span>Share with</span>
-              </button>
             <button mat-menu-item (click)="delete(movie.id)">
               <mat-icon color="primary">delete_outline</mat-icon>
               <span>Delete</span>

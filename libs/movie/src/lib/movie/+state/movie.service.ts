@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MovieStore } from './movie.store';
 import { Movie, createMovie } from './movie.model';
-import { switchMap, tap, map, mergeAll, filter } from 'rxjs/operators';
+import { switchMap, tap, map } from 'rxjs/operators';
 import { createStakeholder, StakeholderService } from '../../stakeholder/+state';
-import { OrganizationQuery } from '@blockframes/organization';
-import { combineLatest } from 'rxjs/internal/observable/combineLatest';
-import { Observable } from 'rxjs/internal/Observable';
+import { OrganizationQuery, Organization } from '@blockframes/organization';
+import { combineLatest, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
@@ -22,17 +21,13 @@ export class MovieService {
     this.collection = this.firestore.collection<Movie>('movies');
   }
 
-
-
   public async add(title: string, orgId: string): Promise<Movie> {
     const id = this.firestore.createId();
     const owner = createStakeholder({orgId, orgMovieRole: 'ADMIN'});
-    let movie: Movie = createMovie({ id, title: [title], orgId });
-    this.store.add(movie);
-    // we don't want to keep orgId in our Movie object
-    movie = createMovie({ id, title: [title] });
+    const movie: Movie = createMovie({ id, title: [title]});
+
     // TODO: correct race condition
-    await this.collection.doc(id).set(movie);
+    await this.collection.add(movie);
     await this.shService.add(id, owner);
 
     return movie;
@@ -40,7 +35,7 @@ export class MovieService {
 
   public update(id: string, movie: Partial<Movie>) {
     // we don't want to keep orgId in our Movie object
-    if (movie.orgId) delete movie.orgId;
+    if (movie.org) delete movie.org;
     this.collection.doc(id).update(movie);
   }
 
@@ -49,21 +44,27 @@ export class MovieService {
     this.collection.doc(id).delete();
   }
 
-  public get fetchMoviesOrgs$(): Observable<Movie[]> {
-    return this.orgQuery.selectAll().pipe(
-      switchMap(orgs => orgs.map(
-        org => combineLatest(org.movieIds.map(
-          (id) => { if (id !== undefined) {
-            return this.firestore.doc<Movie>(`movies/${id}`).valueChanges().pipe(
-              map(movie => ({ ...movie, orgId: org.id}  as Movie))
-            );
-          }}
-        ))
-      )),
-      // merge and add all movies from each org to the store.
-      mergeAll(),
-      tap(movies => this.store.add(movies))
-    );
+  public moviesByOrganisation$(org: Organization): Observable<Movie[]> {
+    const moviesByOrg$: Observable<Movie>[] =
+      org.movieIds.map(movieId => {
+        return this.firestore.doc<Movie>(`movies/${movieId}`)
+          .valueChanges()
+          .pipe(
+            map(movie => ({ ...movie, organization: org}))
+          );
+      });
+    return combineLatest(moviesByOrg$);
   }
 
+  public get moviesOfOrganizations$(): Observable<Movie[]>{
+    return this.orgQuery.selectAll().pipe(
+      switchMap((orgs: Organization[]) => {
+        const movies$ = orgs.map(org => this.moviesByOrganisation$(org))
+        return combineLatest(movies$)
+      }),
+      map((moviesPerOrgs: Movie[][]) => [].concat.apply([], moviesPerOrgs) as Movie[]),
+      tap((movies: Movie[]) => this.store.set(movies))
+    );
+  }
 }
+

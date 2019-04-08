@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Stakeholder, StakeholderService, createStakeholder } from '../+state';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as firebase from 'firebase';
 import { MovieQuery } from '../../movie/+state';
+import { takeWhile } from 'rxjs/operators';
 
 interface Organization {
   id: string;
@@ -16,11 +17,12 @@ interface Organization {
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StakeholderListComponent implements OnInit {
+export class StakeholderListComponent implements OnInit, OnDestroy {
   public stakeholders$: Observable<Stakeholder[]>;
   public addStakeholderForm: FormGroup;
   public orgOptions: Organization[];
   public activeMovieId: string;
+  public isAlive = true;
 
   constructor(
     private service: StakeholderService,
@@ -40,9 +42,6 @@ export class StakeholderListComponent implements OnInit {
   }
 
   public submit(org: Organization) {
-    if (!(typeof org !== typeof '')) {
-      throw new Error('Invalid form');
-    }
     const sh = createStakeholder({orgId : org.id});
     this.service.add(this.activeMovieId, sh);
   }
@@ -52,17 +51,17 @@ export class StakeholderListComponent implements OnInit {
   }
 
   private async listOrgsByName(prefix: string): Promise<Organization[]> {
-    const f = firebase.functions().httpsCallable('findOrgByName');
-    return f({ prefix }).then(x => x.data);
+    const call = firebase.functions().httpsCallable('findOrgByName');
+    return call({ prefix }).then(matchingOrgs => matchingOrgs.data);
   }
 
   private async onChange() {
-    this.addStakeholderForm.valueChanges.subscribe(x => {
+    this.addStakeholderForm.valueChanges.pipe(takeWhile(() => this.isAlive)).subscribe(typingOrgName => {
       // TODO: debounce
-      this.listOrgsByName(x.org)
-        .then(xs => {
+      this.listOrgsByName(typingOrgName.org)
+        .then(matchingOrgs => {
           // TODO: use an observable
-          this.orgOptions = xs;
+          this.orgOptions = matchingOrgs;
         });
     });
   }
@@ -71,4 +70,7 @@ export class StakeholderListComponent implements OnInit {
     this.service.remove(this.activeMovieId, stakeholderId);
   }
 
+  ngOnDestroy() {
+    this.isAlive = false;
+  }
 }
