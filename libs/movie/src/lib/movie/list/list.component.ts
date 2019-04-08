@@ -15,7 +15,7 @@ import { takeWhile } from 'rxjs/operators';
 export class ListComponent implements OnInit, OnDestroy {
   orgs$: Observable<Organization[]>;
   movies$: Observable<Movie[]>;
-  isAlive: boolean;
+  isAlive= true;
 
 
   constructor(
@@ -28,8 +28,7 @@ export class ListComponent implements OnInit, OnDestroy {
   // Initiate the Movies in Akita
   ngOnInit() {
     this.orgs$ = this.orgQuery.selectAll();
-    this.isAlive = true;
-    this.service.fetchMoviesOrgs$.pipe(takeWhile(() => this.isAlive)).subscribe();
+    this.service.moviesOfOrganizations$.pipe(takeWhile(() => this.isAlive)).subscribe();
     this.movies$ = this.query.selectAll();
   }
 

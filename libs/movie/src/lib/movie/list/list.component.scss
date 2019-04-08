@@ -4,14 +4,13 @@
   margin-right: 80px;
 }
 
-.add-new {
-  min-height: 300px;
-}
-
 .movie-card {
-  width: 100%;
+  width: 20%;
+  min-width: 258px;
+  min-height: 314px;
   margin-bottom: 40px;
-  box-shadow: -12px 5px 10px rgba(0, 0, 255, .2);
+  box-shadow: -10px 11px 32px 0 #00000023;
+  background-color: #ffffff;
 }
 
 .center {
@@ -24,6 +23,8 @@
 }
 
 .img-container img {
+  min-width: 258px;
+  min-height: 234px;
   width: 100%;
 }
 

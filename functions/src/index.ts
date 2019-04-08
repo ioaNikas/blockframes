@@ -87,13 +87,13 @@ export const findOrgByName = functions.https
       .where('name', '>=', prefix)
       .where('name', '<', prefixEnd)
       .get()
-      .then(q => {
+      .then(matchingOrgs => {
         // leave if there are too many results.
-        if (q.size > 10) {
+        if (matchingOrgs.size > 10) {
           return [];
         }
 
-        return q.docs.map(d => ({ id: d.id, name: d.data().name }));
+        return matchingOrgs.docs.map(matchingOrg => ({ id: matchingOrg.id, name: matchingOrg.data().name }));
       });
   });
 /**
