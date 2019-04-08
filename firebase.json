@@ -1,12 +1,24 @@
 {
   "hosting": {
-    "public": "dist/apps/ip-upload/ip-upload",
+    "public": "dist/apps/",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/ip-upload{,/**}",
+        "destination": "/ip-upload/index.html"
+      },
+      {
+        "source": "/delivery{,/**}",
+        "destination": "/delivery/index.html"
+      },
+      {
+        "source": "/movie-financing{,/**}",
+        "destination": "/movie-financing/index.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
