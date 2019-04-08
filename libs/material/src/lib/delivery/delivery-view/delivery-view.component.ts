@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
-import { DeliveryService } from '../+state/delivery.service';
+import { DeliveryQuery, DeliveryService } from '../+state';
+
 
 @Component({
   selector: 'delivery-view',
@@ -13,11 +14,19 @@ export class DeliveryViewComponent implements OnInit {
   public materials$: Observable<Object>;
   public progressionValue$: Observable<number>;
 
-  constructor(private deliveryService: DeliveryService, private location: Location) {}
+  constructor(
+    private query: DeliveryQuery,
+    private service: DeliveryService,
+    private location: Location,
+  ) {}
 
   ngOnInit() {
-    this.materials$ = this.deliveryService.sortedDeliveryMaterials$;
-    this.progressionValue$ = this.deliveryService.deliveryProgression$;
+    this.materials$ = this.query.materialsByActiveDelivery$;
+    this.progressionValue$ = this.query.deliveryProgression$;
+  }
+
+  public editDelivery() { //TODO: secure this with guard so we can't access with raw url
+    this.service.editDelivery();
   }
 
   public goBack() {

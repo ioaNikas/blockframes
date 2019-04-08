@@ -83,6 +83,28 @@ const models = {
       'label': 'Financier'
     }
   ],
+  'STAKEHOLDER_DELIVERY_AUTHORIZATIONS': [
+    {
+      'slug': 'canValidateDelivery',
+      'label': 'Can validate delivery'
+    },
+    {
+      'slug': 'canModifyDelivery',
+      'label': 'Can add, remove and edit materials'
+    },
+    {
+      'slug': 'canDeliverMaterial',
+      'label': 'Can deliver materials'
+    },
+    {
+      'slug': 'canAcceptMaterial',
+      'label': 'Can accept materials'
+    },
+    {
+      'slug': 'canRefuseMaterial',
+      'label': 'Can refuse materials'
+    }
+  ],
   'CREDIT_ROLES': [
     {
       'slug': 'writer',

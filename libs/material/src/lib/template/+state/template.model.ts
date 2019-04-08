@@ -4,11 +4,18 @@ export interface Template {
   id: string;
   name: string;
   materialsId: string[];
+  orgId?: string; // only storage in akita store
+  orgName?: string; // only storage in akita store
 }
 
 export interface TemplateView {
   category: string,
   materials: Material[]
+}
+
+export interface TemplatesByOrgs {
+  orgName: string,
+  templates: Template[]
 }
 
 

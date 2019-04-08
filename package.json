@@ -5,7 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "npx ng serve --hmr --disable-host-check",
-    "build": "npx ng build --aot --prod",
+    "build:delivery": "npx ng build delivery --prod --base-href /delivery/",
+    "build:movie-financing": "npx ng build movie-financing --prod --base-href /movie-financing/",
+    "build:ip-upload": "npx ng build ip-upload --prod --base-href /ip-upload/",
+    "build:root": "cp apps/index.html dist/apps/",
+    "build:all": "npm run build:delivery && npm run build:movie-financing && npm run build:ip-upload && npm run build:root",
     "test": "npx ng test",
     "lint": "npx ng lint && npx ng lint",
     "e2e": "./node_modules/.bin/ng e2e ip-upload-e2e && ./node_modules/.bin/ng e2e movie-financing-e2e && ./node_modules/.bin/ng e2e delivery-e2e",
@@ -26,7 +30,8 @@
     "update:check": "ng update",
     "workspace-schematic": "./node_modules/.bin/nx workspace-schematic",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
-    "help": "./node_modules/.bin/nx help"
+    "help": "./node_modules/.bin/nx help",
+    "contracts:build": "npx waffle ./waffle-config.json"
   },
   "private": true,
   "dependencies": {
@@ -76,9 +81,11 @@
     "akita-schematics": "^2.0.0",
     "codelyzer": "~4.5.0",
     "cypress": "^3.1.5",
+    "ethereum-waffle": "^2.0.9",
     "jest": "^23.6.0",
     "jest-preset-angular": "6.0.2",
     "ng-packagr": "^4.7.0",
+    "openzeppelin-solidity": "^2.2.0",
     "pdfkit": "^0.9.0",
     "prettier": "1.16.4",
     "tmp": "0.0.33",
