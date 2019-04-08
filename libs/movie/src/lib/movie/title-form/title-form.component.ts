@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MovieService, MovieStore } from '../+state';
+import { MovieService } from '../+state';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Organization, OrganizationQuery } from '@blockframes/organization';
@@ -21,7 +21,6 @@ export class TitleFormComponent implements OnInit {
     private builder: FormBuilder,
     private service: MovieService,
     private router: Router,
-    private store: MovieStore,
     private orgQuery: OrganizationQuery,
   ) { }
 
@@ -35,12 +34,10 @@ export class TitleFormComponent implements OnInit {
 
   public async newMovie() {
     try {
-      const { title } = this.titleForm.value;
       // TODO: make owner by default if only one org
-      const { owner } = this.titleForm.value;
-      const id = await this.service.add(title, owner);
-      this.store.setActive(id);
-      this.router.navigateByUrl(`form/${id}`);
+      const { title, owner } = this.titleForm.value;
+      const movie = await this.service.add(title, owner);
+      this.router.navigateByUrl(`/layout/explorer/form/${movie.id}`);
       this.dialogRef.close();
     }
     catch (err) {

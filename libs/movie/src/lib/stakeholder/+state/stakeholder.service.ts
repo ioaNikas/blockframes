@@ -34,7 +34,7 @@ export class StakeholderService {
         map(organization => ({ ...sh, organization }))
       )
     };
-    const allShWithOrgs = stakeholders.map((sh) => shWithOrgs(sh));
+    const allShWithOrgs = stakeholders.map(sh => shWithOrgs(sh));
     return combineLatest(allShWithOrgs);
   }
 
