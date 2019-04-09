@@ -39,11 +39,11 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
     .subscribe(user => {
       if (user !== null ) {
         this.accountForm = this.builder.group({
-          uid: new FormControl({ value: user.uid, disabled: true }),
-          email: new FormControl({ value: user.email, disabled: true }),
-          firstName: new FormControl(user.firstName, Validators.required),
-          lastName: new FormControl(user.lastName, Validators.required),
-          biography: new FormControl(user.biography),
+          uid: { value: user.uid, disabled: true },
+          email: { value: user.email, disabled: true },
+          firstName: [user.firstName, Validators.required],
+          lastName: [user.lastName, Validators.required],
+          biography: user.biography,
         });
         this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
         this.persistForm.setForm(this.accountForm);
