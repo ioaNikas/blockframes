@@ -23,7 +23,7 @@
               <mat-icon color="primary">control_camera</mat-icon>
               <span>Open in...</span>
             </button>
-            <button mat-menu-item routerLink="form/{{ movie.id }}">
+            <button mat-menu-item [routerLink]="['form', movie.id]">
               <mat-icon color="primary">edit</mat-icon>
               <span>Edit</span>
             </button>
