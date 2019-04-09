@@ -27,7 +27,7 @@ export class MovieService {
     const movie: Movie = createMovie({ id, title: [title]});
 
     // TODO: correct race condition
-    await this.collection.add(movie);
+    await this.collection.doc<Movie>(id).set(movie);
     await this.shService.add(id, owner);
 
     return movie;
