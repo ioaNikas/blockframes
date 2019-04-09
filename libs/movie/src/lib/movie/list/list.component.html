@@ -49,7 +49,7 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button color="primary" mat-button routerLink="movie/{{movie.id}}">ACCESS</button>
+          <button color="primary" mat-button [routerLink]="['movie', movie.id]">ACCESS</button>
         </mat-card-actions>
       </mat-card>
     </div>
