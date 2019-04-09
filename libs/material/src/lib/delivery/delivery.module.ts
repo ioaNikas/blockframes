@@ -45,17 +45,17 @@ const routes: Routes = [
   },
   { path: 'list', component: DeliveryListComponent },
   {
-    path: 'view/:id',
+    path: 'view/:deliveryId',
     canActivate: [DeliveryGuard],
     component: DeliveryViewComponent
   },
   {
-    path: 'form/:id',
+    path: 'form/:deliveryId',
     // canActivate: [DeliveryGuard],   //TODO: make this path to not redirected to default path when guard is active
     component: DeliveryFormComponent
   },
   {
-    path: 'form/:id/settings',
+    path: 'form/:deliveryId/settings',
     // canActivate: [DeliveryGuard],   //TODO: make this path to not redirected to default path when guard is active
     component: DeliverySettingsComponent
   }
