@@ -10,8 +10,8 @@ export class MovieGuard implements CanActivate {
   constructor(private store: MovieStore, private query: MovieQuery, private router: Router,) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
-    if (!!this.query.getEntity(route.params.mid)) {
-      this.store.setActive(route.params.mid);
+    if (!!this.query.getEntity(route.params.movieid)) {
+      this.store.setActive(route.params.movieid);
       return true;
     } else {
       const redirectTo: UrlTree = this.router.parseUrl('/not-found');

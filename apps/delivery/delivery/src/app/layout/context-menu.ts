@@ -4,28 +4,28 @@ export const CONTEXT_MENU = [
     items: [{ name: 'home', path: '/layout/home' }, { name: 'template', path: '/layout/template' }]
   },
   {
-    route: '/layout/:mid',
+    route: '/layout/:movieid',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'view', path: '/layout/:mid/movie-materials'},
-      { name: 'list', path: '/layout/:mid'}
+      { name: 'view', path: '/layout/:movieid/movie-materials'},
+      { name: 'list', path: '/layout/:movieid'}
     ]
   },
   {
-    route: '/layout/:mid/view/:did',
+    route: '/layout/:movieid/view/:deliveryid',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'list', path: '/layout/:mid'},
-      { name: 'delivery', path: '/layout/:mid/view/:did'}
+      { name: 'list', path: '/layout/:movieid'},
+      { name: 'delivery', path: '/layout/:movieid/view/:deliveryid'}
       
     ]
   },
   {
-    route: '/layout/:mid/form/:did',
+    route: '/layout/:movieid/form/:deliveryid',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'list', path: '/layout/:mid'},
-      { name: 'delivery', path: '/layout/:mid/form/:did'}
+      { name: 'list', path: '/layout/:movieid'},
+      { name: 'delivery', path: '/layout/:movieid/form/:deliveryid'}
     ]
   }
 ];
