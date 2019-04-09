@@ -10,8 +10,8 @@ export class DeliveryGuard implements CanActivate {
   constructor(private store: DeliveryStore, private query: DeliveryQuery, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
-    if (!!this.query.getEntity(route.params.deliveryid)) {
-      this.store.setActive(route.params.deliveryid);
+    if (!!this.query.getEntity(route.params.deliveryId)) {
+      this.store.setActive(route.params.deliveryId);
       return true;
     } else {
       const redirectTo: UrlTree = this.router.parseUrl('layout');

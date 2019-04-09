@@ -4,27 +4,27 @@ export const CONTEXT_MENU = [
     items: [{ name: 'home', path: '/layout/home' }, { name: 'template', path: '/layout/template' }]
   },
   {
-    route: '/layout/:movieid',
+    route: '/layout/:movieId',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'view', path: '/layout/:movieid/movie-materials'},
-      { name: 'list', path: '/layout/:movieid'}
+      { name: 'view', path: '/layout/:movieId/movie-materials'},
+      { name: 'list', path: '/layout/:movieId'}
     ]
   },
   {
-    route: '/layout/:movieid/view/:deliveryid',
+    route: '/layout/:movieId/view/:deliveryId',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'delivery', path: '/layout/:movieid/view/:deliveryid'},
-      { name: 'list', path: '/layout/:movieid', exact: true}, 
+      { name: 'delivery', path: '/layout/:movieId/view/:deliveryId'},
+      { name: 'list', path: '/layout/:movieId', exact: true}, 
     ]
   },
   {
-    route: '/layout/:movieid/form/:deliveryid',
+    route: '/layout/:movieId/form/:deliveryId',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'delivery', path: '/layout/:movieid/form/:deliveryid'},
-      { name: 'list', path: '/layout/:movieid', exact: true}
+      { name: 'delivery', path: '/layout/:movieId/form/:deliveryId'},
+      { name: 'list', path: '/layout/:movieId', exact: true}
     ]
   }
 ];
