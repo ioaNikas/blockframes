@@ -22,17 +22,17 @@ export const routes: Routes = [
     component: FormComponent,
   },
   {
-    path: 'form/:id',
+    path: 'form/:mid',
     component: FormComponent,
     canActivate: [MovieGuard],
   },
   {
-    path: 'form/:id/teamwork',
+    path: 'form/:mid/teamwork',
     component: StakeholderListComponent,
     canActivate: [MovieGuard],
   },
   {
-    path: 'movie/:id',
+    path: 'movie/:mid',
     component: ViewComponent,
     canActivate: [MovieGuard],
   },
