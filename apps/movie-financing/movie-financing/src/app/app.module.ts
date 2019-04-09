@@ -17,7 +17,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { ToolbarModule } from '@blockframes/ui';
 import { MovieModule } from '@blockframes/movie';
 import { AuthModule } from '@blockframes/auth';
-// Material
 
 
 @NgModule({
