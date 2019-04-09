@@ -40,5 +40,6 @@ import { AuthModule } from '@blockframes/auth';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
