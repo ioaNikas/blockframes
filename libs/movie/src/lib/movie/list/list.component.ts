@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, OnDestroy } from '@angular/core';
 import { Movie, MovieQuery, MovieService } from '../+state';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { Organization, OrganizationQuery } from '@blockframes/organization';
 import { MatDialog } from '@angular/material/dialog';
 import { TitleFormComponent } from '../title-form/title-form.component';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'movie-financing-list',
@@ -12,30 +12,29 @@ import { TitleFormComponent } from '../title-form/title-form.component';
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent implements OnInit {
-
+export class ListComponent implements OnInit, OnDestroy {
+  orgs$: Observable<Organization[]>;
   movies$: Observable<Movie[]>;
+  isAlive= true;
+
 
   constructor(
     private query: MovieQuery,
     private service: MovieService,
-    private router: Router,
     private orgQuery: OrganizationQuery,
     private dialog: MatDialog
-  ) {
-  }
+  ) {}
 
   // Initiate the Movies in Akita
   ngOnInit() {
-    this.orgQuery.selectActive().subscribe((org: Organization) => {
-      // @todo remove observable on ngDestroy
-      const orgID = org ? org.id : undefined; // TODO: fix this org retrieval; this is temporary
-      this.service.subscribeOrgMovies(orgID);
-    });
-
+    this.orgs$ = this.orgQuery.selectAll();
+    this.service.moviesOfOrganizations$.pipe(takeWhile(() => this.isAlive)).subscribe();
     this.movies$ = this.query.selectAll();
   }
 
+  ngOnDestroy() {
+    this.isAlive = false;
+  }
   public addNewMovie() {
     this.dialog.open(TitleFormComponent);
   }

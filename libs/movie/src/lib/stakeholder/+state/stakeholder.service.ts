@@ -34,7 +34,7 @@ export class StakeholderService {
         map(organization => ({ ...sh, organization }))
       )
     };
-    const allShWithOrgs = stakeholders.map((sh) => shWithOrgs(sh));
+    const allShWithOrgs = stakeholders.map(sh => shWithOrgs(sh));
     return combineLatest(allShWithOrgs);
   }
 
@@ -71,6 +71,14 @@ export class StakeholderService {
     });
 
     return sh.id;
+  }
+
+  public update(movieId: string, stakeholder: Partial<Stakeholder>) {
+    this.firestore.doc<Stakeholder>(`movies/${movieId}/stakeholders/${stakeholder.id}`).update(stakeholder);
+  }
+
+  public remove(movieId: string, stakeholderId: string) {
+    this.firestore.doc<Stakeholder>(`movies/${movieId}/stakeholders/${stakeholderId}`).delete();
   }
 
 }

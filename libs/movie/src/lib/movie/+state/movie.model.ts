@@ -1,6 +1,9 @@
+import { Organization } from "@blockframes/organization";
+
 export interface Movie {
   id: string,
   title: string[],
+  org?: Organization,
   ipId: string,
   credits: {firstName: string, lastName: string, creditRole: string}[],
   stakeholderIds: string[],
@@ -30,8 +33,8 @@ export interface Movie {
  * A factory function that creates Movie
  */
 export function createMovie(params?: Partial<Movie>) {
-  return params ? {
+  return {
     stakeholderIds: [],
     ...params,
-  } : {} as Movie;
+  } as Movie;
 }

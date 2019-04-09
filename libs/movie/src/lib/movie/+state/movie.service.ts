@@ -2,70 +2,69 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { MovieStore } from './movie.store';
 import { Movie, createMovie } from './movie.model';
-import { takeWhile } from 'rxjs/operators';
-import { createStakeholder } from '../../stakeholder/+state/stakeholder.model';
-import { StakeholderService } from '../../stakeholder/+state/stakeholder.service';
-import { OrganizationQuery } from '@blockframes/organization';
-import { AuthQuery } from '@blockframes/auth';
+import { switchMap, tap, map } from 'rxjs/operators';
+import { createStakeholder, StakeholderService } from '../../stakeholder/+state';
+import { OrganizationQuery, Organization } from '@blockframes/organization';
+import { combineLatest, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 
 export class MovieService {
   private collection: AngularFirestoreCollection<Movie>;
-  public initiated = false;
 
   constructor(
   private store: MovieStore,
   private firestore: AngularFirestore,
   private orgQuery: OrganizationQuery,
   private shService: StakeholderService,
-  private authQuery: AuthQuery,
   ) {
-    this.collection = this.firestore.collection('movies');
+    this.collection = this.firestore.collection<Movie>('movies');
   }
 
-  /*
-  Initiate Movies
-  this.initiated turns false when user logout
-  */
-  public fetch_() {
-    //if(this.initiated) return;
-    //this.initiated = true;
-    this.collection.valueChanges().pipe(
-      //takeWhile(_ => this.initiated)
-    ).subscribe(movies => this.store.set(movies));
-  }
-
-  public subscribeOrgMovies(orgId): void {
-    //if (this.initiated) return;
-    // TODO: if you try to suscribe with another orgId, the function will ignore you
-    //this.initiated = true;
-    return this.fetch_();
-    this.firestore
-     .collection<Movie>('movies', ref => ref.where('stakeholderIds', 'array-contains', orgId))
-     .valueChanges().pipe(
-      takeWhile(_ => this.initiated)
-     ).subscribe(movies => this.store.set(movies));
-  }
-
-  public async add(title: string, orgId: string): Promise<string> {
+  public async add(title: string, orgId: string): Promise<Movie> {
     const id = this.firestore.createId();
     const owner = createStakeholder({orgId, orgMovieRole: 'ADMIN'});
+    const movie: Movie = createMovie({ id, title: [title]});
 
-    const movie: Partial<Movie> = createMovie({ id, title: [title] });
     // TODO: correct race condition
-    await this.collection.doc(id).set(movie);
+    await this.collection.add(movie);
     await this.shService.add(id, owner);
 
-    return id;
+    return movie;
   }
 
   public update(id: string, movie: Partial<Movie>) {
+    // we don't want to keep orgId in our Movie object
+    if (movie.org) delete movie.org;
     this.collection.doc(id).update(movie);
   }
 
   public remove(id: string) {
-    this.collection.doc(id).delete()
+    // TODO: make a firebase function
+    this.collection.doc(id).delete();
   }
 
+  public moviesByOrganisation$(org: Organization): Observable<Movie[]> {
+    const moviesByOrg$: Observable<Movie>[] =
+      org.movieIds.map(movieId => {
+        return this.firestore.doc<Movie>(`movies/${movieId}`)
+          .valueChanges()
+          .pipe(
+            map(movie => ({ ...movie, organization: org}))
+          );
+      });
+    return combineLatest(moviesByOrg$);
+  }
+
+  public get moviesOfOrganizations$(): Observable<Movie[]>{
+    return this.orgQuery.selectAll().pipe(
+      switchMap((orgs: Organization[]) => {
+        const movies$ = orgs.map(org => this.moviesByOrganisation$(org))
+        return combineLatest(movies$)
+      }),
+      map((moviesPerOrgs: Movie[][]) => [].concat.apply([], moviesPerOrgs) as Movie[]),
+      tap((movies: Movie[]) => this.store.set(movies))
+    );
+  }
 }
+

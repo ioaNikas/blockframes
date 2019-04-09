@@ -1,0 +1,37 @@
+.container {
+  margin-top: 20px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.movie-card {
+  width: 20%;
+  min-width: 258px;
+  min-height: 314px;
+  margin-bottom: 40px;
+  box-shadow: -10px 11px 32px 0 #00000023;
+  background-color: #ffffff;
+}
+
+.center {
+  text-align: center;
+}
+
+.img-container {
+  position: relative;
+  width: 100%;
+}
+
+.img-container img {
+  min-width: 258px;
+  min-height: 234px;
+  width: 100%;
+}
+
+.img-container button {
+  position: absolute;
+  top: 0%;
+  left: calc(100%-16px);
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
