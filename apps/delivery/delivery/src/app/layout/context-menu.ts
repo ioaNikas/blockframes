@@ -15,17 +15,16 @@ export const CONTEXT_MENU = [
     route: '/layout/:movieid/view/:deliveryid',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'list', path: '/layout/:movieid'},
-      { name: 'delivery', path: '/layout/:movieid/view/:deliveryid'}
-      
+      { name: 'delivery', path: '/layout/:movieid/view/:deliveryid'},
+      { name: 'list', path: '/layout/:movieid', exact: true}, 
     ]
   },
   {
     route: '/layout/:movieid/form/:deliveryid',
     items: [
       { name: 'home', path: '/layout/home'},
-      { name: 'list', path: '/layout/:movieid'},
-      { name: 'delivery', path: '/layout/:movieid/form/:deliveryid'}
+      { name: 'delivery', path: '/layout/:movieid/form/:deliveryid'},
+      { name: 'list', path: '/layout/:movieid', exact: true}
     ]
   }
 ];
