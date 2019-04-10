@@ -37,7 +37,7 @@ export class TitleFormComponent implements OnInit {
       // TODO: make owner by default if only one org
       const { title, owner } = this.titleForm.value;
       const movie = await this.service.add(title, owner);
-      this.router.navigateByUrl(`/layout/explorer/form/${movie.id}`);
+      this.router.navigateByUrl(`/layout/home/form/${movie.id}`);
       this.dialogRef.close();
     }
     catch (err) {

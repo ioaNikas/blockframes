@@ -39,11 +39,11 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
     .subscribe(user => {
       if (user !== null ) {
         this.accountForm = this.builder.group({
-          uid: new FormControl({ value: user.uid, disabled: true }),
-          email: new FormControl({ value: user.email, disabled: true }),
-          firstName: ['', Validators.required],
-          lastName: ['', Validators.required],
-          biography: ''
+          uid: { value: user.uid, disabled: true },
+          email: { value: user.email, disabled: true },
+          firstName: [user.firstName, Validators.required],
+          lastName: [user.lastName, Validators.required],
+          biography: user.biography,
         });
         this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
         this.persistForm.setForm(this.accountForm);
@@ -81,7 +81,7 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
         this.snackBar.open('Account deleted', 'close', { duration: 5000 });
         this.loggedOut.emit();
         this.authService.delete();
-        this.router.navigate(['/auth/signup']);
+        this.router.navigate(['/auth']);
       } else if (result !== undefined) {
         this.snackBar.open('Type in your email to confirm deletion', 'close', { duration: 5000 });
       }

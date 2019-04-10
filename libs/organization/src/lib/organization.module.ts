@@ -24,13 +24,12 @@ import { OrgWidgetComponent } from './org-widget/org-widget.component';
 export const organizationRoutes: Routes = [
   {
     path: '',
-    component: OrgListComponent,
+    redirectTo: 'list',
     pathMatch: 'full'
   },
   {
     path: 'list',
-    redirectTo: '',
-    pathMatch: 'full'
+    component: OrgListComponent,
   },
   {
     path: 'new',

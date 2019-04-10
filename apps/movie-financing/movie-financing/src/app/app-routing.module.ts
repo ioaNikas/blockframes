@@ -20,8 +20,8 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'explorer', pathMatch: 'full' },
-      { path: 'explorer', loadChildren: '@blockframes/movie#MovieModule' }, // loadChildren should lead to the Movie Module
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', loadChildren: '@blockframes/movie#MovieModule' }, // loadChildren should lead to the Movie Module
       { path: 'organization', loadChildren: '@blockframes/organization#OrganizationModule' }, // loadChildren should lead to the Organization Module
       { path: 'account', loadChildren: '@blockframes/account#AccountModule' }, // loadChildren should lead to the Account Module
       { path: ':id', loadChildren: './financing/financing.module#FinancingModule' } // should lead to the specific App
