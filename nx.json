@@ -23,6 +23,9 @@
     "ui": {
       "tags": ["ui", "shared"]
     },
+    "utils": {
+      "tags": ["utils", "shared"]
+    },
     "ethers": {
       "tags": ["ethereum", "smart-contract"]
     },
