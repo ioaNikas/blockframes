@@ -94,3 +94,4 @@ import { AngularFireFunctionsModule } from '@angular/fire/functions';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
