@@ -1,5 +1,21 @@
 mat-card-title {
-  text-align: center;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.25px;
+  margin-bottom: 0;
+}
+
+.text-block {
+  margin-bottom: -15px;
+}
+
+.modification {
+  font-weight: 300;
+  font-size: 11px;
+  line-height: 20px;
+  letter-spacing: 0.196429px;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 .trigger {
@@ -10,5 +26,6 @@ mat-card-title {
 
 mat-card {
   margin: 5% 5%;
-  min-height: 100px;
+  min-height: 90px;
+  border-radius: 0px;
 }

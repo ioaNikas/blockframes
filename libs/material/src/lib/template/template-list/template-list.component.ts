@@ -3,9 +3,9 @@ import { TemplateQuery, TemplateService, TemplatesByOrgs } from '../+state';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { MaterialService } from '../../material/+state';
-import { AddTemplateComponent } from './add-template';
 import { takeWhile } from 'rxjs/operators';
 import { OrganizationQuery } from '@blockframes/organization';
+import { TemplateAddComponent } from '../template-add/template-add.component';
 
 @Component({
   selector: 'template-list',
@@ -34,9 +34,10 @@ export class TemplateListComponent implements OnInit, OnDestroy {
     this.templatesByOrgs$ = this.query.templatesByOrgs$;
   }
 
-  public addTemplateDialog(orgName: string): void {
+  public addTemplateDialog(event: MouseEvent, orgName: string): void {
+    event.stopPropagation();
     const orgId = this.organizationQuery.getOrgId(orgName);
-    this.dialog.open(AddTemplateComponent, {
+    this.dialog.open(TemplateAddComponent, {
       width: '400px',
       data: { orgId }
     });

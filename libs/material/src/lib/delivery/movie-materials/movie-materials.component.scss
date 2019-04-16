@@ -11,7 +11,7 @@
   margin: auto;
   margin-top: 0;
   padding: 1rem;
-  box-shadow: -10px 11px 32px 0 #00000023;
+  width: 20%;
 }
 
 mat-progress-spinner{
@@ -19,10 +19,17 @@ mat-progress-spinner{
   box-shadow: -11px 10px 12px 0 rgba(244, 67, 54, 0.144);
 }
 
+.spinner-text {
+  text-align: center;
+}
+
+.materials {
+  width: 80%;
+}
+
 .materials-block {
   margin-bottom: 1rem;
   padding: 1rem;
-  box-shadow: -10px 11px 32px 0 #00000023;
 }
 
 h3 {
@@ -43,7 +50,7 @@ p {
 .progress-value {
   position: relative;
   top: -120px;
-  color: #F44336;
+  color: #f23c5c;
   font-weight: bolder;
   font-size: 2.5rem;
 }

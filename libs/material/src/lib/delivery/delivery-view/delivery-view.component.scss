@@ -5,13 +5,13 @@
 }
 
 .progress-spinner-block {
+  width: 20%;
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   margin: auto;
   margin-top: 0;
   padding: 1rem;
-  box-shadow: -10px 11px 32px 0 #00000023;
 }
 
 mat-progress-spinner{
@@ -19,10 +19,17 @@ mat-progress-spinner{
   box-shadow: -11px 10px 12px 0 rgba(63, 81, 180, 0.178);
 }
 
+.spinner-text {
+  text-align: center;
+}
+
+.materials {
+  width: 80%;
+}
+
 .materials-block {
   margin-bottom: 1rem;
   padding: 1rem;
-  box-shadow: -10px 11px 32px 0 #00000023;
 }
 
 h3 {
@@ -43,7 +50,7 @@ p {
 .progress-value {
   position: relative;
   top: -120px;
-  color: #3F51B4;
+  color: #6100ed;
   font-weight: bolder;
   font-size: 2.5rem;
 }
