@@ -22,14 +22,15 @@
 }
 
 .movie-card-view {
-  max-width: 500px;
+  max-width: 700px;
+  min-width: 500px;
   margin: 20px;
+}
+
+.movie-poster-thumbnail {
+  width: 150px;
 }
 
 .movie-panel {
   margin: auto;
-}
-
-mat-drawer-content {
-
 }

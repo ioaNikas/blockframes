@@ -2,20 +2,18 @@
   <mat-drawer #drawer mode="side">
     <mat-card class="movie-card-view">
       <mat-card-header>
-          <div mat-card-avatar></div>
-          <mat-card-title>{{ movie.title.original }}</mat-card-title>
-          <mat-card-title>(2017)</mat-card-title>
-          <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image [src]="movie.poster">
-        <mat-card-content>
-          <p>
-            The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-            A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-            bred for hunting.
-          </p>
-        </mat-card-content>
-
+        <div mat-card-avatar></div>
+        <mat-card-title>{{ movie.title.original }}</mat-card-title>
+        <mat-card-title>({{ movie.productionYear }})</mat-card-title>
+        <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="movie.poster"> 
+      <mat-card-content>
+        <mat-card-title>Directed by</mat-card-title>
+        <mat-card-subtitle>{{ movie.directorName }}</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-title>Main informations</mat-card-title>
+      </mat-card-content>
     </mat-card>
   </mat-drawer>
   <mat-drawer-content>
@@ -27,28 +25,43 @@
             <mat-card-content>
               <!-- TITLES -->
               <mat-form-field class="full-width">
-                <input matInput formControlName="originalTitle" placeholder="Original title">
+                <input matInput formControlName="original_title" placeholder="Original title">
               </mat-form-field>
         
               <mat-form-field class="full-width">
-                <input matInput formControlName="internationalTitle" placeholder="International title">
+                <input matInput formControlName="international_title" placeholder="International title">
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <input matInput formControlName="director_name" placeholder="Director name">
               </mat-form-field>
         
               <!-- POSTER -->
               <h3> Poster </h3>
-              <ng-container *ngIf="moviePoster !== ''; else fileUpload">
-                <img [src]="moviePoster"/>
-                <a color="warn" (click)="removePoster()">remove</a>
-              </ng-container>
-              <ng-template #fileUpload>
-                <file-upload
-                  accept="['.jpg', '.png']"
-                  path='test'
-                  [types]="['image/jpeg', 'image/png']"
-                  (storeUploaded)="addPoster($event)"
-                ></file-upload>
-              </ng-template>
-        
+              <mat-card class="movie-poster-thumbnail">
+                <ng-container *ngIf="moviePoster !== ''; else fileUpload">
+                  
+                  <img mat-card-image [src]="moviePoster">
+                  <mat-card-actions>
+                    <button mat-icon-button color="warn" (click)="removePoster()">
+                      <mat-icon>delete_circle</mat-icon>
+                    </button>
+                  </mat-card-actions>
+                  
+                </ng-container>
+                <ng-template #fileUpload>
+                  <file-upload
+                    accept="['.jpg', '.png']"
+                    path='test'
+                    [types]="['image/jpeg', 'image/png']"
+                    (storeUploaded)="addPoster($event)"
+                  ></file-upload>
+                </ng-template>
+              </mat-card>
+              <mat-form-field class="full-width">
+                <input matInput formControlName="production_year" placeholder="Production year">
+              </mat-form-field>
+      
               <!-- CREDITS -->
               <h3> Credits </h3>
                 <div formArrayName="credits"
