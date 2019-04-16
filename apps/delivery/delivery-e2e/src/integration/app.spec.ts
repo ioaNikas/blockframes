@@ -23,6 +23,13 @@ const NO_CATEGORY_MATERIAL = {
 const ORG_NAME_1 = 'Organization #1';
 const TEMPLATE_NAME_1 = 'Template #2';
 
+const EMAIL = 'delivery-test-e2e@cascade8.com';
+const PASSWORD = 'blockframes4tw';
+
+function generateRandomEmail(): string {
+  return `cypress${Math.floor(Math.random() * 10000) + 1}@test.com`;
+}
+
 beforeEach(() => {
   cy.clearCookies();
   cy.clearLocalStorage();
@@ -40,8 +47,8 @@ describe('I m a user and i can save a delivery as template', () => {
   it('should login, create delivery from scratch, save it as a new template, then delete this template', () => {
     // Connexion
     let p: any = new LandingPage();
-    p.fillEmail('delivery-test-e2e@cascade8.com');
-    p.fillPassword('blockframes4tw');
+    p.fillSigninEmail(EMAIL);
+    p.fillSigninPassword(PASSWORD);
     p = p.login();
     // Go to app
     p.displayMovieMenu();
@@ -92,4 +99,21 @@ describe('I m a user and i can save a delivery as template', () => {
     // TODO: Find a way to assert that template is deleted
     // => Expansion Panel still buggy
   });
+});
+
+describe('I\'m a paranoid user, I would like to create an account and verify that I own a contract on the blockchain', () => {
+  it('should type values in signup form', () => {
+    // Connexion
+    let p: any = new LandingPage();
+    p.fillSignupEmail(generateRandomEmail());
+    p.fillSignupPassword(PASSWORD);
+    p = p.signup();
+
+    // Go to profile page
+    p.openUserMenu();
+    p = p.clickProfile();
+
+    // Assert id
+    p.assertIdIsAddress();
+  })
 });

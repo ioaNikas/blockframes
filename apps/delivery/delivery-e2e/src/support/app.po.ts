@@ -5,6 +5,20 @@ export const getGreeting = () => cy.get('h1');
 
 export const getTitle = () => cy.get('section h1');
 
+export class NavbarPage {
+  constructor() {
+    cy.get('header', {timeout: 60000}).contains('Blockframes');
+  }
+
+  public openUserMenu() {
+    cy.get('mat-icon').should('contain', 'account_circle').contains('account_circle').click();
+  }
+
+  public clickProfile() {
+    cy.get('mat-list button').should('contain', 'Profile').contains('Profile').click();
+    return new EditProfilePage;
+  }
+}
 export class TemplateFormPage {
   constructor() {
     cy.contains('Add new material')
@@ -194,9 +208,10 @@ export class TemplateListPage {
   }
 }
 
-export class HomePage {
-  constructor() {
-    cy.contains('ADD A MOVIE');
+export class HomePage extends NavbarPage{
+  constructor(isEmpty: boolean) {
+    super();
+    if (!isEmpty) cy.contains('ADD A MOVIE');
   }
 
   public displayMovieMenu() {
@@ -218,22 +233,53 @@ export class HomePage {
   }
 }
 
+export class EditProfilePage {
+  constructor() {
+    cy.get('mat-card-header').contains('Edit account');
+  }
+
+  public wait(time: number) {
+    cy.wait(time);
+  }
+
+  public assertIdIsAddress() {
+    cy.get('label').first().contains('Id');
+
+    cy.get('#mat-input-5', {timeout: 60000}).should(($input) => {
+      expect($input.val()).to.match(/0x[a-zA-Z\d]{40}/); // ethereum address regex
+    });
+  }
+}
+
 export class LandingPage {
   constructor() {
     cy.contains('Sign in');
   }
 
-  public fillEmail(email: string) {
+  public fillSigninEmail(email: string) {
     cy.get('#signin input[type="email"]').type(email);
   }
 
-  public fillPassword(password: string) {
+  public fillSigninPassword(password: string) {
     cy.get('#signin input[type="password"]').type(password);
   }
 
   public login(): any {
     cy.get('button').contains('Signin').click();
-    return new HomePage();
+    return new HomePage(false);
   }
 
+  public fillSignupEmail(email: string) {
+    cy.get('#signup input[type="email"]').type(email);
+  }
+
+  public fillSignupPassword(password: string) {
+    cy.get('#signup input[type="password"]').eq(0).type(password);
+    cy.get('#signup input[type="password"]').eq(1).type(password);
+  }
+
+  public signup(): any {
+    cy.get('button').contains('Signup').click();
+    return new HomePage(true);
+  }
 }
