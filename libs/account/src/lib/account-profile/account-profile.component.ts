@@ -41,8 +41,8 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
         this.accountForm = this.builder.group({
           uid: { value: user.identity, disabled: true },
           email: { value: user.email, disabled: true },
-          firstName: [user.firstName, Validators.required],
-          lastName: [user.lastName, Validators.required],
+          first_name: [user.firstName, Validators.required],
+          last_name: [user.lastName, Validators.required],
           biography: user.biography,
         });
         this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
@@ -58,9 +58,9 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const { firstName, lastName, biography } = this.accountForm.value;
+      const { first_name, last_name, biography } = this.accountForm.value;
 
-      this.authService.update(this.authQuery.user.uid, { firstName, lastName, biography })
+      this.authService.update(this.authQuery.user.uid, { firstName: first_name, lastName: last_name, biography })
       .then(() => {
         this.snackBar.open(`account updated`, 'close', { duration: 2000 });
         //this.accountForm.reset();
