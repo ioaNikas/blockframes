@@ -3,6 +3,8 @@ import { Organization } from "@blockframes/organization";
 export interface Movie {
   id: string,
   title: any, // will contain all titles: original, international, suiss, etc 
+  directorName: string,
+  productionYear: number,
   org?: Organization,
   ipId: string,
   credits: {firstName: string, lastName: string, creditRole: string}[],
