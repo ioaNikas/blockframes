@@ -103,6 +103,5 @@ describe('I\'m a paranoid user, I would like to create an account and verify tha
 
     // Assert id
     p.assertIdIsAddress();
-    p.assertCantLeave();
   })
 });
