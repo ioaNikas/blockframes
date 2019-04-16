@@ -23,6 +23,9 @@ const NO_CATEGORY_MATERIAL = {
 const ORG_NAME_1 = 'Organization #1';
 const TEMPLATE_NAME_1 = 'Template #2';
 
+const EMAIL = 'delivery-test-e2e@cascade8.com';
+const PASSWORD = 'blockframes4tw';
+
 function generateRandomEmail(): string {
   return `cypress${Math.floor(Math.random() * 10000) + 1}@test.com`;
 }
@@ -44,8 +47,8 @@ describe('I m a user and i can save a delivery as template', () => {
   it('', () => {
     // Connexion
     let p: any = new LandingPage();
-    p.fillSigninEmail('delivery-test-e2e@cascade8.com');
-    p.fillSigninPassword('blockframes4tw');
+    p.fillSigninEmail(EMAIL);
+    p.fillSigninPassword(PASSWORD);
     p = p.login();
     // Go to app
     p.displayMovieMenu();
@@ -94,7 +97,7 @@ describe('I\'m a paranoid user, I would like to create an account and verify tha
     // Connexion
     let p: any = new LandingPage();
     p.fillSignupEmail(generateRandomEmail());
-    p.fillSignupPassword('azerty123');
+    p.fillSignupPassword(PASSWORD);
     p = p.signup();
 
     // Go to profile page
