@@ -21,10 +21,10 @@ export class MovieService {
     this.collection = this.firestore.collection<Movie>('movies');
   }
 
-  public async add(title: string, orgId: string): Promise<Movie> {
+  public async add(original: string, orgId: string): Promise<Movie> {
     const id = this.firestore.createId();
     const owner = createStakeholder({orgId, orgMovieRole: 'ADMIN'});
-    const movie: Movie = createMovie({ id, title: [title]});
+    const movie: Movie = createMovie({ id, title: { original }});
 
     // TODO: correct race condition
     await this.collection.doc<Movie>(id).set(movie);
@@ -33,7 +33,7 @@ export class MovieService {
     return movie;
   }
 
-  public update(id: string, movie: Partial<Movie>) {
+  public update(id: string, movie: any) {
     // we don't want to keep orgId in our Movie object
     if (movie.org) delete movie.org;
     this.collection.doc(id).update(movie);

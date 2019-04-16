@@ -41,6 +41,10 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  public get moviePoster() {
+    return this.movieForm.get('poster').value as String;
+  }
+
   public get movieCredits() {
     return this.movieForm.get('credits') as FormArray;
   }
@@ -62,14 +66,15 @@ export class FormComponent implements OnInit, OnDestroy {
     this.movie = this.query.getActive();
 
     this.movieForm = this.builder.group({
-      title: [''],
+      originalTitle: [this.movie.title.original],
+      internationalTitle: [this.movie.title.international],
       ipId: [''],
       credits: this.builder.array([this.createCredit()]),
       stakeholders: this.builder.array([this.createStakeholder()]),
       genres: [''],
       isan: [null],
       status: [''],
-      poster: [''],
+      poster: [this.movie.poster],
       types: [''],
       keywords: this.builder.array([this.createKeyword('')]),
       logline: ['', Validators.maxLength(180)],
@@ -124,13 +129,29 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!this.movieForm.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
+    } else {
+      this.snackBar.open(`${this.movieForm.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
+      this.service.update(this.activeId, this.preUpdate({ ...this.movieForm.value }));
     }
-    else {
-      this.snackBar.open(`${this.movieForm.get('title').value} saved.`, 'close', { duration: 2000 });
-      this.service.update(this.activeId, this.movieForm.value);
+
+    //this.router.navigateByUrl(''); @todo remove ?
+    //this.clear(); @todo remove ?
+  }
+
+  private preUpdate(movie) {
+    // apply movie modifications to fit actual model
+    movie.title = {};
+    if (movie.originalTitle) {
+      movie.title.original = movie.originalTitle;
+      delete movie.originalTitle;
     }
-    this.router.navigateByUrl('');
-    this.clear();
+
+    if (movie.internationalTitle) {
+      movie.title.international = movie.internationalTitle;
+      delete movie.internationalTitle;
+    }
+
+    return movie;
   }
 
   // TODO: rezise and rename
@@ -154,6 +175,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public addPoster(poster: string) {
     this.movieForm.patchValue({ poster });
+  }
+
+  public removePoster() {
+    this.movieForm.patchValue({ poster : '' });
   }
 
   public createCredit(): FormGroup {
