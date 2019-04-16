@@ -1,9 +1,9 @@
 <main class="container">
   <section *ngIf="(movie$ | async) as movie" class="delivery-list">
-    <article fxLayout="row" fxLayoutAlign="space-between">
+    <article fxLayoutAlign="space-between">
       <h2>{{ movie.title }}</h2>
-      <button class="add-delivery" mat-raised-button (click)="openDialog()">
-        Add a new delivery <mat-icon>add</mat-icon>
+      <button class="add-delivery mat-elevation-z0" mat-raised-button (click)="openDialog()">
+        Add a new delivery <mat-icon class="icon">add</mat-icon>
       </button>
     </article>
     <article
@@ -16,6 +16,11 @@
         [delivery]="delivery"
         (isSelected)="selectDelivery(delivery, movie.id)"
       ></delivery-item>
+    </article>
+    <article fxLayoutAlign="end" class="bottom-button">
+      <button class="add-delivery mat-elevation-z0" mat-raised-button (click)="openDialog()">
+        Add a new delivery <mat-icon class="icon">add</mat-icon>
+      </button>
     </article>
   </section>
 </main>

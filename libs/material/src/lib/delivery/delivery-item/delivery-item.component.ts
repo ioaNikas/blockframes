@@ -16,6 +16,11 @@ export class DeliveryItemComponent implements OnInit {
 
   public progression$: Observable<number>;
 
+  // Visual bullshit for WoW effect
+  public stateIcons = ['dummy', 'alarm', 'check_circle_outline', 'play_circle_outline', 'thumb_up'];
+  public paymentColors = ['dummy', 'green', 'red'];
+  public stateIconsColors = ['dummy', 'teal', 'orange', 'grey', 'green'];
+
   constructor(private query: DeliveryQuery) { }
 
   ngOnInit() {
@@ -26,14 +31,12 @@ export class DeliveryItemComponent implements OnInit {
     this.isSelected.emit(true);
   }
 
-  public getStage(value: number) {
-    // TODO: find a way to return a dynamic value to change the color property
-    if (value > 0 && value <= 9) return 'red-number';
-    if (value > 9 && value <= 29) return 'orange-number';
-    if (value > 29 && value <= 49) return 'yellow-number';
-    if (value > 49 && value <= 69) return 'green-number';
-    if (value > 69 && value <= 89) return 'teal-number';
-    if (value > 89 && value <= 100) return 'blue-number';
+  public getRandomColor() {
+    return "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
+  }
+
+  public randomNumberPicker(scale: number) {
+    return Math.floor(Math.random() * scale) + 1;
   }
 }
 
