@@ -44,10 +44,9 @@ export class TitleFormComponent implements OnInit {
     } else {
       try {
         const { title } = this.titleForm.value;
+        this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 5000 });
         const movie = await this.service.add(title, this.data.org.id);
 
-        this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 1000 });
-        
         this.movieQuery.selectEntity(movie.id)
           .pipe(takeWhile(_ => this.observeMovie))
           .subscribe(m => {

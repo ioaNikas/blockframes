@@ -3,8 +3,8 @@
   <p>Add a movie to {{ data.org.name }}</p>
   <form [formGroup]="titleForm" (ngSubmit)="newMovie()">
     <mat-form-field appearance="outline">
-      <mat-label>Film title</mat-label>
-      <input matInput type="string" placeholder="Lorem ipsum" formControlName="title"/>
+      <mat-label>Orginal title</mat-label>
+      <input matInput type="string" placeholder="Original Title" formControlName="title"/>
     </mat-form-field>
     <div class="margin-top">
       <button mat-button type="button" (click)="cancel()">Cancel</button>

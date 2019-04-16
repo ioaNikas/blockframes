@@ -1,5 +1,5 @@
 
-<div class="mat-h1">{{ (movie$ | async).title }}</div>
-
+<div class="mat-h1">{{ (movie$ | async).title.original }}</div>
+<img *ngIf="movie$ | async as movie" src={{movie.poster}}/>
 <div class="mat-h1">{{ (movie$ | async).logline }}</div>
 
