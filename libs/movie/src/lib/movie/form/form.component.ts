@@ -66,8 +66,10 @@ export class FormComponent implements OnInit, OnDestroy {
     this.movie = this.query.getActive();
 
     this.movieForm = this.builder.group({
-      originalTitle: [this.movie.title.original],
-      internationalTitle: [this.movie.title.international],
+      original_title: [this.movie.title.original],
+      international_title: [this.movie.title.international],
+      director_name: [this.movie.directorName],
+      production_year: [this.movie.productionYear],
       ipId: [''],
       credits: this.builder.array([this.createCredit()]),
       stakeholders: this.builder.array([this.createStakeholder()]),
@@ -130,7 +132,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
     } else {
-      this.snackBar.open(`${this.movieForm.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
+      this.snackBar.open(`${this.movieForm.get('original_title').value} saved.`, 'close', { duration: 2000 });
       this.service.update(this.activeId, this.preUpdate({ ...this.movieForm.value }));
     }
 
@@ -141,16 +143,26 @@ export class FormComponent implements OnInit, OnDestroy {
   private preUpdate(movie) {
     // apply movie modifications to fit actual model
     movie.title = {};
-    if (movie.originalTitle) {
-      movie.title.original = movie.originalTitle;
-      delete movie.originalTitle;
+    if (movie.original_title) {
+      movie.title.original = movie.original_title;
+      delete movie.original_title;
     }
 
-    if (movie.internationalTitle) {
-      movie.title.international = movie.internationalTitle;
-      delete movie.internationalTitle;
+    if (movie.international_title) {
+      movie.title.international = movie.international_title;
+      delete movie.international_title;
     }
 
+    if (movie.director_name) {
+      movie.directorName = movie.director_name;
+      delete movie.director_name;
+    }
+
+    if (movie.production_year) {
+      movie.productionYear = movie.production_year;
+      delete movie.production_year;
+    }
+    
     return movie;
   }
 
