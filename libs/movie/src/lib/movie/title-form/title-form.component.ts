@@ -21,7 +21,7 @@ export class TitleFormComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<TitleFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public org: any,
     private snackBar: MatSnackBar,
     private builder: FormBuilder,
     private service: MovieService,
@@ -46,7 +46,7 @@ export class TitleFormComponent implements OnInit {
     try {
       const { title } = this.titleForm.value;
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 5000 });
-      const movie = await this.service.add(title, this.data.org.id);
+      const movie = await this.service.add(title, this.org.id);
 
       this.movieQuery.selectEntity(movie.id)
         .pipe(takeWhile(_ => this.alive))
