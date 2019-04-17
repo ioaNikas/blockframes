@@ -17,7 +17,7 @@ import { takeWhile } from 'rxjs/operators';
 export class TitleFormComponent implements OnInit {
   public titleForm: FormGroup;
   public orgList$: Observable<Organization[]>;
-  private observeMovie = true;
+  private alive = true;
 
   constructor(
     private dialogRef: MatDialogRef<TitleFormComponent>,
@@ -48,10 +48,10 @@ export class TitleFormComponent implements OnInit {
         const movie = await this.service.add(title, this.data.org.id);
 
         this.movieQuery.selectEntity(movie.id)
-          .pipe(takeWhile(_ => this.observeMovie))
+          .pipe(takeWhile(_ => this.alive))
           .subscribe(m => {
           if (m !== undefined) {
-            this.observeMovie = false;
+            this.alive = false;
             this.router.navigate([`/layout/home/form/${movie.id}`]);
             this.dialogRef.close();
           }
