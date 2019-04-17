@@ -41,6 +41,12 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  // getter for all form inputs
+  public currentFormValue(attr) {
+    const input = this.movieForm.get(attr);
+    return input !== null ? input.value: '' as String;
+  }
+
   public get moviePoster() {
     return this.movieForm.get('poster').value as String;
   }
