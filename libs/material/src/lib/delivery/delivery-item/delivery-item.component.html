@@ -1,10 +1,29 @@
-<mat-card (click)="selectDelivery()" fxLayoutAlign="space-between" class="mat-elevation-z8">
-  <article>
-    <h4>Delivery ID : {{ delivery.id }}</h4>
-  </article>
-  <span *ngIf="(progression$ | async) as value" class="progression-value" fxLayout="row">
-    <h5>State of delivery : </h5>
-    <span class="spacer"></span>
-    <h4 [ngClass]="getStage(value)"> {{ value }}%</h4>
-  </span>
+<mat-card (click)="selectDelivery()" fxLayoutAlign="space-between" class="mat-elevation-z6">
+  <section fxLayout="row" fxLayoutAlign="none center" class="stakeholders">
+    <span class="first-dot mat-elevation-z4" [ngStyle]="{ 'background-color': getRandomColor() }">
+    </span>
+    <span class="second-dot mat-elevation-z4" [ngStyle]="{ 'background-color': getRandomColor() }">
+    </span>
+    <span class="names">
+      <h4>Delivery ID : {{ delivery.id }}</h4>
+    </span>
+  </section>
+  <section fxLayout="row" fxLayoutAlign="space-between none" class="informations">
+    <article class="step">
+      <h5>Step :</h5>
+      <p class="step-text">step {{randomNumberPicker(5)}}</p>
+    </article>
+    <article class="state">
+      <h5>State :</h5>
+      <mat-icon class="icons" svgIcon="{{stateIcon}}"></mat-icon>
+    </article>
+    <article class="time">
+      <h5>Delivery time :</h5>
+      <p class="time-text">{{randomNumberPicker(30)}} days</p>
+    </article>
+    <article class="payment">
+      <h5>Payment :</h5>
+      <mat-icon class="icons" svgIcon="{{paymentIcon}}"></mat-icon>
+    </article>
+  </section>
 </mat-card>
