@@ -149,24 +149,26 @@ export class FormComponent implements OnInit, OnDestroy {
     movie.title = {};
     if (movie.original_title) {
       movie.title.original = movie.original_title;
-      delete movie.original_title;
     }
 
     if (movie.international_title) {
       movie.title.international = movie.international_title;
-      delete movie.international_title;
     }
 
     if (movie.director_name) {
       movie.directorName = movie.director_name;
-      delete movie.director_name;
+      
     }
 
     if (movie.production_year) {
       movie.productionYear = movie.production_year;
-      delete movie.production_year;
     }
-    
+
+    delete movie.original_title;
+    delete movie.international_title;
+    delete movie.director_name;
+    delete movie.production_year;
+
     return movie;
   }
 

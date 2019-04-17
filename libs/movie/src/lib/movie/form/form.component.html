@@ -74,6 +74,16 @@
               <mat-form-field class="full-width">
                 <input matInput formControlName="production_year" placeholder="Production year">
               </mat-form-field>
+
+              <!-- AUDIOVISUAL TYPES -->
+              <h3> Types </h3>
+              <mat-form-field>
+                <mat-select formControlName="types" placeholder="Film Type">
+                  <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
+                    {{ type.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </mat-tab>
             <mat-tab label="Story description">
               <!-- CREDITS -->
@@ -145,18 +155,7 @@
                   <mat-icon>add_circle</mat-icon>
                 </button>
               </div>
-        
-              <!-- AUDIOVISUAL TYPES -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="types" placeholder="Film Type">
-                    <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
-                      {{ type.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-        
+
               <!-- GENRES -->
               <div class="small-width">
                 <mat-form-field>
