@@ -146,7 +146,8 @@ export class FormComponent implements OnInit, OnDestroy {
     //this.clear(); @todo remove ?
   }
 
-  private preUpdate(movie) {
+  // @todo temp until corrected camelCase FormBuilderAttribs
+  private preUpdate(movie: any) {
     // apply movie modifications to fit actual model
     movie.title = {};
     if (movie.original_title) {
