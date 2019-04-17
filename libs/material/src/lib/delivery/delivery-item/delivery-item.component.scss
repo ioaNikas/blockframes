@@ -2,38 +2,56 @@ mat-card:hover {
   cursor: pointer;
 }
 
-.progression-value {
-  padding-right: 1rem;
-}
-
-.spacer {
-  margin-left: 0.3rem;
-}
-
 h5 {
+  font-size: 13px;
   color: #A0A0A0;
 }
 
-.red-number {
-  color: red;
+.stakeholders {
+  width: 65%;
 }
 
-.orange-number {
-  color: orange;
+.informations {
+  width: 35%;
+  margin-right: 15px;
 }
 
-.yellow-number {
-  color: rgb(255, 208, 0);
+.first-dot {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.green-number {
-  color: green;
+.second-dot {
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: -15px;
 }
 
-.teal-number {
-  color: teal;
+.names {
+  margin-left: 15px;
+  font-weight: bolder;
 }
 
-.blue-number {
-  color: rgb(0, 140, 255);
+.step,
+.state,
+.time,
+.payment {
+  height: 50px;
+  margin-top: -15px;
+}
+
+.step-text, .time-text {
+  font-weight: bolder;
+  font-size: 15px;
+  margin-top: -15px;
+}
+
+.icons {
+  position: absolute;
+  top: 45px;
+  width: 20px;
 }

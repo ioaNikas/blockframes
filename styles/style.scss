@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "theme.scss";
+@import "variables.scss";
 @include mat-core();
 @include angular-material-theme($blockframes-theme);
 @import '~@angular/material/theming';
@@ -27,21 +28,21 @@ mat-card {
 }
 
 .mat-expansion-indicator:before {
-  color: #6100ed!important;
+  color: $primary!important;
 }
 
 .mat-expansion-indicator:after {
-  color: #6100ed!important;
+  color: $primary!important;
 }
 
 // input border
 .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: #6100ed!important;
+  color: $primary!important;
 }
 
 // input label
 .mat-form-field-label {
-  color: #6100ed!important;
+  color: $primary!important;
 }
 
 // input left borders
