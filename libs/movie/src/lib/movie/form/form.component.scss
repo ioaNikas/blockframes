@@ -16,19 +16,45 @@
   display: inline-block;
 }
 
-.movie-card {
-  min-width: 120px;
-  margin: 20px auto;
+.movie-card { 
+  max-width: 700px;
+  min-width: 300px;
 }
 
 .movie-card-view {
-  max-width: 700px;
-  min-width: 500px;
-  margin: 20px;
+  min-width: 120px;
+  margin: 20px auto;
+  max-width: 500px;
+  background-color: transparent;
+  .movie-card-header, mat-card-content {
+    text-align: center;
+    width: 100%;
+    /deep/ .mat-card-header-text {
+      width: 100%;
+      text-align: center;
+      .movie-card-meta-title {
+        font-size: 50px;
+      }
+    }
+  }
+
+  .movie-card-meta-title {
+    margin-top: 30px;
+    font-weight: bold;
+  }
 }
 
+.movie-panel {
+  .toggle-drawer {
+    float: right;
+  }
+}
+
+
 .movie-poster-thumbnail {
-  width: 150px;
+  background-color: transparent;
+  width: 50%;
+  margin: auto;
 }
 
 .movie-panel {
