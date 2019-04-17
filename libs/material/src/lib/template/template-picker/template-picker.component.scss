@@ -1,5 +1,26 @@
+.blank {
+  color: #B7B7B7;
+  font-weight: bolder;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.create-card {
+  background-color: #F3F3F3;
+}
+
+.create-icon {
+  color: #B7B7B7;
+}
+
 mat-card-title {
-  text-align: center;
+  font-size: 12px;
+  font-weight: bolder;
+  margin-bottom: -10px;
+}
+
+.icon {
+  width: 20%;
 }
 
 .trigger {
@@ -8,9 +29,30 @@ mat-card-title {
   right: 0px;
 }
 
-mat-card {
-  margin: 5% 5%;
-  cursor: pointer;
-  min-height: 100px;
+.template-card {
+  width: 33%;
 }
 
+mat-card {
+  margin: 7% 10%;
+  cursor: pointer;
+  min-height: 65px;
+}
+
+.cancel-button {
+  font-weight: bold;
+  color: #6100ed;
+  border: none;
+}
+
+.add-button {
+  font-weight: bold;
+}
+
+p {
+  color: rgba(0, 0, 0, 0.514);
+}
+
+h2 {
+  font-weight: bold;
+}
