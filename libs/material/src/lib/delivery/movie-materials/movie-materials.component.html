@@ -40,7 +40,7 @@
       </ng-template>
     </article>
     <article class="materials" fxLayout="column">
-      <h2>{{ movie.title }}</h2>
+      <h2>{{ movie.title.original }}</h2>
       <div *ngFor="let category of (materials$ | async | keyvalue)">
         <h3>{{ category.key | uppercase }}</h3>
         <mat-card *ngFor="let material of category.value" class="materials-block mat-elevation-z6">
