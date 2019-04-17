@@ -38,32 +38,30 @@ export class TitleFormComponent implements OnInit {
   }
 
   public async newMovie() {
-
     if (!this.titleForm.valid) {
       this.snackBar.open('Invalid form', 'close', { duration: 1000 });
-    } else {
-      try {
-        const { title } = this.titleForm.value;
-        this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 5000 });
-        const movie = await this.service.add(title, this.data.org.id);
-
-        this.movieQuery.selectEntity(movie.id)
-          .pipe(takeWhile(_ => this.alive))
-          .subscribe(m => {
-          if (m !== undefined) {
-            this.alive = false;
-            this.router.navigate([`/layout/home/form/${movie.id}`]);
-            this.dialogRef.close();
-          }
-        })
-      }
-      catch (err) {
-        this.snackBar.open('An error occured', 'close', { duration: 1000 });
-        throw new Error('An error occured');
-      }
+      return 
     }
+    
+    try {
+      const { title } = this.titleForm.value;
+      this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 5000 });
+      const movie = await this.service.add(title, this.data.org.id);
 
-
+      this.movieQuery.selectEntity(movie.id)
+        .pipe(takeWhile(_ => this.alive))
+        .subscribe(m => {
+        if (m !== undefined) {
+          this.alive = false;
+          this.router.navigate([`/layout/home/form/${movie.id}`]);
+          this.dialogRef.close();
+        }
+      })
+    }
+    catch (err) {
+      this.snackBar.open('An error occured', 'close', { duration: 1000 });
+      throw new Error('An error occured');
+    }
   }
 
   public cancel() {
