@@ -12,8 +12,8 @@
         <mat-card-title *ngIf="currentFormValue('production_year')">({{ currentFormValue('production_year') }})</mat-card-title>
         <mat-card-subtitle>{{ currentFormValue('international_title') }}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image [src]="currentFormValue('poster')"> 
-      <mat-card-content>
+      <img mat-card-image *ngIf="currentFormValue('poster')" [src]="currentFormValue('poster')"> 
+      <mat-card-content *ngIf="currentFormValue('director_name')">
         <mat-card-title>Directed by</mat-card-title>
         <mat-card-subtitle>{{ currentFormValue('director_name') }}</mat-card-subtitle>
       </mat-card-content>
@@ -25,7 +25,13 @@
       </mat-card-content>
     </mat-card>
   </mat-drawer-content>
-  <mat-drawer opened #drawer mode="side" position="end">
+  <mat-drawer opened #drawer mode="side" position="end" [ngClass]="{'show': 'mat-drawer-fullscreen', 'hide': ''}[fullScreenForm]">
+    <button mat-icon-button class="toggle-fullscreen" (click)="toggleFullScreen()">
+      <ng-container *ngIf="fullScreenForm; else fullscreenExit"><mat-icon>fullscreen_exit</mat-icon></ng-container>
+      <ng-template #fullscreenExit>
+        <mat-icon>fullscreen</mat-icon>
+      </ng-template>
+    </button>
     <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
       <mat-card class="movie-card">
         <mat-card-content>
@@ -49,8 +55,8 @@
               <!-- POSTER -->
               <h3> Poster </h3>
               <mat-card class="movie-poster-thumbnail mat-elevation-z0">
-                <ng-container *ngIf="moviePoster !== ''; else fileUpload">
-                  <img mat-card-image [src]="moviePoster">
+                <ng-container *ngIf="currentFormValue('poster'); else fileUpload">
+                  <img mat-card-image [src]="currentFormValue('poster')">
                   <mat-card-actions>
                     <button mat-raised-button color="warn" (click)="removePoster()"><mat-icon>delete_circle</mat-icon> Remove</button>
                   </mat-card-actions>
@@ -67,6 +73,16 @@
               <h3> Production </h3>
               <mat-form-field class="full-width">
                 <input matInput formControlName="production_year" placeholder="Production year">
+              </mat-form-field>
+
+              <!-- AUDIOVISUAL TYPES -->
+              <h3> Types </h3>
+              <mat-form-field>
+                <mat-select formControlName="types" placeholder="Film Type">
+                  <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
+                    {{ type.label }}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
             </mat-tab>
             <mat-tab label="Story description">
@@ -139,18 +155,7 @@
                   <mat-icon>add_circle</mat-icon>
                 </button>
               </div>
-        
-              <!-- AUDIOVISUAL TYPES -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="types" placeholder="Film Type">
-                    <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
-                      {{ type.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-        
+
               <!-- GENRES -->
               <div class="small-width">
                 <mat-form-field>

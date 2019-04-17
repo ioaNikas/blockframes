@@ -28,7 +28,8 @@ export class FormComponent implements OnInit, OnDestroy {
   public movie: Movie;
   private isModifying = false;
   private activeId: string;
-
+  public fullScreenForm = 'hide';
+  
   constructor(
     private query: MovieQuery,
     private service: MovieService,
@@ -45,10 +46,6 @@ export class FormComponent implements OnInit, OnDestroy {
   public currentFormValue(attr) {
     const input = this.movieForm.get(attr);
     return input !== null ? input.value: '' as String;
-  }
-
-  public get moviePoster() {
-    return this.movieForm.get('poster').value as String;
   }
 
   public get movieCredits() {
@@ -152,24 +149,26 @@ export class FormComponent implements OnInit, OnDestroy {
     movie.title = {};
     if (movie.original_title) {
       movie.title.original = movie.original_title;
-      delete movie.original_title;
     }
 
     if (movie.international_title) {
       movie.title.international = movie.international_title;
-      delete movie.international_title;
     }
 
     if (movie.director_name) {
       movie.directorName = movie.director_name;
-      delete movie.director_name;
+      
     }
 
     if (movie.production_year) {
       movie.productionYear = movie.production_year;
-      delete movie.production_year;
     }
-    
+
+    delete movie.original_title;
+    delete movie.international_title;
+    delete movie.director_name;
+    delete movie.production_year;
+
     return movie;
   }
 
@@ -280,4 +279,11 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
 
+  public toggleFullScreen() {
+    if (this.fullScreenForm === 'show') {
+      this.fullScreenForm = 'hide';
+    } else {
+      this.fullScreenForm = 'show';
+    }
+  }
 }
