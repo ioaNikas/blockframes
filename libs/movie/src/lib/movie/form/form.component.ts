@@ -41,6 +41,16 @@ export class FormComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  // getter for all form inputs
+  public currentFormValue(attr) {
+    const input = this.movieForm.get(attr);
+    return input !== null ? input.value: '' as String;
+  }
+
+  public get moviePoster() {
+    return this.movieForm.get('poster').value as String;
+  }
+
   public get movieCredits() {
     return this.movieForm.get('credits') as FormArray;
   }
@@ -62,14 +72,17 @@ export class FormComponent implements OnInit, OnDestroy {
     this.movie = this.query.getActive();
 
     this.movieForm = this.builder.group({
-      title: [''],
+      original_title: [this.movie.title.original],
+      international_title: [this.movie.title.international],
+      director_name: [this.movie.directorName],
+      production_year: [this.movie.productionYear],
       ipId: [''],
       credits: this.builder.array([this.createCredit()]),
       stakeholders: this.builder.array([this.createStakeholder()]),
       genres: [''],
       isan: [null],
       status: [''],
-      poster: [''],
+      poster: [this.movie.poster],
       types: [''],
       keywords: this.builder.array([this.createKeyword('')]),
       logline: ['', Validators.maxLength(180)],
@@ -124,13 +137,40 @@ export class FormComponent implements OnInit, OnDestroy {
     if (!this.movieForm.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
+    } else {
+      this.snackBar.open(`${this.movieForm.get('original_title').value} saved.`, 'close', { duration: 2000 });
+      this.service.update(this.activeId, this.preUpdate({ ...this.movieForm.value }));
     }
-    else {
-      this.snackBar.open(`${this.movieForm.get('title').value} saved.`, 'close', { duration: 2000 });
-      this.service.update(this.activeId, this.movieForm.value);
+
+    //this.router.navigateByUrl(''); @todo remove ?
+    //this.clear(); @todo remove ?
+  }
+
+  // @todo temp until corrected camelCase FormBuilderAttribs
+  private preUpdate(movie: any) {
+    // apply movie modifications to fit actual model
+    movie.title = {};
+    if (movie.original_title) {
+      movie.title.original = movie.original_title;
+      delete movie.original_title;
     }
-    this.router.navigateByUrl('');
-    this.clear();
+
+    if (movie.international_title) {
+      movie.title.international = movie.international_title;
+      delete movie.international_title;
+    }
+
+    if (movie.director_name) {
+      movie.directorName = movie.director_name;
+      delete movie.director_name;
+    }
+
+    if (movie.production_year) {
+      movie.productionYear = movie.production_year;
+      delete movie.production_year;
+    }
+    
+    return movie;
   }
 
   // TODO: rezise and rename
@@ -154,6 +194,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public addPoster(poster: string) {
     this.movieForm.patchValue({ poster });
+  }
+
+  public removePoster() {
+    this.movieForm.patchValue({ poster : '' });
   }
 
   public createCredit(): FormGroup {

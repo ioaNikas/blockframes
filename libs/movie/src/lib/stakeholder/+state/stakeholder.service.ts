@@ -53,22 +53,16 @@ export class StakeholderService {
 
     this.firestore.firestore.runTransaction(async (tx) => {
       const org = await tx.get(orgDoc.ref);
-      const movie = await tx.get(movieDoc.ref);
-
-      // Update the movie
-      const stakeholderIds = movie.data().stakeholderIds;
-      const nextStakeholderIds = [...stakeholderIds, sh.id];
-      const p1 = tx.update(movieDoc.ref, { stakeholderIds: nextStakeholderIds});
-
+      
       // Update the org
       const movieIds = org.data().movieIds;
       const nextMovieIds = [...movieIds, movieId];
-      const p2 = tx.update(orgDoc.ref, { movieIds: nextMovieIds });
+      const p1 = tx.update(orgDoc.ref, { movieIds: nextMovieIds });
 
       // Set the stakeholder
-      const p3 = tx.set(stakeholderDoc.ref, sh);
+      const p2 = tx.set(stakeholderDoc.ref, sh);
 
-      return Promise.all([p1, p2, p3]);
+      return Promise.all([p1, p2]);
     }).then(() => {
         console.log('Transaction successfully committed!');
     }).catch((error) => {

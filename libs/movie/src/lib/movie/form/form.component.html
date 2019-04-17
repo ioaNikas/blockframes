@@ -1,268 +1,321 @@
-<form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
-  <mat-card class="movie-card">
-    <mat-card-header>
-      <mat-card-title>New movie</mat-card-title>
-    </mat-card-header>
+<mat-drawer-container class="movie-panel">
+  <mat-drawer-content>
+    <button mat-icon-button class="toggle-drawer" (click)="drawer.toggle()">
+      <ng-container *ngIf="drawer.opened; else arrowLeft"><mat-icon>arrow_right</mat-icon></ng-container>
+      <ng-template #arrowLeft>
+        <mat-icon>arrow_left</mat-icon>
+      </ng-template>
+    </button>
+    <mat-card class="movie-card-view mat-elevation-z0">
+      <mat-card-header class="movie-card-header">
+        <mat-card-title class="movie-card-meta-title">{{ currentFormValue('original_title') }}</mat-card-title>
+        <mat-card-title *ngIf="currentFormValue('production_year')">({{ currentFormValue('production_year') }})</mat-card-title>
+        <mat-card-subtitle>{{ currentFormValue('international_title') }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="currentFormValue('poster')"> 
+      <mat-card-content>
+        <mat-card-title>Directed by</mat-card-title>
+        <mat-card-subtitle>{{ currentFormValue('director_name') }}</mat-card-subtitle>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-card-title class="movie-card-meta-title">Main informations</mat-card-title>
+        <mat-card-title>Types</mat-card-title>
+        <mat-card-subtitle>fiction</mat-card-subtitle>
+      </mat-card-content>
+    </mat-card>
+  </mat-drawer-content>
+  <mat-drawer opened #drawer mode="side" position="end">
+    <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+      <mat-card class="movie-card">
+        <mat-card-content>
+          <mat-tab-group>
+            <mat-tab label="Main Informations">
+              <!-- TITLES -->
+              <h3> Titles </h3>
+              <mat-form-field class="full-width">
+                <input matInput formControlName="original_title" placeholder="Original title">
+              </mat-form-field>
+        
+              <mat-form-field class="full-width">
+                <input matInput formControlName="international_title" placeholder="International title">
+              </mat-form-field>
 
-    <mat-card-content>
-    <button mat-raised-button color="primary" routerLink="teamwork">Teamwork</button>
-      <!-- TITLE -->
-      <!--
-      <mat-form-field class="full-width">
-        <input matInput formControlName="title" placeholder="Title">
-        <mat-error *ngIf="movieForm.controls['title'].hasError('required')">
-          Title is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-      -->
-
-      <!-- POSTER -->
-      <h3> Poster </h3>
-      <file-upload
-        accept="['.jpg', '.png']"
-        path='test'
-        [types]="['image/jpeg', 'image/png']"
-        (storeUploaded)="addPoster($event)"
-      ></file-upload>
-
-      <!-- CREDITS -->
-      <h3> Credits </h3>
-        <div formArrayName="credits"
-        *ngFor="let credit of movieCredits.controls; let i = index;">
-          <div [formGroupName]="i" class="full-width">
-            <mat-form-field class="small-width small-margin">
-              <input matInput formControlName="firstName" placeholder="First Name">
-            </mat-form-field>
-            <mat-form-field class="small-width small-margin">
-              <input matInput formControlName="lastName" placeholder="Last Name">
-            </mat-form-field>
-            <mat-form-field class="small-width small-margin">
-              <mat-select formControlName="creditRole" placeholder="Position">
-                <mat-option *ngFor="let creditRole of staticModels.CREDIT_ROLES" [value]="creditRole">
-                  {{ creditRole.label }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-icon-button color="primary" (click)="addCredit()">
-              <mat-icon>add_circle</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" (click)="removeCredit(i)">
-              <mat-icon>delete_circle</mat-icon>
-            </button>
-          </div>
-        </div>
-      <div *ngIf="movieCredits.controls.length == 0">
-        <button mat-icon-button color="primary" (click)="addCredit()">
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div>
-
-      <!-- STAKEHOLDERS -->
-      <h3> Stakeholders </h3>
-      <div formArrayName="stakeholders"
-      *ngFor="let stakholder of movieStakeholders.controls; let i = index;">
-        <div [formGroupName]="i" class="full-width small-margin">
-        <mat-form-field class="small-width small-margin">
-            <input matInput formControlName="orgId" placeholder="Company ID">
-          </mat-form-field>
-          <mat-form-field class="small-width small-margin">
-            <input matInput formControlName="orgName" placeholder="Company Name">
-          </mat-form-field>
-          <mat-form-field class="small-width small-margin">
-            <input matInput formControlName="orgMovieRole" placeholder="Org access on this movie">
-          </mat-form-field>
-          <mat-form-field class="small-width small-margin">
-            <mat-select formControlName="stakeholderRole" placeholder="Position">
-              <mat-option *ngFor="let stakeholderRole of staticModels.STAKEHOLDER_ROLES" [value]="stakeholderRole">
-                {{ stakeholderRole.label }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="small-width small-margin">
-            <input matInput formControlName="stakeholderAuthorization" placeholder="Org authorizations on this movie">
-          </mat-form-field>
-          <button mat-icon-button color="primary" (click)="addStakeholder('','','','','')">
-            <mat-icon>add_circle</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="removeStakeholder(i)">
-            <mat-icon>delete_circle</mat-icon>
-          </button>
-        </div>
-      </div>
-      <div *ngIf="movieStakeholders.controls.length == 0">
-        <button mat-icon-button color="primary" (click)="addStakeholder('','','','','')">
-          <mat-icon>add_circle</mat-icon>
-        </button>
-      </div>
-
-      <!-- AUDIOVISUAL TYPES -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="types" placeholder="Film Type">
-            <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
-              {{ type.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- GENRES -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="genres" placeholder="Genre">
-            <mat-option *ngFor="let genre of staticModels.GENRES" [value]="genre">
-              {{ genre.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- STATUS -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="status" placeholder="Status">
-            <mat-option *ngFor="let status of staticModels.MOVIE_STATUS" [value]="status">
-              {{ status.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- ISAN -->
-      <div class="small-width">
-        <mat-form-field>
-            <input matInput formControlName="isan" placeholder="ISAN">
-        </mat-form-field>
-      </div>
-
-      <!-- KEYWORDS -->
-      <mat-form-field class="full-width">
-        <mat-chip-list #chipList>
-          <mat-chip *ngFor="let keyword of keywords.valueChanges | async; let i = index;" [selectable]="true"
-                   [removable]="true" (removed)="remove(i)">
-            {{ keyword.name }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-          <input placeholder="Keywords"
-                 [matChipInputFor]="chipList"
-                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                 [matChipInputAddOnBlur]="true"
-                 (matChipInputTokenEnd)="addChipKeyword($event)">
-        </mat-chip-list>
-      </mat-form-field>
-
-      <!-- LOGLINE -->
-      <mat-form-field class="full-width">
-        <textarea matInput #logline formControlName="logline" maxlength="180" placeholder="Logline" type="string"></textarea>
-        <mat-hint align="end">{{ logline.value.length }} / 180</mat-hint>
-      </mat-form-field>
-
-      <!-- SYNOPSIS -->
-      <mat-form-field class="full-width">
-        <textarea matInput #synopsis formControlName="synopsis" maxlength="500" placeholder="Synopsis" type="string"></textarea>
-        <mat-hint align="end">{{ synopsis.value.length }} / 500</mat-hint>
-      </mat-form-field>
-
-      <!-- DIRECTOR'S NOTE -->
-      <mat-form-field class="full-width">
-        <textarea matInput #directorNote formControlName="directorNote" maxlength="1000" placeholder="Director's Note" type="string"></textarea>
-        <mat-hint align="end">{{ directorNote.value.length }} / 1000</mat-hint>
-      </mat-form-field>
-
-      <!-- PRODUCER'S NOTE -->
-      <mat-form-field class="full-width">
-        <textarea matInput #producerNote formControlName="producerNote" maxlength="1000" placeholder="Producer's Note" type="string"></textarea>
-        <mat-hint align="end">{{ producerNote.value.length }} / 1000</mat-hint>
-      </mat-form-field>
-
-      <!-- ORIGIN COUNTRY -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="originCountry" placeholder="Origin Country">
-            <mat-option *ngFor="let country of staticModels.COUNTRIES" [value]="country">
-              {{ country.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- LANGUAGES -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="languages" placeholder="Film Languages">
-            <mat-option *ngFor="let language of staticModels.LANGUAGES" [value]="language">
-              {{ language.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- FINANCIAL PART -->
-
-      <!-- MOVIE CURRENCY -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="movieCurrency" placeholder="Movie Currency">
-            <mat-option *ngFor="let currency of staticModels.CURRENCIES" [value]="currency">
-              {{ currency.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- GOAL BUDGET -->
-      <div class="small-width">
-        <mat-form-field>
-          <input matInput formControlName="goalBudget" placeholder="Goal Budget">
-        </mat-form-field>
-      </div>
-
-      <!-- FUNDED BUDGET -->
-      <div class="small-width">
-        <mat-form-field>
-          <input matInput formControlName="fundedBudget" placeholder="Funded Budget">
-        </mat-form-field>
-      </div>
-
-      <!-- BREAKEVEN -->
-      <div class="small-width">
-        <mat-form-field>
-          <input matInput formControlName="breakeven" placeholder="Breakeven">
-        </mat-form-field>
-      </div>
-
-      <!-- BACKEND PROFIT -->
-      <div class="small-width">
-        <mat-form-field>
-          <input matInput formControlName="backendProfit" placeholder="Backend Profit">
-        </mat-form-field>
-      </div>
-
-      <!-- POTENTIAL REVENUES -->
-      <div class="small-width">
-        <mat-form-field>
-          <input matInput formControlName="potentialRevenues" placeholder="Potential Revenues">
-        </mat-form-field>
-      </div>
-
-      <!-- SELECTION CATEGORIES -->
-      <div class="small-width">
-        <mat-form-field>
-          <mat-select formControlName="selectionCategories" placeholder="Selection Categories">
-            <mat-option *ngFor="let selection of staticModels.SELECTION_CATEGORIES" [value]="selection">
-              {{ selection.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-    </mat-card-content>
-
-    <mat-card-actions>
-      <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-      <button mat-raised-button color="accent" (click)="clear()">Clear</button>
-      <button mat-raised-button color="primary" type="submit">Save</button>
-    </mat-card-actions>
-
-  </mat-card>
-</form>
+              <h3> Directed By </h3>
+              <mat-form-field class="full-width">
+                <input matInput formControlName="director_name" placeholder="Director name">
+              </mat-form-field>
+        
+              <!-- POSTER -->
+              <h3> Poster </h3>
+              <mat-card class="movie-poster-thumbnail mat-elevation-z0">
+                <ng-container *ngIf="moviePoster !== ''; else fileUpload">
+                  <img mat-card-image [src]="moviePoster">
+                  <mat-card-actions>
+                    <button mat-raised-button color="warn" (click)="removePoster()"><mat-icon>delete_circle</mat-icon> Remove</button>
+                  </mat-card-actions>
+                </ng-container>
+                <ng-template #fileUpload>
+                  <file-upload
+                    accept="['.jpg', '.png']"
+                    path='test'
+                    [types]="['image/jpeg', 'image/png']"
+                    (storeUploaded)="addPoster($event)"
+                  ></file-upload>
+                </ng-template>
+              </mat-card>
+              <h3> Production </h3>
+              <mat-form-field class="full-width">
+                <input matInput formControlName="production_year" placeholder="Production year">
+              </mat-form-field>
+            </mat-tab>
+            <mat-tab label="Story description">
+              <!-- CREDITS -->
+              <h3> Credits </h3>
+                <div formArrayName="credits"
+                *ngFor="let credit of movieCredits.controls; let i = index;">
+                  <div [formGroupName]="i" class="full-width">
+                    <mat-form-field class="small-width small-margin">
+                      <input matInput formControlName="firstName" placeholder="First Name">
+                    </mat-form-field>
+                    <mat-form-field class="small-width small-margin">
+                      <input matInput formControlName="lastName" placeholder="Last Name">
+                    </mat-form-field>
+                    <mat-form-field class="small-width small-margin">
+                      <mat-select formControlName="creditRole" placeholder="Position">
+                        <mat-option *ngFor="let creditRole of staticModels.CREDIT_ROLES" [value]="creditRole">
+                          {{ creditRole.label }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <button mat-icon-button color="primary" (click)="addCredit()">
+                      <mat-icon>add_circle</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" (click)="removeCredit(i)">
+                      <mat-icon>delete_circle</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              <div *ngIf="movieCredits.controls.length == 0">
+                <button mat-icon-button color="primary" (click)="addCredit()">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+        
+              <!-- STAKEHOLDERS -->
+              <h3> Stakeholders </h3>
+              <div formArrayName="stakeholders"
+              *ngFor="let stakholder of movieStakeholders.controls; let i = index;">
+                <div [formGroupName]="i" class="full-width small-margin">
+                <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="orgId" placeholder="Company ID">
+                  </mat-form-field>
+                  <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="orgName" placeholder="Company Name">
+                  </mat-form-field>
+                  <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="orgMovieRole" placeholder="Org access on this movie">
+                  </mat-form-field>
+                  <mat-form-field class="small-width small-margin">
+                    <mat-select formControlName="stakeholderRole" placeholder="Position">
+                      <mat-option *ngFor="let stakeholderRole of staticModels.STAKEHOLDER_ROLES" [value]="stakeholderRole">
+                        {{ stakeholderRole.label }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="stakeholderAuthorization" placeholder="Org authorizations on this movie">
+                  </mat-form-field>
+                  <button mat-icon-button color="primary" (click)="addStakeholder('','','','','')">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" (click)="removeStakeholder(i)">
+                    <mat-icon>delete_circle</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="movieStakeholders.controls.length == 0">
+                <button mat-icon-button color="primary" (click)="addStakeholder('','','','','')">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+        
+              <!-- AUDIOVISUAL TYPES -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="types" placeholder="Film Type">
+                    <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
+                      {{ type.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- GENRES -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="genres" placeholder="Genre">
+                    <mat-option *ngFor="let genre of staticModels.GENRES" [value]="genre">
+                      {{ genre.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- STATUS -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="status" placeholder="Status">
+                    <mat-option *ngFor="let status of staticModels.MOVIE_STATUS" [value]="status">
+                      {{ status.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- ISAN -->
+              <div class="small-width">
+                <mat-form-field>
+                    <input matInput formControlName="isan" placeholder="ISAN">
+                </mat-form-field>
+              </div>
+        
+              <!-- KEYWORDS -->
+              <mat-form-field class="full-width">
+                <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let keyword of keywords.valueChanges | async; let i = index;" [selectable]="true"
+                            [removable]="true" (removed)="remove(i)">
+                    {{ keyword.name }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Keywords"
+                          [matChipInputFor]="chipList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          [matChipInputAddOnBlur]="true"
+                          (matChipInputTokenEnd)="addChipKeyword($event)">
+                </mat-chip-list>
+              </mat-form-field>
+        
+              <!-- LOGLINE -->
+              <mat-form-field class="full-width">
+                <textarea matInput #logline formControlName="logline" maxlength="180" placeholder="Logline" type="string"></textarea>
+                <mat-hint align="end">{{ logline.value.length }} / 180</mat-hint>
+              </mat-form-field>
+        
+              <!-- SYNOPSIS -->
+              <mat-form-field class="full-width">
+                <textarea matInput #synopsis formControlName="synopsis" maxlength="500" placeholder="Synopsis" type="string"></textarea>
+                <mat-hint align="end">{{ synopsis.value.length }} / 500</mat-hint>
+              </mat-form-field>
+        
+              <!-- DIRECTOR'S NOTE -->
+              <mat-form-field class="full-width">
+                <textarea matInput #directorNote formControlName="directorNote" maxlength="1000" placeholder="Director's Note" type="string"></textarea>
+                <mat-hint align="end">{{ directorNote.value.length }} / 1000</mat-hint>
+              </mat-form-field>
+        
+              <!-- PRODUCER'S NOTE -->
+              <mat-form-field class="full-width">
+                <textarea matInput #producerNote formControlName="producerNote" maxlength="1000" placeholder="Producer's Note" type="string"></textarea>
+                <mat-hint align="end">{{ producerNote.value.length }} / 1000</mat-hint>
+              </mat-form-field>
+        
+              <!-- ORIGIN COUNTRY -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="originCountry" placeholder="Origin Country">
+                    <mat-option *ngFor="let country of staticModels.COUNTRIES" [value]="country">
+                      {{ country.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- LANGUAGES -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="languages" placeholder="Film Languages">
+                    <mat-option *ngFor="let language of staticModels.LANGUAGES" [value]="language">
+                      {{ language.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- FINANCIAL PART -->
+        
+              <!-- MOVIE CURRENCY -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="movieCurrency" placeholder="Movie Currency">
+                    <mat-option *ngFor="let currency of staticModels.CURRENCIES" [value]="currency">
+                      {{ currency.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <!-- GOAL BUDGET -->
+              <div class="small-width">
+                <mat-form-field>
+                  <input matInput formControlName="goalBudget" placeholder="Goal Budget">
+                </mat-form-field>
+              </div>
+        
+              <!-- FUNDED BUDGET -->
+              <div class="small-width">
+                <mat-form-field>
+                  <input matInput formControlName="fundedBudget" placeholder="Funded Budget">
+                </mat-form-field>
+              </div>
+        
+              <!-- BREAKEVEN -->
+              <div class="small-width">
+                <mat-form-field>
+                  <input matInput formControlName="breakeven" placeholder="Breakeven">
+                </mat-form-field>
+              </div>
+        
+              <!-- BACKEND PROFIT -->
+              <div class="small-width">
+                <mat-form-field>
+                  <input matInput formControlName="backendProfit" placeholder="Backend Profit">
+                </mat-form-field>
+              </div>
+        
+              <!-- POTENTIAL REVENUES -->
+              <div class="small-width">
+                <mat-form-field>
+                  <input matInput formControlName="potentialRevenues" placeholder="Potential Revenues">
+                </mat-form-field>
+              </div>
+        
+              <!-- SELECTION CATEGORIES -->
+              <div class="small-width">
+                <mat-form-field>
+                  <mat-select formControlName="selectionCategories" placeholder="Selection Categories">
+                    <mat-option *ngFor="let selection of staticModels.SELECTION_CATEGORIES" [value]="selection">
+                      {{ selection.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </mat-tab>
+            <mat-tab label="Movie Team">
+                <button mat-raised-button color="primary" routerLink="teamwork">Teamwork</button>
+            </mat-tab>
+            <mat-tab label="Promotional elements">
+                Promotional elements
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card-content>
+          
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+          <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+          <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+  </mat-drawer>
+</mat-drawer-container>
