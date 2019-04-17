@@ -34,12 +34,12 @@ export class OrganizationService {
       const org = await tx.get(orgDoc.ref);
       const { userIds } = org.data();
       const nextUserIds = [...userIds, member.id];
-      const p1 = tx.update(orgDoc.ref, { userIds: nextUserIds });
+      const orgTransaction = tx.update(orgDoc.ref, { userIds: nextUserIds });
 
       // update the user
-      const p2 = tx.set(orgRightsDoc.ref, { orgId, rightNameSlug: member.roles });
+      const userOrgRightTransaction = tx.set(orgRightsDoc.ref, { orgId, rightNameSlug: member.roles });
 
-      return Promise.all([p1, p2]);
+      return Promise.all([orgTransaction, userOrgRightTransaction]);
     }).then(() => {
       console.log('Transaction successfully committed!');
     }).catch((error) => {
