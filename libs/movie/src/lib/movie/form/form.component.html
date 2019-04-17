@@ -1,4 +1,30 @@
 <mat-drawer-container class="movie-panel">
+  <mat-drawer-content>
+    <button mat-icon-button class="toggle-drawer" (click)="drawer.toggle()">
+      <ng-container *ngIf="drawer.opened; else arrowLeft"><mat-icon>arrow_right</mat-icon></ng-container>
+      <ng-template #arrowLeft>
+        <mat-icon>arrow_left</mat-icon>
+      </ng-template>
+    </button>
+    <mat-card class="movie-card-view mat-elevation-z0">
+      <mat-card-header class="movie-card-header">
+        <mat-card-title class="movie-card-meta-title">{{ movie.title.original }}</mat-card-title>
+        <mat-card-title>({{ movie.productionYear }})</mat-card-title>
+        <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="movie.poster"> 
+      <mat-card-content>
+        <mat-card-title>Directed by</mat-card-title>
+        <mat-card-subtitle>{{ movie.directorName }}</mat-card-subtitle>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-card-title class="movie-card-meta-title">Main informations</mat-card-title>
+        <mat-card-title>Types</mat-card-title>
+        <mat-card-subtitle>fiction</mat-card-subtitle>
+      </mat-card-content>
+    </mat-card>
+  </mat-drawer-content>
   <mat-drawer opened #drawer mode="side" position="end">
     <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
       <mat-card class="movie-card">
@@ -22,13 +48,11 @@
         
               <!-- POSTER -->
               <h3> Poster </h3>
-              <mat-card class="movie-poster-thumbnail">
+              <mat-card class="movie-poster-thumbnail mat-elevation-z0">
                 <ng-container *ngIf="moviePoster !== ''; else fileUpload">
                   <img mat-card-image [src]="moviePoster">
                   <mat-card-actions>
-                    <button mat-icon-button color="warn" (click)="removePoster()">
-                      <mat-icon>delete_circle</mat-icon>
-                    </button>
+                    <button mat-raised-button color="warn" (click)="removePoster()"><mat-icon>delete_circle</mat-icon> Remove</button>
                   </mat-card-actions>
                 </ng-container>
                 <ng-template #fileUpload>
@@ -40,6 +64,7 @@
                   ></file-upload>
                 </ng-template>
               </mat-card>
+              <h3> Production </h3>
               <mat-form-field class="full-width">
                 <input matInput formControlName="production_year" placeholder="Production year">
               </mat-form-field>
@@ -293,22 +318,4 @@
       </mat-card>
     </form>
   </mat-drawer>
-  <mat-drawer-content>
-    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-    <mat-card class="movie-card-view">
-      <mat-card-header>
-        <div mat-card-avatar></div>
-        <mat-card-title>{{ movie.title.original }}</mat-card-title>
-        <mat-card-title>({{ movie.productionYear }})</mat-card-title>
-        <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image [src]="movie.poster"> 
-      <mat-card-content>
-        <mat-card-title>Directed by</mat-card-title>
-        <mat-card-subtitle>{{ movie.directorName }}</mat-card-subtitle>
-        <mat-divider></mat-divider>
-        <mat-card-title>Main informations</mat-card-title>
-      </mat-card-content>
-    </mat-card>
-  </mat-drawer-content>
 </mat-drawer-container>
