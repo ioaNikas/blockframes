@@ -16,9 +16,11 @@
   display: inline-block;
 }
 
-.movie-card { 
-  max-width: 700px;
-  min-width: 300px;
+.toggle-fullscreen {
+  float: right;
+  position: sticky;
+  top: 0px;
+  z-index: 99;
 }
 
 .movie-card-view {
@@ -45,8 +47,25 @@
 }
 
 .movie-panel {
+  position: absolute;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  top: 66px;
+
   .toggle-drawer {
     float: right;
+    position: sticky;
+    top: 0px;
+    z-index: 99;
+  }
+  
+  mat-drawer {
+    width: 50%;
+  }
+
+  .mat-drawer-fullscreen {
+    width: 100%;
   }
 }
 

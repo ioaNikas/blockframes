@@ -28,7 +28,8 @@ export class FormComponent implements OnInit, OnDestroy {
   public movie: Movie;
   private isModifying = false;
   private activeId: string;
-
+  public fullScreenForm = false;
+  
   constructor(
     private query: MovieQuery,
     private service: MovieService,
@@ -45,10 +46,6 @@ export class FormComponent implements OnInit, OnDestroy {
   public currentFormValue(attr) {
     const input = this.movieForm.get(attr);
     return input !== null ? input.value: '' as String;
-  }
-
-  public get moviePoster() {
-    return this.movieForm.get('poster').value as String;
   }
 
   public get movieCredits() {
@@ -280,4 +277,11 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
 
+  public toggleFullScreen() {
+    if (this.fullScreenForm) {
+      this.fullScreenForm = false;
+    } else {
+      this.fullScreenForm = true;
+    }
+  }
 }
