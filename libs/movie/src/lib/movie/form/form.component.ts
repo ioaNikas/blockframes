@@ -28,7 +28,7 @@ export class FormComponent implements OnInit, OnDestroy {
   public movie: Movie;
   private isModifying = false;
   private activeId: string;
-  public fullScreenForm = false;
+  public fullScreenForm = 'hide';
   
   constructor(
     private query: MovieQuery,
@@ -280,10 +280,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
 
   public toggleFullScreen() {
-    if (this.fullScreenForm) {
-      this.fullScreenForm = false;
+    if (this.fullScreenForm === 'show') {
+      this.fullScreenForm = 'hide';
     } else {
-      this.fullScreenForm = true;
+      this.fullScreenForm = 'show';
     }
   }
 }

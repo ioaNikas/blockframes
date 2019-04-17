@@ -25,7 +25,7 @@
       </mat-card-content>
     </mat-card>
   </mat-drawer-content>
-  <mat-drawer opened #drawer mode="side" position="end" [ngClass]="{true: 'mat-drawer-fullscreen', false: ''}[fullScreenForm]">
+  <mat-drawer opened #drawer mode="side" position="end" [ngClass]="{'show': 'mat-drawer-fullscreen', 'hide': ''}[fullScreenForm]">
     <button mat-icon-button class="toggle-fullscreen" (click)="toggleFullScreen()">
       <ng-container *ngIf="fullScreenForm; else fullscreenExit"><mat-icon>fullscreen_exit</mat-icon></ng-container>
       <ng-template #fullscreenExit>
