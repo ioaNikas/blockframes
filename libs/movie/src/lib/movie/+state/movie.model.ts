@@ -8,7 +8,6 @@ export interface Movie {
   org?: Organization,
   ipId: string,
   credits: {firstName: string, lastName: string, creditRole: string}[],
-  stakeholderIds: string[],
   genres: string[],
   isan: number,
   status: string,
@@ -36,7 +35,6 @@ export interface Movie {
  */
 export function createMovie(params?: Partial<Movie>) {
   return {
-    stakeholderIds: [],
     ...params,
   } as Movie;
 }
