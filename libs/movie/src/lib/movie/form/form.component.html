@@ -1,29 +1,12 @@
 <mat-drawer-container class="movie-panel">
-  <mat-drawer #drawer mode="side">
-    <mat-card class="movie-card-view">
-      <mat-card-header>
-        <div mat-card-avatar></div>
-        <mat-card-title>{{ movie.title.original }}</mat-card-title>
-        <mat-card-title>({{ movie.productionYear }})</mat-card-title>
-        <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image [src]="movie.poster"> 
-      <mat-card-content>
-        <mat-card-title>Directed by</mat-card-title>
-        <mat-card-subtitle>{{ movie.directorName }}</mat-card-subtitle>
-        <mat-divider></mat-divider>
-        <mat-card-title>Main informations</mat-card-title>
-      </mat-card-content>
-    </mat-card>
-  </mat-drawer>
-  <mat-drawer-content>
-    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+  <mat-drawer opened #drawer mode="side" position="end">
     <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
-      <mat-tab-group>
-        <mat-tab label="Main Informations">
-          <mat-card class="movie-card">
-            <mat-card-content>
+      <mat-card class="movie-card">
+        <mat-card-content>
+          <mat-tab-group>
+            <mat-tab label="Main Informations">
               <!-- TITLES -->
+              <h3> Titles </h3>
               <mat-form-field class="full-width">
                 <input matInput formControlName="original_title" placeholder="Original title">
               </mat-form-field>
@@ -32,6 +15,7 @@
                 <input matInput formControlName="international_title" placeholder="International title">
               </mat-form-field>
 
+              <h3> Directed By </h3>
               <mat-form-field class="full-width">
                 <input matInput formControlName="director_name" placeholder="Director name">
               </mat-form-field>
@@ -40,14 +24,12 @@
               <h3> Poster </h3>
               <mat-card class="movie-poster-thumbnail">
                 <ng-container *ngIf="moviePoster !== ''; else fileUpload">
-                  
                   <img mat-card-image [src]="moviePoster">
                   <mat-card-actions>
                     <button mat-icon-button color="warn" (click)="removePoster()">
                       <mat-icon>delete_circle</mat-icon>
                     </button>
                   </mat-card-actions>
-                  
                 </ng-container>
                 <ng-template #fileUpload>
                   <file-upload
@@ -61,7 +43,8 @@
               <mat-form-field class="full-width">
                 <input matInput formControlName="production_year" placeholder="Production year">
               </mat-form-field>
-      
+            </mat-tab>
+            <mat-tab label="Story description">
               <!-- CREDITS -->
               <h3> Credits </h3>
                 <div formArrayName="credits"
@@ -292,28 +275,40 @@
                   </mat-select>
                 </mat-form-field>
               </div>
-        
-            </mat-card-content>
-        
-            <mat-card-actions>
-              <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-              <button mat-raised-button color="accent" (click)="clear()">Clear</button>
-              <button mat-raised-button color="primary" type="submit">Save</button>
-            </mat-card-actions>
-        
-          </mat-card>
-        </mat-tab>
-        <mat-tab label="Story description">
-            Story description
-        </mat-tab>
-        <mat-tab label="Movie Team">
-            <button mat-raised-button color="primary" routerLink="teamwork">Teamwork</button>
-        </mat-tab>
-        <mat-tab label="Promotional elements">
-            Promotional elements
-        </mat-tab>
-      </mat-tab-group>
+            </mat-tab>
+            <mat-tab label="Movie Team">
+                <button mat-raised-button color="primary" routerLink="teamwork">Teamwork</button>
+            </mat-tab>
+            <mat-tab label="Promotional elements">
+                Promotional elements
+            </mat-tab>
+          </mat-tab-group>
+        </mat-card-content>
+          
+        <mat-card-actions>
+          <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+          <button mat-raised-button color="accent" (click)="clear()">Clear</button>
+          <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-actions>
+      </mat-card>
     </form>
-    
+  </mat-drawer>
+  <mat-drawer-content>
+    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+    <mat-card class="movie-card-view">
+      <mat-card-header>
+        <div mat-card-avatar></div>
+        <mat-card-title>{{ movie.title.original }}</mat-card-title>
+        <mat-card-title>({{ movie.productionYear }})</mat-card-title>
+        <mat-card-subtitle>{{ movie.title.international }}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="movie.poster"> 
+      <mat-card-content>
+        <mat-card-title>Directed by</mat-card-title>
+        <mat-card-subtitle>{{ movie.directorName }}</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-title>Main informations</mat-card-title>
+      </mat-card-content>
+    </mat-card>
   </mat-drawer-content>
 </mat-drawer-container>
