@@ -1,6 +1,10 @@
 .container {
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+h2 {
+  font-weight: bolder;
 }
 
 .delivery-list {
@@ -15,23 +19,24 @@
 
 .add-delivery {
   font-weight: bolder;
-  color: #6100ED;
-  border: solid 0.09rem #6100ED;
+  font-size: 13px;
+  height: 50px;
+  color: #6100ed;
+  border: solid 0.09rem #6100ed;
   cursor: pointer;
 }
 
-.blue-dot {
-  color: #03AEFE;
+.add-delivery:hover {
+  color: white;
+  background-color: #6100ed;
 }
 
-.green-dot {
-  color: #26D60D;
+.icon {
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 6px;
 }
 
-.orange-dot {
-  color: #FF9204;
-}
-
-.grey-dot {
-  color: #B0B1B0;
+.bottom-button {
+  margin-top: 35px;
 }

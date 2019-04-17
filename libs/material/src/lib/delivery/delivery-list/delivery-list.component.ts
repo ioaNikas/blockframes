@@ -46,7 +46,7 @@ export class DeliveryListComponent implements OnInit, OnDestroy {
   }
 
   public openDialog() {
-    this.dialog.open(TemplatePickerComponent, { width: '80%' });
+    this.dialog.open(TemplatePickerComponent, { width: '40%' });
   }
 
   ngOnDestroy() {
