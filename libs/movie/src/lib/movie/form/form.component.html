@@ -39,8 +39,8 @@
           </span>
         </mat-card-subtitle>
         <mat-card-title>Co-Producers Countries</mat-card-title>
-        <mat-card-subtitle *ngIf="currentFormValue('co_producer_countries')">
-            <span *ngFor="let item of currentFormValue('co_producer_countries'); let isLast=last">
+        <mat-card-subtitle *ngIf="currentFormValue('coProducerCountries')">
+            <span *ngFor="let item of currentFormValue('coProducerCountries'); let isLast=last">
                 {{ getStaticBySlug('COUNTRIES', item) }}{{!isLast?',':''}}
               </span>
         </mat-card-subtitle>
