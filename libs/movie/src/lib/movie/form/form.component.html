@@ -8,20 +8,42 @@
     </button>
     <mat-card class="movie-card-view mat-elevation-z0">
       <mat-card-header class="movie-card-header">
-        <mat-card-title class="movie-card-meta-title">{{ currentFormValue('original_title') }}</mat-card-title>
-        <mat-card-title *ngIf="currentFormValue('production_year')">({{ currentFormValue('production_year') }})</mat-card-title>
-        <mat-card-subtitle>{{ currentFormValue('international_title') }}</mat-card-subtitle>
+        <mat-card-title class="movie-card-meta-title">{{ currentFormValue('originalTitle') }}</mat-card-title>
+        <mat-card-title *ngIf="currentFormValue('productionYear')">({{ currentFormValue('productionYear') }})</mat-card-title>
+        <mat-card-subtitle>{{ currentFormValue('internationalTitle') }}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image *ngIf="currentFormValue('poster')" [src]="currentFormValue('poster')"> 
-      <mat-card-content *ngIf="currentFormValue('director_name')">
+      <mat-card-content *ngIf="currentFormValue('directorName')">
         <mat-card-title>Directed by</mat-card-title>
-        <mat-card-subtitle>{{ currentFormValue('director_name') }}</mat-card-subtitle>
+        <mat-card-subtitle>{{ currentFormValue('directorName') }}</mat-card-subtitle>
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-content>
         <mat-card-title class="movie-card-meta-title">Main informations</mat-card-title>
         <mat-card-title>Types</mat-card-title>
-        <mat-card-subtitle>fiction</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="currentFormValue('types')">
+          <span *ngFor="let item of currentFormValue('types'); let isLast=last">
+            {{ getStaticBySlug('AUDIOVISUAL_TYPES', item) }}{{!isLast?',':''}}
+          </span>
+        </mat-card-subtitle>
+        <mat-card-title>Genres</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('genres')">
+          <span *ngFor="let item of currentFormValue('genres'); let isLast=last">
+            {{ getStaticBySlug('GENRES', item) }}{{!isLast?',':''}}
+          </span>
+        </mat-card-subtitle>
+        <mat-card-title>Origin Country</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('originCountry')">
+          <span>
+            {{ getStaticBySlug('COUNTRIES', currentFormValue('originCountry')) }}
+          </span>
+        </mat-card-subtitle>
+        <mat-card-title>Co-Producers Countries</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('co_producer_countries')">
+            <span *ngFor="let item of currentFormValue('co_producer_countries'); let isLast=last">
+                {{ getStaticBySlug('COUNTRIES', item) }}{{!isLast?',':''}}
+              </span>
+        </mat-card-subtitle>
       </mat-card-content>
     </mat-card>
   </mat-drawer-content>
@@ -32,7 +54,7 @@
         <mat-icon>fullscreen</mat-icon>
       </ng-template>
     </button>
-    <form [formGroup]="movieForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="movieForm" (ngSubmit)="submit()">
       <mat-card class="movie-card">
         <mat-card-content>
           <mat-tab-group>
@@ -40,16 +62,16 @@
               <!-- TITLES -->
               <h3> Titles </h3>
               <mat-form-field class="full-width">
-                <input matInput formControlName="original_title" placeholder="Original title">
+                <input matInput formControlName="originalTitle" placeholder="Original title">
               </mat-form-field>
         
               <mat-form-field class="full-width">
-                <input matInput formControlName="international_title" placeholder="International title">
+                <input matInput formControlName="internationalTitle" placeholder="International title">
               </mat-form-field>
 
               <h3> Directed By </h3>
               <mat-form-field class="full-width">
-                <input matInput formControlName="director_name" placeholder="Director name">
+                <input matInput formControlName="directorName" placeholder="Director name">
               </mat-form-field>
         
               <!-- POSTER -->
@@ -72,15 +94,45 @@
               </mat-card>
               <h3> Production </h3>
               <mat-form-field class="full-width">
-                <input matInput formControlName="production_year" placeholder="Production year">
+                <input matInput formControlName="productionYear" placeholder="Production year">
               </mat-form-field>
 
               <!-- AUDIOVISUAL TYPES -->
               <h3> Types </h3>
-              <mat-form-field>
-                <mat-select formControlName="types" placeholder="Film Type">
-                  <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type">
+              <mat-form-field class="full-width">
+                <mat-select formControlName="types"  placeholder="Film Type" multiple>
+                  <mat-option *ngFor="let type of staticModels.AUDIOVISUAL_TYPES" [value]="type.slug">
                     {{ type.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- GENRES -->
+              <h3> Genres </h3>
+              <mat-form-field class="full-width">
+                <mat-select formControlName="genres" placeholder="Genres" multiple>
+                  <mat-option *ngFor="let genre of staticModels.GENRES" [value]="genre.slug">
+                    {{ genre.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- ORIGIN COUNTRY -->
+              <h3> Origin Country </h3>
+              <mat-form-field class="full-width">
+                <mat-select formControlName="originCountry" placeholder="Origin Country" [value]="movie.originCountry">
+                  <mat-option *ngFor="let country of staticModels.COUNTRIES" [value]="country.slug">
+                    {{ country.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- Co-producer countries -->
+              <h3> Co Producers Countries </h3>
+              <mat-form-field class="full-width">
+                <mat-select formControlName="coProducerCountries" placeholder="Co Producers Countries" multiple>
+                  <mat-option *ngFor="let country of staticModels.COUNTRIES" [value]="country.slug">
+                    {{ country.label }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -155,17 +207,6 @@
                   <mat-icon>add_circle</mat-icon>
                 </button>
               </div>
-
-              <!-- GENRES -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="genres" placeholder="Genre">
-                    <mat-option *ngFor="let genre of staticModels.GENRES" [value]="genre">
-                      {{ genre.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
         
               <!-- STATUS -->
               <div class="small-width">
@@ -224,17 +265,6 @@
                 <textarea matInput #producerNote formControlName="producerNote" maxlength="1000" placeholder="Producer's Note" type="string"></textarea>
                 <mat-hint align="end">{{ producerNote.value.length }} / 1000</mat-hint>
               </mat-form-field>
-        
-              <!-- ORIGIN COUNTRY -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="originCountry" placeholder="Origin Country">
-                    <mat-option *ngFor="let country of staticModels.COUNTRIES" [value]="country">
-                      {{ country.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
         
               <!-- LANGUAGES -->
               <div class="small-width">
@@ -317,8 +347,7 @@
           
         <mat-card-actions>
           <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-          <button mat-raised-button color="accent" (click)="clear()">Clear</button>
-          <button mat-raised-button color="primary" type="submit">Save</button>
+          <button mat-raised-button color="primary" type="submit">Save movie</button>
         </mat-card-actions>
       </mat-card>
     </form>
