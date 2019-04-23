@@ -1,13 +1,11 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { createMovie, Movie, MovieQuery, MovieService, MovieStore } from '../+state';
+import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
-import { AuthQuery, User } from '@blockframes/auth';
-import { default as staticModels } from '../staticModels';
-import { Organization, OrganizationQuery } from '@blockframes/organization';
+import { default as staticModels, getLabelBySlug } from '../staticModels';
 
 @Component({
   selector: 'movie-financing-form',
@@ -17,74 +15,52 @@ import { Organization, OrganizationQuery } from '@blockframes/organization';
 })
 export class FormComponent implements OnInit, OnDestroy {
   public staticModels: any;
+  public persistForm: PersistNgFormPlugin;
+  public movieForm: FormGroup;
+  public movie: Movie;
+  public fullScreen = false;
+
+  // @todo to check 
   public credits: FormArray;
   public stakeholders: FormArray;
   public promotionalElements: FormArray;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  public persistForm: PersistNgFormPlugin;
-  public movieForm: FormGroup;
-  public user: User;
-  public org: Organization;
-  public movie: Movie;
-  private activeId: string;
-  public fullScreen = false;
-  
+
   constructor(
     private query: MovieQuery,
     private service: MovieService,
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
-    private auth: AuthQuery,
-    public orgQuery: OrganizationQuery
   ) {
   }
 
-  // getter for all form inputs
-  public currentFormValue(attr) {
-    const input = this.movieForm.get(attr);
-    return input !== null ? input.value: '' as String;
-  }
-
-  public get movieCredits() {
-    return this.movieForm.get('credits') as FormArray;
-  }
-
-  public get movieStakeholders() {
-    return this.movieForm.get('stakeholders') as FormArray;
-  }
-
-// ACTIONS
-
-  public get keywords() {
-    return this.movieForm.get('keywords') as FormArray;
-  }
-
   ngOnInit() {
-    this.user = this.auth.user;
     this.staticModels = staticModels;
-    this.org = this.orgQuery.getActive();
     this.movie = this.query.getActive();
 
     this.movieForm = this.builder.group({
-      original_title: [this.movie.title.original],
-      international_title: [this.movie.title.international],
-      director_name: [this.movie.directorName],
-      production_year: [this.movie.productionYear],
+      originalTitle: [this.movie.title.original],
+      internationalTitle: [this.movie.title.international],
+      directorName: [this.movie.directorName],
+      poster: [this.movie.poster],
+      productionYear: [this.movie.productionYear],
+      types: [this.movie.types],
+      genres: [this.movie.genres],
+      originCountry: [this.movie.originCountry],
+      coProducerCountries: [this.movie.coProducerCountries],
+
+
       ipId: [''],
       credits: this.builder.array([this.createCredit()]),
       stakeholders: this.builder.array([this.createStakeholder()]),
-      genres: [''],
       isan: [null],
       status: [''],
-      poster: [this.movie.poster],
-      types: [''],
       keywords: this.builder.array([this.createKeyword('')]),
       logline: ['', Validators.maxLength(180)],
       synopsis: ['', Validators.maxLength(500)],
       directorNote: ['', Validators.maxLength(1000)],
       producerNote: ['', Validators.maxLength(1000)],
-      originCountry: [''],
       languages: [''],
       promotionalElements: this.builder.array([this.createPromotionalElement()]),
       goalBudget: [null],
@@ -93,99 +69,49 @@ export class FormComponent implements OnInit, OnDestroy {
       breakeven: [null],
       backendProfit: [null],
       potentialRevenues: [null],
-      selectionCategories: ['']
+      selectionCategories: [''],
     });
-    // Akita Persist Form
+    
+    // Akita Persist Form 
     this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
-
-    /*
-    MODIFICATION OF A MOVIE
-    In case of modification of an existing movie,
-    load the form with current data stored in the active Movie.
-    */
-    if (this.query.hasActive()) {
-      this.activeId = this.query.getActiveId();
-      this.movieForm.patchValue(createMovie(this.query.getActive()));
-    }
-
   }
 
-  /*
-  MODIFICATION OF A MOVIE
-  Kill the active Movie to reset the modification process.
-  */
-  ngOnDestroy() {
-    this.clear();
-    this.persistForm.destroy();
+  /* Getters for all form inputs */
+  public currentFormValue(attr: string) {
+    const input = this.movieForm.get(attr);
+    return input !== null ? input.value: '' as String;
   }
 
-// POSTER
+  /* Returns label from json staticModels */
+  public getStaticBySlug (scope: string, slug: string) {
+    return getLabelBySlug (scope, slug) as string;
+  }
 
-  /*
-  SAVING THE FORM
-  Case 1 = invalid form refused.
-  Case 2 = modification of a Movie.
-  Case 3 = new Movie.
-  */
-  public onSubmit() {
+  /* Saves the form */
+  public submit() {
     if (!this.movieForm.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
     } else {
-      this.snackBar.open(`${this.movieForm.get('original_title').value} saved.`, 'close', { duration: 2000 });
-      this.service.update(this.activeId, this.preUpdate({ ...this.movieForm.value }));
+      this.snackBar.open(`${this.movieForm.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
+      this.service.update(this.query.getActiveId(), this.preUpdate({ ...this.movieForm.value }));
     }
-
-    //this.router.navigateByUrl(''); @todo remove ?
-    //this.clear(); @todo remove ?
   }
 
-  // @todo temp until corrected camelCase FormBuilderAttribs
+  /* Applies movie modifications to fit actual model */
   private preUpdate(movie: any) {
-    // apply movie modifications to fit actual model
     movie.title = {};
-    if (movie.original_title) {
-      movie.title.original = movie.original_title;
+    if (movie.originalTitle) {
+      movie.title.original = movie.originalTitle;
     }
 
-    if (movie.international_title) {
-      movie.title.international = movie.international_title;
+    if (movie.internationalTitle) {
+      movie.title.international = movie.internationalTitle;
     }
-
-    if (movie.director_name) {
-      movie.directorName = movie.director_name;
-      
-    }
-
-    if (movie.production_year) {
-      movie.productionYear = movie.production_year;
-    }
-
-    delete movie.original_title;
-    delete movie.international_title;
-    delete movie.director_name;
-    delete movie.production_year;
+    delete movie.originalTitle;
+    delete movie.internationalTitle;
 
     return movie;
-  }
-
-  // TODO: rezise and rename
-
-
-  /*
-  FormArray parts of the FormGroup with same methods
-  */
-
-// CREDITS
-
-  public clear() {
-    this.persistForm.reset();
-    this.movieForm.reset();
-  }
-
-  public cancel() {
-    this.clear();
-    this.router.navigateByUrl('');
   }
 
   public addPoster(poster: string) {
@@ -195,6 +121,45 @@ export class FormComponent implements OnInit, OnDestroy {
   public removePoster() {
     this.movieForm.patchValue({ poster : '' });
   }
+
+  private clear() {
+    this.persistForm.reset();
+    this.movieForm.reset();
+  }
+
+  public cancel() {
+    this.clear();
+    this.router.navigateByUrl('');
+  }
+
+  public toggleFullScreen() {
+    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
+  }
+
+  ngOnDestroy() {
+    this.clear();
+    this.persistForm.destroy();
+  }
+
+
+
+
+
+
+  /*  TO CLEAN */
+
+  public get movieCredits() {
+    return this.movieForm.get('credits') as FormArray;
+  }
+
+  public get movieStakeholders() {
+    return this.movieForm.get('stakeholders') as FormArray;
+  }
+
+  public get keywords() {
+    return this.movieForm.get('keywords') as FormArray;
+  }
+
 
   public createCredit(): FormGroup {
     return this.builder.group({
@@ -273,10 +238,5 @@ export class FormComponent implements OnInit, OnDestroy {
   public addPromotionalElement(): void {
     this.promotionalElements = this.movieForm.get('promotionalElements') as FormArray;
     this.promotionalElements.push(this.createPromotionalElement());
-  }
-
-
-  public toggleFullScreen() {
-    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
   }
 }
