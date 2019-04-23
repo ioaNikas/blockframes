@@ -53,9 +53,19 @@
         <mat-card-title>Status</mat-card-title>
         <mat-card-subtitle *ngIf="currentFormValue('status')">
           <span>
-            {{ getStaticBySlug('MOVIE_STATUS', currentFormValue('status')) }}
+            {{ getStaticBySlug('MOVIE_STATUS', currentFormValue('originCountry')) }}
           </span>
         </mat-card-subtitle>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-card-title class="movie-card-meta-title">Story description</mat-card-title>
+        <mat-card-title>Logline</mat-card-title>
+        <mat-card-subtitle><p>{{ currentFormValue('logline') }}</p></mat-card-subtitle>
+        <mat-card-title>Synopsis</mat-card-title>
+        <mat-card-subtitle><p>{{ currentFormValue('synopsis') }}</p></mat-card-subtitle>
+        <mat-card-title>Keywords</mat-card-title>
+        <mat-card-subtitle>todo</mat-card-subtitle>
       </mat-card-content>
     </mat-card>
   </mat-drawer-content>
@@ -171,6 +181,36 @@
                               
             </mat-tab>
             <mat-tab label="Story description">
+              <!-- LOGLINE -->
+              <h3> Logline </h3>
+              <mat-form-field class="full-width">
+                <textarea matInput #logline formControlName="logline" maxlength="180" placeholder="Logline" type="string"></textarea>
+                <mat-hint align="end">{{ logline.value.length }} / 180</mat-hint>
+              </mat-form-field>
+
+              <!-- SYNOPSIS -->
+              <h3> Synopsis </h3>
+              <mat-form-field class="full-width">
+                <textarea matInput #synopsis formControlName="synopsis" maxlength="500" placeholder="Synopsis" type="string"></textarea>
+                <mat-hint align="end">{{ synopsis.value.length }} / 500</mat-hint>
+              </mat-form-field>
+
+              <!-- KEYWORDS -->
+              <h3> Keywords </h3>
+              <mat-form-field class="full-width">
+                <mat-chip-list #chipList>
+                  <mat-chip *ngFor="let keyword of keywords.valueChanges | async; let i = index;" [selectable]="true" [removable]="true" (removed)="remove(i)">
+                    {{ keyword.name }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                  <input placeholder="Keywords"
+                          [matChipInputFor]="chipList"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                          [matChipInputAddOnBlur]="true"
+                          (matChipInputTokenEnd)="addChipKeyword($event)">
+                </mat-chip-list>
+              </mat-form-field>
+
               <!-- CREDITS -->
               <h3> Credits </h3>
                 <div formArrayName="credits"
@@ -247,34 +287,6 @@
                     <input matInput formControlName="isan" placeholder="ISAN">
                 </mat-form-field>
               </div>
-        
-              <!-- KEYWORDS -->
-              <mat-form-field class="full-width">
-                <mat-chip-list #chipList>
-                  <mat-chip *ngFor="let keyword of keywords.valueChanges | async; let i = index;" [selectable]="true"
-                            [removable]="true" (removed)="remove(i)">
-                    {{ keyword.name }}
-                    <mat-icon matChipRemove>cancel</mat-icon>
-                  </mat-chip>
-                  <input placeholder="Keywords"
-                          [matChipInputFor]="chipList"
-                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                          [matChipInputAddOnBlur]="true"
-                          (matChipInputTokenEnd)="addChipKeyword($event)">
-                </mat-chip-list>
-              </mat-form-field>
-        
-              <!-- LOGLINE -->
-              <mat-form-field class="full-width">
-                <textarea matInput #logline formControlName="logline" maxlength="180" placeholder="Logline" type="string"></textarea>
-                <mat-hint align="end">{{ logline.value.length }} / 180</mat-hint>
-              </mat-form-field>
-        
-              <!-- SYNOPSIS -->
-              <mat-form-field class="full-width">
-                <textarea matInput #synopsis formControlName="synopsis" maxlength="500" placeholder="Synopsis" type="string"></textarea>
-                <mat-hint align="end">{{ synopsis.value.length }} / 500</mat-hint>
-              </mat-form-field>
         
               <!-- DIRECTOR'S NOTE -->
               <mat-form-field class="full-width">
