@@ -40,9 +40,21 @@
         </mat-card-subtitle>
         <mat-card-title>Co-Producers Countries</mat-card-title>
         <mat-card-subtitle *ngIf="currentFormValue('coProducerCountries')">
-            <span *ngFor="let item of currentFormValue('coProducerCountries'); let isLast=last">
-                {{ getStaticBySlug('COUNTRIES', item) }}{{!isLast?',':''}}
-              </span>
+          <span *ngFor="let item of currentFormValue('coProducerCountries'); let isLast=last">
+            {{ getStaticBySlug('COUNTRIES', item) }}{{!isLast?',':''}}
+          </span>
+        </mat-card-subtitle>
+        <mat-card-title>Languages</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('languages')">
+          <span *ngFor="let item of currentFormValue('languages'); let isLast=last">
+            {{ getStaticBySlug('LANGUAGES', item) }}{{!isLast?',':''}}
+          </span>
+        </mat-card-subtitle>
+        <mat-card-title>Status</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('status')">
+          <span>
+            {{ getStaticBySlug('MOVIE_STATUS', currentFormValue('status')) }}
+          </span>
         </mat-card-subtitle>
       </mat-card-content>
     </mat-card>
@@ -127,7 +139,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <!-- Co-producer countries -->
+              <!-- CO-PRODUCER COUNTRIES -->
               <h3> Co Producers Countries </h3>
               <mat-form-field class="full-width">
                 <mat-select formControlName="coProducerCountries" placeholder="Co Producers Countries" multiple>
@@ -136,6 +148,27 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+
+              <!-- LANGUAGES -->
+              <h3> Languages </h3>
+              <mat-form-field class="full-width">
+                <mat-select formControlName="languages" placeholder="Film Languages" multiple>
+                  <mat-option *ngFor="let language of staticModels.LANGUAGES" [value]="language.slug">
+                    {{ language.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- STATUS -->
+              <h3> Status </h3>
+              <mat-form-field>
+                <mat-select formControlName="status" placeholder="Status">
+                  <mat-option *ngFor="let status of staticModels.MOVIE_STATUS" [value]="status.slug">
+                    {{ status.label }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+                              
             </mat-tab>
             <mat-tab label="Story description">
               <!-- CREDITS -->
@@ -208,17 +241,6 @@
                 </button>
               </div>
         
-              <!-- STATUS -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="status" placeholder="Status">
-                    <mat-option *ngFor="let status of staticModels.MOVIE_STATUS" [value]="status">
-                      {{ status.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-        
               <!-- ISAN -->
               <div class="small-width">
                 <mat-form-field>
@@ -266,16 +288,6 @@
                 <mat-hint align="end">{{ producerNote.value.length }} / 1000</mat-hint>
               </mat-form-field>
         
-              <!-- LANGUAGES -->
-              <div class="small-width">
-                <mat-form-field>
-                  <mat-select formControlName="languages" placeholder="Film Languages">
-                    <mat-option *ngFor="let language of staticModels.LANGUAGES" [value]="language">
-                      {{ language.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
         
               <!-- FINANCIAL PART -->
         
