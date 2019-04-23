@@ -26,9 +26,8 @@ export class FormComponent implements OnInit, OnDestroy {
   public user: User;
   public org: Organization;
   public movie: Movie;
-  private isModifying = false;
   private activeId: string;
-  public fullScreenForm = 'hide';
+  public fullScreen = false;
   
   constructor(
     private query: MovieQuery,
@@ -36,7 +35,6 @@ export class FormComponent implements OnInit, OnDestroy {
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
-    private store: MovieStore,
     private auth: AuthQuery,
     public orgQuery: OrganizationQuery
   ) {
@@ -119,7 +117,6 @@ export class FormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.clear();
     this.persistForm.destroy();
-    this.isModifying = false;
   }
 
 // POSTER
@@ -280,10 +277,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
 
   public toggleFullScreen() {
-    if (this.fullScreenForm === 'show') {
-      this.fullScreenForm = 'hide';
-    } else {
-      this.fullScreenForm = 'show';
-    }
+    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
   }
 }
