@@ -15,14 +15,17 @@ export interface Movie {
   status: string,
   logline: string,
   synopsis: string,
-
-  ipId: string,
-  credits: {firstName: string, lastName: string, creditRole: string}[],
-  isan: number,
   keywords: string[],
+  credits: {firstName: string, lastName: string, creditRole: string}[],
+
+
+  promotionalElements: {promotionalElementName: string, url: string}[],
+
+  // not main movie attributes WIP
+  ipId: string,
+  isan: number,
   directorNote: string,
   producerNote: string,
-  promotionalElements: {promotionalElementName: string, url: string}[],
   goalBudget: number,
   movieCurrency: string,
   fundedBudget: number,
