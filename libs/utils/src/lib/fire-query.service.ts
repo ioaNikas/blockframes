@@ -3,16 +3,21 @@ import { AngularFirestore, QueryFn } from '@angular/fire/firestore';
 import { combineLatest, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
+type TypeofArray<T> = T extends (infer X)[] ? X : T;
+
 export type Query<T> = {
   path: string;
   queryFn?: QueryFn;
-} & {
-  [K in keyof Partial<T>]: (...entity: T[]) => Query<TypeofArray<T[K]>> | Query<TypeofArray<T[K]>>[]
-};
+} & SubQueries<TypeofArray<T>>;
 
-type TypeofArray<T> = T extends (infer X)[] ? X : T
+type QueryLike<T> = Query<T> | Query<T>[];
+type SubQueries<T> = {
+  [K in keyof Partial<T>]: T[K] | ((entity: T) => QueryLike<T[K]>)
+}
 
-
+function createQuery<T>(path: string): Query<T> {
+  return { path } as Query<T>;
+}
 
 @Injectable({ providedIn: 'root' })
 export class FireQuery {
@@ -21,12 +26,14 @@ export class FireQuery {
   constructor(private db: AngularFirestore) {}
 
   /** Make a query to firebase */
-  public fromQuery<T>(query: Query<T>): Observable<T> {
-    return this.fromSubQuery(query) as Observable<T>;
+  public fromQuery<T>(query: Query<T> | string): Observable<T> {
+    return typeof query === 'string'
+      ? this.fromSubQuery(createQuery<T>(query)) as Observable<T>
+      : this.fromSubQuery(query) as Observable<T>;
   }
 
   // Dispatch subquery to collection or list of doc
-  private fromSubQuery<T>(query: Query<T> | Query<T>[]): Observable<T | T[]> {
+  private fromSubQuery<T>(query: QueryLike<T>): Observable<T | T[]> {
     if (Array.isArray(query)) {
       return this.fromDocList(query);
     }
@@ -71,25 +78,24 @@ export class FireQuery {
       .valueChanges()
       .pipe(
         switchMap(entity => {
-          if (!this.hasSubqueries(query)) {
-            return of(entity);
-          }
-          return this.getAllSubQueries(query, entity);
+          return (this.hasSubqueries(query))
+            ? this.getAllSubQueries(query, entity)
+            : of(entity);
         })
       );
   }
 
   /** Look for all subqueries in a query */
-  private getAllSubQueries<T, K extends keyof T>(query: Query<T>, entity: T): Observable<T> {
+  private getAllSubQueries<T>(query: Query<T>, entity: T): Observable<T> {
     // Get all subquery keys
     const keys = Object.keys(query);
     const subQueryKeys = keys.filter(key => !this.keysToRemove.includes(key));
     // For each key get the subquery
     const subQueries$ = subQueryKeys.map(key => {
-      const subQuery: Query<T[K]> | Query<T[K]>[] = query[key](entity);
-      return this.fromSubQuery(subQuery).pipe(
-        map(subentity => ({ key, subentity }))
-      );
+      const subEntity$ = (typeof query[key] === 'function')
+        ? this.fromSubQuery(query[key](entity))
+        : of(query[key]);
+      return subEntity$.pipe(map(subentity => ({ key, subentity })));
     });
 
     return combineLatest(subQueries$).pipe(
@@ -109,25 +115,4 @@ export class FireQuery {
     const subQuery = keys.filter(key => !this.keysToRemove.includes(key));
     return subQuery.length > 0;
   }
-
-  /** See example below
-
-  public get deliveryList() {
-    return this.movieQuery.selectActiveId().pipe(
-      switchMap(id => this.fromQuery(this.getDeliveryListWithStakeholders(id)))
-    );
-  }
-
-  private getDeliveryListWithStakeholders(movieId: string): Query<Delivery> {
-    return {
-      path: `deliveries`,
-      queryFn: (ref) => ref.where('movieId', '==', movieId),
-      stakeholders: (delivery: Delivery): Query<Stakeholder> => ({
-        path: `deliveries/${delivery.id}/stakeholders`,
-        organization: (stakeholder: Stakeholder): Query<Organization> => ({
-          path: `orgs/${stakeholder.orgId}`
-        })
-      })
-    }
-  } */
 }
