@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, QueryFn } from '@angular/fire/firestore';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of, throwError } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 type TypeofArray<T> = T extends (infer X)[] ? X : T;
@@ -34,6 +34,7 @@ export class FireQuery {
 
   // Dispatch subquery to collection or list of doc
   private fromSubQuery<T>(query: QueryLike<T>): Observable<T | T[]> {
+    if (!query) return throwError(`Query failed`)
     if (Array.isArray(query)) {
       return this.fromDocList(query);
     }
@@ -52,6 +53,7 @@ export class FireQuery {
       .valueChanges()
       .pipe(
         switchMap((entities) => {
+          if (!entities) return throwError(`Nothing found at path : ${query.path}`)
           if (!this.hasSubqueries(query)) {
             return of(entities);
           } else {
@@ -78,6 +80,7 @@ export class FireQuery {
       .valueChanges()
       .pipe(
         switchMap(entity => {
+          if (!entity) return throwError(`Nothing found at path : ${query.path}`)
           return (this.hasSubqueries(query))
             ? this.getAllSubQueries(query, entity)
             : of(entity);
