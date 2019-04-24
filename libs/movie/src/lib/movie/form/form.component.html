@@ -84,6 +84,14 @@
           </table>
         </mat-card-subtitle>
       </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <mat-card-title class="movie-card-meta-title">Promotional Elements</mat-card-title>
+        <mat-card-title>Images</mat-card-title>
+        <mat-card-subtitle *ngIf="images">
+          <img mat-card-image *ngFor="let image of images.controls;" src="{{image.value}}">
+        </mat-card-subtitle>
+      </mat-card-content>
     </mat-card>
   </mat-drawer-content>
   <mat-drawer opened #drawer mode="side" position="end" [ngClass]="{ 'mat-drawer-fullscreen' : fullScreen }">
@@ -296,11 +304,36 @@
               </div>
             </mat-tab>
             <mat-tab label="Promotional elements">
-              Promotional elements
-
-              
-              TODO
-
+              <!-- Promotional elements -->
+              <h3> Images </h3>
+              <div formArrayName="images" *ngFor="let image of images.controls; let i = index;">
+                <div [formGroupName]="i" class="full-width">
+                    <mat-card class="movie-poster-thumbnail mat-elevation-z0">
+                      <ng-container *ngIf="currentFormValue('images', i); else fileUpload">
+                        <img mat-card-image [src]="currentFormValue('images', i)">
+                      </ng-container>
+                      <ng-template #fileUpload>
+                        <file-upload
+                          accept="['.jpg', '.png']"
+                          path='test'
+                          [types]="['image/jpeg', 'image/png']"
+                          (storeUploaded)="setImage($event, i)"
+                        ></file-upload>
+                      </ng-template>
+                    </mat-card>
+                  <button mat-icon-button color="primary" (click)="addImage()">
+                    <mat-icon>add_circle</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" (click)="removeFormControl(i, 'images')">
+                    <mat-icon>delete_circle</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="images.controls.length == 0">
+                <button mat-icon-button color="primary" (click)="addImage()">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
             </mat-tab>
           </mat-tab-group>
         </mat-card-content>

@@ -34,7 +34,7 @@ export class FormComponent implements OnInit, OnDestroy {
   public audiovisual_types: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   // @todo
-  public promotionalElements: FormArray;
+  //public promotionalElements: FormArray;
 
   constructor(
     private query: MovieQuery,
@@ -65,24 +65,32 @@ export class FormComponent implements OnInit, OnDestroy {
       synopsis: [this.movie.synopsis, Validators.maxLength(500)],
       keywords: this.builder.array([]),
       credits: this.builder.array([]),
+      images: this.builder.array([]),
 
-      promotionalElements: this.builder.array([this.createPromotionalElement()]),
-      // other promo element
+
+      promotionalElements: this.builder.array([]),
     });
     
     // Akita Persist Form 
     this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
 
     // Populate custom fields
-    if (this.movie.keywords.length) {
+    if (this.movie.keywords && this.movie.keywords.length) {
       this.movie.keywords.forEach((keyword) => {
         this.addFormControl(new FormControl(keyword), 'keywords');
       })
     }
 
-    if (this.movie.credits.length) {
+    if (this.movie.credits && this.movie.credits.length) {
       this.movie.credits.forEach((credit) => {
         this.addFormControl(this.builder.group(credit), 'movieCredits');
+      })
+    }
+
+    // @todo images are not in state ...?
+    if (this.movie.images && this.movie.images.length) {
+      this.movie.images.forEach((image) => {
+        this.addFormControl(new FormControl(image), 'images');
       })
     }
 
@@ -114,9 +122,14 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   /* Getters for all form inputs */
-  public currentFormValue(attr: string) {
-    const input = this.movieForm.get(attr);
-    return input !== null ? input.value: '' as String;
+  public currentFormValue(attr: string, index?: number) {
+    if (index !== undefined) {
+      const formArray = this.movieForm.get(attr) as FormArray;
+      return formArray.controls[index] !== null ? formArray.controls[index].value : '' as String;
+    } else {
+      const input = this.movieForm.get(attr);
+      return input !== null ? input.value: '' as String;
+    }
   }
 
   public get keywords() {
@@ -125,6 +138,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public get movieCredits() {
     return this.movieForm.get('credits') as FormArray;
+  }
+
+  public get images() {
+    return this.movieForm.get('images') as FormArray;
   }
 
   /* Returns label from json staticModels */
@@ -193,6 +210,14 @@ export class FormComponent implements OnInit, OnDestroy {
     this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
   }
 
+  public setImage(image: string, index: number): void {
+    this.images.controls[index].setValue(image);
+  }
+
+  public addImage(): void {
+    this.addFormControl(new FormControl(''), 'images');
+  }
+
   public addPoster(poster: string) {
     this.movieForm.patchValue({ poster });
   }
@@ -234,7 +259,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
 
 // PROMOTIONAL ELEMENTS: not implemented yet
-
+/*
   public createPromotionalElement(): FormGroup {
     return this.builder.group({
       promotionalElementName: '',
@@ -245,5 +270,5 @@ export class FormComponent implements OnInit, OnDestroy {
   public addPromotionalElement(): void {
     this.promotionalElements = this.movieForm.get('promotionalElements') as FormArray;
     this.promotionalElements.push(this.createPromotionalElement());
-  }
+  }*/
 }
