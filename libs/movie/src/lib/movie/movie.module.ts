@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule} from '@angular/material/menu';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -66,6 +67,7 @@ import { MatTabsModule } from '@angular/material';
     MatCheckboxModule,
     MatMenuModule,
     MatTabsModule,
+    NgxMatSelectSearchModule,
     // Librairies
     UploadModule,
     UiFormModule,
