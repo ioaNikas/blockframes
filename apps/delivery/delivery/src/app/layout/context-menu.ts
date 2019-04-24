@@ -1,7 +1,18 @@
 export const CONTEXT_MENU = [
   {
     route: 'default',
-    items: [{ name: 'home', path: '/layout/home' }, { name: 'templates', path: '/layout/template' }]
+    items: [
+      { name: 'home', path: '/layout/home' },
+      { name: 'templates', path: '/layout/template' },
+    ]
+  },
+  {
+    route: '/layout/home/form/:movieId',
+    items: [
+      { name: 'home', path: '/layout/home', exact:true },
+      { name: 'edit film', path: '/layout/home/form/:movieId', exact:true },
+      { name: 'teamwork', path: '/layout/home/form/:movieId/teamwork', exact:true },
+    ]
   },
   {
     route: '/layout/:movieId',
