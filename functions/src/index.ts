@@ -135,8 +135,6 @@ export const onDeliveryUpdateEvent = functions.firestore
 
 export const relayerCreate = functions.https.onCall((data, context) => relayerCreateLogic(data, functions.config()));
 export const relayerSend = functions.https.onCall((data, context) => relayerSendLogic(data, functions.config()));
-<<<<<<< HEAD
-=======
 
 //--------------------------------
 //   PROPER FIRESTORE DELETION  //
@@ -144,4 +142,3 @@ export const relayerSend = functions.https.onCall((data, context) => relayerSend
 
 export const deleteMovie = functions.firestore.document('movies/{movieId}').onDelete((snap, context) => deleteFirestoreMovie(snap, context));
 export const deleteDelivery = functions.firestore.document('deliveries/{deliveryId}').onDelete((snap, context) => deleteFirestoreDelivery(snap, context));
->>>>>>> add delteMovie & deleteDelivery
