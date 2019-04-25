@@ -23,6 +23,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   public form$: Observable<MaterialTemplateForm>;
   public templateActive$ : Observable<Template>;
   private isAlive = true;
+  public categories: string[];
   public materialId: string;
 
   constructor(
@@ -37,7 +38,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.service.subscribeOnAllOrgsTemplates$().pipe(takeWhile(() => this.isAlive)).subscribe();
     this.materialService.subscribeOnAllOrgsMaterials$()
       .pipe(takeWhile(() => this.isAlive))
       .subscribe();
