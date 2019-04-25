@@ -3,6 +3,7 @@ import { hashToFirestore } from './generateHash';
 import { onIpHash } from './ipHash';
 import { auth, db, functions } from './firebase';
 import { relayerCreateLogic, relayerSendLogic } from './relayer';
+import { deleteFirestoreMovie, deleteFirestoreDelivery } from './delete';
 
 /**
  * Trigger: when eth-events-server pushes contract events.
@@ -192,3 +193,10 @@ export const onDeliveryUpdate = functions.firestore
 
 export const relayerCreate = functions.https.onCall((data, context) => relayerCreateLogic(data, functions.config()));
 export const relayerSend = functions.https.onCall((data, context) => relayerSendLogic(data, functions.config()));
+
+//--------------------------------
+//   PROPER FIRESTORE DELETION  //
+//--------------------------------
+
+export const deleteMovie = functions.firestore.document('movies/{movieId}').onDelete((snap, context) => deleteFirestoreMovie(snap, context));
+export const deleteDelivery = functions.firestore.document('deliveries/{deliveryId}').onDelete((snap, context) => deleteFirestoreDelivery(snap, context));

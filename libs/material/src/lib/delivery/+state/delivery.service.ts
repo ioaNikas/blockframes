@@ -123,19 +123,6 @@ export class DeliveryService {
 
     this.db.doc<Delivery>(`deliveries/${id}`).delete();
 
-    const materials: firebase.firestore.QuerySnapshot = await this.db
-      .collection<Material>(`deliveries/${id}/materials`)
-      .ref.get();
-    const batch = this.db.firestore.batch();
-    materials.forEach(doc => batch.delete(doc.ref));
-
-    const stakeholders: firebase.firestore.QuerySnapshot = await this.db
-      .collection<Stakeholder>(`deliveries/${id}/stakeholders`)
-      .ref.get();
-    stakeholders.forEach(doc => batch.delete(doc.ref));
-
-    batch.commit();
-
     this.store.setActive(null);
   }
 
