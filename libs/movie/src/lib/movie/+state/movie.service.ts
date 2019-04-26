@@ -5,7 +5,7 @@ import { OrganizationQuery } from '@blockframes/organization';
 import { MovieStore } from './movie.store';
 import { Movie, createMovie } from './movie.model';
 import { combineLatest, Observable } from 'rxjs';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, tap, map, filter } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 
@@ -52,6 +52,7 @@ export class MovieService {
         const movies$ = movieIds.map(id => this.firestore.doc<Movie>(`movies/${id}`).valueChanges())
         return combineLatest(movies$)
       }),
+      map((movies: Movie[]) => movies.filter(movie => !!movie)),
       tap((movies: Movie[]) => this.store.set(movies))
     );
   }
