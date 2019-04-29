@@ -18,9 +18,7 @@ export interface Movie {
   keywords: string[],
   credits: {firstName: string, lastName: string, creditRole: string}[],
   images: string[],
-
-
-  promotionalElements: {promotionalElementName: string, url: string}[],
+  promotionalElements: {label: string, url: string}[],
 
   // not main movie attributes WIP
   ipId: string,

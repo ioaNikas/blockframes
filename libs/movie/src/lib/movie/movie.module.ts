@@ -37,7 +37,7 @@ import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { TitleFormComponent } from '../movie/title-form/title-form.component';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
   declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent, TitleFormComponent],
@@ -67,6 +67,7 @@ import { MatTabsModule } from '@angular/material';
     MatCheckboxModule,
     MatMenuModule,
     MatTabsModule,
+    MatGridListModule,
     NgxMatSelectSearchModule,
     // Librairies
     UploadModule,
