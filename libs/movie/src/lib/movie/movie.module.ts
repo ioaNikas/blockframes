@@ -37,7 +37,7 @@ import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { TitleFormComponent } from '../movie/title-form/title-form.component';
-import { MatTabsModule, MatGridListModule } from '@angular/material';
+import { MatTabsModule, MatGridListModule, MatExpansionModule } from '@angular/material';
 import { HomeEmptyComponent } from './home-empty/home-empty.component';
 
 @NgModule({
@@ -69,6 +69,7 @@ import { HomeEmptyComponent } from './home-empty/home-empty.component';
     MatMenuModule,
     MatTabsModule,
     MatGridListModule,
+    MatExpansionModule,
     NgxMatSelectSearchModule,
     // Librairies
     UploadModule,
