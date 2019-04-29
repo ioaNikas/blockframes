@@ -1161,4 +1161,9 @@ const models = {
   ]
 };
 
+export const getLabelBySlug = (scope: string, slug: string) => {
+  const item = models[scope].find(i => i.slug === slug);
+  return item !== undefined ? item.label : '';
+};
+
 export default models;

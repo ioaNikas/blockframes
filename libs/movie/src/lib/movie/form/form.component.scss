@@ -50,7 +50,6 @@
   position: absolute;
   right: 0px;
   left: 0px;
-  bottom: 0px;
   top: 66px;
 
   .toggle-drawer {
@@ -69,13 +68,50 @@
   }
 }
 
+.movie-card {
+  .mat-chip.mat-standard-chip {
+    background-color: #6200EE;
+    color: #FFF;
+    font-weight: bold;
+  }
+
+  ::ng-deep .mat-chip-list-wrapper {
+    margin: 0px;
+  }
+}
+
 
 .movie-poster-thumbnail {
   background-color: transparent;
   width: 50%;
   margin: auto;
+  max-width: 300px;
 }
 
 .movie-panel {
   margin: auto;
+}
+
+.movie-credits-table {
+  width: 100%;
+  td.movie-credit-table-role {
+    font-weight: bold;
+    text-align: right;
+    width: 50%;
+    padding-left: 0px;
+  }
+
+  td {
+    text-align: left;
+    padding-left: 10px;
+  }
+}
+
+.movie-grid-list {
+  margin-bottom: 15px;
+}
+
+.promotional-element-link {
+  color: rgba(0, 0, 0, 0.54);
+  text-decoration: none;
 }

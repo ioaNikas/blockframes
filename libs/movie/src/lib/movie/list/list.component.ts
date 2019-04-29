@@ -32,8 +32,8 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.isAlive = false;
   }
-  public addNewMovie(orgId, orgName) {
-    this.dialog.open(TitleFormComponent, { data: { id: orgId, name: orgName } });
+  public addNewMovie(org: { id: string, name: string}) {
+    this.dialog.open(TitleFormComponent, { data: org });
   }
 
   public delete(id: string) {

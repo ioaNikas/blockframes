@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule} from '@angular/material/menu';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -36,7 +37,7 @@ import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { TitleFormComponent } from '../movie/title-form/title-form.component';
-import { MatTabsModule } from '@angular/material';
+import { MatTabsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
   declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent, TitleFormComponent],
@@ -66,6 +67,8 @@ import { MatTabsModule } from '@angular/material';
     MatCheckboxModule,
     MatMenuModule,
     MatTabsModule,
+    MatGridListModule,
+    NgxMatSelectSearchModule,
     // Librairies
     UploadModule,
     UiFormModule,

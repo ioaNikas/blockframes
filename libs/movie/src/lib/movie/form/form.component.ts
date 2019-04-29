@@ -1,13 +1,14 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { createMovie, Movie, MovieQuery, MovieService, MovieStore } from '../+state';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
-import { AuthQuery, User } from '@blockframes/auth';
-import { default as staticModels } from '../staticModels';
-import { Organization, OrganizationQuery } from '@blockframes/organization';
+import { default as staticModels, getLabelBySlug } from '../staticModels';
+import { ReplaySubject } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+
 
 @Component({
   selector: 'movie-financing-form',
@@ -16,172 +17,170 @@ import { Organization, OrganizationQuery } from '@blockframes/organization';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormComponent implements OnInit, OnDestroy {
+  public isAlive = true;
   public staticModels: any;
-  public credits: FormArray;
-  public stakeholders: FormArray;
-  public promotionalElements: FormArray;
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   public persistForm: PersistNgFormPlugin;
   public movieForm: FormGroup;
-  public user: User;
-  public org: Organization;
   public movie: Movie;
-  private isModifying = false;
-  private activeId: string;
-  public fullScreenForm = 'hide';
-  
+  public fullScreen = false;
+  public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  public countriesFilterCtrl: FormControl = new FormControl();
+  public languagesFilterCtrl: FormControl = new FormControl();
+  public genresFilterCtrl: FormControl = new FormControl();
+  public audiovisual_typesFilterCtrl: FormControl = new FormControl();
+  public countries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public languages: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public genres: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public audiovisual_types: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+
   constructor(
     private query: MovieQuery,
     private service: MovieService,
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
-    private store: MovieStore,
-    private auth: AuthQuery,
-    public orgQuery: OrganizationQuery
   ) {
   }
 
-  // getter for all form inputs
-  public currentFormValue(attr) {
-    const input = this.movieForm.get(attr);
-    return input !== null ? input.value: '' as String;
+  ngOnInit() {
+    this.staticModels = staticModels;
+    this.movie = this.query.getActive();
+
+    this.movieForm = this.builder.group({
+      originalTitle: [this.movie.title.original],
+      internationalTitle: [this.movie.title.international],
+      directorName: [this.movie.directorName],
+      poster: [this.movie.poster],
+      productionYear: [this.movie.productionYear],
+      types: [this.movie.types],
+      genres: [this.movie.genres],
+      originCountry: [this.movie.originCountry],
+      coProducerCountries: [this.movie.coProducerCountries],
+      languages: [this.movie.languages],
+      status: [this.movie.status],
+      logline: [this.movie.logline, Validators.maxLength(180)],
+      synopsis: [this.movie.synopsis, Validators.maxLength(500)],
+      keywords: this.builder.array([]),
+      credits: this.builder.array([]),
+      images: this.builder.array([]),
+      promotionalElements: this.builder.array([]),
+    });
+    
+    // Akita Persist Form 
+    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
+
+    // Populate custom fields
+    if (this.movie.keywords && this.movie.keywords.length) {
+      this.movie.keywords.forEach((keyword) => {
+        this.addFormControl(new FormControl(keyword), 'keywords');
+      })
+    }
+
+    if (this.movie.credits && this.movie.credits.length) {
+      this.movie.credits.forEach((credit) => {
+        this.addFormControl(this.builder.group(credit), 'movieCredits');
+      })
+    }
+
+    if (this.movie.images && this.movie.images.length) {
+      this.movie.images.forEach((image) => {
+        this.addFormControl(new FormControl(image), 'images');
+      })
+    }
+
+    if (this.movie.promotionalElements && this.movie.promotionalElements.length) {
+      this.movie.promotionalElements.forEach((element) => {
+        this.addFormControl(this.builder.group(element), 'promotionalElements');
+      })
+    }
+
+    this._selectSearchSubScriptions();
+  }
+
+  /* Selects with search bar */
+  private _selectSearchSubScriptions() : void {
+    
+    this.countries.next(staticModels.COUNTRIES.slice());
+    this.countriesFilterCtrl.valueChanges
+    .pipe(takeWhile(() => this.isAlive))
+    .subscribe(() => this.filterSelectSearch('COUNTRIES'));
+
+    this.languages.next(staticModels.LANGUAGES.slice());
+    this.languagesFilterCtrl.valueChanges
+    .pipe(takeWhile(() => this.isAlive))
+    .subscribe(() => this.filterSelectSearch('LANGUAGES'));
+
+    this.genres.next(staticModels.GENRES.slice());
+    this.genresFilterCtrl.valueChanges
+    .pipe(takeWhile(() => this.isAlive))
+    .subscribe(() => this.filterSelectSearch('GENRES'));
+
+    this.audiovisual_types.next(staticModels.AUDIOVISUAL_TYPES.slice());
+    this.audiovisual_typesFilterCtrl.valueChanges
+    .pipe(takeWhile(() => this.isAlive))
+    .subscribe(() => this.filterSelectSearch('AUDIOVISUAL_TYPES'));
+  }
+
+  /* Getters for all form inputs */
+  public currentFormValue(attr: string, index?: number) {
+    if (index !== undefined) {
+      const formArray = this.movieForm.get(attr) as FormArray;
+      return formArray.controls[index] !== null ? formArray.controls[index].value : '' as String;
+    } else {
+      const input = this.movieForm.get(attr);
+      return input !== null ? input.value: '' as String;
+    }
+  }
+
+  public get keywords() {
+    return this.movieForm.get('keywords') as FormArray;
   }
 
   public get movieCredits() {
     return this.movieForm.get('credits') as FormArray;
   }
 
-  public get movieStakeholders() {
-    return this.movieForm.get('stakeholders') as FormArray;
+  public get promotionalElements() {
+    return this.movieForm.get('promotionalElements') as FormArray;
   }
 
-// ACTIONS
-
-  public get keywords() {
-    return this.movieForm.get('keywords') as FormArray;
+  public get images() {
+    return this.movieForm.get('images') as FormArray;
   }
 
-  ngOnInit() {
-    this.user = this.auth.user;
-    this.staticModels = staticModels;
-    this.org = this.orgQuery.getActive();
-    this.movie = this.query.getActive();
-
-    this.movieForm = this.builder.group({
-      original_title: [this.movie.title.original],
-      international_title: [this.movie.title.international],
-      director_name: [this.movie.directorName],
-      production_year: [this.movie.productionYear],
-      ipId: [''],
-      credits: this.builder.array([this.createCredit()]),
-      stakeholders: this.builder.array([this.createStakeholder()]),
-      genres: [''],
-      isan: [null],
-      status: [''],
-      poster: [this.movie.poster],
-      types: [''],
-      keywords: this.builder.array([this.createKeyword('')]),
-      logline: ['', Validators.maxLength(180)],
-      synopsis: ['', Validators.maxLength(500)],
-      directorNote: ['', Validators.maxLength(1000)],
-      producerNote: ['', Validators.maxLength(1000)],
-      originCountry: [''],
-      languages: [''],
-      promotionalElements: this.builder.array([this.createPromotionalElement()]),
-      goalBudget: [null],
-      movieCurrency: [''],
-      fundedBudget: [null],
-      breakeven: [null],
-      backendProfit: [null],
-      potentialRevenues: [null],
-      selectionCategories: ['']
-    });
-    // Akita Persist Form
-    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
-
-    /*
-    MODIFICATION OF A MOVIE
-    In case of modification of an existing movie,
-    load the form with current data stored in the active Movie.
-    */
-    if (this.query.hasActive()) {
-      this.activeId = this.query.getActiveId();
-      this.movieForm.patchValue(createMovie(this.query.getActive()));
-    }
-
+  /* Returns label from json staticModels */
+  public getStaticBySlug (scope: string, slug: string) {
+    return getLabelBySlug (scope, slug) as string;
   }
 
-  /*
-  MODIFICATION OF A MOVIE
-  Kill the active Movie to reset the modification process.
-  */
-  ngOnDestroy() {
-    this.clear();
-    this.persistForm.destroy();
-    this.isModifying = false;
-  }
-
-// POSTER
-
-  /*
-  SAVING THE FORM
-  Case 1 = invalid form refused.
-  Case 2 = modification of a Movie.
-  Case 3 = new Movie.
-  */
-  public onSubmit() {
+  /* Saves the form */
+  public submit() {
     if (!this.movieForm.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
     } else {
-      this.snackBar.open(`${this.movieForm.get('original_title').value} saved.`, 'close', { duration: 2000 });
-      this.service.update(this.activeId, this.preUpdate({ ...this.movieForm.value }));
+      this.snackBar.open(`${this.movieForm.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
+      this.service.update(this.query.getActiveId(), this.preUpdate({ ...this.movieForm.value }));
     }
-
-    //this.router.navigateByUrl(''); @todo remove ?
-    //this.clear(); @todo remove ?
   }
 
-  // @todo temp until corrected camelCase FormBuilderAttribs
+  /* Applies movie modifications to fit actual model */
   private preUpdate(movie: any) {
-    // apply movie modifications to fit actual model
     movie.title = {};
-    if (movie.original_title) {
-      movie.title.original = movie.original_title;
+    if (movie.originalTitle) {
+      movie.title.original = movie.originalTitle;
     }
 
-    if (movie.international_title) {
-      movie.title.international = movie.international_title;
+    if (movie.internationalTitle) {
+      movie.title.international = movie.internationalTitle;
     }
-
-    if (movie.director_name) {
-      movie.directorName = movie.director_name;
-      
-    }
-
-    if (movie.production_year) {
-      movie.productionYear = movie.production_year;
-    }
-
-    delete movie.original_title;
-    delete movie.international_title;
-    delete movie.director_name;
-    delete movie.production_year;
+    delete movie.originalTitle;
+    delete movie.internationalTitle;
 
     return movie;
   }
 
-  // TODO: rezise and rename
-
-
-  /*
-  FormArray parts of the FormGroup with same methods
-  */
-
-// CREDITS
-
-  public clear() {
+  private clear() {
     this.persistForm.reset();
     this.movieForm.reset();
   }
@@ -191,67 +190,17 @@ export class FormComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('');
   }
 
-  public addPoster(poster: string) {
-    this.movieForm.patchValue({ poster });
+  public toggleFullScreen() {
+    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
   }
 
-  public removePoster() {
-    this.movieForm.patchValue({ poster : '' });
-  }
-
-  public createCredit(): FormGroup {
-    return this.builder.group({
-      firstName: '',
-      lastName: '',
-      creditRole: ''
-    });
-  }
-
-// STAKEHOLDERS
-
-  public addCredit(): void {
-    this.movieCredits.push(this.createCredit());
-  }
-
-  public removeCredit(index: number): void {
-    this.movieCredits.removeAt(index);
-  }
-
-  public createStakeholder(orgId?: string, orgName?: string, orgMovieRole?: string, stakeholderRole?: string, stakeholderAuthorization?: string): FormGroup {
-    return this.builder.group({
-      orgId: orgId || '',
-      orgName: orgName || '',
-      orgMovieRole: orgMovieRole || '',
-      stakeholderRole: stakeholderRole || '',
-      stakeholderAuthorization: stakeholderAuthorization || ''
-    });
-  }
-
-  public addStakeholder(orgId: string, orgName: string, orgMovieRole: string, stakeholderRole: string, stakeholderAuthorization: string): void {
-    this.movieStakeholders.push(this.createStakeholder(orgId, orgName, orgMovieRole, stakeholderRole, stakeholderAuthorization));
-  }
-
-// KEYWORDS
-
-  public removeStakeholder(index: number): void {
-    this.movieStakeholders.removeAt(index);
-  }
-
-  public createKeyword(keywordName: string): FormGroup {
-    return this.builder.group({ name: keywordName });
-  }
-
-  public addKeyword(keywordName: string): void {
-    this.keywords.push(this.createKeyword(keywordName));
-  }
-
-  public addChipKeyword(event: MatChipInputEvent): void {
+  public addChip(event: MatChipInputEvent, object: string): void {
     const input = event.input;
     const value = event.value;
 
     // Add keyword
     if ((value || '').trim()) {
-      this.addKeyword(value.trim());
+      this.addFormControl(new FormControl(value.trim()), object);
     }
 
     // Reset the input value
@@ -260,30 +209,57 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  public remove(index: number): void {
-    this.keywords.removeAt(index);
-  }
-
-// PROMOTIONAL ELEMENTS: not implemented yet
-
-  public createPromotionalElement(): FormGroup {
-    return this.builder.group({
-      promotionalElementName: '',
-      url: ''
-    });
+  public addCredit(): void {
+    const defaultFormGroup = { firstName: '', lastName: '', creditRole: ''};
+    this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
   }
 
   public addPromotionalElement(): void {
-    this.promotionalElements = this.movieForm.get('promotionalElements') as FormArray;
-    this.promotionalElements.push(this.createPromotionalElement());
+    const defaultFormGroup = { label: '', url: ''};
+    this.addFormControl(this.builder.group(defaultFormGroup), 'promotionalElements');
   }
 
+  public setImage(image: string, index: number): void {
+    this.images.controls[index].setValue(image);
+  }
 
-  public toggleFullScreen() {
-    if (this.fullScreenForm === 'show') {
-      this.fullScreenForm = 'hide';
-    } else {
-      this.fullScreenForm = 'show';
-    }
+  public addImage(): void {
+    this.addFormControl(new FormControl(''), 'images');
+  }
+
+  public addPoster(poster: string) {
+    this.movieForm.patchValue({ poster });
+  }
+
+  private addFormControl(value: FormControl | FormGroup, object: string): void {
+    this[object].push(value);
+  }
+
+  public removeFormControl(index: number, object: string): void {
+    this[object].removeAt(index);
+  }
+
+  public removePoster() {
+    this.movieForm.patchValue({ poster : '' });
+  }
+
+  private filterSelectSearch(model: string) {
+    if (!staticModels[model]) { return; }
+
+    let search = this[`${model.toLowerCase()}FilterCtrl`].value;
+    if (!search) {
+      this[model.toLowerCase()].next(staticModels[model].slice());
+      return;
+    } else { search = search.toLowerCase(); }
+
+    this[model.toLowerCase()]
+    .next(staticModels[model]
+    .filter(i => i.label.toLowerCase().indexOf(search) > -1));
+  }
+
+  ngOnDestroy() {
+    this.clear();
+    this.persistForm.destroy();
+    this.isAlive = false;
   }
 }
