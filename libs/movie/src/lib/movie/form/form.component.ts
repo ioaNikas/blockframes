@@ -33,9 +33,6 @@ export class FormComponent implements OnInit, OnDestroy {
   public genres: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
   public audiovisual_types: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
-  // @todo
-  //public promotionalElements: FormArray;
-
   constructor(
     private query: MovieQuery,
     private service: MovieService,
@@ -66,8 +63,6 @@ export class FormComponent implements OnInit, OnDestroy {
       keywords: this.builder.array([]),
       credits: this.builder.array([]),
       images: this.builder.array([]),
-
-
       promotionalElements: this.builder.array([]),
     });
     
@@ -87,10 +82,15 @@ export class FormComponent implements OnInit, OnDestroy {
       })
     }
 
-    // @todo images are not in state ...?
     if (this.movie.images && this.movie.images.length) {
       this.movie.images.forEach((image) => {
         this.addFormControl(new FormControl(image), 'images');
+      })
+    }
+
+    if (this.movie.promotionalElements && this.movie.promotionalElements.length) {
+      this.movie.promotionalElements.forEach((element) => {
+        this.addFormControl(this.builder.group(element), 'promotionalElements');
       })
     }
 
@@ -138,6 +138,10 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public get movieCredits() {
     return this.movieForm.get('credits') as FormArray;
+  }
+
+  public get promotionalElements() {
+    return this.movieForm.get('promotionalElements') as FormArray;
   }
 
   public get images() {
@@ -210,6 +214,11 @@ export class FormComponent implements OnInit, OnDestroy {
     this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
   }
 
+  public addPromotionalElement(): void {
+    const defaultFormGroup = { label: '', url: ''};
+    this.addFormControl(this.builder.group(defaultFormGroup), 'promotionalElements');
+  }
+
   public setImage(image: string, index: number): void {
     this.images.controls[index].setValue(image);
   }
@@ -253,22 +262,4 @@ export class FormComponent implements OnInit, OnDestroy {
     this.persistForm.destroy();
     this.isAlive = false;
   }
-
-
-
-
-
-// PROMOTIONAL ELEMENTS: not implemented yet
-/*
-  public createPromotionalElement(): FormGroup {
-    return this.builder.group({
-      promotionalElementName: '',
-      url: ''
-    });
-  }
-
-  public addPromotionalElement(): void {
-    this.promotionalElements = this.movieForm.get('promotionalElements') as FormArray;
-    this.promotionalElements.push(this.createPromotionalElement());
-  }*/
 }
