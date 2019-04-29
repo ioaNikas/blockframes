@@ -53,7 +53,7 @@
         <mat-card-title>Status</mat-card-title>
         <mat-card-subtitle *ngIf="currentFormValue('status')">
           <span>
-            {{ getStaticBySlug('MOVIE_STATUS', currentFormValue('originCountry')) }}
+            {{ getStaticBySlug('MOVIE_STATUS', currentFormValue('status')) }}
           </span>
         </mat-card-subtitle>
       </mat-card-content>
@@ -88,8 +88,19 @@
       <mat-card-content>
         <mat-card-title class="movie-card-meta-title">Promotional Elements</mat-card-title>
         <mat-card-title>Images</mat-card-title>
-        <mat-card-subtitle *ngIf="images">
-          <img mat-card-image *ngFor="let image of images.controls;" src="{{image.value}}">
+        <div class="movie-grid-list">
+          <mat-grid-list *ngIf="images.controls[0] !== undefined"cols="1" rowHeight="3:4">
+            <mat-grid-tile><img mat-card-image  src="{{images.controls[0].value}}"></mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list layout="row" layout-align="center" *ngIf="images.controls[0] !== undefined && images.controls.slice(1).length > 0" cols="{{images.controls.slice(1).length}}" rowHeight="3:4">
+            <mat-grid-tile *ngFor="let image of images.controls.slice(1);"> <img mat-card-image  src="{{image.value}}"></mat-grid-tile>
+          </mat-grid-list>
+        </div>
+        <mat-card-title>Other promotional elements</mat-card-title>
+        <mat-card-subtitle *ngIf="currentFormValue('promotionalElements')">
+          <div *ngFor="let item of currentFormValue('promotionalElements');">
+            <a target="_blank" class="promotional-element-link" href="{{ item.url }}">{{ item.label }}</a>
+          </div>
         </mat-card-subtitle>
       </mat-card-content>
     </mat-card>
@@ -308,29 +319,49 @@
               <h3> Images </h3>
               <div formArrayName="images" *ngFor="let image of images.controls; let i = index;">
                 <div [formGroupName]="i" class="full-width">
-                    <mat-card class="movie-poster-thumbnail mat-elevation-z0">
-                      <ng-container *ngIf="currentFormValue('images', i); else fileUpload">
-                        <img mat-card-image [src]="currentFormValue('images', i)">
-                      </ng-container>
-                      <ng-template #fileUpload>
-                        <file-upload
-                          accept="['.jpg', '.png']"
-                          path='test'
-                          [types]="['image/jpeg', 'image/png']"
-                          (storeUploaded)="setImage($event, i)"
-                        ></file-upload>
-                      </ng-template>
-                    </mat-card>
-                  <button mat-icon-button color="primary" (click)="addImage()">
+                  <mat-card class="movie-poster-thumbnail mat-elevation-z0">
+                    <ng-container *ngIf="currentFormValue('images', i); else fileUpload">
+                      <img mat-card-image [src]="currentFormValue('images', i)">
+                    </ng-container>
+                    <ng-template #fileUpload>
+                      <file-upload
+                        accept="['.jpg', '.png']"
+                        path='test'
+                        [types]="['image/jpeg', 'image/png']"
+                        (storeUploaded)="setImage($event, i)"
+                      ></file-upload>
+                    </ng-template>
+                    <mat-card-actions>
+                      <button mat-raised-button color="warn" (click)="removeFormControl(i, 'images')"><mat-icon>delete_circle</mat-icon> Remove</button>
+                    </mat-card-actions>
+                  </mat-card>
+                </div>
+              </div>
+              <div *ngIf="images.controls.length < 6">
+                <button mat-icon-button color="primary" (click)="addImage()">
+                  <mat-icon>add_circle</mat-icon>
+                </button>
+              </div>
+              <!-- Other promotional elements -->
+              <h3> Other Promotional Elements </h3>
+              <div formArrayName="promotionalElements" *ngFor="let element of promotionalElements.controls; let i = index;">
+                <div [formGroupName]="i" class="full-width">
+                  <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="label" placeholder="Label">
+                  </mat-form-field>
+                  <mat-form-field class="small-width small-margin">
+                    <input matInput formControlName="url" placeholder="https://">
+                  </mat-form-field>
+                  <button mat-icon-button color="primary" (click)="addPromotionalElement()">
                     <mat-icon>add_circle</mat-icon>
                   </button>
-                  <button mat-icon-button color="primary" (click)="removeFormControl(i, 'images')">
+                  <button mat-icon-button color="primary" (click)="removeFormControl(i, 'promotionalElements')">
                     <mat-icon>delete_circle</mat-icon>
                   </button>
                 </div>
               </div>
-              <div *ngIf="images.controls.length == 0">
-                <button mat-icon-button color="primary" (click)="addImage()">
+              <div *ngIf="promotionalElements.controls.length == 0">
+                <button mat-icon-button color="primary" (click)="addPromotionalElement()">
                   <mat-icon>add_circle</mat-icon>
                 </button>
               </div>
