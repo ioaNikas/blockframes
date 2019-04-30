@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MovieQuery } from '../+state';
 @Component({
   selector: 'movie-form-container',
   templateUrl: './container.component.html',
@@ -7,10 +9,13 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class ContainerComponent implements OnInit {
   public fullScreen = false;
+  public form$ : Observable<any>;
 
-  constructor() {}
+  constructor(private query: MovieQuery) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.form$ = this.query.movieFormChanges$;
+  }
   
   public toggleFullScreen() {
     return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;

@@ -33,7 +33,6 @@ import { StakeholderModule } from '../stakeholder/stakeholder.module';
 import { HomeComponent } from './home/home.component';
 import { ContainerComponent } from './form/container.component';
 import { FormComponent } from './form/form.component';
-import { PreviewComponent } from './form/preview.component';
 import { FormMainComponent } from './form/form.main.component';
 import { FormStoryComponent } from './form/form.story.component'
 import { FormTeamComponent } from './form/form.team.component';
@@ -55,7 +54,6 @@ import { MatTabsModule, MatGridListModule, MatExpansionModule } from '@angular/m
     ListComponent,
     ViewComponent,
     TitleFormComponent,
-    PreviewComponent,
     FormMainComponent,
     FormTeamComponent,
     FormPromotionalComponent,
