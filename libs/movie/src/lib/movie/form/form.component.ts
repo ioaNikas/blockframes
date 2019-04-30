@@ -6,9 +6,6 @@ import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
 import { default as staticModels } from '../staticModels';
-import { ReplaySubject } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
-
 
 @Component({
   selector: 'movie-financing-form',
@@ -17,22 +14,13 @@ import { takeWhile } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormComponent implements OnInit, OnDestroy {
-  public isAlive = true;
-  public staticModels: any;
   public persistForm: PersistNgFormPlugin;
   public movieForm: FormGroup;
   public movie: Movie;
   public fullScreen = false;
   public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  public countriesFilterCtrl: FormControl = new FormControl();
-  public languagesFilterCtrl: FormControl = new FormControl();
-  public genresFilterCtrl: FormControl = new FormControl();
-  public audiovisual_typesFilterCtrl: FormControl = new FormControl();
-  public countries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public languages: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public genres: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public audiovisual_types: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
+  public staticModels: any; //@ŧodo remove
   constructor(
     private query: MovieQuery,
     private service: MovieService,
@@ -43,9 +31,8 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.staticModels = staticModels;
     this.movie = this.query.getActive();
-
+    this.staticModels = staticModels;
     this.movieForm = this.builder.group({
       originalTitle: [this.movie.title.original],
       internationalTitle: [this.movie.title.international],
@@ -69,6 +56,10 @@ export class FormComponent implements OnInit, OnDestroy {
     // Akita Persist Form 
     this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
 
+    this.populateForm();
+  }
+
+  private populateForm() {
     // Populate custom fields
     if (this.movie.keywords && this.movie.keywords.length) {
       this.movie.keywords.forEach((keyword) => {
@@ -93,34 +84,10 @@ export class FormComponent implements OnInit, OnDestroy {
         this.addFormControl(this.builder.group(element), 'promotionalElements');
       })
     }
-
-    this._selectSearchSubScriptions();
   }
 
-  /* Selects with search bar */
-  private _selectSearchSubScriptions() : void {
-    
-    this.countries.next(staticModels.COUNTRIES.slice());
-    this.countriesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('COUNTRIES'));
 
-    this.languages.next(staticModels.LANGUAGES.slice());
-    this.languagesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('LANGUAGES'));
-
-    this.genres.next(staticModels.GENRES.slice());
-    this.genresFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('GENRES'));
-
-    this.audiovisual_types.next(staticModels.AUDIOVISUAL_TYPES.slice());
-    this.audiovisual_typesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('AUDIOVISUAL_TYPES'));
-  }
-
+  // @todo remove
   /* Getters for all form inputs */
   public currentFormValue(attr: string, index?: number) {
     if (index !== undefined) {
@@ -222,10 +189,6 @@ export class FormComponent implements OnInit, OnDestroy {
     this.addFormControl(new FormControl(''), 'images');
   }
 
-  public addPoster(poster: string) {
-    this.movieForm.patchValue({ poster });
-  }
-
   private addFormControl(value: FormControl | FormGroup, object: string): void {
     this[object].push(value);
   }
@@ -234,27 +197,8 @@ export class FormComponent implements OnInit, OnDestroy {
     this[object].removeAt(index);
   }
 
-  public removePoster() {
-    this.movieForm.patchValue({ poster : '' });
-  }
-
-  private filterSelectSearch(model: string) {
-    if (!staticModels[model]) { return; }
-
-    let search = this[`${model.toLowerCase()}FilterCtrl`].value;
-    if (!search) {
-      this[model.toLowerCase()].next(staticModels[model].slice());
-      return;
-    } else { search = search.toLowerCase(); }
-
-    this[model.toLowerCase()]
-    .next(staticModels[model]
-    .filter(i => i.label.toLowerCase().indexOf(search) > -1));
-  }
-
   ngOnDestroy() {
     this.clear();
     this.persistForm.destroy();
-    this.isAlive = false;
   }
 }
