@@ -12,7 +12,7 @@ import { getLabelBySlug } from '../staticModels';
 export class PreviewComponent implements OnInit {
   public form$ : Observable<any>;
 
-  constructor(private query: MovieQuery,) {}
+  constructor(private query: MovieQuery) {}
 
   ngOnInit() {
     this.form$ = this.query.movieFormChanges$;
