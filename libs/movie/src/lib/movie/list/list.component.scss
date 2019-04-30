@@ -11,6 +11,10 @@
   margin-bottom: 40px;
   box-shadow: -10px 11px 32px 0 #00000023;
   background-color: #ffffff;
+
+  .clickable-item {
+    cursor: pointer;
+  }
 }
 
 .center {
