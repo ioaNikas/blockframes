@@ -1,14 +1,12 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
-import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
-import { default as staticModels } from '../staticModels';
 
 @Component({
-  selector: 'movie-financing-form',
+  selector: 'movie-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -17,10 +15,7 @@ export class FormComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin;
   public movieForm: FormGroup;
   public movie: Movie;
-  public fullScreen = false;
-  public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  public staticModels: any; //@ŧodo remove
   constructor(
     private query: MovieQuery,
     private service: MovieService,
@@ -32,7 +27,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.movie = this.query.getActive();
-    this.staticModels = staticModels;
     this.movieForm = this.builder.group({
       originalTitle: [this.movie.title.original],
       internationalTitle: [this.movie.title.international],
@@ -86,8 +80,6 @@ export class FormComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  // @todo remove
   /* Getters for all form inputs */
   public currentFormValue(attr: string, index?: number) {
     if (index !== undefined) {
@@ -152,44 +144,7 @@ export class FormComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('');
   }
 
-  public toggleFullScreen() {
-    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
-  }
-
-  public addChip(event: MatChipInputEvent, object: string): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add keyword
-    if ((value || '').trim()) {
-      this.addFormControl(new FormControl(value.trim()), object);
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  public addCredit(): void {
-    const defaultFormGroup = { firstName: '', lastName: '', creditRole: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
-  }
-
-  public addPromotionalElement(): void {
-    const defaultFormGroup = { label: '', url: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'promotionalElements');
-  }
-
-  public setImage(image: string, index: number): void {
-    this.images.controls[index].setValue(image);
-  }
-
-  public addImage(): void {
-    this.addFormControl(new FormControl(''), 'images');
-  }
-
-  private addFormControl(value: FormControl | FormGroup, object: string): void {
+  public addFormControl(value: FormControl | FormGroup, object: string): void {
     this[object].push(value);
   }
 
