@@ -34,6 +34,7 @@ import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
+import { PreviewComponent } from './form/preview.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { TitleFormComponent } from '../movie/title-form/title-form.component';
