@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
-import { FormComponent } from './form/form.component';
+import { ContainerComponent } from './form/container.component';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { TitleFormComponent } from './title-form/title-form.component';
@@ -20,11 +20,11 @@ export const routes: Routes = [
 
   {
     path: 'form',
-    component: FormComponent,
+    component: ContainerComponent,
   },
   {
     path: 'form/:movieId',
-    component: FormComponent,
+    component: ContainerComponent,
     canActivate: [MovieGuard],
   },
   {

@@ -15,6 +15,7 @@ export class FormMainComponent implements OnInit, OnDestroy {
   
   @Input() movieForm: FormGroup;
   @Input() movie: Movie;
+  @Input() currentFormValue: any;
 
   public isAlive = true;
   public staticModels: any;
@@ -71,18 +72,6 @@ export class FormMainComponent implements OnInit, OnDestroy {
     .next(staticModels[model]
     .filter(i => i.label.toLowerCase().indexOf(search) > -1));
   }
-
-  /* Getters for all form inputs */
-  public currentFormValue(attr: string, index?: number) {
-    if (index !== undefined) {
-      const formArray = this.movieForm.get(attr) as FormArray;
-      return formArray.controls[index] !== null ? formArray.controls[index].value : '' as String;
-    } else {
-      const input = this.movieForm.get(attr);
-      return input !== null ? input.value: '' as String;
-    }
-  }
-
 
   public addPoster(poster: string) {
     this.movieForm.patchValue({ poster });

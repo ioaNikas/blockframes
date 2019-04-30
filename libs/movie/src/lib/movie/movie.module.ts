@@ -31,11 +31,16 @@ import { StakeholderModule } from '../stakeholder/stakeholder.module';
 
 // Components
 import { HomeComponent } from './home/home.component';
+import { ContainerComponent } from './form/container.component';
 import { FormComponent } from './form/form.component';
-import { ListComponent } from './list/list.component';
-import { ViewComponent } from './view/view.component';
 import { PreviewComponent } from './form/preview.component';
 import { FormMainComponent } from './form/form.main.component';
+import { FormStoryComponent } from './form/form.story.component'
+import { FormTeamComponent } from './form/form.team.component';
+import { FormPromotionalComponent } from './form/form.promotional.component';
+import { ListComponent } from './list/list.component';
+import { ViewComponent } from './view/view.component';
+
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { TitleFormComponent } from '../movie/title-form/title-form.component';
@@ -43,7 +48,20 @@ import { MatTabsModule, MatGridListModule, MatExpansionModule } from '@angular/m
 import { HomeEmptyComponent } from './home-empty/home-empty.component';
 
 @NgModule({
-  declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent, TitleFormComponent, HomeEmptyComponent],
+  declarations: [
+    HomeComponent,
+    ContainerComponent,
+    FormComponent,
+    FormStoryComponent,
+    ListComponent,
+    ViewComponent,
+    TitleFormComponent,
+    PreviewComponent,
+    FormMainComponent,
+    FormTeamComponent,
+    FormPromotionalComponent,
+    HomeEmptyComponent,
+  ],
   imports: [
     CommonModule,
     FlexLayoutModule,
