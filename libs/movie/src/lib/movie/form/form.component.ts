@@ -5,7 +5,7 @@ import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
 import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
-import { default as staticModels, getLabelBySlug } from '../staticModels';
+import { default as staticModels } from '../staticModels';
 import { ReplaySubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 
@@ -146,11 +146,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public get images() {
     return this.movieForm.get('images') as FormArray;
-  }
-
-  /* Returns label from json staticModels */
-  public getStaticBySlug (scope: string, slug: string) {
-    return getLabelBySlug (scope, slug) as string;
   }
 
   /* Saves the form */
