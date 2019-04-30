@@ -27,34 +27,11 @@
   ::ng-deep .mat-chip-list-wrapper {
     margin: 0px;
   }
-}
 
-.movie-panel {
-  position: absolute;
-  right: 0px;
-  left: 0px;
-  top: 66px;
-  margin: auto;
-
-  .toggle-drawer {
-    float: right;
-    position: sticky;
-    top: 0px;
-    z-index: 99;
-  }
-  
-  mat-drawer {
+  ::ng-deep .movie-poster-thumbnail {
+    background-color: transparent;
     width: 50%;
-  }
-
-  .mat-drawer-fullscreen {
-    width: 100%;
-  }
-
-  .toggle-fullscreen {
-    float: right;
-    position: sticky;
-    top: 0px;
-    z-index: 99;
+    margin: auto;
+    max-width: 300px;
   }
 }
