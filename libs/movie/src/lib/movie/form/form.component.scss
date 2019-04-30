@@ -1,35 +1,40 @@
-.full-width {
-  width: 100%;
+.movie-form-container {
+
+  ::ng-deep .full-width {
+    width: 100%;
+  }
+
+  ::ng-deep .half-width {
+    margin: 10px;
+    width: 20%;
+  }
+  
+  ::ng-deep .small-margin {
+    margin: 10px;
+  }
+  
+  ::ng-deep .small-width {
+    width: 20%;
+    display: inline-block;
+  }
+
+  ::ng-deep .mat-chip.mat-standard-chip {
+    background-color: #6200EE;
+    color: #FFF;
+    font-weight: bold;
+  }
+
+  ::ng-deep .mat-chip-list-wrapper {
+    margin: 0px;
+  }
 }
-
-.half-width {
-  margin: 10px;
-  width: 20%;
-}
-
-.small-margin {
-  margin: 10px;
-}
-
-.small-width {
-  width: 20%;
-  display: inline-block;
-}
-
-.toggle-fullscreen {
-  float: right;
-  position: sticky;
-  top: 0px;
-  z-index: 99;
-}
-
-
 
 .movie-panel {
   position: absolute;
   right: 0px;
   left: 0px;
   top: 66px;
+  margin: auto;
 
   .toggle-drawer {
     float: right;
@@ -45,29 +50,11 @@
   .mat-drawer-fullscreen {
     width: 100%;
   }
-}
 
-.movie-card {
-  .mat-chip.mat-standard-chip {
-    background-color: #6200EE;
-    color: #FFF;
-    font-weight: bold;
-  }
-
-  ::ng-deep .mat-chip-list-wrapper {
-    margin: 0px;
+  .toggle-fullscreen {
+    float: right;
+    position: sticky;
+    top: 0px;
+    z-index: 99;
   }
 }
-
-
-.movie-poster-thumbnail {
-  background-color: transparent;
-  width: 50%;
-  margin: auto;
-  max-width: 300px;
-}
-
-.movie-panel {
-  margin: auto;
-}
-
