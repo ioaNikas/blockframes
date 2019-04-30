@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Movie, MovieQuery, MovieStore } from '../+state';
-
+import { MovieQuery, MovieStore } from '../+state';
+import { getLabelBySlug } from '../staticModels';
 
 @Component({
   selector: 'movie-financing-view',
@@ -10,8 +10,10 @@ import { Movie, MovieQuery, MovieStore } from '../+state';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewComponent implements OnInit, OnDestroy {
+  @Input() form$: Observable<any>;
+  @Input() mode: string;
 
-  movie$: Observable<Movie>;
+  movie$: Observable<any>;
 
   constructor(
     private query: MovieQuery,
@@ -19,9 +21,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.movie$ = this.query.selectActive();
+    if (this.mode === 'preview'){
+      this.movie$ = this.form$;
+    } else {
+      this.movie$ = this.query.selectActive();
+    }
   }
 
+  /* Returns label from json staticModels */
+  public getStaticBySlug (scope: string, slug: string) {
+    return getLabelBySlug (scope, slug) as string;
+  }
+  
   ngOnDestroy() {
     this.store.setActive(null);
   }
