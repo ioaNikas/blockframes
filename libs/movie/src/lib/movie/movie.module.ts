@@ -30,9 +30,8 @@ import { UploadModule, UiFormModule } from '@blockframes/ui';
 import { StakeholderModule } from '../stakeholder/stakeholder.module';
 
 // Components
-import { HomeComponent } from './home/home.component';
 import { FormComponent } from './form/form.component';
-import { ListComponent } from './list/list.component';
+import { MovieListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
@@ -40,7 +39,7 @@ import { TitleFormComponent } from '../movie/title-form/title-form.component';
 import { MatTabsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
-  declarations: [HomeComponent, FormComponent, ListComponent, ViewComponent, TitleFormComponent],
+  declarations: [FormComponent, MovieListComponent, ViewComponent, TitleFormComponent],
   imports: [
     CommonModule,
     FlexLayoutModule,

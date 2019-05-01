@@ -2,18 +2,23 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 // Components
+import { MovieListComponent } from './list/list.component';
 import { FormComponent } from './form/form.component';
-import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { TitleFormComponent } from './title-form/title-form.component';
 import { StakeholderListComponent } from '../stakeholder/list/list.component';
 
 // Guards
 import { MovieGuard } from './guards/movie.guard';
+import { MovieListGuard } from './guards/movie-list.guard';
 
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  {
+    path: '',
+    component: MovieListComponent,
+    canActivate: [MovieListGuard],
+  },
 
   // MovieGuard: set active the Movie id in Akita
 

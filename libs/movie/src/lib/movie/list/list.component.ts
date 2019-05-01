@@ -4,15 +4,14 @@ import { Observable } from 'rxjs';
 import { OrganizationQuery, OrganizationWithMovies, Organization } from '@blockframes/organization';
 import { MatDialog } from '@angular/material/dialog';
 import { TitleFormComponent } from '../title-form/title-form.component';
-import { takeWhile, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'movie-financing-list',
+  selector: 'movie-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class MovieListComponent implements OnInit, OnDestroy {
   orgs$: Observable<OrganizationWithMovies[]>;
   isAlive= true;
 
@@ -25,7 +24,6 @@ export class ListComponent implements OnInit, OnDestroy {
 
   // Initiate the Movies in Akita
   ngOnInit() {
-    this.service.moviesOfOrganizations$.pipe(takeWhile(() => this.isAlive)).subscribe();
     this.orgs$ = this.orgQuery.orgsWithMovies$;
   }
 
