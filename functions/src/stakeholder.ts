@@ -150,7 +150,7 @@ export const onMovieStakeholderCreate = async (
             message: `Stakeholder ${newStakeholder.id} from ${newStakeholderOrg.name}
             has been added to movie ${movie.title.original}`,
             userId,
-            path: `/layout/home/form/${movie.id}/teamwork`
+            path: `/layout/home/${movie.id}/form/teamwork`
           })
         );
 
@@ -197,7 +197,7 @@ export const onMovieStakeholderDelete = async (
             message: `Stakeholder ${stakeholder.id} from ${stakeholderOrg.name}
             has been removed from movie ${movie.title.original}`,
             userId,
-            path: `/layout/home/form/${movie.id}/teamwork`
+            path: `/layout/home/${movie.id}/form/teamwork`
           })
         );
 

@@ -40,9 +40,9 @@ export class TitleFormComponent implements OnInit {
   public async newMovie() {
     if (!this.titleForm.valid) {
       this.snackBar.open('Invalid form', 'close', { duration: 1000 });
-      return 
+      return
     }
-    
+
     try {
       const { title } = this.titleForm.value;
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 5000 });
@@ -53,7 +53,7 @@ export class TitleFormComponent implements OnInit {
         .subscribe(m => {
         if (m !== undefined) {
           this.alive = false;
-          this.router.navigate([`/layout/home/form/${movie.id}`]);
+          this.router.navigate([`/layout/home/${movie.id}/form`]);
           this.dialogRef.close();
         }
       })

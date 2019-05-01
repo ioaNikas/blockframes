@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 // Components
 import { TemplateFormComponent } from './template-form/template-form.component';
 import { TemplateListComponent } from './template-list/template-list.component';
-import { TemplateActiveGuard } from "./guards/TemplateActiveGuard";
+import { TemplateActiveGuard } from './guards/template-active.guard';
 import { TemplateItemComponent } from './template-item/template-item.component';
 import { TemplateAddComponent } from './template-add/template-add.component';
 import { EditableModule } from '@blockframes/ui';
