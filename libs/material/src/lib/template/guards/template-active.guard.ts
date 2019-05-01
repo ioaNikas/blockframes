@@ -16,7 +16,7 @@ export const templateActiveQuery = (orgId: string, templateId: string): Query<Te
   providedIn: 'root'
 })
 export class TemplateActiveGuard extends StateActiveGuard implements CanActivate, CanDeactivate<any> {
-  
+
   constructor(
     private store: TemplateStore,
     private router: Router,
@@ -29,7 +29,7 @@ export class TemplateActiveGuard extends StateActiveGuard implements CanActivate
     return new Promise((res, rej) => {
       this.listenOnActive = true;
       const query = templateActiveQuery(orgId, templateId);
-      this.fireQuery.fromQuery<Template>(query).pipe(
+      this.fireQuery.fromQuery(query).pipe(
         takeWhile(_ => this.listenOnActive),
         tap(template => this.store.upsert(template.id, template)),
         tap(template => this.store.setActive(template.id)),
@@ -39,7 +39,7 @@ export class TemplateActiveGuard extends StateActiveGuard implements CanActivate
       });
     })
   }
-  
+
   canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> | UrlTree {
     const { orgId, templateId } = route.params;
     if (!orgId || !templateId) return this.router.parseUrl('layout/template');
