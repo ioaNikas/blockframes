@@ -42,7 +42,7 @@ export abstract class StateActiveGuard<T> implements CanActivate, CanDeactivate<
     protected router: Router,
   ) {}
 
-  abstract query(params: any): Observable<T>
+  abstract query(params: object): Observable<T>
 
   canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> | UrlTree {
     const keys = Object.keys(route.params);

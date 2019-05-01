@@ -36,6 +36,8 @@ export class FireQuery {
   constructor(private db: AngularFirestore) {}
 
   /** Make a query to firebase */
+  public fromQuery<T>(query: Query<T>[]): Observable<T[]>
+  public fromQuery<T>(query: string | Query<T>): Observable<T>
   public fromQuery<T, Q extends QueryInput<T>>(query: Q): QueryOutput<Q, T> {
     return isQueryLike(query)
       ? this.fromSubQuery(query as QueryLike<T>) as any
