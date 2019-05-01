@@ -15,39 +15,20 @@ export const templateActiveQuery = (orgId: string, templateId: string): Query<Te
 @Injectable({
   providedIn: 'root'
 })
-export class TemplateActiveGuard extends StateActiveGuard implements CanActivate, CanDeactivate<any> {
+export class TemplateActiveGuard extends StateActiveGuard<Template> {
+  readonly params = ['orgId', 'templateId'];
+  readonly urlFallback = 'layout/template';
 
   constructor(
-    private store: TemplateStore,
-    private router: Router,
-    private fireQuery: FireQuery
+    private fireQuery: FireQuery,
+    store: TemplateStore,
+    router: Router,
   ) {
-    super()
+    super(store, router)
   }
 
-  startListeningOnActive(orgId: string, templateId: string): Promise<boolean | UrlTree> {
-    return new Promise((res, rej) => {
-      this.listenOnActive = true;
-      const query = templateActiveQuery(orgId, templateId);
-      this.fireQuery.fromQuery(query).pipe(
-        takeWhile(_ => this.listenOnActive),
-        tap(template => this.store.upsert(template.id, template)),
-        tap(template => this.store.setActive(template.id)),
-      ).subscribe({
-        next: template => res(!!template),
-        error: _ => res(this.router.parseUrl('layout'))
-      });
-    })
-  }
-
-  canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> | UrlTree {
-    const { orgId, templateId } = route.params;
-    if (!orgId || !templateId) return this.router.parseUrl('layout/template');
-    return this.startListeningOnActive(orgId, templateId);
-  }
-
-  canDeactivate() {
-    this.stopListeningOnActive(); // this correctly unsubscribe when leaving the route !!!
-    return true;
+  query({ orgId, templateId }) {
+    const query = templateActiveQuery(orgId, templateId);
+    return this.fireQuery.fromQuery(query);
   }
 }

@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
 
 // Components
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing-module';
+import { AppRoutingModule } from './app-routing.module';
 import { LayoutComponent } from './layout/layout.component';
 import { DeliveryQuery} from '@blockframes/material'; // TODO: find better way to load material lib
 import { TemplateModule} from '@blockframes/material'; // TODO: find better way to load material lib

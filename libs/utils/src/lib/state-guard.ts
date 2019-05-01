@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { Router, UrlTree, CanActivate, CanDeactivate } from "@angular/router";
+import { Router, UrlTree, CanActivate, CanDeactivate, ActivatedRouteSnapshot } from "@angular/router";
 import { takeWhile, tap } from "rxjs/operators";
 import { EntityStore, applyTransaction } from "@datorama/akita";
 
@@ -29,16 +29,47 @@ export abstract class StateListGuard<T> implements CanActivate, CanDeactivate<an
     this.isListeningOnList = false;
     return true;
   }
-
 }
 
+export abstract class StateActiveGuard<T> implements CanActivate, CanDeactivate<any> {
+  /** Specify the names of the params to check */
+  abstract params: string[];
+  abstract urlFallback: string;
+  private isListeningOnActive = false;
 
-export abstract class StateActiveGuard {
-  protected listenOnActive = false;
+  constructor(
+    protected store: EntityStore<any, T>,
+    protected router: Router,
+  ) {}
 
-  abstract startListeningOnActive(...params: any[]): void;
+  abstract query(params: any): Observable<T>
 
-  public stopListeningOnActive() {
-    this.listenOnActive = false;
+  canActivate(route: ActivatedRouteSnapshot): Promise<boolean | UrlTree> | UrlTree {
+    const keys = Object.keys(route.params);
+    const paramNotFound = this.params.find(param => !keys.includes(param));
+    if (!paramNotFound) {
+      console.error(`Parameter ${paramNotFound} has not been found`);
+      return this.router.parseUrl(this.urlFallback);
+    }
+
+    this.isListeningOnActive = true;
+    return new Promise((res, rej) => {
+      this.query(route.params).pipe(
+        takeWhile(_ => this.isListeningOnActive),
+        tap(entity => applyTransaction(() => {
+          this.store.upsert(entity[this.store.idKey], entity);
+          this.store.setActive(entity[this.store.idKey]);
+        }))
+      ).subscribe({
+        next: template => res(!!template),
+        error: _ => res(this.router.parseUrl(this.urlFallback))
+      });
+    })
   }
+
+  canDeactivate() {
+    this.isListeningOnActive = false;
+    return true;
+  }
+
 }

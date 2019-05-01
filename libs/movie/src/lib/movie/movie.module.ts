@@ -39,7 +39,12 @@ import { TitleFormComponent } from '../movie/title-form/title-form.component';
 import { MatTabsModule, MatGridListModule } from '@angular/material';
 
 @NgModule({
-  declarations: [FormComponent, MovieListComponent, ViewComponent, TitleFormComponent],
+  declarations: [
+    FormComponent,
+    MovieListComponent,
+    ViewComponent,
+    TitleFormComponent
+  ],
   imports: [
     CommonModule,
     FlexLayoutModule,
