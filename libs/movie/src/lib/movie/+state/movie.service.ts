@@ -44,16 +44,4 @@ export class MovieService {
   public remove(id: string) {
     this.collection.doc(id).delete();
   }
-
-  public get moviesOfOrganizations$(): Observable<Movie[]>{
-    return this.orgQuery.selectAll().pipe(
-      map(orgs => orgs.reduce((movieIds, org) => [...(org.movieIds || []), ...movieIds], [])),
-      switchMap((movieIds: string[]) => {
-        const movies$ = movieIds.map(id => this.firestore.doc<Movie>(`movies/${id}`).valueChanges())
-        return combineLatest(movies$)
-      }),
-      map((movies: Movie[]) => movies.filter(movie => !!movie)),
-      tap((movies: Movie[]) => this.store.set(movies))
-    );
-  }
 }

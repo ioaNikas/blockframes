@@ -23,6 +23,11 @@ export class OrganizationQuery extends QueryEntity<OrganizationState, Organizati
     }),
   );
 
+  /** Select all movies IDs of organisations */
+  public selectMovieIds = this.selectAll().pipe(
+    map(orgs => orgs.reduce((ids, org) => [...ids, ...(org.movieIds || [])], [] as string[]))
+  )
+
   constructor(private movieQuery: MovieQuery, protected store: OrganizationStore) {
     super(store);
   }
