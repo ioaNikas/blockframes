@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MovieQuery } from '../+state';
+import { FormGroupLike } from '@datorama/akita';
 @Component({
   selector: 'movie-form-container',
   templateUrl: './container.component.html',
@@ -9,7 +10,7 @@ import { MovieQuery } from '../+state';
 })
 export class ContainerComponent implements OnInit {
   public fullScreen = false;
-  public form$ : Observable<any>;
+  public form$ : Observable<FormGroupLike>;
 
   constructor(private query: MovieQuery) {}
 
@@ -18,6 +19,6 @@ export class ContainerComponent implements OnInit {
   }
   
   public toggleFullScreen() {
-    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
+    return this.fullScreen = !this.fullScreen;
   }
 }

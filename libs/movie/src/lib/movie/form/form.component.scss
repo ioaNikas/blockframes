@@ -1,34 +1,29 @@
 .movie-form-container {
 
-  ::ng-deep .full-width {
+  .full-width {
     width: 100%;
   }
-
-  ::ng-deep .half-width {
-    margin: 10px;
-    width: 20%;
-  }
   
-  ::ng-deep .small-margin {
+  .small-margin {
     margin: 10px;
   }
   
-  ::ng-deep .small-width {
+  .small-width {
     width: 20%;
     display: inline-block;
   }
 
-  ::ng-deep .mat-chip.mat-standard-chip {
+  .mat-chip.mat-standard-chip {
     background-color: #6200EE;
     color: #FFF;
     font-weight: bold;
   }
 
-  ::ng-deep .mat-chip-list-wrapper {
+  .mat-chip-list-wrapper {
     margin: 0px;
   }
 
-  ::ng-deep .movie-poster-thumbnail {
+  .movie-poster-thumbnail {
     background-color: transparent;
     width: 50%;
     margin: auto;

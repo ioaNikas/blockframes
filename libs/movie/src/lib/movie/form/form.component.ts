@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
 import { MatSnackBar } from '@angular/material';
@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   selector: 'movie-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class FormComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin;
@@ -144,12 +145,12 @@ export class FormComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('');
   }
 
-  public addFormControl(value: FormControl | FormGroup, object: string): void {
-    this[object].push(value);
+  public addFormControl(value: FormControl | FormGroup, key: string): void {
+    this[key].push(value);
   }
 
-  public removeFormControl(index: number, object: string): void {
-    this[object].removeAt(index);
+  public removeFormControl(index: number, key: string): void {
+    this[key].removeAt(index);
   }
 
   ngOnDestroy() {
