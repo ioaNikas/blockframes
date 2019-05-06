@@ -73,6 +73,7 @@ button {
   font-family: 'Montserrat', 'Helvetica Neue', sans-serif !important;
 }
 
-main {
-  margin-top: 100px;
+#navbar {
+  position: sticky;
+  top: 0;
 }

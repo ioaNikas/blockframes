@@ -20,7 +20,9 @@
     <ng-container *ngIf="currentFormValue('poster'); else fileUpload">
       <img mat-card-image [src]="currentFormValue('poster')">
       <mat-card-actions>
-        <button mat-raised-button color="warn" (click)="removePoster()"><mat-icon>delete_circle</mat-icon> Remove</button>
+        <button mat-raised-button color="warn" (click)="removePoster()">
+          <mat-icon>delete_circle</mat-icon> Remove
+        </button>
       </mat-card-actions>
     </ng-container>
     <ng-template #fileUpload>
@@ -48,7 +50,7 @@
           [noEntriesFoundLabel]="'no matching type found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let type of audiovisual_types | async" [value]="type.slug">
+      <mat-option *ngFor="let type of audiovisual_types$ | async" [value]="type.slug">
         {{ type.label }}
       </mat-option>
     </mat-select>
@@ -65,7 +67,7 @@
           [noEntriesFoundLabel]="'no matching genre found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let genre of genres | async" [value]="genre.slug">
+      <mat-option *ngFor="let genre of genres$ | async" [value]="genre.slug">
         {{ genre.label }}
       </mat-option>
     </mat-select>
@@ -74,7 +76,7 @@
   <!-- ORIGIN COUNTRY -->
   <h3> Origin Country </h3>
   <mat-form-field class="full-width">
-    <mat-select formControlName="originCountry" placeholder="Origin Country" [value]="movie.originCountry">
+    <mat-select formControlName="originCountry" placeholder="Origin Country">
       <mat-option>
         <ngx-mat-select-search 
           [formControl]="countriesFilterCtrl"
@@ -82,7 +84,7 @@
           [noEntriesFoundLabel]="'no matching country found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let country of countries | async" [value]="country.slug">
+      <mat-option *ngFor="let country of countries$ | async" [value]="country.slug">
         {{ country.label }}
       </mat-option>
     </mat-select>
@@ -99,7 +101,7 @@
           [noEntriesFoundLabel]="'no matching country found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let country of countries | async" [value]="country.slug">
+      <mat-option *ngFor="let country of countries$ | async" [value]="country.slug">
         {{ country.label }}
       </mat-option>
     </mat-select>
@@ -116,7 +118,7 @@
           [noEntriesFoundLabel]="'no matching language found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let language of languages | async" [value]="language.slug">
+      <mat-option *ngFor="let language of languages$ | async" [value]="language.slug">
         {{ language.label }}
       </mat-option>
     </mat-select>
