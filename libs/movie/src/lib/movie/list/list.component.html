@@ -14,8 +14,8 @@
     <section fxLayout="row wrap" fxLayoutAlign="start space-between">
       <mat-card *ngFor="let movie of org.movies" class="movie-card">
         <div class="img-container clickable-item">
-          <img [routerLink]="['movie', movie.id]" *ngIf="movie.poster; else defaultPoster" mat-card-image src={{movie.poster}}  alt="Movie poster"/>
-          <ng-template #defaultPoster><img [routerLink]="['movie', movie.id]" class="mat-card-image" src="/assets/images/default-movie-poster.png" alt="Movie poster"></ng-template>
+          <img [routerLink]="['/layout', movie.id, 'list']" *ngIf="movie.poster; else defaultPoster" mat-card-image src={{movie.poster}}  alt="Movie poster"/>
+          <ng-template #defaultPoster><img [routerLink]="['/layout', movie.id, 'list']" class="mat-card-image" src="/assets/images/default-movie-poster.png" alt="Movie poster"></ng-template>
   
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon color="primary">more_vert</mat-icon>
@@ -35,10 +35,10 @@
             </button>
           </mat-menu>
           <mat-menu #subMenu="matMenu">
-            <button mat-menu-item [routerLink]="['/layout', movie.id, 'list']">Current app</button>
+            <button mat-menu-item [routerLink]="['movie', movie.id]">Explorer</button>
           </mat-menu>
         </div>
-        <mat-card-header [routerLink]="['movie', movie.id]" class="clickable-item">
+        <mat-card-header [routerLink]="['/layout', movie.id, 'list']" class="clickable-item">
           <mat-card-title>
             {{ movie.title.original }}<span *ngIf="movie.productionYear"> ({{ movie.productionYear }})</span>
           </mat-card-title>
