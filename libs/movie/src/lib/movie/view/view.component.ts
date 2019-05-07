@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MovieQuery, MovieStore } from '../+state';
+import { MovieQuery, MovieStore, Movie } from '../+state';
 import { getLabelBySlug } from '../staticModels';
+import { FormGroupLike } from '@datorama/akita';
 
 @Component({
   selector: 'movie-financing-view',
@@ -10,10 +11,10 @@ import { getLabelBySlug } from '../staticModels';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewComponent implements OnInit, OnDestroy {
-  @Input() form$: Observable<any>;
+  @Input() form$: Observable<FormGroupLike>;
   @Input() mode: string;
 
-  movie$: Observable<any>;
+  movie$: Observable<Movie | FormGroupLike>;
 
   constructor(
     private query: MovieQuery,

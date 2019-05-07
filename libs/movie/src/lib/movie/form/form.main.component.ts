@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { ReplaySubject } from 'rxjs';
+import { FormGroup, FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { default as staticModels } from '../staticModels';
-import { takeWhile } from 'rxjs/operators';
+import { startWith, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Movie } from '../+state';
 
 @Component({
@@ -11,22 +11,21 @@ import { Movie } from '../+state';
   styleUrls: ['./form.main.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormMainComponent implements OnInit, OnDestroy {
+export class FormMainComponent implements OnInit {
   
   @Input() movieForm: FormGroup;
   @Input() movie: Movie;
   @Input() currentFormValue: any;
 
-  public isAlive = true;
   public staticModels: any;
   public countriesFilterCtrl: FormControl = new FormControl();
   public languagesFilterCtrl: FormControl = new FormControl();
   public genresFilterCtrl: FormControl = new FormControl();
-  public audiovisual_typesFilterCtrl: FormControl = new FormControl();
-  public countries$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public languages$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public genres$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public audiovisual_types$: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+  public audiovisualTypesFilterCtrl: FormControl = new FormControl();
+  public countries$: Observable<any>;
+  public languages$: Observable<any>;
+  public genres$: Observable<any>;
+  public audiovisualTypes$: Observable<any>;
   
   constructor() {}
 
@@ -37,40 +36,19 @@ export class FormMainComponent implements OnInit, OnDestroy {
 
   /* Selects with search bar */
   private _selectSearchSubScriptions() : void {
-    
-    this.countries$.next(staticModels.COUNTRIES.slice());
-    this.countriesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('COUNTRIES'));
-
-    this.languages$.next(staticModels.LANGUAGES.slice());
-    this.languagesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('LANGUAGES'));
-
-    this.genres$.next(staticModels.GENRES.slice());
-    this.genresFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('GENRES'));
-
-    this.audiovisual_types$.next(staticModels.AUDIOVISUAL_TYPES.slice());
-    this.audiovisual_typesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('AUDIOVISUAL_TYPES'));
+    this.countries$ = this.filterSelectSearch(this.countriesFilterCtrl, this.staticModels['COUNTRIES']);
+    this.languages$ = this.filterSelectSearch(this.languagesFilterCtrl, this.staticModels['LANGUAGES']);
+    this.genres$ = this.filterSelectSearch(this.genresFilterCtrl, this.staticModels['GENRES']);
+    this.audiovisualTypes$ = this.filterSelectSearch(this.audiovisualTypesFilterCtrl, this.staticModels['AUDIOVISUAL_TYPES']);
   }
 
-  private filterSelectSearch(model: string) {
-    if (!staticModels[model]) { return; }
-
-    let search = this[`${model.toLowerCase()}FilterCtrl`].value;
-    if (!search) {
-      this[`${model.toLowerCase()}$`].next(staticModels[model].slice());
-      return;
-    } else { search = search.toLowerCase(); }
-
-    this[`${model.toLowerCase()}$`]
-    .next(staticModels[model]
-    .filter(i => i.label.toLowerCase().indexOf(search) > -1));
+  private filterSelectSearch(control: FormControl, model: Array<{label: string, slug: string}>) {
+    return control.valueChanges.pipe(
+      startWith(''),
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(name => model.filter(item => item.label.toLowerCase().indexOf(name.toLowerCase()) > -1))
+    )
   }
 
   public addPoster(poster: string) {
@@ -79,10 +57,6 @@ export class FormMainComponent implements OnInit, OnDestroy {
 
   public removePoster() {
     this.movieForm.patchValue({ poster : '' });
-  }
-
-  ngOnDestroy() {
-    this.isAlive = false;
   }
 
 
