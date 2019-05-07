@@ -8,6 +8,7 @@
   
   mat-drawer {
     width: 50%;
+    box-shadow: -10px 11px 32px 0 #00000023;
   }
 
   .mat-drawer-fullscreen {
@@ -15,9 +16,12 @@
   }
 
   .toggle-fullscreen {
-    float: right;
-    position: sticky;
-    top: 0px;
-    z-index: 1;
+    position: fixed;
+    z-index: 3;
+    right: 0px;
+  }
+
+  mat-drawer-content {
+    min-height: 500px;
   }
 }
