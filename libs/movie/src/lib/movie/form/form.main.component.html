@@ -45,12 +45,12 @@
     <mat-select formControlName="types"  placeholder="Film Type" multiple>
       <mat-option>
         <ngx-mat-select-search 
-          [formControl]="audiovisual_typesFilterCtrl"
+          [formControl]="audiovisualTypesFilterCtrl"
           [placeholderLabel]="'Search...'" 
           [noEntriesFoundLabel]="'no matching type found'"
         ></ngx-mat-select-search>
       </mat-option>
-      <mat-option *ngFor="let type of audiovisual_types$ | async" [value]="type.slug">
+      <mat-option *ngFor="let type of audiovisualTypes$ | async" [value]="type.slug">
         {{ type.label }}
       </mat-option>
     </mat-select>
