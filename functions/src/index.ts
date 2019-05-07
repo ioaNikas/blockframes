@@ -3,12 +3,21 @@ import { hashToFirestore } from './generateHash';
 import { onIpHash } from './ipHash';
 import { onDeliveryUpdate } from './delivery';
 import { functions } from './firebase';
-import { relayerCreateLogic, relayerSendLogic } from './relayer';
-import { deleteFirestoreMovie, deleteFirestoreDelivery } from './delete';
-import { onDeliveryStakeholderCreate,
-         onDeliveryStakeholderDelete,
-         onMovieStakeholderCreate,
-         onMovieStakeholderDelete } from './stakeholder';
+import {
+  relayerCreateLogic,
+  relayerSendLogic,
+  relayerRequestTokensLogic,
+} from './relayer';
+import {
+  deleteFirestoreMovie,
+  deleteFirestoreDelivery,
+} from './delete';
+import {
+  onDeliveryStakeholderCreate,
+  onDeliveryStakeholderDelete,
+  onMovieStakeholderCreate,
+  onMovieStakeholderDelete,
+} from './stakeholder';
 import * as users from './users';
 import * as backup from './backup';
 import { onMaterialUpdate } from './material';
@@ -123,6 +132,9 @@ export const relayerCreate = functions.https
 
 export const relayerSend = functions.https
   .onCall((data, context) => relayerSendLogic(data, functions.config()));
+
+export const relayerRequestTokens = functions.https
+  .onCall((data, context) => relayerRequestTokensLogic(data, functions.config()));
 
 //--------------------------------
 //   PROPER FIRESTORE DELETION  //
