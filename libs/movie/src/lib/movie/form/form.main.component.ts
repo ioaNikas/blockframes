@@ -5,6 +5,11 @@ import { default as staticModels } from '../staticModels';
 import { startWith, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Movie } from '../+state';
 
+interface StaticModel {
+  label: string;
+  slug: string;
+}
+
 @Component({
   selector: 'movie-form-main-section',
   templateUrl: './form.main.component.html',
@@ -22,10 +27,10 @@ export class FormMainComponent implements OnInit {
   public languagesFilterCtrl: FormControl = new FormControl();
   public genresFilterCtrl: FormControl = new FormControl();
   public audiovisualTypesFilterCtrl: FormControl = new FormControl();
-  public countries$: Observable<any>;
-  public languages$: Observable<any>;
-  public genres$: Observable<any>;
-  public audiovisualTypes$: Observable<any>;
+  public countries$: Observable<StaticModel[]>;
+  public languages$: Observable<StaticModel[]>;
+  public genres$: Observable<StaticModel[]>;
+  public audiovisualTypes$: Observable<StaticModel[]>;
   
   constructor() {}
 
@@ -42,7 +47,7 @@ export class FormMainComponent implements OnInit {
     this.audiovisualTypes$ = this.filterSelectSearch(this.audiovisualTypesFilterCtrl, this.staticModels['AUDIOVISUAL_TYPES']);
   }
 
-  private filterSelectSearch(control: FormControl, model: Array<{label: string, slug: string}>) {
+  private filterSelectSearch(control: FormControl, model: StaticModel[]) {
     return control.valueChanges.pipe(
       startWith(''),
       debounceTime(200),
@@ -51,13 +56,8 @@ export class FormMainComponent implements OnInit {
     )
   }
 
-  public addPoster(poster: string) {
+  public setPoster(poster: string) {
     this.movieForm.patchValue({ poster });
   }
-
-  public removePoster() {
-    this.movieForm.patchValue({ poster : '' });
-  }
-
 
 }
