@@ -25,6 +25,16 @@ mat-spinner {
   margin: 6px 0 6px 12px;
 }
 
+div > button {
+  height: 51px;
+  position: relative;
+  bottom: 3px;
+}
+
+mat-card-header > button {
+  font-size: 24px;
+}
+
 .wallet-loading {
   width: 100%;
   text-align: center;

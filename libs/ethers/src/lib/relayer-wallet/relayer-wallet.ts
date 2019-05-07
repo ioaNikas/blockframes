@@ -6,6 +6,7 @@ import { Relayer } from '../relayer/relayer';
 import { Vault } from '../vault/vault';
 import { baseEnsDomain } from '@env';
 import { toASCII } from 'punycode';
+import { Observable } from 'rxjs';
 
 type txRequest = providers.TransactionRequest;
 type txResponse = providers.TransactionResponse;
@@ -87,6 +88,12 @@ export class RelayerWallet implements ethers.Signer {
     delete this.signingKey;
   }
 
+  public async requestTokens(amount: number) {
+    this._requireUsername();
+    let tx = await this.relayer.requestTokens(this.username, amount);
+    await this.provider.waitForTransaction(tx.hash)
+  }
+
   public async getAddress(): Promise<string> {
     this._requireSigningKey();
     return this.signingKey.address;
@@ -118,4 +125,15 @@ export class RelayerWallet implements ethers.Signer {
     });
     return utils.formatEther(balance);
   }
+  
+  // TODO
+  // public async balance$() {
+  //   this._requireUsername();
+  //   const address = await this.provider.resolveName(this.username);
+  //   return new Observable<string>(observer => {
+  //     const {next} = observer;
+  //     this.provider.on(address , balance => next(utils.formatEther(balance)));
+  //     return {unsubscribe() {this.provider.removeAllListener(address);}}
+  //   });
+  // }
 }

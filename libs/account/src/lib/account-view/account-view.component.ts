@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User, AuthQuery, AuthService } from '@blockframes/auth';
 import { network } from '@env';
 
@@ -14,6 +14,8 @@ export class AccountViewComponent implements OnInit {
   public explorerUrl: string;
   public isBalanceLoading$: Observable<boolean>;
 
+  public amount: number;
+
   constructor(private authService: AuthService, private authQuery: AuthQuery) {
   }
 
@@ -25,5 +27,9 @@ export class AccountViewComponent implements OnInit {
 
   refreshBalance() {
     this.authService.refreshBalance();
+  }
+
+  requestTokens() {
+    this.authService.requestTokens(this.amount);
   }
 }

@@ -171,7 +171,9 @@ export const relayerRequestTokensLogic = async (
   // compute needed values
   const fullName = `${username}.${config.relayer.basedomain}`;
 
-  const tx = await relayer.wallet.sendTransaction({to: fullName, value: amount});
+  const weiAmount = utils.parseEther(`${amount}`);
+
+  const tx = await relayer.wallet.sendTransaction({to: fullName, value: weiAmount});
   console.log(`tx sent (request tokens) : ${tx.hash}`); // display tx to firebase logging
   return tx;
 };

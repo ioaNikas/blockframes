@@ -58,4 +58,9 @@ export class Relayer implements IRelayer {
     const call = this.functions.httpsCallable('relayerRemoveKey');
     return call({ username, key }).toPromise();
   }
+
+  requestTokens(username: string, amount: number): Promise<providers.TransactionResponse> {
+    const call = this.functions.httpsCallable('relayerRequestTokens');
+    return call({username, amount}).toPromise();
+  }
 }
