@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthQuery, User } from '@blockframes/auth';
+import { AuthQuery, User, AuthService } from '@blockframes/auth';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -11,11 +11,26 @@ import { Observable } from 'rxjs';
 export class FinancingExplorerProfileComponent implements OnInit {
 
   public user$: Observable<User>;
+  public amount: number;
 
-  constructor(private authQuery: AuthQuery) { }
+  constructor(private authQuery: AuthQuery, private authService: AuthService) { }
 
   ngOnInit() {
     this.user$ = this.authQuery.user$;
+    this.amount = -1;
+  }
+
+  handleChange(value) { // ! ERROR range slider do not emit properly
+    console.log(value);
+    this.amount = value;
+  }
+
+  refreshBalance() {
+    this.authService.refreshBalance();
+  }
+
+  requestTokens() {
+    this.authService.requestTokens(this.amount); // ! ERROR requireUsername() throw every time
   }
 
 }

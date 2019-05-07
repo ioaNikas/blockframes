@@ -19,7 +19,7 @@ export class FinancingRangeSliderComponent implements OnInit {
     if (!this.value) this.value = this.min;
   }
   handleChange(target) {
-    this.value = parseInt(target.value, 10);
+    this.value = parseFloat(target.value);
     this.input.emit(this.value);
   }
 }

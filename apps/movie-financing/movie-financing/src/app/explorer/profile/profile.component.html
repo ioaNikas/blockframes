@@ -28,7 +28,7 @@
           <span class="key">Sold Address</span>
           <mat-icon matTooltip="Info about the action" matTooltipPosition="right">info_outline</mat-icon>
         </div>
-        <span class="sold">1 000</span>
+        <span class="sold">{{user.balance}}</span>
         <div class="caption">
           <span>Correspond To</span>
           <span class="price">$1M</span>
@@ -66,10 +66,10 @@
       <div fxLayout="column">
         <div fxFlex fxLayout="row" fxLayoutGap="20px">
           <span fxFlex>
-            <financing-range-slider min="100" max="100000" step="100" unit="$"></financing-range-slider>
+            <financing-range-slider min="0.01" max="0.1" step="0.001" unit="ETH" (input)="handleChange($event.target.value)"></financing-range-slider>
           </span>
           <span fxFlex>
-            <button mat-button>Buy Tokens</button>
+            <button mat-button (click)="requestTokens()">Buy Tokens</button>
           </span>
         </div>
       </div>
