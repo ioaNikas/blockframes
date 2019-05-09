@@ -9,13 +9,22 @@
   min-width: 258px;
   min-height: 314px;
   margin-bottom: 40px;
-  margin-right: 40px;
   box-shadow: -10px 11px 32px 0 #00000023;
   background-color: #ffffff;
 
   .clickable-item {
     cursor: pointer;
   }
+
+  ::ng-deep .mat-card-header-text {
+    margin: 0px;
+  }
+
+  ::ng-deep .mat-card-subtitle {
+    margin-bottom: 0px;
+    text-transform: uppercase;
+  }
+
 }
 
 .center {

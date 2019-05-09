@@ -3,17 +3,19 @@
       <mat-card-title class="movie-card-meta-title" *ngIf="(movie$ | async).originalTitle || (movie$ | async).title">
         {{ (movie$ | async).originalTitle !== undefined ? (movie$ | async).originalTitle : (movie$ | async).title.original }}
       </mat-card-title>
-      <mat-card-title *ngIf="(movie$ | async).productionYear">({{ (movie$ | async).productionYear }})</mat-card-title>
-      <mat-card-subtitle  *ngIf="(movie$ | async).internationalTitle || (movie$ | async).title ">
+      <mat-card-title class="movie-card-production-year" *ngIf="(movie$ | async).productionYear">({{ (movie$ | async).productionYear }})</mat-card-title>
+      <mat-card-subtitle class="movie-card-sub-title" *ngIf="(movie$ | async).internationalTitle || (movie$ | async).title ">
         {{ (movie$ | async).internationalTitle !== undefined ? (movie$ | async).internationalTitle : (movie$ | async).title.international }}
       </mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image *ngIf="(movie$ | async).poster" [src]="(movie$ | async).poster"> 
-    <mat-card-content *ngIf="(movie$ | async).directorName">
+    <img mat-card-image class="movie-poster" *ngIf="(movie$ | async).poster" [src]="(movie$ | async).poster"> 
+    <mat-card-content 
+      *ngIf="(movie$ | async).directorName"
+      class="movie-card-section"
+    >
       <mat-card-title>Directed by</mat-card-title>
       <mat-card-subtitle>{{ (movie$ | async).directorName }}</mat-card-subtitle>
     </mat-card-content>
-    <mat-divider></mat-divider>
     <mat-card-content *ngIf="
       ((movie$ | async).types && (movie$ | async).types.length > 0 )||
       ((movie$ | async).genres && (movie$ | async).genres.length > 0 )||
@@ -21,7 +23,9 @@
       ((movie$ | async).coProducerCountries && (movie$ | async).coProducerCountries.length > 0 )||
       ((movie$ | async).languages && m(ovie$ | async).languages.length > 0 )|| 
       ((movie$ | async).status && (movie$ | async).status.length > 0)"
+      class="movie-card-section"
     >
+      <mat-divider></mat-divider>
       <mat-card-title class="movie-card-meta-title">Main informations</mat-card-title>
       <ng-container *ngIf="(movie$ | async).types && (movie$ | async).types.length > 0">
         <mat-card-title>Types</mat-card-title>
@@ -72,12 +76,13 @@
         </mat-card-subtitle>
       </ng-container>
     </mat-card-content>
-    <mat-divider></mat-divider>
     <mat-card-content *ngIf="
       (movie$ | async).logline ||
       (movie$ | async).synopsis ||
       ((movie$ | async).keywords && (movie$ | async).keywords.length > 0)"
+      class="movie-card-section"
     >
+      <mat-divider></mat-divider>
       <mat-card-title class="movie-card-meta-title">Story description</mat-card-title>
       <ng-container *ngIf="(movie$ | async).logline">
         <mat-card-title>Logline</mat-card-title>
@@ -96,10 +101,11 @@
         </mat-card-subtitle>
       </ng-container>
     </mat-card-content>
-    <mat-divider></mat-divider>
     <mat-card-content *ngIf="
     (movie$ | async).credits && (movie$ | async).credits.length > 0"
+    class="movie-card-section"
     >
+      <mat-divider></mat-divider>
       <mat-card-title class="movie-card-meta-title">Movie Team</mat-card-title>
       <ng-container *ngIf="(movie$ | async).credits.length > 0">
         <mat-card-title>Credits</mat-card-title>
@@ -113,11 +119,12 @@
         </mat-card-subtitle>
       </ng-container>
     </mat-card-content>
-    <mat-divider></mat-divider>
     <mat-card-content *ngIf="
       ((movie$ | async).images && (movie$ | async).images.length > 0) ||
       ((movie$ | async).promotionalElements  && (movie$ | async).promotionalElements.length > 0)"
+      class="movie-card-section"
     >
+      <mat-divider></mat-divider>
       <mat-card-title class="movie-card-meta-title">Promotional Elements</mat-card-title>
       <ng-container *ngIf="(movie$ | async).images  && (movie$ | async).images.length > 0">
         <mat-card-title>Images</mat-card-title>

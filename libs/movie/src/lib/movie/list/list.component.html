@@ -11,7 +11,7 @@
         </button>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <section fxLayout="row wrap" fxLayoutAlign="start space-between">
+    <section class="movie-list-container" fxLayout="row wrap" fxLayoutAlign="space-around">
       <mat-card *ngFor="let movie of org.movies" class="movie-card">
         <div class="img-container clickable-item">
           <img [routerLink]="['/layout', movie.id, 'list']" *ngIf="movie.poster; else defaultPoster" mat-card-image src={{movie.poster}}  alt="Movie poster"/>
