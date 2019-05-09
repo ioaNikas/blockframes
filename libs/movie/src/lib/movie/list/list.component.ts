@@ -13,9 +13,9 @@ import { takeWhile, tap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListComponent implements OnInit, OnDestroy {
-  orgs$: Observable<OrganizationWithMovies[]>;
+  public orgs$: Observable<OrganizationWithMovies[]>;
+  public hasOrgs$: Observable<boolean>;
   isAlive= true;
-
 
   constructor(
     private service: MovieService,
@@ -27,6 +27,7 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.service.moviesOfOrganizations$.pipe(takeWhile(() => this.isAlive)).subscribe();
     this.orgs$ = this.orgQuery.orgsWithMovies$;
+    this.hasOrgs$ = this.orgQuery.hasOrgs$; // @todo remove this when store is properly cleaned on logout #320
   }
 
   ngOnDestroy() {

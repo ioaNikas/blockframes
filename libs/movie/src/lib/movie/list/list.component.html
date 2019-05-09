@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="(hasOrgs$ | async)">
   <mat-expansion-panel *ngFor="let org of (orgs$ | async); first as isFirst" [expanded]="isFirst" class="mat-elevation-z0">
     <mat-expansion-panel-header>
       <mat-panel-title fxLayout="row wrap" fxLayoutAlign="space-between center">
