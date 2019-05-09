@@ -13,13 +13,13 @@ export class FinancingRangeSliderComponent implements OnInit {
   @Input() value: number;
   @Input() placeholder: string;
   @Input() unit: string;
-  @Output() input = new EventEmitter(); 
+  @Output() rangeValue = new EventEmitter(); 
   constructor() {}
   ngOnInit() {
     if (!this.value) this.value = this.min;
   }
   handleChange(target) {
     this.value = parseFloat(target.value);
-    this.input.emit(this.value);
+    this.rangeValue.emit(this.value);
   }
 }

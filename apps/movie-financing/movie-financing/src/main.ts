@@ -9,10 +9,10 @@ import { hmrBootstrap } from './hmr';
 
 const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 
-persistState({
-  exclude: ['router'],
-  key: 'movie-financing'
-});
+// persistState({ // TODO UNCOMENT THAT DURING THE REFACTORING AFTER CANNES
+//   exclude: ['router'],
+//   key: 'movie-financing'
+// });
 
 // Production Environment
 if (environment.production) {

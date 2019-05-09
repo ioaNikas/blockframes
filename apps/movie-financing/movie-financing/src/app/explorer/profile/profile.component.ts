@@ -11,17 +11,18 @@ import { Observable } from 'rxjs';
 export class FinancingExplorerProfileComponent implements OnInit {
 
   public user$: Observable<User>;
+  public isBalanceLoading$: Observable<boolean>;
   public amount: number;
 
   constructor(private authQuery: AuthQuery, private authService: AuthService) { }
 
   ngOnInit() {
     this.user$ = this.authQuery.user$;
-    this.amount = -1;
+    this.isBalanceLoading$ = this.authQuery.isBalanceLoading$;
+    this.amount = 0.01;
   }
 
-  handleChange(value) { // ! ERROR range slider do not emit properly
-    console.log(value);
+  handleChange(value) {
     this.amount = value;
   }
 
@@ -30,7 +31,7 @@ export class FinancingExplorerProfileComponent implements OnInit {
   }
 
   requestTokens() {
-    this.authService.requestTokens(this.amount); // ! ERROR requireUsername() throw every time
+    this.authService.requestTokens(this.amount);
   }
 
 }

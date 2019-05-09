@@ -70,6 +70,10 @@ main {
       border: none;
       color: white;
     }
+    button:disabled {
+      background-color: lightgray;
+      color: grey;
+    }
     
     label {
       display: block;
