@@ -1,37 +1,21 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
-import { MatChipInputEvent, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
-import { default as staticModels, getLabelBySlug } from '../staticModels';
-import { ReplaySubject } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
-
 
 @Component({
-  selector: 'movie-financing-form',
+  selector: 'movie-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class FormComponent implements OnInit, OnDestroy {
-  public isAlive = true;
-  public staticModels: any;
   public persistForm: PersistNgFormPlugin;
   public movieForm: FormGroup;
   public movie: Movie;
-  public fullScreen = false;
-  public readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  public countriesFilterCtrl: FormControl = new FormControl();
-  public languagesFilterCtrl: FormControl = new FormControl();
-  public genresFilterCtrl: FormControl = new FormControl();
-  public audiovisual_typesFilterCtrl: FormControl = new FormControl();
-  public countries: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public languages: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public genres: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-  public audiovisual_types: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
 
   constructor(
     private query: MovieQuery,
@@ -43,9 +27,7 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.staticModels = staticModels;
     this.movie = this.query.getActive();
-
     this.movieForm = this.builder.group({
       originalTitle: [this.movie.title.original],
       internationalTitle: [this.movie.title.international],
@@ -69,6 +51,10 @@ export class FormComponent implements OnInit, OnDestroy {
     // Akita Persist Form 
     this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
 
+    this.populateForm();
+  }
+
+  private populateForm() {
     // Populate custom fields
     if (this.movie.keywords && this.movie.keywords.length) {
       this.movie.keywords.forEach((keyword) => {
@@ -93,32 +79,6 @@ export class FormComponent implements OnInit, OnDestroy {
         this.addFormControl(this.builder.group(element), 'promotionalElements');
       })
     }
-
-    this._selectSearchSubScriptions();
-  }
-
-  /* Selects with search bar */
-  private _selectSearchSubScriptions() : void {
-    
-    this.countries.next(staticModels.COUNTRIES.slice());
-    this.countriesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('COUNTRIES'));
-
-    this.languages.next(staticModels.LANGUAGES.slice());
-    this.languagesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('LANGUAGES'));
-
-    this.genres.next(staticModels.GENRES.slice());
-    this.genresFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('GENRES'));
-
-    this.audiovisual_types.next(staticModels.AUDIOVISUAL_TYPES.slice());
-    this.audiovisual_typesFilterCtrl.valueChanges
-    .pipe(takeWhile(() => this.isAlive))
-    .subscribe(() => this.filterSelectSearch('AUDIOVISUAL_TYPES'));
   }
 
   /* Getters for all form inputs */
@@ -146,11 +106,6 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public get images() {
     return this.movieForm.get('images') as FormArray;
-  }
-
-  /* Returns label from json staticModels */
-  public getStaticBySlug (scope: string, slug: string) {
-    return getLabelBySlug (scope, slug) as string;
   }
 
   /* Saves the form */
@@ -190,76 +145,16 @@ export class FormComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('');
   }
 
-  public toggleFullScreen() {
-    return this.fullScreen ? this.fullScreen = false : this.fullScreen = true;
+  public addFormControl(value: FormControl | FormGroup, key: string): void {
+    this[key].push(value);
   }
 
-  public addChip(event: MatChipInputEvent, object: string): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add keyword
-    if ((value || '').trim()) {
-      this.addFormControl(new FormControl(value.trim()), object);
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  public addCredit(): void {
-    const defaultFormGroup = { firstName: '', lastName: '', creditRole: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
-  }
-
-  public addPromotionalElement(): void {
-    const defaultFormGroup = { label: '', url: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'promotionalElements');
-  }
-
-  public setImage(image: string, index: number): void {
-    this.images.controls[index].setValue(image);
-  }
-
-  public addImage(): void {
-    this.addFormControl(new FormControl(''), 'images');
-  }
-
-  public addPoster(poster: string) {
-    this.movieForm.patchValue({ poster });
-  }
-
-  private addFormControl(value: FormControl | FormGroup, object: string): void {
-    this[object].push(value);
-  }
-
-  public removeFormControl(index: number, object: string): void {
-    this[object].removeAt(index);
-  }
-
-  public removePoster() {
-    this.movieForm.patchValue({ poster : '' });
-  }
-
-  private filterSelectSearch(model: string) {
-    if (!staticModels[model]) { return; }
-
-    let search = this[`${model.toLowerCase()}FilterCtrl`].value;
-    if (!search) {
-      this[model.toLowerCase()].next(staticModels[model].slice());
-      return;
-    } else { search = search.toLowerCase(); }
-
-    this[model.toLowerCase()]
-    .next(staticModels[model]
-    .filter(i => i.label.toLowerCase().indexOf(search) > -1));
+  public removeFormControl(index: number, key: string): void {
+    this[key].removeAt(index);
   }
 
   ngOnDestroy() {
     this.clear();
     this.persistForm.destroy();
-    this.isAlive = false;
   }
 }

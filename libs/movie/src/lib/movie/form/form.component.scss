@@ -1,117 +1,94 @@
-.full-width {
-  width: 100%;
-}
+.movie-form-container {
 
-.half-width {
-  margin: 10px;
-  width: 20%;
-}
+  *:not(.material-icons) {
+    font-family: 'Roboto', "Helvetica Neue", sans-serif !important;
+  }
 
-.small-margin {
-  margin: 10px;
-}
+  padding: 0px;
+  box-shadow: none !important;
 
-.small-width {
-  width: 20%;
-  display: inline-block;
-}
+  .mat-tab-body-wrapper {
+    padding: 16px;
+    margin-top: 90px;
+  }
 
-.toggle-fullscreen {
-  float: right;
-  position: sticky;
-  top: 0px;
-  z-index: 99;
-}
-
-.movie-card-view {
-  min-width: 120px;
-  margin: 20px auto;
-  max-width: 500px;
-  background-color: transparent;
-  .movie-card-header, mat-card-content {
-    text-align: center;
+  .full-width {
     width: 100%;
-    ::ng-deep .mat-card-header-text {
-      width: 100%;
-      text-align: center;
-      .movie-card-meta-title {
-        font-size: 50px;
-      }
-    }
-  }
-
-  .movie-card-meta-title {
-    margin-top: 30px;
-    font-weight: bold;
-  }
-}
-
-.movie-panel {
-  position: absolute;
-  right: 0px;
-  left: 0px;
-  top: 66px;
-
-  .toggle-drawer {
-    float: right;
-    position: sticky;
-    top: 0px;
-    z-index: 99;
   }
   
-  mat-drawer {
-    width: 50%;
+  .small-margin {
+    margin: 10px;
+  }
+  
+  .small-width {
+    width: 20%;
+    display: inline-block;
   }
 
-  .mat-drawer-fullscreen {
-    width: 100%;
-  }
-}
-
-.movie-card {
   .mat-chip.mat-standard-chip {
     background-color: #6200EE;
     color: #FFF;
     font-weight: bold;
   }
 
-  ::ng-deep .mat-chip-list-wrapper {
+  .mat-chip-list-wrapper {
     margin: 0px;
   }
-}
 
-
-.movie-poster-thumbnail {
-  background-color: transparent;
-  width: 50%;
-  margin: auto;
-  max-width: 300px;
-}
-
-.movie-panel {
-  margin: auto;
-}
-
-.movie-credits-table {
-  width: 100%;
-  td.movie-credit-table-role {
-    font-weight: bold;
-    text-align: right;
+  .movie-poster-thumbnail {
+    background-color: transparent;
     width: 50%;
-    padding-left: 0px;
+    margin: auto;
+    max-width: 300px;
   }
 
-  td {
-    text-align: left;
-    padding-left: 10px;
+  .mat-tab-header {
+    position: fixed;
+    z-index: 2;
+    background: white;
+    width: 100%;
+    margin-top: -2px;
+
+    .mat-tab-label {
+      height: 90px;
+      font-size: 11px;
+      font-weight: bold;
+      min-width: 150px
+    }
+
+    .mat-tab-label:focus:not(.mat-tab-disabled) {
+      color: #6200EE;
+    }
+
+    .mat-ink-bar {
+      background-color: #6200EE;
+    }
   }
-}
 
-.movie-grid-list {
-  margin-bottom: 15px;
-}
+  .movie-card-actions {
+    position: fixed;
+    bottom: 0px;
+    margin: 0px !important;
+    z-index: 2;
+    background: white;
+    width: 100%;
+    padding: 8px !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
 
-.promotional-element-link {
-  color: rgba(0, 0, 0, 0.54);
-  text-decoration: none;
+    button {
+      color: #6200EE;
+      border: none;
+      box-shadow: none;
+      font-weight: bold;
+      font-size: 12px;
+      width: 200px;
+    }
+
+    .save-btn {
+      border: 1px solid;
+      mat-icon {
+        margin-top: -3px;
+      }
+    }
+  }
 }

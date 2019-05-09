@@ -3,7 +3,7 @@ export const CONTEXT_MENU = [
     route: 'default',
     items: [
       { name: 'home', path: '/layout/home' },
-      { name: 'templates', path: '/layout/template' },
+      { name: 'templates', path: '/layout/template/list' },
     ]
   },
   {

@@ -7,6 +7,7 @@ import { Movie } from './movie.model';
   providedIn: 'root'
 })
 export class MovieQuery extends QueryEntity<MovieState, Movie> {
+  movieFormChanges$ = this.select(state => state.akitaForm);
 
   constructor(protected store: MovieStore) {
     super(store);

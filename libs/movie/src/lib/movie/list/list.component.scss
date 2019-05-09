@@ -9,8 +9,22 @@
   min-width: 258px;
   min-height: 314px;
   margin-bottom: 40px;
-  box-shadow: -10px 11px 32px 0 #00000023;
+  box-shadow: -10px 11px 32px 0 rgba(0, 0, 0, 0.2);
   background-color: #ffffff;
+
+  .clickable-item {
+    cursor: pointer;
+  }
+
+  ::ng-deep .mat-card-header-text {
+    margin: 0px;
+  }
+
+  ::ng-deep .mat-card-subtitle {
+    margin-bottom: 0px;
+    text-transform: uppercase;
+  }
+
 }
 
 .center {
@@ -33,4 +47,45 @@
   left: calc(100%-16px);
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+}
+
+mat-panel-title {
+  font-weight: 900;
+  font-size: 35px;
+  letter-spacing: 0.4375px;
+  line-height: 41px;
+}
+
+.view-button {
+  margin-right: 15px;
+  height: 15px;
+  width: 15px;
+  border: solid 0.09rem var(--primary);
+}
+
+.view-icon {
+  margin-top: -18px;
+  margin-left: -6.5px;
+  font-size: 13px;
+}
+
+.divider {
+  height: 2px;
+  border: solid 1px #e5e5e5;
+  flex: 1;
+  margin: 0 20px;
+}
+
+.add-movie {
+  font-weight: bolder;
+  font-size: 13px;
+  color: var(--primary);
+  border: solid 0.09rem var(--primary);
+  cursor: pointer;
+  margin-right: 24px;
+}
+
+.add-movie:hover {
+  color: white;
+  background-color: var(--primary);
 }

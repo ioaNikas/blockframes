@@ -1,5 +1,149 @@
-
-<div class="mat-h1">{{ (movie$ | async).title.original }}</div>
-<img *ngIf="movie$ | async as movie" src={{movie.poster}}/>
-<div class="mat-h1">{{ (movie$ | async).logline }}</div>
-
+<mat-card class="movie-card-view mat-elevation-z0">
+    <mat-card-header class="movie-card-header">
+      <mat-card-title class="movie-card-meta-title" *ngIf="(movie$ | async).originalTitle || (movie$ | async).title">
+        {{ (movie$ | async).originalTitle !== undefined ? (movie$ | async).originalTitle : (movie$ | async).title.original }}
+      </mat-card-title>
+      <mat-card-title class="movie-card-production-year" *ngIf="(movie$ | async).productionYear">({{ (movie$ | async).productionYear }})</mat-card-title>
+      <mat-card-subtitle class="movie-card-sub-title" *ngIf="(movie$ | async).internationalTitle || (movie$ | async).title ">
+        {{ (movie$ | async).internationalTitle !== undefined ? (movie$ | async).internationalTitle : (movie$ | async).title.international }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image class="movie-poster" *ngIf="(movie$ | async).poster" [src]="(movie$ | async).poster"> 
+    <mat-card-content 
+      *ngIf="(movie$ | async).directorName"
+      class="movie-card-section"
+    >
+      <mat-card-title>Directed by</mat-card-title>
+      <mat-card-subtitle>{{ (movie$ | async).directorName }}</mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-content *ngIf="
+      ((movie$ | async).types && (movie$ | async).types.length > 0 )||
+      ((movie$ | async).genres && (movie$ | async).genres.length > 0 )||
+      ((movie$ | async).originCountry && (movie$ | async).originCountry.length > 0 )|| 
+      ((movie$ | async).coProducerCountries && (movie$ | async).coProducerCountries.length > 0 )||
+      ((movie$ | async).languages && (movie$ | async).languages.length > 0 )|| 
+      ((movie$ | async).status && (movie$ | async).status.length > 0)"
+      class="movie-card-section"
+    >
+      <mat-divider></mat-divider>
+      <mat-card-title class="movie-card-meta-title">Main informations</mat-card-title>
+      <ng-container *ngIf="(movie$ | async).types && (movie$ | async).types.length > 0">
+        <mat-card-title>Types</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).types">
+          <span *ngFor="let item of (movie$ | async).types; let isLast=last">
+            {{ getStaticBySlug('AUDIOVISUAL_TYPES', item) }}{{ !isLast?',':'' }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).genres  && (movie$ | async).genres.length > 0">
+        <mat-card-title>Genres</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).genres">
+          <span *ngFor="let item of (movie$ | async).genres; let isLast=last">
+            {{ getStaticBySlug('GENRES', item) }}{{ !isLast?',':'' }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).originCountry && (movie$ | async).originCountry.length > 0">
+        <mat-card-title>Origin Country</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).originCountry">
+          <span>
+            {{ getStaticBySlug('COUNTRIES', (movie$ | async).originCountry) }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).coProducerCountries && (movie$ | async).coProducerCountries.length > 0">
+        <mat-card-title>Co-Producers Countries</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).coProducerCountries">
+          <span *ngFor="let item of (movie$ | async).coProducerCountries; let isLast=last">
+            {{ getStaticBySlug('COUNTRIES', item) }}{{ !isLast?',':'' }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).languages && (movie$ | async).languages.length > 0">
+        <mat-card-title>Languages</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).languages">
+          <span *ngFor="let item of (movie$ | async).languages; let isLast=last">
+            {{ getStaticBySlug('LANGUAGES', item) }}{{ !isLast?',':'' }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).status &&  (movie$ | async).status.length > 0">
+        <mat-card-title>Status</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).status">
+          <span>
+            {{ getStaticBySlug('MOVIE_STATUS', (movie$ | async).status) }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-content *ngIf="
+      (movie$ | async).logline ||
+      (movie$ | async).synopsis ||
+      ((movie$ | async).keywords && (movie$ | async).keywords.length > 0)"
+      class="movie-card-section"
+    >
+      <mat-divider></mat-divider>
+      <mat-card-title class="movie-card-meta-title">Story description</mat-card-title>
+      <ng-container *ngIf="(movie$ | async).logline">
+        <mat-card-title>Logline</mat-card-title>
+        <mat-card-subtitle><p>{{ (movie$ | async).logline }}</p></mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).synopsis">
+        <mat-card-title>Synopsis</mat-card-title>
+        <mat-card-subtitle><p>{{ (movie$ | async).synopsis }}</p></mat-card-subtitle>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).keywords.length > 0">
+        <mat-card-title>Keywords</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).keywords">
+          <span *ngFor="let item of (movie$ | async).keywords; let isLast=last">
+            {{ item }}{{ !isLast?',':'' }}
+          </span>
+        </mat-card-subtitle>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-content *ngIf="
+    (movie$ | async).credits && (movie$ | async).credits.length > 0"
+    class="movie-card-section"
+    >
+      <mat-divider></mat-divider>
+      <mat-card-title class="movie-card-meta-title">Movie Team</mat-card-title>
+      <ng-container *ngIf="(movie$ | async).credits.length > 0">
+        <mat-card-title>Credits</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).credits.length > 0">
+          <table class="movie-credits-table">
+            <tr *ngFor="let item of (movie$ | async).credits; let isLast=last">
+              <td class="movie-credit-table-role">{{ getStaticBySlug('CREDIT_ROLES', item.creditRole) }}</td>
+              <td>{{ item.firstName }} {{ item.lastName }}</td>
+            </tr>
+          </table>
+        </mat-card-subtitle>
+      </ng-container>
+    </mat-card-content>
+    <mat-card-content *ngIf="
+      ((movie$ | async).images && (movie$ | async).images.length > 0) ||
+      ((movie$ | async).promotionalElements  && (movie$ | async).promotionalElements.length > 0)"
+      class="movie-card-section"
+    >
+      <mat-divider></mat-divider>
+      <mat-card-title class="movie-card-meta-title">Promotional Elements</mat-card-title>
+      <ng-container *ngIf="(movie$ | async).images  && (movie$ | async).images.length > 0">
+        <mat-card-title>Images</mat-card-title>
+        <div class="movie-grid-list">
+          <mat-grid-list *ngIf="(movie$ | async).images  && (movie$ | async).images[0] "cols="1" rowHeight="3:4">
+            <mat-grid-tile><img mat-card-image  src="{{(movie$ | async).images[0]}}"></mat-grid-tile>
+          </mat-grid-list>
+          <mat-grid-list layout="row" layout-align="center" *ngIf="(movie$ | async).images && (movie$ | async).images.slice(1).length > 0" cols="{{(movie$ | async).images.slice(1).length}}" rowHeight="3:4">
+            <mat-grid-tile *ngFor="let image of (movie$ | async).images.slice(1);"> <img mat-card-image  src="{{image}}"></mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(movie$ | async).promotionalElements && (movie$ | async).promotionalElements.length > 0">
+        <mat-card-title>Other promotional elements</mat-card-title>
+        <mat-card-subtitle *ngIf="(movie$ | async).promotionalElements">
+          <div *ngFor="let item of (movie$ | async).promotionalElements;">
+            <a target="_blank" class="promotional-element-link" href="{{ item.url }}">{{ item.label }}</a>
+          </div>
+        </mat-card-subtitle>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
