@@ -95,8 +95,11 @@
                 <div>
                   <mat-form-field appearance="outline" floatLabel="always">
                     <mat-label>Buy Tokens</mat-label>
-                    <span matSuffix>ETH</span>
                     <input matInput type="number" min="0.01" max="0.1" step="0.01" placeholder="token amount" [(ngModel)]="amount">
+                    <span matSuffix>
+                      ETH
+                      <!-- <button mat-raised-button color="primary" (click)="requestTokens()">Buy</button> -->
+                    </span>
                   </mat-form-field>
                   <button mat-raised-button color="primary" (click)="requestTokens()">Buy</button>
                 </div>
