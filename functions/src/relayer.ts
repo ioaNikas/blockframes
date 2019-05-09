@@ -150,3 +150,30 @@ export const relayerSendLogic = async (
   const txReceipt = await sendTx.wait();
   return txReceipt;
 };
+
+// TODO BETTER SECURITY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+const MAX_AUTHORIZED_TOKEN_TRANSFER = 0.1;
+
+export const relayerRequestTokensLogic = async (
+  { username, amount }: { username: string; amount: number },
+  config: any
+) => {
+  const relayer: Relayer = initRelayer(config);
+  // check required params
+  if (!username || !amount) {
+    throw new Error('"username" and "amount" are mandatory parameters !');
+  }
+  // prevent user to empty the wallet
+  if (amount >= MAX_AUTHORIZED_TOKEN_TRANSFER) {
+    throw new Error(`"amount" (${amount}) must be less than ${MAX_AUTHORIZED_TOKEN_TRANSFER}`);
+  }
+  // compute needed values
+  const fullName = `${username}.${config.relayer.basedomain}`;
+
+  const weiAmount = utils.parseEther(`${amount}`);
+
+  const tx = await relayer.wallet.sendTransaction({to: fullName, value: weiAmount});
+  console.log(`tx sent (request tokens) : ${tx.hash}`); // display tx to firebase logging
+  return tx;
+};

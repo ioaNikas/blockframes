@@ -14,6 +14,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 export class AccountViewComponent implements OnInit {
   user$: Observable<User>;
   panelOpenState: boolean;
+  amount: number;
 
   // TODO : put everything in the wallet module in the state
   isBalanceLoading$: Observable<boolean>;
@@ -63,6 +64,10 @@ export class AccountViewComponent implements OnInit {
     this.authService.refreshBalance();
   }
 
+  requestTokens() {
+    this.authService.requestTokens(this.amount);
+  }
+  
   recover() {
     this.dialog.open(WalletRecoverComponent, { width: '500px' });
   }

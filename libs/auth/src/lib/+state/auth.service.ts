@@ -103,6 +103,17 @@ export class AuthService {
     this.store.update({isBalanceLoading: false});
   }
 
+  public async requestTokens(amount: number) {
+    this.store.update({isBalanceLoading: true});
+    try {
+      await this.wallet.requestTokens(amount);
+      this.refreshBalance();
+    } catch(error) {
+      console.error('Request Tokens FAILED because of :',error);
+      this.store.update({isBalanceLoading: false});
+    }
+  }
+
   /** Deletes user subCollections */
   private async _deleteSubCollections (uid) {
     // @todo check if user is the only member of org (and the only ADMIN)

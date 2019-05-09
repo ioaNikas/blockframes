@@ -28,7 +28,14 @@
           <span class="key">Sold Address</span>
           <mat-icon matTooltip="Info about the action" matTooltipPosition="right">info_outline</mat-icon>
         </div>
-        <span class="sold">1 000</span>
+        <ng-container *ngIf="!(isBalanceLoading$ | async); else isLoading">
+            <span class="sold" (click)="refreshBalance()" matTooltip="Click to refresh" matTooltipPosition="right">{{user.balance}}</span>
+        </ng-container>
+        <ng-template #isLoading>
+          <button mat-button [disabled]="true">
+            <mat-spinner [diameter]="24" [strokeWidth]="2"></mat-spinner>
+          </button>
+        </ng-template>
         <div class="caption">
           <span>Correspond To</span>
           <span class="price">$1M</span>
@@ -63,16 +70,10 @@
       <h1>Buy Tokens</h1>
 
       <label>How much do you want to buy ?</label>
-      <div fxLayout="column">
-        <div fxFlex fxLayout="row" fxLayoutGap="20px">
-          <span fxFlex>
-            <financing-range-slider min="100" max="100000" step="100" unit="$"></financing-range-slider>
-          </span>
-          <span fxFlex>
-            <button mat-button>Buy Tokens</button>
-          </span>
+        <div fxLayout="row" fxLayoutGap="20px">
+          <financing-range-slider fxFlex="50%" min="0.01" max="0.1" step="0.001" unit="ETH" (rangeValue)="handleChange($event)"></financing-range-slider>
+          <button fxFlex="20%" mat-button (click)="requestTokens()" [disabled]="(isBalanceLoading$ | async)">Buy Tokens</button>
         </div>
-      </div>
     </section>
 
     <section>
