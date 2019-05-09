@@ -107,8 +107,13 @@ export class AuthService {
 
   public async requestTokens(amount: number) {
     this.store.update({isBalanceLoading: true});
-    await this.wallet.requestTokens(amount).catch(error => console.error('Request Tokens FAILED because of :',error));
-    this.refreshBalance();
+    try {
+      await this.wallet.requestTokens(amount);
+      this.refreshBalance();
+    } catch(error) {
+      console.error('Request Tokens FAILED because of :',error);
+      this.store.update({isBalanceLoading: false});
+    }
   }
 
   /** Deletes user subCollections */
