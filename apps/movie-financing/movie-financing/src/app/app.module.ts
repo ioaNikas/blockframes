@@ -5,19 +5,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 // Material
 import {
+  MatButtonModule,
   MatCardModule,
   MatChipsModule,
   MatExpansionModule,
   MatGridListModule,
   MatIconModule,
+  MatInputModule,
   MatListModule,
+  MatMenuModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatTabsModule,
   MatToolbarModule,
-  MatButtonModule,
-  MatTooltipModule,
-  MatInputModule,
+  MatTooltipModule
 } from '@angular/material';
 // import { MatButtonModule } from '@angular/material/button';
 // Akita
@@ -46,6 +47,7 @@ import { AuthModule } from '@blockframes/auth';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { FlexModule } from '@angular/flex-layout';
 import { AngularFullpageModule } from '@fullpage/angular-fullpage';
+import { FinancingMovieCardHorizontalComponent } from './explorer/movie-card-horizontal/movie-card-horizontal.component';
 
 
 @NgModule({
@@ -56,6 +58,7 @@ import { AngularFullpageModule } from '@fullpage/angular-fullpage';
     FinancingExplorerDetailsComponent,
     FinancingExplorerSearchComponent,
     FinancingMovieCardComponent,
+    FinancingMovieCardHorizontalComponent,
     FinancingExplorerFooterComponent,
     FinancingExplorerHeaderComponent,
     FinancingExplorerFinancingDetailsComponent,
@@ -93,11 +96,11 @@ import { AngularFullpageModule } from '@fullpage/angular-fullpage';
     // Fullpage (homepage)
     AngularFullpageModule,
     MatProgressBarModule,
-    FinancingRangeSliderModule
+    FinancingRangeSliderModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-
 export class AppModule {
 }

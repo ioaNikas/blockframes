@@ -1,3 +1,43 @@
-<p>
-  Search
-</p>
+<financing-explorer-header>
+  <label>Search</label>
+  <h1>All Projects</h1>
+
+  <mat-form-field class="search-bar">
+    <mat-icon matPrefix>search</mat-icon>
+    <input type="text" matInput placeholder="">
+  </mat-form-field>
+</financing-explorer-header>
+
+<mat-card class="major-filters">
+  <button mat-button [matMenuTriggerFor]="menu">Cast A</button>
+  <button mat-button [matMenuTriggerFor]="menu">Genre</button>
+  <button mat-button [matMenuTriggerFor]="menu">Types</button>
+  <button mat-button [matMenuTriggerFor]="menu">Waterfall Position</button>
+  <button mat-button [matMenuTriggerFor]="menu">Director's Category</button>
+  <button mat-button [matMenuTriggerFor]="menu">Language</button>
+  <button mat-button [matMenuTriggerFor]="menu">Nationality</button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Item 1</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+</mat-card>
+
+<main>
+  <div class="filter-by-wrapper">
+    <button mat-stroked-button>Filter By</button>
+  </div>
+
+  <section class="results">
+    <h1>Results for</h1>
+    <p>Titre recherche | Filtre Recherche (23)</p>
+
+    <financing-movie-card-horizontal [swapVisual]="false"></financing-movie-card-horizontal>
+    <financing-movie-card-horizontal [swapVisual]="true"></financing-movie-card-horizontal>
+    <financing-movie-card-horizontal [swapVisual]="false"></financing-movie-card-horizontal>
+    <financing-movie-card-horizontal [swapVisual]="true"></financing-movie-card-horizontal>
+  </section>
+</main>
+
+
+<financing-explorer-footer></financing-explorer-footer>

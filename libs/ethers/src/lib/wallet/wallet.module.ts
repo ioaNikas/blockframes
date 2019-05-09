@@ -1,16 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ViewComponent } from './view/view.component';
-import { FormComponent } from './form/form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { MatButtonModule } from '@angular/material/button';
+import { AskPasswordComponent } from './ask-password/ask-password.component';
+import { WalletRecoverComponent } from './recover/recover.component';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+  MatInputModule,
+  MatFormFieldModule,
+  MatButtonModule,
+  MatSnackBarModule,
+  MatIconModule,
+} from '@angular/material';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatButtonModule
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    MatIconModule,
   ],
-  declarations: [ViewComponent, FormComponent],
-  exports: [ViewComponent, FormComponent],
+  declarations: [AskPasswordComponent, WalletRecoverComponent],
+  exports: [AskPasswordComponent, WalletRecoverComponent],
+  entryComponents: [AskPasswordComponent, WalletRecoverComponent],
 })
-export class WalletModule { }
+export class WalletModule {}

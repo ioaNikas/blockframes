@@ -38,3 +38,24 @@ mat-card-header > button {
   width: 100%;
   text-align: center;
 }
+
+.balance {
+  font-size: 1.3rem;
+}
+
+button mat-icon {
+  margin-right: 10px;
+}
+
+.loading {
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

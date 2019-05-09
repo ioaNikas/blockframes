@@ -6,7 +6,10 @@ import { Relayer } from '../relayer/relayer';
 import { Vault } from '../vault/vault';
 import { baseEnsDomain } from '@env';
 import { toASCII } from 'punycode';
-import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { AskPasswordComponent } from '../wallet/ask-password/ask-password.component';
+import { BehaviorSubject } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 type txRequest = providers.TransactionRequest;
 type txResponse = providers.TransactionResponse;
@@ -14,13 +17,31 @@ type txResponse = providers.TransactionResponse;
 @Injectable({ providedIn: 'root' })
 export class RelayerWallet implements ethers.Signer {
   private signingKey: utils.SigningKey;
-  public username: string;
+  // TODO : Add this in Wallet Store
+  private _username = new BehaviorSubject<string>(null);
+  public username$ = this._username.asObservable();
 
   constructor(
+    private dialog: MatDialog,
     private vault: Vault,
     private relayer: Relayer,
     public provider: Provider
   ) {}
+
+  get username() {
+    return this._username.getValue();
+  }
+  set username(name: string) {
+    this._username.next(name);
+  }
+
+  /** check if there is a keystore for the current user */
+  get hasKeystore$() {
+    return this.username$.pipe(
+      switchMap(username => this.vault.select(`${username}:web`)),// TODO remove hardcoded ":web"
+      map(json => !!json)
+    );
+  }
 
   /** Set signing key into process memory */
   private _setSigningKey(wallet: Wallet) {
@@ -33,6 +54,20 @@ export class RelayerWallet implements ethers.Signer {
     this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
   }
 
+  /** Return the signing key or ask  */
+  private async getSigningKey(): Promise<utils.SigningKey> {
+    if (this.signingKey) return this.signingKey;
+    return this.askPassword()
+  }
+
+  /** Open a dialog to get the password */
+  private async askPassword() {
+    const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
+    const password = await ref.afterClosed().toPromise()
+    if (!password) throw new Error('No password provided');
+    return this.loadKey('web', password); // TODO : Don't hardcode "web"
+  }
+
   private _requireUsername() {
     if (!this.username) throw new Error('the wallet\'s username is undefined, please call setUsername() before this function !');
   }
@@ -40,7 +75,15 @@ export class RelayerWallet implements ethers.Signer {
     if(!this.signingKey) throw new Error('this wallet has no key, please create/restore/import a key !');
   }
 
-  /** Convert email to username and sanitize it : convert to lower case punycode and replace special chars by their ASCII code
+  /** Get the private Key of the current wallet */
+  async privateKey(): Promise<string> {
+    const { privateKey } = await this.getSigningKey();
+    return privateKey;
+  }
+
+  /**
+   * Convert email to username and sanitize it:
+   * convert to lower case punycode and replace special chars by their ASCII code
    * @example `漢micHel+9@exemple.com` -> `xn--michel439-2c2s`
    */
   public setUsername(email: string) {
@@ -51,11 +94,24 @@ export class RelayerWallet implements ethers.Signer {
   }
 
   /** Load a key from an encrypted JSON */
-  public loadKey(keyName: string, password: string) {
+  public async loadKey(keyName: string, password: string) {
+    try {
+      this._requireUsername();
+      const json = await this.vault.get(`${this.username}:${keyName}`);
+      if (!json) throw new Error(`no key named "${this.username}:${keyName}" in local storage`);
+      const wallet = await Wallet.fromEncryptedJson(json, password);
+      this._setSigningKey(wallet);
+      return this.signingKey;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  public async recoverWithPrivateKey(privateKey: string, password: string) {
     this._requireUsername();
-    this.vault.get(`${this.username}:${keyName}`)
-      .then(encryptedJSON => Wallet.fromEncryptedJson(encryptedJSON, password))
-      .then(wallet => this._setSigningKey(wallet)).catch(_ => console.warn(`no key named "${this.username}:${keyName}" in local storage`));
+    const wallet = new Wallet(privateKey);
+    const json = await wallet.encrypt(password);
+    await this.vault.set(`${this.username}:web`, json); // TODO remove hardcoded ":web"
   }
 
   /** Create a key from a mnemonic */
