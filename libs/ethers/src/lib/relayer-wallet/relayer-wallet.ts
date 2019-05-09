@@ -90,7 +90,7 @@ export class RelayerWallet implements ethers.Signer {
 
   public async requestTokens(amount: number) {
     this._requireUsername();
-    let tx = await this.relayer.requestTokens(this.username, amount);
+    const tx = await this.relayer.requestTokens(this.username, amount);
     await this.provider.waitForTransaction(tx.hash)
   }
 
