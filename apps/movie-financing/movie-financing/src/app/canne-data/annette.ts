@@ -1,6 +1,8 @@
 const DATA = {
   id: 'MFOJ1qxwXR2hnsWAfrLB',
-  minTokensRequired: 0.005,
+  minTokensRequired: 0.05,
+  selectionCategory: 'Prestige Directors',
+  editorialStatus: 'New',
   title: 'Annette',
   logline: 'A stand-up comedian, and his opera singer wife, have a 2 year old daughter with a surprising gift.',
   principalInformations: {
@@ -48,7 +50,7 @@ const DATA = {
     'fundedBudget': '$7,9M',
     'goalBudget': '$14,9M',
     'percentage': 0.62,
-    'directorShortBio': 'Leos Carax is an acclaimed French film director, critic, and writer. Carax is noted for his poetic style and his tortured depictions of love. His first major work was Boy Meets Girl (1984), and his notable works include Les Amants du Pont-Neuf (1991) and Holy Motors (2012).'
+    'directorShortBio': 'Leos Carax is an acclaimed French film director, critic, and writer.'
   },
   production: {
     'subvention': 'CNC (French National Center of Cinematography)',
@@ -122,7 +124,7 @@ const DATA = {
           ]
         }
       ],
-      'Scop Pictures': [
+      'Scope Pictures': [
         {
           'title': 'Golden Youth',
           'productionYear': 2019,
@@ -154,7 +156,7 @@ const DATA = {
           ]
         }
       ],
-      'Delta': [
+      'Detail Film': [
         {
           'title': 'The Wild Pear Tree',
           'productionYear': 2016,
@@ -340,31 +342,31 @@ const DATA = {
         {
           'name': 'CNC',
           'financementType': 'Institution',
-          'amount': 500,
+          'amount': 500000,
           'status': 'confirmed'
         },
         {
           'name': 'ARTE',
           'financementType': 'Free TV',
-          'amount': 800,
+          'amount': 800000,
           'status': 'confirmed'
         },
         {
           'name': 'CANAL+/OCS',
           'financementType': 'Pay TV',
-          'amount': 1200,
+          'amount': 1200000,
           'status': 'estimation'
         },
         {
           'name': 'AD VITAM',
           'financementType': 'Distribution',
-          'amount': 700,
+          'amount': 700000,
           'status': 'confirmed'
         },
         {
           'name': 'KINOLOGY',
           'financementType': 'Sales',
-          'amount': 3600,
+          'amount': 3600000,
           'status': 'estimation'
         }
       ],
@@ -372,7 +374,7 @@ const DATA = {
         {
           'name': 'EUROSPACE',
           'financementType': 'Distribution',
-          'amount': 1500,
+          'amount': 1500000,
           'status': 'confirmed'
         }
       ],
@@ -380,13 +382,13 @@ const DATA = {
         {
           'name': 'SCOPE PICTURES',
           'financementType': 'Tax Shelter',
-          'amount': 2500,
+          'amount': 2500000,
           'status': 'confirmed'
         },
         {
           'name': 'SCOPE PICTURES',
           'financementType': 'Regional Fund / Distribution',
-          'amount': 600,
+          'amount': 600000,
           'status': 'confirmed'
         }
       ],
@@ -394,7 +396,7 @@ const DATA = {
         {
           'name': 'DETAIL FILM',
           'financementType': 'Tax Credit / Regional Fund',
-          'amount': 1000,
+          'amount': 1000000,
           'status': 'confirmed'
         }
       ],
@@ -402,7 +404,7 @@ const DATA = {
         {
           'name': 'AMAZON STUDIO',
           'financementType': 'Distribution',
-          'amount': 2500,
+          'amount': 2500000,
           'status': 'estimation'
         }
       ]
@@ -557,7 +559,7 @@ const DATA = {
     'potentialRevenues': 10127675,
     'bestCase': 11911600,
     'worstCase': 8343750,
-    'exchangeRate': 0.87,
+    'exchangeRate': 'USD-EUR: 0.87',
     graphs: {
       'map': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph3.png?alt=media&token=964e541d-ea7b-4cd9-ac64-c98d57975cfc'
     },
@@ -969,35 +971,35 @@ const DATA = {
   waterfall: {
     'mg': 3600000,
     'fees': 215000,
-    'commission': 0.25,
+    'commission': 25,
     'territories': ['World excl. USA, Japan, France, Germany and Belgium'],
     graphs: {
       'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph2.png?alt=media&token=e55c5b87-c0d2-4204-a6a9-72d0d456431b'
     },
     'investmentProposals': [
       {
-        'investor': 'Investor A',
+        'investor': 'Pool A',
         'requested': 2000000,
-        'premium': 0.15,
-        'backend': 0.05,
+        'premium': 15,
+        'backend': 5,
         'minimum': 250000,
         'breakeven': 5920263.15789474,
         'salesNeeded': 3815000,
-        'potentialRevenues': 0.246851962719298,
-        'bestCase': 0.291450087719298,
-        'worstCase': 0.202253837719298
+        'potentialRevenues': 24.7,
+        'bestCase': 29.1,
+        'worstCase': 20.2
       },
       {
-        'investor': 'Investor B',
+        'investor': 'Pool B',
         'requested': 500000,
-        'premium': 0.15,
-        'backend': 0.05,
+        'premium': 15,
+        'backend': 5,
         'minimum': 100000,
         'breakeven': 6841832,
         'salesNeeded': 6253596,
-        'potentialRevenues': 0.469760792053664,
-        'bestCase': 0.648153292053664,
-        'worstCase': 0.291368292053664
+        'potentialRevenues': 46.9,
+        'bestCase': 64.8,
+        'worstCase': 29.1368292053664
       }
     ]
   },
