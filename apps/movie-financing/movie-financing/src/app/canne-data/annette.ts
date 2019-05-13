@@ -1,6 +1,6 @@
 const DATA = {
   id: 'MFOJ1qxwXR2hnsWAfrLB',
-  minTokensRequired: 0.0,
+  minTokensRequired: 0.005,
   title: 'Annette',
   logline: 'A stand-up comedian, and his opera singer wife, have a 2 year old daughter with a surprising gift.',
   principalInformations: {

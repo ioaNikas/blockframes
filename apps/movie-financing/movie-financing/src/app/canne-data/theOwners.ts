@@ -1,7 +1,7 @@
 const DATA = {
-  id: '42',
+  id: 'kiAkm8auLWr6Jr12cyT1',
   title: 'The Owners',
-  minTokensRequired: 0.0,
+  minTokensRequired: 0.001,
   logline: 'A group of friends plot a burglary that spirals out of control.',
   principalInformations: {
     'moviePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_poster.Jpg?alt=media&token=10bfb14c-0a79-4012-aabc-544e2039b336',
