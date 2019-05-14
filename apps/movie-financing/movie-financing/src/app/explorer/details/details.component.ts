@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { getMovie } from '../../canne-data';
 import { Observable } from 'rxjs';
 import { AuthQuery, User } from '@blockframes/auth';
-import { map, takeWhile } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FinancingMovie } from '../search/search.component';
 
 @Component({
@@ -12,11 +12,10 @@ import { FinancingMovie } from '../search/search.component';
   styleUrls: ['./details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
+export class FinancingExplorerDetailsComponent {
   public movie$: Observable<FinancingMovie> = null;
   public user$: Observable<User>;
   public isBalanceLoading$: Observable<boolean>;
-  public isAlive = true;
 
   constructor(
     private router: ActivatedRoute,
@@ -27,24 +26,7 @@ export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
     );
     this.user$ = this.query.user$;
 
-    this.isBalanceLoading$ = new Observable(subscriber => {
-      subscriber.next(true)
-      this.query.user$
-      .pipe(takeWhile(() => this.isAlive))
-      .subscribe((u) => {
-        if(u !== null && u.balance !== undefined) {
-          subscriber.next(false)
-        }
-      })
-    })
-
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
-    this.isAlive = false;
+    this.isBalanceLoading$ = this.query.isBalanceLoading$;
   }
 
   public sumItems(items: Array<any>, attr: string) {

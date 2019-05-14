@@ -23,8 +23,7 @@ export class AuthService {
 
   public async initWallet(email: string) {
     this.wallet.setUsername(email);
-    const balance = await this.wallet.getBalance();
-    this.store.updateUser({balance});
+    this.refreshBalance();
   }
 
   public async signin(email: string, password: string) {
