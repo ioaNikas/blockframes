@@ -1,5 +1,5 @@
 <ng-container *ngIf="movie$ | async as movie; else loading">
-  <ng-container *ngIf="(user$ | async) as user; else loading">
+  <ng-container *ngIf="!(isBalanceLoading$ | async) && (user$ | async) as user; else loading">
     <ng-container *ngIf="user.balance >= movie.minTokensRequired; else notEnoughTokens">
       <financing-explorer-header
         [poster]="movie.principalInformations.backgroundPoster">
@@ -516,11 +516,30 @@
 </ng-container>
 
 <ng-template #loading>
-  Loading...
+  <main fxLayout="row" fxLayoutAlign="center">
+    <mat-progress-spinner
+      class="spinner"
+      color="primary"
+      mode="indeterminate"
+      diameter="60"
+    >
+    </mat-progress-spinner>
+  </main>
 </ng-template>
 
 <ng-template #notEnoughTokens>
-  Not Enough Tokens
+  <main fxLayout="row" fxLayoutAlign="center">
+    <mat-card>
+      <div class="flex-content not-enough-tokens">
+        <mat-card-content class="icon">
+          <mat-icon>error</mat-icon>
+        </mat-card-content>
+        <mat-card-content>
+          Not Enough Tokens
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </main>
 </ng-template>
 
 <financing-explorer-footer></financing-explorer-footer>
