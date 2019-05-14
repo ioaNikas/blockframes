@@ -530,3 +530,18 @@
     }
   }
 }
+
+.not-enough-tokens {
+  text-align: center;
+  ::ng-deep {
+    .material-icons {
+      font-size: 60px;
+      width: 60px;
+      color: #1a48f5;
+    }
+
+    .mat-card-content {
+      font-size: 24px;
+    }
+  }
+}

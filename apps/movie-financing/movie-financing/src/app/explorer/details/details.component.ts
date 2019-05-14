@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { getMovie } from '../../canne-data';
 import { Observable } from 'rxjs';
 import { AuthQuery, User } from '@blockframes/auth';
-import { map } from 'rxjs/operators';
+import { map, takeWhile } from 'rxjs/operators';
 import { FinancingMovie } from '../search/search.component';
 
 @Component({
@@ -15,6 +15,8 @@ import { FinancingMovie } from '../search/search.component';
 export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
   public movie$: Observable<FinancingMovie> = null;
   public user$: Observable<User>;
+  public isBalanceLoading$: Observable<boolean>;
+  public isAlive = true;
 
   constructor(
     private router: ActivatedRoute,
@@ -24,12 +26,25 @@ export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
       map(({ id }) => getMovie(id))
     );
     this.user$ = this.query.user$;
+
+    this.isBalanceLoading$ = new Observable(subscriber => {
+      subscriber.next(true)
+      this.query.user$
+      .pipe(takeWhile(() => this.isAlive))
+      .subscribe((u) => {
+        if(u !== null && u.balance !== undefined) {
+          subscriber.next(false)
+        }
+      })
+    })
+
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
+    this.isAlive = false;
   }
 
   public sumItems(items: Array<any>, attr: string) {
