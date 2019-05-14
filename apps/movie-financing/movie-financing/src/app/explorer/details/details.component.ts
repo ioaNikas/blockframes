@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { getMovie } from '../../canne-data';
 import { Observable } from 'rxjs';
@@ -12,9 +12,10 @@ import { FinancingMovie } from '../search/search.component';
   styleUrls: ['./details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
+export class FinancingExplorerDetailsComponent {
   public movie$: Observable<FinancingMovie> = null;
   public user$: Observable<User>;
+  public isBalanceLoading$: Observable<boolean>;
 
   constructor(
     private router: ActivatedRoute,
@@ -24,12 +25,8 @@ export class FinancingExplorerDetailsComponent implements OnInit, OnDestroy {
       map(({ id }) => getMovie(id))
     );
     this.user$ = this.query.user$;
-  }
 
-  ngOnInit() {
-  }
-
-  ngOnDestroy() {
+    this.isBalanceLoading$ = this.query.isBalanceLoading$;
   }
 
   public sumItems(items: Array<any>, attr: string) {

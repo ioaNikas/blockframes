@@ -1,6 +1,6 @@
 <article class="movie-block">
   <div class="status-block">
-    Almost Closed
+    {{ movie?.editorialStatus || "Almost Closed" }}
   </div>
 
   <h3>{{ movie?.principalInformations?.director || "Director Name" }}</h3>
@@ -19,7 +19,7 @@
     </tr>
     </tbody>
   </table>
-  <p *ngIf="movie?.principalInformations?.synopsis as value else elseBlock">{{ value }}</p>
+  <p *ngIf="movie?.logline as value else elseBlock">{{ value }}</p>
   <ng-template #elseBlock>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et rutrum libero, at feugiat lectus. Integer
     pulvinar blandit nulla sagittis mattis.
@@ -40,6 +40,6 @@
 </article>
 <div class="left-decoration">
   <p>
-    Prestige Director
+    {{ movie?.selectionCategory || "Almost Closed" }}
   </p>
 </div>

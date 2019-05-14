@@ -2,6 +2,12 @@
 
 // LAYOUT
 
+h3 {
+  font-size: 12px;
+  font-weight: normal;
+  margin: 5px;
+}
+
 main {
   .col-1 {
     width: 30%;
@@ -73,7 +79,7 @@ main {
       background-color: lightgray;
       color: grey;
     }
-    
+
     label {
       display: block;
     }
