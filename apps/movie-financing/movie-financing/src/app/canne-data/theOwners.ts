@@ -1,7 +1,9 @@
 const DATA = {
   id: 'kiAkm8auLWr6Jr12cyT1',
   title: 'The Owners',
-  minTokensRequired: 0.001,
+  selectionCategory: 'Producer\'s Network',
+  editorialStatus: 'Almost Closed',
+  minTokensRequired: 0.01,
   logline: 'A group of friends plot a burglary that spirals out of control.',
   principalInformations: {
     'moviePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_poster.Jpg?alt=media&token=10bfb14c-0a79-4012-aabc-544e2039b336',
@@ -30,7 +32,7 @@ const DATA = {
     'waterfallPosition': 'Position B',
     'salesNeededForFirstEuroRecuperation': '346758,726505562',
     'estimatesHigh': '2072400',
-    'minAmountRequested': '50000',
+    'minAmountRequested': '€50K',
     'length': 'Between 90 and 110min',
     'genres': [
       'Horror',

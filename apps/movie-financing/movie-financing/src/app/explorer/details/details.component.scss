@@ -2,7 +2,6 @@
 
 .movie-financing-details {
 
-
   // LAYOUT
 
   main {
@@ -255,7 +254,7 @@
         }
       }
 
-      .producer-history-sub-container { 
+      .producer-history-sub-container {
         .poster-container {
           width: 108px;
           float: left;
@@ -318,7 +317,7 @@
       }
     }
 
-    .cast-sub-container { 
+    .cast-sub-container {
       .picture-container {
         width: 108px;
         float: left;
@@ -344,7 +343,7 @@
             font-size: 20px;
           }
         }
-        
+
         .cast-card-content {
           margin-top: 10px;
 
@@ -357,7 +356,7 @@
             opacity: 1;
             font-weight: 500;
           }
-          
+
           .value {
             color: #394348;
             opacity: 1;
@@ -377,7 +376,7 @@
       .mat-tab-body-content {
         overflow: initial;
       }
-      
+
       .mat-chip-list {
         a {
           color: inherit;
@@ -423,7 +422,7 @@
           tr {
             td {
               height: 40px;
-              
+
             }
           }
         }
@@ -446,7 +445,7 @@
       .category-display {
         color: #394348;
         opacity: 0.9;
-        text-transform: lowercase;
+        text-transform: capitalize;
         padding-top: 10px;
       }
     }
@@ -518,7 +517,7 @@
             }
           }
         }
-  
+
         tbody {
           tr {
             td {
