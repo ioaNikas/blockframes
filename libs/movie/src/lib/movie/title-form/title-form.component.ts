@@ -46,7 +46,7 @@ export class TitleFormComponent implements OnInit {
     try {
       const { title } = this.titleForm.value;
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 3000 });
-      const movie = await this.service.add(title, this.org.id);
+      const movie = await this.service.add(title, this.org.id, true);
 
       this.movieQuery.selectEntity(movie.id)
         .pipe(takeWhile(_ => this.alive))

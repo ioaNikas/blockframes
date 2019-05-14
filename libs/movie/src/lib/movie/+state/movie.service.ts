@@ -21,14 +21,14 @@ export class MovieService {
     this.collection = this.firestore.collection<Movie>('movies');
   }
 
-  public async add(original: string, orgId: string): Promise<Movie> {
+  public async add(original: string, orgId: string, firstAdd: boolean = false ): Promise<Movie> {
     const id = this.firestore.createId();
     const owner = createStakeholder({orgId, orgMovieRole: 'ADMIN', isAccepted: true});
     const movie: Movie = createMovie({ id, title: { original }});
 
     // TODO: correct race condition
     await this.collection.doc<Movie>(id).set(movie);
-    await this.shService.add(id, owner);
+    await this.shService.add(id, owner, firstAdd);
 
     return movie;
   }

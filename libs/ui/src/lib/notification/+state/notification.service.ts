@@ -43,6 +43,24 @@ export class NotificationService {
     const collectionName = (type === 'delivery') ? 'deliveries' : 'movies';
     return this.db
       .doc<Stakeholder>(`${collectionName}/${id}/stakeholders/${stakeholderId}`)
-      .update({ isAccepted: true });
+      .update({ isAccepted: true })
+      .then(() => {
+        if (collectionName === 'movies') { // @todo move this to a function
+          return this.addMovieToOrg(stakeholderId, collectionName, id);
+        } 
+      })
+  }
+
+  private addMovieToOrg(stakeholderId: string, collectionName: string, movieId: string) {
+    return this.db
+      .doc<Stakeholder>(`${collectionName}/${movieId}/stakeholders/${stakeholderId}`).get().toPromise()
+      .then(sh => sh.data().orgId)
+      .then( orgId => this.db.collection('orgs').doc(orgId).get().toPromise())
+      .then( org => {
+        const movieIds = org.data().movieIds || [];
+        if( !movieIds.includes(movieId) ) {
+          return org.ref.update({ movieIds : [...movieIds, movieId] });
+        }
+      })
   }
 }
