@@ -424,7 +424,7 @@ const DATA = {
       'Total'
     ],
     graphs: {
-      'budget': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph1.png?alt=media&token=745f8b28-c48f-4cf4-9cfa-4010034a43cb'
+      'budget': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2FcamembertOwners.jpg?alt=media&token=21f8d76d-c267-419d-aeeb-c98009594c1d'
     },
     'estimatedBudget': [
       {
@@ -472,7 +472,7 @@ const DATA = {
     'worstCase': 791480,
     'exchangeRate': 0.88,
     graphs: {
-      'map': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph3.png?alt=media&token=964e541d-ea7b-4cd9-ac64-c98d57975cfc'
+      'map': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2FmapOwners.jpg?alt=media&token=3678645c-f7c3-4532-a0cb-e038d6eb227b'
     },
     'salesEstimates': {
       'EUROPE': [
@@ -879,7 +879,7 @@ const DATA = {
     'commission': 0.2,
     'territories': ['World excl. USA'],
     graphs: {
-      'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph2.png?alt=media&token=e55c5b87-c0d2-4204-a6a9-72d0d456431b'
+      'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2FwaterfallOwners%20(1).jpg?alt=media&token=f87a0ad4-0155-4d51-88e6-4019c82d6fe5'
     },
     investmentProposals: [
       {
