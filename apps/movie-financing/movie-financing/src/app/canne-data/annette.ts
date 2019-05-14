@@ -975,7 +975,7 @@ const DATA = {
     'commission': 25,
     'territories': ['World excl. USA, Japan, France, Germany and Belgium'],
     graphs: {
-      'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph2.png?alt=media&token=e55c5b87-c0d2-4204-a6a9-72d0d456431b'
+      'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2FwaterfallAnnette%20(1).jpg?alt=media&token=97910a1b-c405-4cad-9cae-3f97865c0838'
     },
     'investmentProposals': [
       {
