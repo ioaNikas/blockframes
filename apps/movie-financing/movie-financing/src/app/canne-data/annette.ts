@@ -7,6 +7,7 @@ const DATA = {
     'moviePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/Annette_poster.jpg?alt=media&token=04d0792c-50fb-4572-bc74-107cffb34750',
     'cardPoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/anette_carte.jpg?alt=media&token=36ea038f-5c79-4ff6-ba8f-bbb86995722b',
     'homePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/annette_home.jpg?alt=media&token=b425d525-91d9-48a5-94d6-f1d770e430fb',
+    'backgroundPoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/annette_titrePageFilm.jpg?alt=media&token=5f93002f-089d-47a9-b7ff-2a845284700b',
     'director': 'Leos Carax',
     'producedBy': 'CG Cinéma, Scope Pictures, Delta, Kinology',
     'cinematographyBy': 'Caroline Champetier',

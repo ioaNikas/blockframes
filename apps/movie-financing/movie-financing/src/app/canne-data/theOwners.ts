@@ -7,6 +7,7 @@ const DATA = {
     'moviePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_poster.Jpg?alt=media&token=10bfb14c-0a79-4012-aabc-544e2039b336',
     'cardPoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_carte.jpg?alt=media&token=f2bc38dc-7651-43e0-be23-3c1a306bdbea',
     'homePoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_home.jpg?alt=media&token=3cbe18eb-4ff4-4736-8183-9883de555985',
+    'backgroundPoster': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/owners_titrePageFilm.jpg?alt=media&token=c9803bf0-5538-4d0d-a6f0-429e228ed84b',
     'director': 'Julius Berg & Mathieu Gompel',
     'producedBy': 'Bluelight, Wild Bunch, Logical Pictures',
     'cinematographyBy': 'Caroline Champetier',
@@ -24,14 +25,7 @@ const DATA = {
       'Elderies',
       'UK',
       'Youth',
-      'Comic',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      ''
+      'Comic'
     ],
     'waterfallPosition': 'Position B',
     'salesNeededForFirstEuroRecuperation': '346758,726505562',
@@ -47,7 +41,7 @@ const DATA = {
     'directorsCategory': 'First Feature',
     'fundedBudget': '€200K',
     'goalBudget': '€400K',
-    'percentage': '0.5',
+    'percentage': 0.5,
     'directorShortBio': 'Julius Directs two first episodes of Netflix Original Series Osmosis while Mathieu will direct his first film.'
   },
   production: {
@@ -312,6 +306,7 @@ const DATA = {
       }
     ],
     'directorName': 'Julius Berg & Mathieu Gompel',
+    'directorPic': 'https://firebasestorage.googleapis.com/v0/b/blockframes-vincent.appspot.com/o/julius_mathieu.png?alt=media&token=e2bba241-91da-432e-b860-7440e343805c',
     'directorBio': 'Julius Directs two first episodes of Netflix Original Series Osmosis while Mathieu will direct his first film.',
     'directorSelectiveFilmo': [
       'Osmosis (Netflix Series)',
@@ -426,7 +421,9 @@ const DATA = {
     'spendingsCategories': [
       'Total'
     ],
-    'graphs': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph1.png?alt=media&token=745f8b28-c48f-4cf4-9cfa-4010034a43cb',
+    graphs: {
+      'budget': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph1.png?alt=media&token=745f8b28-c48f-4cf4-9cfa-4010034a43cb'
+    },
     'estimatedBudget': [
       {
         'category': '1. ABOVE THE LINE',
@@ -468,449 +465,453 @@ const DATA = {
   },
   sales: {
     'territories': 'World excl. USA',
-    'potentialRevenues': '1431940 €',
-    'bestCase': '2072400 €',
-    'worstCase': '791480 €',
-    'exchangeRate': '0,88',
-    'salesEstimates': [
+    'potentialRevenues': 1431940,
+    'bestCase': 2072400,
+    'worstCase': 791480,
+    'exchangeRate': 0.88,
+    graphs: {
+      'map': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph3.png?alt=media&token=964e541d-ea7b-4cd9-ac64-c98d57975cfc'
+    },
+    'salesEstimates': {
+      'EUROPE': [
+        {
+          'country': 'FRANCE',
+          'distributor': '',
+          'low': 65000,
+          'mid': 175000,
+          'high': 200000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'BENELUX',
+          'distributor': '',
+          'low': 25000,
+          'mid': 50000,
+          'high': 80000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'GERMANY',
+          'distributor': '',
+          'low': 100000,
+          'mid': 250000,
+          'high': 250000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'SPAIN',
+          'distributor': '',
+          'low': 25000,
+          'mid': 50000,
+          'high': 80000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'UK',
+          'distributor': '',
+          'low': 75000,
+          'mid': 150000,
+          'high': 200000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'ITALY',
+          'distributor': '',
+          'low': 25000,
+          'mid': 50000,
+          'high': 80000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'GREECE',
+          'distributor': '',
+          'low': 10000,
+          'mid': 20000,
+          'high': 20000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'PORTUGAL',
+          'distributor': '',
+          'low': 10000,
+          'mid': 20000,
+          'high': 20000,
+          'done': 0,
+          'currency': 'EUR'
+        },
+      ],
+      'SCANDINAVIA': [
+        {
+          'country': 'DENMARK',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'FINLAND',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'NORWAY',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'SWEDEN',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'ICELAND',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+      ],
+      'EASTERN EUROPE' : [
+        {
+          'country': 'POLAND',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'FORMER YUGOSLAVIA',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'HUNGARY',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'CZECH REP',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'ROMANIA',
+          'distributor': '',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'EUR'
+        },
+        {
+          'country': 'CIS',
+          'distributor': 'PLANETA INFORM',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 70000,
+          'currency': 'EUR'
+        },
+      ],
+      'MIDDLE EAST' : [
+        {
+          'country': 'ISRAEL',
+          'distributor': '',
+          'low': 10000,
+          'mid': 30000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'TURKEY',
+          'distributor': '',
+          'low': 10000,
+          'mid': 30000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+      ],
+      'AFRICA' : [
+        {
+          'country': 'SOUTH AFRICA',
+          'distributor': '',
+          'low': 10000,
+          'mid': 20000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+      ],
+      'NORTH AMERICA' : [
+        {
+          'country': 'USA & CANADA',
+          'distributor': 'XYZ',
+          'low': 0,
+          'mid': 0,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+      ],
+      'SOUTH AMERICA' : [
+        {
+          'country': 'ARGENTINA-URU-PARA',
+          'distributor': '',
+          'low': 15000,
+          'mid': 30000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'BRAZIL',
+          'distributor': '',
+          'low': 20000,
+          'mid': 40000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'MEXICO',
+          'distributor': '',
+          'low': 20000,
+          'mid': 40000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'COLOMBIA',
+          'distributor': '',
+          'low': 7000,
+          'mid': 15000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'PERU',
+          'distributor': '',
+          'low': 5000,
+          'mid': 10000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'PANSAT PTV',
+          'distributor': '',
+          'low': 25000,
+          'mid': 50000,
+          'high': 0,
+          'done': 0,
+          'currency': 'USD'
+        }
+      ],
+      'ASIA & AUSTRALIA' : [
+        {
+          'country': 'AUSTRALIA & NZ ',
+          'distributor': '',
+          'low': 30000,
+          'mid': 70000,
+          'high': 70000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'JAPAN',
+          'distributor': '',
+          'low': 30000,
+          'mid': 80000,
+          'high': 100000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'KOREA',
+          'distributor': '',
+          'low': 25000,
+          'mid': 50000,
+          'high': 80000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'TAIWAN',
+          'distributor': 'MOVIE CLOUD',
+          'low': 15000,
+          'mid': 30000,
+          'high': 50000,
+          'done': 28409.0909090909,
+          'currency': 'USD'
+        },
+        {
+          'country': 'HONG KONG',
+          'distributor': '',
+          'low': 15000,
+          'mid': 30000,
+          'high': 40000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'THAILAND',
+          'distributor': '',
+          'low': 10000,
+          'mid': 25000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'SINGAPORE',
+          'distributor': '',
+          'low': 10000,
+          'mid': 25000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'CHINA',
+          'distributor': '',
+          'low': 30000,
+          'mid': 60000,
+          'high': 100000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'INDONESIA',
+          'distributor': '',
+          'low': 7000,
+          'mid': 10000,
+          'high': 15000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'MALAISIA, BRUNEI, CAMBODIA',
+          'distributor': 'SURAYA FILEM',
+          'low': 7000,
+          'mid': 10000,
+          'high': 15000,
+          'done': 12000,
+          'currency': 'USD'
+        },
+        {
+          'country': 'PHILIPPINES',
+          'distributor': '',
+          'low': 10000,
+          'mid': 25000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+        {
+          'country': 'INDIA',
+          'distributor': '',
+          'low': 10000,
+          'mid': 25000,
+          'high': 30000,
+          'done': 0,
+          'currency': 'USD'
+        },
+      ],
+      'OTHER' : [
+        {
+          'country': 'AIRLINES',
+          'distributor': '',
+          'low': 50000,
+          'mid': 75000,
+          'high': 100000,
+          'done': 0,
+          'currency': 'USD'
+        },
+      ]
+    },
+  },
+  waterfall: {
+    'mg': 0,
+    'fees': 80000,
+    'commission': 0.2,
+    'territories': ['World excl. USA'],
+    graphs: {
+      'waterfall': 'https://firebasestorage.googleapis.com/v0/b/blockframes-bruce.appspot.com/o/canne-data%2Fgraph2.png?alt=media&token=e55c5b87-c0d2-4204-a6a9-72d0d456431b'
+    },
+    investmentProposals: [
       {
-        'region': 'EUROPE',
-        'country': 'FRANCE',
-        'distributor': '',
-        'low': '65000 €',
-        'mid': '175000 €',
-        'high': '200000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'BENELUX',
-        'distributor': '',
-        'low': '25000 €',
-        'mid': '50000 €',
-        'high': '80000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'GERMANY',
-        'distributor': '',
-        'low': '100000 €',
-        'mid': '250000 €',
-        'high': '250000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'SPAIN',
-        'distributor': '',
-        'low': '25000 €',
-        'mid': '50000 €',
-        'high': '80000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'UK',
-        'distributor': '',
-        'low': '75000 €',
-        'mid': '150000 €',
-        'high': '200000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'ITALY',
-        'distributor': '',
-        'low': '25000 €',
-        'mid': '50000 €',
-        'high': '80000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'GREECE',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '20000 €',
-        'high': '20000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EUROPE',
-        'country': 'PORTUGAL',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '20000 €',
-        'high': '20000',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'SCANDINAVIA',
-        'country': 'DENMARK',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'SCANDINAVIA',
-        'country': 'FINLAND',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'SCANDINAVIA',
-        'country': 'NORWAY',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'SCANDINAVIA',
-        'country': 'SWEDEN',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'SCANDINAVIA',
-        'country': 'ICELAND',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'POLAND',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'FORMER YUGOSLAVIA',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'HUNGARY',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'CZECH REP',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'ROMANIA',
-        'distributor': '',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'EASTERN EUROPE',
-        'country': 'CIS',
-        'distributor': 'PLANETA INFORM',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': '70000 €',
-        'currency': 'EUR'
-      },
-      {
-        'region': 'MIDDLE EAST',
-        'country': 'ISRAEL',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '30000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'MIDDLE EAST',
-        'country': 'TURKEY',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '30000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'AFRICA',
-        'country': 'SOUTH AFRICA',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '20000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'NORTH AMERICA',
-        'country': 'USA & CANADA',
-        'distributor': 'XYZ',
-        'low': ' €',
-        'mid': ' €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'ARGENTINA-URU-PARA',
-        'distributor': '',
-        'low': '15000 €',
-        'mid': '30000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'BRAZIL',
-        'distributor': '',
-        'low': '20000 €',
-        'mid': '40000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'MEXICO',
-        'distributor': '',
-        'low': '20000 €',
-        'mid': '40000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'COLOMBIA',
-        'distributor': '',
-        'low': '7000 €',
-        'mid': '15000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'PERU',
-        'distributor': '',
-        'low': '5000 €',
-        'mid': '10000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'SOUTH AMERICA',
-        'country': 'PANSAT PTV',
-        'distributor': '',
-        'low': '25000 €',
-        'mid': '50000 €',
-        'high': '',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'AUSTRALIA & NZ ',
-        'distributor': '',
-        'low': '30000 €',
-        'mid': '70000 €',
-        'high': '70000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'JAPAN',
-        'distributor': '',
-        'low': '30000 €',
-        'mid': '80000 €',
-        'high': '100000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'KOREA',
-        'distributor': '',
-        'low': '25000 €',
-        'mid': '50000 €',
-        'high': '80000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'TAIWAN',
-        'distributor': 'MOVIE CLOUD',
-        'low': '15000 €',
-        'mid': '30000 €',
-        'high': '50000',
-        'done': '28409,0909090909 €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'HONG KONG',
-        'distributor': '',
-        'low': '15000 €',
-        'mid': '30000 €',
-        'high': '40000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'THAILAND',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '25000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'SINGAPORE',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '25000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'CHINA',
-        'distributor': '',
-        'low': '30000 €',
-        'mid': '60000 €',
-        'high': '100000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'INDONESIA',
-        'distributor': '',
-        'low': '7000 €',
-        'mid': '10000 €',
-        'high': '15000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'MALAISIA, BRUNEI, CAMBODIA',
-        'distributor': 'SURAYA FILEM',
-        'low': '7000 €',
-        'mid': '10000 €',
-        'high': '15000',
-        'done': '12000 €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'PHILIPPINES',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '25000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'ASIA & AUSTRALIA',
-        'country': 'INDIA',
-        'distributor': '',
-        'low': '10000 €',
-        'mid': '25000 €',
-        'high': '30000',
-        'done': ' €',
-        'currency': 'USD'
-      },
-      {
-        'region': 'OTHER',
-        'country': 'AIRLINES',
-        'distributor': '',
-        'low': '50000 €',
-        'mid': '75000 €',
-        'high': '100000',
-        'done': ' €',
-        'currency': 'USD'
+        'investor': 'Investor A',
+        'requested': 200000,
+        'premium': 0.175,
+        'backend': 0.15,
+        'minimum': 50000,
+        'breakeven': 1106204.33121412,
+        'salesNeeded': 346758.726505562,
+        'potentialRevenues': 1.175,
+        'bestCase': 1.60872093375563,
+        'worstCase': 0.585586736873801
       }
     ]
   },
-  waterfall: {
-    'mg': '',
-    'fees': '80000',
-    'commission': '0,2',
-    'territories': 'World excl. USA',
-    investmentProposals: {
-      'requested': '200000',
-      'premium': '0,175',
-      'backend': '0,15',
-      'minimum': '50000',
-      'breakeven': '1106204,33121412',
-      'salesNeeded': '346758,726505562',
-      'potentialRevenues': '1,175',
-      'bestCase': '1,60872093375563',
-      'worstCase': '0,585586736873801'
-    }
+  contributions: {
+    '150K': [
+      {
+        'title': 'Contribution title',
+        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat augue vel ante congue sodales eu ut mi. Cras quis lacus sit amet dui vulputate blandit. Aliquam dignissim nibh felis, in pharetra libero tempus nec.'
+      }
+    ],
+    '500K': [
+      {
+        'title': 'Contribution title',
+        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat augue vel ante congue sodales eu ut mi. Cras quis lacus sit amet dui vulputate blandit. Aliquam dignissim nibh felis, in pharetra libero tempus nec.'
+      },
+      {
+        'title': 'Second contribution',
+        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat augue vel ante congue sodales eu ut mi. Cras quis lacus sit amet dui vulputate blandit. Aliquam dignissim nibh felis, in pharetra libero tempus nec.'
+      }
+    ]
+
   }
 };
 
