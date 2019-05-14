@@ -60,7 +60,7 @@ export class StakeholderService {
     return combineLatest(allShWithOrgs);
   }
 
-  public async add(movieId: string, stakeholder: Partial<Stakeholder>): Promise<string> {
+  public async add(movieId: string, stakeholder: Partial<Stakeholder>, firstAdd: boolean = false ): Promise<string> {
     const id = this.firestore.createId();
     const sh = createStakeholder({ ...stakeholder, id });
     const movieDoc = this.firestore.collection('movies').doc(movieId);
@@ -68,25 +68,31 @@ export class StakeholderService {
     const stakeholderDoc = movieDoc.collection('stakeholders').doc(sh.id);
 
     await this.firestore.firestore.runTransaction(async (tx) => {
-      const org = await tx.get(orgDoc.ref);
+      const promises = [];
 
-      // Update the org
-      const movieIds = org.data().movieIds || [];
+      // it true, add directly movie into org and bypasses notification approval
+      // required when a movie is created
+      if( firstAdd ) { 
+        const org = await tx.get(orgDoc.ref);
 
-      // DEMO: Prevent double add
-      // TODO: allow to add the org multiple time with different orgs.
-      // BEWARE: update the delete method accordingly when you do.
-      if (movieIds.includes(movieId)) {
-        return tx.update(orgDoc.ref, {}); // every document read in a transaction must be written.
+        // Update the org
+        const movieIds = org.data().movieIds || [];
+  
+        // DEMO: Prevent double add
+        // TODO: allow to add the org multiple time with different orgs.
+        // BEWARE: update the delete method accordingly when you do.
+        if (movieIds.includes(movieId)) {
+          return tx.update(orgDoc.ref, {}); // every document read in a transaction must be written.
+        }
+  
+        const nextMovieIds = [...movieIds, movieId];
+        promises.push(tx.update(orgDoc.ref, { movieIds: nextMovieIds }));
       }
 
-      const nextMovieIds = [...movieIds, movieId];
-      const p1 = tx.update(orgDoc.ref, { movieIds: nextMovieIds });
-
       // Set the stakeholder
-      const p2 = tx.set(stakeholderDoc.ref, sh);
+      promises.push(tx.set(stakeholderDoc.ref, sh));
 
-      return Promise.all([p1, p2]);
+      return Promise.all(promises);
     });
     console.log('Transaction successfully committed!');
 
