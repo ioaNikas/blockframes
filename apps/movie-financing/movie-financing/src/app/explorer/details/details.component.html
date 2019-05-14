@@ -336,11 +336,7 @@
                   <tr>
                     <td><span class="key">TOTAL BUDGET</span></td>
                     <td class="currency-display"><span
-<<<<<<< HEAD
-                      class="value">{{ sumItems(movie.finance.estimatedBudget, 'total') | currency:'EUR':'symbol' }}</span>
-=======
-                      class="value">{{ movie.finance.estimatedBudget[movie.finance.estimatedBudget.length - 1].total | currency:'EUR':true }}</span>
->>>>>>> df01289a
+                      class="value">{{ movie.finance.estimatedBudget[movie.finance.estimatedBudget.length - 1].total | currency:'EUR':'symbol' }}</span>
                     </td>
                   </tr>
                   </thead>
@@ -372,13 +368,8 @@
                   </thead>
                   <tbody>
                   <tr>
-<<<<<<< HEAD
-                    <td class="label">Amount Requested Pool Investor</td>
-                    <td class="amount">{{ movie.waterfall.investmentProposals[0].requested | currency:'EUR':'symbol' }}</td>
-=======
                     <td class="label">Total to finance</td>
-                    <td class="amount">{{ movie.waterfall.investmentProposals[0].requested | currency:'EUR':true }}</td>
->>>>>>> df01289a
+                    <td class="amount">{{ movie.waterfall.investmentProposals[0].requested | currency:'EUR':'symbol' }}</td>
                   </tr>
                   <tr>
                     <td class="label">Premium</td>
@@ -389,21 +380,12 @@
                     <td class="amount">{{ movie.waterfall.investmentProposals[0].backend | number : '1.2-2' }} %</td>
                   </tr>
                   <tr>
-<<<<<<< HEAD
-                    <td class="label">Minimum Ticket Pool Investor</td>
+                    <td class="label">Minimum Ticket</td>
                     <td class="amount">{{ movie.waterfall.investmentProposals[0].minimum | currency:'EUR':'symbol' }}</td>
                   </tr>
                   <tr>
-                    <td class="label">Breakeven Pool Investor</td>
-                    <td class="amount">{{ movie.waterfall.investmentProposals[0].breakeven | currency:'EUR':'symbol' }}</td>
-=======
-                    <td class="label">Minimum Ticket</td>
-                    <td class="amount">{{ movie.waterfall.investmentProposals[0].minimum | currency:'EUR':true }}</td>
-                  </tr>
-                  <tr>
                     <td class="label">Breakeven</td>
-                    <td class="amount">{{ movie.waterfall.investmentProposals[0].breakeven | currency:'EUR':true }}</td>
->>>>>>> df01289a
+                    <td class="amount">{{ movie.waterfall.investmentProposals[0].breakeven | currency:'EUR':'symbol' }}</td>
                   </tr>
                   <tr>
                     <td class="label">Sales Needed For First Euro Recuperation</td>
@@ -429,13 +411,8 @@
 
                 <h3>Sales agent</h3>
                 <p>
-<<<<<<< HEAD
-                  <span class="key">Guaranteed minimum</span>
-                  <span class="value">{{ movie.waterfall.mg | currency:'EUR':'symbol' }}</span>
-=======
                   <span class="key">Guaranteed Minimum</span>
-                  <span class="value">{{ movie.waterfall.mg | currency:'EUR':true }}</span>
->>>>>>> df01289a
+                  <span class="value">{{ movie.waterfall.mg | currency:'EUR':'symbol' }}</span>
                 </p>
                 <p>
                   <span class="key">Maxium fees</span>
@@ -518,18 +495,10 @@
                       <tr *ngFor="let item of region.value">
                         <td>{{ item.country }}</td>
                         <td>{{ item.distributor }}</td>
-<<<<<<< HEAD
                         <td>{{ item.low | currency:item.currency:'symbol' }}</td>
                         <td>{{ item.mid | currency:item.currency:'symbol' }}</td>
                         <td>{{ item.high | currency:item.currency:'symbol' }}</td>
                         <td>{{ item.done | currency:item.currency:'symbol' }}</td>
-                        <td>{{ item.currency }}</td>
-=======
-                        <td>{{ item.low | currency:item.currency:true }}</td>
-                        <td>{{ item.mid | currency:item.currency:true }}</td>
-                        <td>{{ item.high | currency:item.currency:true }}</td>
-                        <td>{{ item.done | currency:item.currency:true }}</td>
->>>>>>> df01289a
                       </tr>
                       </tbody>
                     </table>
