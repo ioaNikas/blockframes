@@ -26,6 +26,8 @@ import { OrganizationModule } from '@blockframes/organization';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LayoutComponent } from './layout/layout.component';
+import { UtilsModule } from 'libs/utils/src/lib/utils.module';
+import { AccountModule, ProfileModule } from '@blockframes/account';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -41,6 +43,9 @@ import { LayoutComponent } from './layout/layout.component';
     WalletModule,
     OrganizationModule,
     ToolbarModule,
+    AccountModule,
+    ProfileModule,
+    UtilsModule,
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
