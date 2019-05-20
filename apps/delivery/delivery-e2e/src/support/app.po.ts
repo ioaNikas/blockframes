@@ -7,7 +7,36 @@ export const getTitle = () => cy.get('section h1');
 
 export class NavbarPage {
   constructor() {
-    cy.get('header', {timeout: 60000}).contains('home');
+    cy.get('.account-icon', {timeout: 60000}).contains('account_circle');
+  }
+
+  public openLogout() {
+    cy.get('mat-toolbar button.profile-button').click();
+  }
+
+  public clickLogout() {
+    cy.get('button[testId=logout]').click();
+    return new LandingPage();
+  }
+
+  public clickHome() {
+    cy.get('button[testId=home]').click();
+    return new HomePage();
+  }
+
+  public clickAcceptInvitationToMovie() {
+    cy.get('div[testId=notifications] button.mat-primary').first().click();
+    return new MovieTeamWorkPage();
+  }
+
+  public clickAcceptInvitationToDelivery() {
+    cy.get('div[testId=notifications] button.mat-primary').first().click();
+    return new DeliveryTeamWorkPage();
+  }
+
+  public openNotifications() {
+    cy.wait(2000);
+    cy.get('.notification-button').click();
   }
 
   public openUserMenu() {
@@ -16,15 +45,83 @@ export class NavbarPage {
 
   public clickProfile() {
     cy.get('mat-list button').should('contain', 'Profile').contains('Profile').click();
-    return new EditProfilePage;
+    return new EditProfilePage();
   }
 }
+
+export class TemplateDeleteModal {
+  constructor() {}
+
+  public clickConfirm() {
+    cy.get('button[testId=confirm]').click();
+    return new TemplateListPage();
+  }
+}
+
 export class TemplateFormPage {
   constructor() {
     cy.contains('Add a material')
   }
 
-  public   assertMaterialsCount(materialsLength: number) {
+  public deleteTemplate() {
+    cy.get('button.delete-template').click();
+    return new TemplateDeleteModal();
+  }
+
+  public clickDeleteMaterial(value: string) {
+    cy.get('mat-card')
+    .contains(value)
+    .parent().parent()
+    .trigger('mouseover')
+    .find('button').contains('DELETE').click({force: true});
+  }
+
+  public clickEditMaterial(value: string) {
+    cy.get('mat-card')
+    .contains(value)
+    .parent().parent()
+    .trigger('mouseover')
+    .find('button').contains('EDIT').click({force: true});
+  }
+
+  public assertMaterialExists(value: string, description: string, category: string) {
+    cy.get('mat-card').should((card) => expect(card).to.contain(value).to.contain(description));
+    cy.get('h3').contains(category).should('have.length', '1');
+  }
+
+  public clickAdd() {
+    cy.get('mat-sidenav button.create-material').click();
+  }
+
+  public fillValue(materialValue: string) {
+    cy.get('input.value').type(materialValue);
+  }
+
+  public clearValue() {
+    cy.get('input.value').clear();
+  }
+
+  public fillDescription(materialDescription: string) {
+    cy.get('textarea.description').type(materialDescription);
+  }
+
+  public clearDescription() {
+    cy.get('textarea.description').clear();
+  }
+
+  public fillCategory(materialCategory: string) {
+    cy.get('input.category').type(materialCategory);
+  }
+
+  public clearCategory() {
+    cy.get('input.category').clear();
+  }
+
+  public clickSaveMaterial() {
+    cy.get('button.add-button').click();
+  }
+
+  public assertMaterialsCount(materialsLength: number) {
     cy.get('mat-card').should('have.length', materialsLength);
   }
 
@@ -34,7 +131,7 @@ export class TemplateFormPage {
   }
 }
 
-export class TeamWorkPage {
+export class DeliveryTeamWorkPage {
   constructor() {}
 
     public clickAddStakeholder(name: string) {
@@ -79,12 +176,12 @@ export class DeliverySettingsFormPage {
 
   public clickTeamWork() {
     cy.get('a').contains('teamwork').click();
-    return new TeamWorkPage;
+    return new DeliveryTeamWorkPage();
   }
 
   public clickDelivery() {
     cy.get('a').contains('edit').click();
-    return new DeliveryFormPage;
+    return new DeliveryFormPage();
   }
 }
 
@@ -93,7 +190,7 @@ export class NewTemplatePage {
     cy.contains('Save as a new template');
   }
 
-  public clickSelect() {
+  public openSelect() {
     cy.get('mat-select').click();
   }
 
@@ -111,8 +208,9 @@ export class NewTemplatePage {
   }
 }
 
-export class DeliveryFormPage {
+export class DeliveryFormPage extends NavbarPage {
   constructor() {
+    super();
     cy.get('.delivery-form').should('contain', 'Sign delivery');
   }
 
@@ -126,7 +224,7 @@ export class DeliveryFormPage {
   }
 
   public clickSign() {
-    cy.get('button').contains('Sign').click();
+    cy.get('[testId=modalSign]').find('button').contains('Sign').click();
     cy.wait(3000);
   }
 
@@ -135,7 +233,7 @@ export class DeliveryFormPage {
   }
 
   public clickVerifyToSign() {
-    cy.get('button').contains('Verify to sign').click();
+    cy.get('[testId=sign]').click();
   }
 
   public clickAddSignature() {
@@ -149,15 +247,6 @@ export class DeliveryFormPage {
     .parent().parent()
     .trigger('mouseover')
     .find('button').contains('DELETE').click({force: true});
-  }
-
-  public openLogout() {
-    cy.get('button').contains('account_circle').click();
-  }
-
-  public clickLogout() {
-    cy.get('button').contains('Logout').click();
-    return new LandingPage;
   }
 
   public clickCheckBoxMaterial(name: string) {
@@ -252,11 +341,6 @@ export class DeliveryListPage {
   constructor() {
   }
 
-  public clickHome() {
-    cy.get('mat-icon[svgicon=delivery_white]').click();
-    return new HomePage();
-  }
-
   public clickAddDelivery() {
     cy.get('button.add-delivery').click();
     return new TemplatePickerPage();
@@ -266,8 +350,10 @@ export class DeliveryListPage {
     cy.get('.delivery-card').should('contain', orgName);
   }
 
-  public clickDelivery() {
-    cy.get('.delivery-card').first().click();
+  public clickDelivery(orgName1: string, orgName2?: string) {
+    orgName2
+      ? cy.get('.delivery-card').contains(orgName1 && orgName2).click()
+      : cy.get('.delivery-card').contains(orgName1).click()
     return new DeliveryFormPage();
   }
 
@@ -282,12 +368,12 @@ export class AddTemplateModal {
   }
 
   public fillTemplateName(name: string) {
-    cy.get('input[placeholder="New template name"]').type(name);
+    cy.get('[testId=templateName]').type(name);
   }
 
   public clickCreate() {
-    cy.get('button').contains('Create').click();
-    return new TemplateListPage();
+    cy.get('[testId=templateCreate]').click();
+    return new TemplateFormPage();
   }
 }
 
@@ -295,8 +381,14 @@ export class TemplateListPage {
   constructor() {
   }
 
+  public selectTemplate(templateName: string) {
+    cy.wait(500);
+    cy.get('mat-card').contains(templateName).click();
+    return new TemplateFormPage();
+  }
+
   public assertTemplateDoesNotExists(templateName: string) {
-    cy.get('mat-card').contains(templateName).should('have.length', 0);
+    cy.contains(templateName).should('have.length', 0);
   }
 
   public clickDelete() {
@@ -304,7 +396,7 @@ export class TemplateListPage {
   }
 
   public createTemplate() {
-    cy.get('button').contains('Add Template').click();
+    cy.get('button.add-template').click();
     return new AddTemplateModal();
   }
 
@@ -341,13 +433,9 @@ export class TemplateListPage {
   }
 }
 
-export class MovieTeamWorkPage {
+export class MovieTeamWorkPage extends NavbarPage {
   constructor() {
-  }
-
-  public clickHome() {
-    cy.get('a').contains('home').click();
-    return new HomePage;
+    super();
   }
 }
 
@@ -355,21 +443,6 @@ export class HomePage extends NavbarPage {
   constructor() {
     super();
     // TODO: check if we are on a home page
-  }
-
-  public openNotifications() {
-    cy.wait(2000);
-    cy.get('.notification-button').click();
-  }
-
-  public clickAcceptInvitationToMovie() {
-    cy.get('button').contains('Accept').first().click();
-    return new MovieTeamWorkPage;
-  }
-
-  public clickAcceptInvitation() {
-    cy.get('button').contains('Accept').first().click();
-    return new TeamWorkPage;
   }
 
   public clickOnMovie(movieName: string) {
@@ -393,6 +466,7 @@ export class HomePage extends NavbarPage {
   }
 
   public selectTemplates() {
+    cy.wait(500);
     cy.get('.mat-tab-links').get('a').contains('templates').click();
     return new TemplateListPage();
   }
@@ -418,33 +492,34 @@ export class EditProfilePage {
 
 export class LandingPage {
   constructor() {
-    cy.contains('Sign in');
+    cy.get('[testId=signup]');
+    cy.get('[testId=signin]');
   }
 
   public fillSigninEmail(email: string) {
-    cy.get('#signin input[type="email"]').type(email);
+    cy.get('[testId=signin] input[type="email"]').type(email);
   }
 
   public fillSigninPassword(password: string) {
-    cy.get('#signin input[type="password"]').type(password);
+    cy.get('[testId=signin] input[type="password"]').type(password);
   }
 
   public login(): any {
-    cy.get('button').contains('Signin').click();
+    cy.get('[testId=signin] button').click();
     return new HomePage();
   }
 
   public fillSignupEmail(email: string) {
-    cy.get('#signup input[type="email"]').type(email);
+    cy.get('[testId=signup] input[type="email"]').type(email);
   }
 
   public fillSignupPassword(password: string) {
-    cy.get('#signup input[type="password"]').eq(0).type(password);
-    cy.get('#signup input[type="password"]').eq(1).type(password);
+    cy.get('[testId=signup] input[type="password"]').eq(0).type(password);
+    cy.get('[testId=signup] input[type="password"]').eq(1).type(password);
   }
 
   public signup(): any {
-    cy.get('button').contains('Signup').click();
+    cy.get('[testId=signup] button').click();
     return new HomePage();
   }
 }

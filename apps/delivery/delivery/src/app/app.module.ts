@@ -55,7 +55,7 @@ import {
 import { NotificationModule } from 'libs/notification/notification.module';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent,],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     // Angular
     BrowserModule,

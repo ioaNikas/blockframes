@@ -7,7 +7,8 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Guards
 import { AuthGuard } from '@blockframes/auth';
-import { MovieGuard } from '@blockframes/movie';
+import { MovieListGuard, MovieActiveGuard } from '@blockframes/movie';
+import { OrganizationListGuard } from '@blockframes/organization';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'layout', pathMatch: 'full' },
@@ -18,7 +19,8 @@ export const routes: Routes = [
   {
     path: 'layout',
     component: LayoutComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, OrganizationListGuard],
+    canDeactivate: [OrganizationListGuard],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       {
@@ -30,13 +32,21 @@ export const routes: Routes = [
         // loadChildren: '@blockframes/account#AccountModule' // TODO this fail with "Error: Uncaught (in promise): Error: Cannot find 'AccountModule' in '@blockframes/account'"
         loadChildren: 'libs/account/src/lib/account/account.module#AccountModule'
       },
-      { path: 'home', loadChildren: '@blockframes/movie#MovieModule' },
-      { path: 'template', loadChildren: 'libs/material/src/lib/template/template.module#TemplateModule' }, //ToDo find why @blockframes doesn't work
+      {
+        path: 'home',
+        canActivate: [MovieListGuard],
+        canDeactivate: [MovieListGuard],
+        loadChildren: '@blockframes/movie#MovieModule'
+      },
+      { path: 'template',
+        loadChildren: 'libs/material/src/lib/template/template.module#TemplateModule'
+      }, //ToDo find why @blockframes doesn't work
       {
         path: ':movieId',
-        canActivate: [MovieGuard],
+        canActivate: [MovieActiveGuard],
+        canDeactivate: [MovieActiveGuard],
         loadChildren: '@blockframes/material#DeliveryModule'
-      },
+      }
     ]
   },
   {

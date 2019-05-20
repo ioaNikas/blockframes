@@ -1,3 +1,3 @@
 export * from './lib/+state';
 export * from './lib/organization.module';
-export * from './lib/guards/org.resolver';
+export * from './lib/guards/organization-list.guard';
