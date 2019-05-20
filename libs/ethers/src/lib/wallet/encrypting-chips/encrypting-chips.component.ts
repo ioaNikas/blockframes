@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { AuthQuery } from "@blockframes/auth";
 
 @Component({
-  selector: 'encrypting-chips',
+  selector: 'wallet-encrypting-chips',
   templateUrl: './encrypting-chips.component.html',
   styleUrls: ['./encrypting-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

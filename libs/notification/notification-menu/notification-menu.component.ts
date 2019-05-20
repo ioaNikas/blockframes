@@ -4,7 +4,7 @@ import { User, AuthQuery } from "@blockframes/auth";
 import { NotificationQuery } from "../+state";
 
 @Component({
-  selector: 'notification-menu',
+  selector: 'app-notification-menu',
   templateUrl: './notification-menu.component.html',
   styleUrls: ['./notification-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -4,7 +4,7 @@ import { AuthQuery, User } from '@blockframes/auth';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'profile-view',
+  selector: 'account-profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

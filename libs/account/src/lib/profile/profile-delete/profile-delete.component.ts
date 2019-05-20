@@ -6,7 +6,7 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'profile-delete',
+  selector: 'account-profile-delete',
   templateUrl: './profile-delete.component.html',
   styleUrls: ['./profile-delete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

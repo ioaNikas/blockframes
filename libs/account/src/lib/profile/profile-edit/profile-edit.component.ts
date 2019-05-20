@@ -1,5 +1,5 @@
 
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { AccountForm, User, AuthQuery, AuthService } from '@blockframes/auth';
@@ -10,12 +10,12 @@ import { takeWhile } from 'rxjs/operators';
 import { ProfileDeleteComponent } from '../profile-delete/profile-delete.component';
 
 @Component({
-  selector: 'profile-edit',
+  selector: 'account-profile-edit',
   templateUrl: './profile-edit.component.html',
   styleUrls: ['./profile-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProfileEditComponent {
+export class ProfileEditComponent implements OnInit, OnDestroy {
   @Output() loggedOut = new EventEmitter();
 
   public accountForm: FormGroup;

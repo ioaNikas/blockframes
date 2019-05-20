@@ -5,7 +5,7 @@ import { User, AuthQuery, AuthService } from '@blockframes/auth';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'profile-menu',
+  selector: 'account-profile-menu',
   templateUrl: './profile-menu.component.html',
   styleUrls: ['./profile-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
