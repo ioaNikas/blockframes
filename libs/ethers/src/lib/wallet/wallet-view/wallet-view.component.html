@@ -1,5 +1,5 @@
 <main>
-  <ng-container *ngIf="(user$ | async) as user; else userloading">
+  <ng-container *ngIf="(user$ | async) as user; else userLoading">
     <ng-container *ngIf="user.identity; else noWallet">
       <header fxLayout="row" fxLayoutAlign="space-between center">
         <!-- Wallet Profile -->
