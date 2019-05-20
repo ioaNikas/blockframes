@@ -27,7 +27,8 @@ export const routes: Routes = [
       },
       {
         path: 'account',
-        loadChildren: '@blockframes/account#AccountModule'
+        // loadChildren: '@blockframes/account#AccountModule' // TODO this fail with "Error: Uncaught (in promise): Error: Cannot find 'AccountModule' in '@blockframes/account'"
+        loadChildren: 'libs/account/src/lib/account/account.module#AccountModule'
       },
       { path: 'home', loadChildren: '@blockframes/movie#MovieModule' },
       { path: 'template', loadChildren: 'libs/material/src/lib/template/template.module#TemplateModule' }, //ToDo find why @blockframes doesn't work

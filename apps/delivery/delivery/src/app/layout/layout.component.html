@@ -5,6 +5,26 @@
         <mat-icon svgIcon="media_delivering" class="app-icon"></mat-icon>
       </button>
     </ng-container>
+
+    <ng-container encrypting>
+      <encrypting-chips></encrypting-chips>
+    </ng-container>
+
+    <ng-container notifications>
+      <notification-menu></notification-menu>
+    </ng-container>
+
+    <ng-container profile-menu>
+      <profile-menu>
+        <ng-container widgets>
+          <profile-widget></profile-widget>
+          <wallet-widget></wallet-widget>
+          <mat-divider></mat-divider>
+          <org-widget></org-widget>
+        </ng-container>
+      </profile-menu>
+    </ng-container>
+
   </toolbar-header>
 </header>
 <main>

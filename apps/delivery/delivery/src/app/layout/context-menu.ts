@@ -58,5 +58,12 @@ export const CONTEXT_MENU = [
       { name: 'edit', path: '/layout/:movieId/form/:deliveryId'},
       { name: 'delivery list', path: '/layout/:movieId/view/:deliveryId'},
     ]
+  },
+  {
+    route: '/layout/account',
+    items: [
+      { name: 'profile', path: '/layout/account/profile' },
+      { name: 'wallet', path: '/layout/account/wallet'},
+    ]
   }
 ];

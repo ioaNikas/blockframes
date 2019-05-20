@@ -5,7 +5,7 @@ import { AuthQuery, User } from '@blockframes/auth';
 import { ActivatedRoute } from '@angular/router';
 import { Organization, OrganizationQuery, OrganizationService } from '../+state';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'org-show',
@@ -28,8 +28,9 @@ export class OrgShowComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    this.auth.user$.subscribe((user: User) => {
+    this.auth.user$.pipe(
+      filter(user => !!user)
+    ).subscribe((user: User) => {
       // @todo remove observable on ngDestroy
       this.service.subscribeUserOrgs(user.uid);
     });
@@ -38,6 +39,8 @@ export class OrgShowComponent implements OnInit, OnDestroy {
       this.orgID = id;
       return this.query.selectEntity(id);
     }));
+
+    this.orgID = this.route.snapshot.params.id;
   }
 
   ngOnDestroy() {

@@ -1,26 +1,27 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, EventEmitter, Output } from '@angular/core';
-import { AuthQuery, User, AccountForm, AuthService } from '@blockframes/auth';
-import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+
+import { Component, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PersistNgFormPlugin } from '@datorama/akita';
+import { AccountForm, User, AuthQuery, AuthService } from '@blockframes/auth';
+import { Observable } from 'rxjs';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { AccountDeleteComponent } from './../account-delete/account-delete.component'
 import { Router } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
+import { ProfileDeleteComponent } from '../profile-delete/profile-delete.component';
 
 @Component({
-  selector: 'account-profile',
-  templateUrl: './account-profile.component.html',
-  styleUrls: ['./account-profile.component.scss'],
+  selector: 'profile-edit',
+  templateUrl: './profile-edit.component.html',
+  styleUrls: ['./profile-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountProfileComponent implements OnInit, OnDestroy {
+export class ProfileEditComponent {
   @Output() loggedOut = new EventEmitter();
 
   public accountForm: FormGroup;
   public persistForm: PersistNgFormPlugin<AccountForm>;
   public user$: Observable<User>;
-  private alive= true;
+  private alive = true;
 
   constructor(
     private authQuery: AuthQuery,
@@ -71,7 +72,7 @@ export class AccountProfileComponent implements OnInit, OnDestroy {
   }
 
   public deleteAccount() {
-    const dialogRef = this.dialog.open(AccountDeleteComponent, {
+    const dialogRef = this.dialog.open(ProfileDeleteComponent, {
       width: '450px',
       data: {email: ''}
     });

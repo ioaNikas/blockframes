@@ -1,0 +1,35 @@
+<main>
+  <ng-container *ngIf="(user$ | async) as user; else profileLoading">
+    <a mat-icon-button routerLink="/layout/account/profile/edit" color="primary"><mat-icon>edit</mat-icon></a>
+    <table>
+      <tbody>
+        <tr>
+          <td class="key">Email</td>
+          <td class="value">{{ user.email }}</td>
+        </tr>
+        <tr>
+          <td class="key">First Name</td>
+          <td class="value">{{ user.firstName }}</td>
+        </tr>
+        <tr>
+          <td class="key">Last Name</td>
+          <td class="value">{{ user.lastName }}</td>
+        </tr>
+        <tr>
+          <td class="key">Biography</td>
+          <td>{{ user.biography }}</td>
+        </tr>
+        <tr>
+          <td class="key">Id</td>
+          <td>{{ user.uid }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <ng-template #profileLoading>
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <p>Your Profile is loading...</p>
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </ng-template>
+</main>

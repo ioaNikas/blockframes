@@ -6,15 +6,15 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'account-delete',
-  templateUrl: './account-delete.component.html',
-  styleUrls: ['./account-delete.component.scss'],
+  selector: 'profile-delete',
+  templateUrl: './profile-delete.component.html',
+  styleUrls: ['./profile-delete.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountDeleteComponent  {
+export class ProfileDeleteComponent  {
 
   constructor(
-    private dialogRef: MatDialogRef<AccountDeleteComponent>,
+    private dialogRef: MatDialogRef<ProfileDeleteComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 

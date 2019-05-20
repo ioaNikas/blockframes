@@ -1,0 +1,14 @@
+<ng-container *ngIf="(user$ | async) as user">
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button">
+    <mat-icon class="account-icon" color="primary">account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" class="mat-elevation-z6">
+    <mat-list>
+      <ng-content select="[widgets]"></ng-content>
+      <mat-divider></mat-divider>
+      <ng-container (loggedOut)="logout()">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </ng-container>
+    </mat-list>
+  </mat-menu>
+</ng-container>

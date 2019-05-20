@@ -4,10 +4,6 @@ import { HeaderComponent } from './header/header.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
 
 //Modules
-import { OrganizationModule } from '@blockframes/organization';
-import { AuthModule } from '@blockframes/auth';
-import { AccountModule } from '@blockframes/account';
-import { NotificationModule } from '../notification/notification.module';
 import { RouterModule } from '@angular/router';
 
 // Material
@@ -22,13 +18,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatGridListModule, MatListModule, MatTabsModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
+
 @NgModule({
   imports: [
     CommonModule,
-    OrganizationModule,
-    AuthModule,
-    AccountModule,
-    NotificationModule,
     RouterModule,
 
     // Material
@@ -47,7 +40,10 @@ import { MatGridListModule, MatListModule, MatTabsModule, MatFormFieldModule, Ma
     MatFormFieldModule,
     MatInputModule,
   ],
-  declarations: [HeaderComponent, ContextMenuComponent],
+  declarations: [
+    HeaderComponent,
+    ContextMenuComponent,
+  ],
   exports: [HeaderComponent]
 })
 export class ToolbarModule {}

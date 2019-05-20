@@ -12,9 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { NotificationMenuComponent } from './notification-menu/notification-menu.component';
+import { MatBadgeModule, MatListModule } from '@angular/material';
 
 @NgModule({
-  declarations: [ArraySortPipe, NotificationListComponent, NotificationItemComponent],
+  declarations: [ArraySortPipe, NotificationListComponent, NotificationItemComponent, NotificationMenuComponent,],
   imports: [
     CommonModule,
     RouterModule,
@@ -24,7 +26,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatMenuModule,
     MatButtonModule,
     MatDividerModule,
+    MatBadgeModule,
+    MatListModule,
   ],
-  exports: [NotificationListComponent]
+  exports: [NotificationListComponent, NotificationMenuComponent,]
 })
 export class NotificationModule { }
