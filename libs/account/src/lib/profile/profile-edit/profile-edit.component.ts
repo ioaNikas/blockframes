@@ -16,7 +16,6 @@ import { ProfileDeleteComponent } from '../profile-delete/profile-delete.compone
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfileEditComponent implements OnInit, OnDestroy {
-  @Output() loggedOut = new EventEmitter();
 
   public accountForm: FormGroup;
   public persistForm: PersistNgFormPlugin<AccountForm>;
@@ -80,7 +79,6 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if(result === this.authQuery.user.email) {
         this.snackBar.open('Account deleted', 'close', { duration: 5000 });
-        this.loggedOut.emit();
         this.authService.delete();
         this.router.navigate(['/auth']);
       } else if (result !== undefined) {

@@ -4,7 +4,7 @@
       <header fxLayout="row" fxLayoutAlign="space-between center">
         <!-- Wallet Profile -->
         <div class="wallet-profile">
-          <eth-blockie mat-card-avatar [round]="false" [height]="40" width="40" [address]="user.identity.address">
+          <eth-blockie mat-card-avatar size="40" [address]="user.identity.address">
           </eth-blockie>
           <h4>{{user.identity.domain}}</h4>
           <a [href]="explorerUrl + user.identity.address" target="_blank" rel="noopener">
@@ -17,9 +17,7 @@
             <span>{{user.balance || '0.0'}} ETH</span>
           </ng-container>
           <ng-template #isLoading>
-            <button mat-button [disabled]="true">
-              <mat-spinner [diameter]="24" [strokeWidth]="2"></mat-spinner>
-            </button>
+            <mat-spinner diameter="24" strokeWidth="2"></mat-spinner>
           </ng-template>
           <div>
             <mat-form-field appearance="outline" floatLabel="always">

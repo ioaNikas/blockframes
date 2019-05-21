@@ -3,19 +3,16 @@ main {
   margin-top: 10%;
   margin-right: 20%;
   margin-left: 20%;
-  table {
-    border-spacing: 0px 2rem;
-    tbody {
-      tr {
-        vertical-align: baseline;
-        .key {
-          color: rgba(0, 0, 0, 0.3);
-          width: 100px;
-        }
-        .value {
-          font-size: 24px;
-        }
-      }
+  div {
+    margin-bottom: 30px;
+    .key {
+      color: rgba(0, 0, 0, 0.3);
+      margin-right: 20px;
+      min-width: 100px;
+    }
+    .value {
+      font-size: 24px;
     }
   }
 }
+

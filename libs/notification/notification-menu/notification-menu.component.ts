@@ -4,7 +4,7 @@ import { User, AuthQuery } from "@blockframes/auth";
 import { NotificationQuery } from "../+state";
 
 @Component({
-  selector: 'app-notification-menu',
+  selector: 'notification-menu',
   templateUrl: './notification-menu.component.html',
   styleUrls: ['./notification-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,7 +12,7 @@ import { NotificationQuery } from "../+state";
 export class NotificationMenuComponent implements OnInit {
 
   public user$: Observable<User>;
-  public notificationsLength$: Observable<number>;
+  public notificationsCount$: Observable<number>;
   
   constructor(
     private auth: AuthQuery,
@@ -21,6 +21,6 @@ export class NotificationMenuComponent implements OnInit {
 
   ngOnInit(){
     this.user$ = this.auth.user$;
-    this.notificationsLength$ = this.notificationQuery.selectCount(entity => !entity.isRead);
+    this.notificationsCount$ = this.notificationQuery.selectCount(entity => !entity.isRead);
   }
 }

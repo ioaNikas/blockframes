@@ -51,9 +51,6 @@ export const walletRoutes: Routes = [
   entryComponents: [
     AskPasswordComponent,
     WalletRecoverComponent,
-    WalletViewComponent,
-    WalletWidgetComponent,
-    EncryptingChipsComponent,
   ],
   declarations: [
     AskPasswordComponent,
@@ -63,9 +60,6 @@ export const walletRoutes: Routes = [
     EncryptingChipsComponent,
   ],
   exports: [
-    AskPasswordComponent,
-    WalletRecoverComponent,
-    WalletViewComponent,
     WalletWidgetComponent,
     EncryptingChipsComponent,
   ],

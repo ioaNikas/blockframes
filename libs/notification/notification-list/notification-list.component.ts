@@ -4,7 +4,7 @@ import { takeWhile } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-blockframes-notification-list',
+  selector: 'notification-list',
   templateUrl: './notification-list.component.html',
   styleUrls: ['./notification-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

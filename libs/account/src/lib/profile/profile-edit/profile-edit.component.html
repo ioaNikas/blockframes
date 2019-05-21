@@ -1,43 +1,41 @@
 <main>
   <ng-container *ngIf="(user$ | async) as user; else profileLoading">
-    <a mat-icon-button routerLink="/layout/account/profile/view" color="primary"><mat-icon>arrow_back</mat-icon></a>
+    <a mat-icon-button routerLink="/layout/account/profile/view" color="primary">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
     <form [formGroup]="accountForm" fxLayout="column">
-      <table>
-        <tbody>
-          <tr>
-            <td class="key">Email</td>
-            <td class="value">{{ user.email }}</td>
-          </tr>
-          <tr>
-            <td class="key">First Name</td>
-            <td class="value">
-              <mat-form-field>
-                <input matInput type="firstName" formControlName="first_name" />
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td class="key">Last Name</td>
-            <td class="value">
-              <mat-form-field>
-                <input matInput type="lastName" formControlName="last_name" />
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td class="key">Biography</td>
-            <td>
-              <mat-form-field>
-                <textarea matInput formControlName="biography"></textarea>
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td class="key">Id</td>
-            <td>{{ user.uid }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Email</span>
+        <span fxFlex="grow" class="value">{{ user.email }}</span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">First Name</span>
+        <span fxFlex="grow" class="value">
+          <mat-form-field>
+            <input matInput type="firstName" formControlName="first_name" />
+          </mat-form-field>
+        </span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Last Name</span>
+        <span fxFlex="grow" class="value">
+          <mat-form-field>
+            <input matInput type="lastName" formControlName="last_name" />
+          </mat-form-field>
+        </span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Biography</span>
+        <span fxFlex="grow">
+          <mat-form-field>
+            <textarea matInput formControlName="biography"></textarea>
+          </mat-form-field>
+        </span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Id</span>
+        <span fxFlex="grow">{{ user.uid }}</span>
+      </div>
     </form>
     <div>
       <button mat-raised-button routerLink="/layout/account/profile/view">Cancel</button>

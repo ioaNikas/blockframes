@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class ProfileMenuComponent implements OnInit{
   public user$: Observable<User>;
-  @Output() loggedOut = new EventEmitter();
 
   constructor(
     private service: AuthService,
@@ -26,7 +25,6 @@ export class ProfileMenuComponent implements OnInit{
 
   public async logout() {
     await this.service.logout();
-    this.loggedOut.emit();
     this.router.navigate(['/auth']);
   }
 }

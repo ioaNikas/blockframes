@@ -1,8 +1,8 @@
 <div testId="notifications" *ngFor="let notification of (notifications$ | async | sort: 'date'); let i = index">
-  <app-blockframes-notification-item
+  <notification-item
     *ngIf="i < 5"
     [notification]="notification"
-  ></app-blockframes-notification-item>
+  ></notification-item>
   <mat-divider *ngIf="i < 5"></mat-divider>
 </div>
 <div *ngIf="(notifications$ | async).length > 0" class="all-notifications" routerLink="">

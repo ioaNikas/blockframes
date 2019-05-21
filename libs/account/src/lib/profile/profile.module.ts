@@ -52,8 +52,6 @@ export const profileRoutes: Routes = [
     ProfileMenuComponent,
   ],
   exports: [
-    ProfileViewComponent,
-    ProfileEditComponent,
     ProfileDeleteComponent,
     ProfileWidgetComponent,
     ProfileMenuComponent,

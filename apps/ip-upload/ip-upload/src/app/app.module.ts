@@ -19,14 +19,12 @@ import { MatToolbarModule, MatListModule, MatIconModule } from '@angular/materia
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { WalletModule } from '@blockframes/ethers';
-// TODO: find the correct way to pass lint'ing when we import OrganizationModule
-// tslint:disable-next-line
 import { OrganizationModule } from '@blockframes/organization';
 // Components
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LayoutComponent } from './layout/layout.component';
-import { UtilsModule } from 'libs/utils/src/lib/utils.module';
+import { UtilsModule } from '@blockframes/utils';
 import { AccountModule, ProfileModule } from '@blockframes/account';
 
 @NgModule({
