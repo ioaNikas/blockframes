@@ -1,0 +1,18 @@
+
+main {
+  margin-top: 10%;
+  margin-right: 20%;
+  margin-left: 20%;
+  div {
+    margin-bottom: 30px;
+    .key {
+      color: rgba(0, 0, 0, 0.3);
+      margin-right: 20px;
+      min-width: 100px;
+    }
+    .value {
+      font-size: 24px;
+    }
+  }
+}
+

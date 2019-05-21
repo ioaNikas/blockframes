@@ -1,0 +1,35 @@
+<main>
+  <ng-container *ngIf="(user$ | async) as user; else profileLoading">
+    <a mat-icon-button routerLink="/layout/account/profile/edit" color="primary">
+      <mat-icon>edit</mat-icon>
+    </a>
+    <section fxLayout="column">
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Email</span>
+        <span fxFlex="grow" class="value">{{ user.email }}</span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">First Name</span>
+        <span fxFlex="grow" class="value">{{ user.firstName }}</span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Last Name</span>
+        <span fxFlex="grow" class="value">{{ user.lastName }}</span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start start">
+        <span fxFlex class="key">Biography</span>
+        <span fxFlex="grow">{{ user.biography }}</span>
+      </div>
+      <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex class="key">Id</span>
+        <span fxFlex="grow">{{ user.uid }}</span>
+      </div>
+    </section>
+  </ng-container>
+  <ng-template #profileLoading>
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <p>Your Profile is loading...</p>
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </ng-template>
+</main>

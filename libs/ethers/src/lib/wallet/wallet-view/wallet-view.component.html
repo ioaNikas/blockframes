@@ -1,0 +1,75 @@
+<main>
+  <ng-container *ngIf="(user$ | async) as user; else userLoading">
+    <ng-container *ngIf="user.identity; else noWallet">
+      <header fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- Wallet Profile -->
+        <div class="wallet-profile">
+          <eth-blockie mat-card-avatar size="40" [address]="user.identity.address">
+          </eth-blockie>
+          <h4>{{user.identity.domain}}</h4>
+          <a [href]="explorerUrl + user.identity.address" target="_blank" rel="noopener">
+            {{user.identity.address}}
+          </a>
+        </div>
+        <div class="wallet-balance">
+          <!-- Balance -->
+          <ng-container *ngIf="!(isBalanceLoading$ | async); else isLoading">
+            <span>{{user.balance || '0.0'}} ETH</span>
+          </ng-container>
+          <ng-template #isLoading>
+            <mat-spinner diameter="24" strokeWidth="2"></mat-spinner>
+          </ng-template>
+          <div>
+            <mat-form-field appearance="outline" floatLabel="always">
+              <mat-label>Buy Tokens</mat-label>
+              <input matInput type="number" min="0.01" max="0.1" step="0.01" placeholder="token amount" [(ngModel)]="amount">
+              <span matSuffix>ETH</span>
+            </mat-form-field>
+
+            <!--TODO FIX THIS IN #315 -->
+            <!-- <button mat-raised-button color="primary" (click)="requestTokens()">Buy</button> -->
+            <button mat-raised-button color="primary">Buy</button>
+            
+          </div>
+        </div>
+      </header>
+
+      <ng-container *ngIf="hasKeystore$ | async; else recoverWallet">
+        <!-- Private Key -->
+        <article fxLayout="row" fxLayoutAlign="start center" class="private-key">
+          <ng-container *ngIf="!(loadingPrivateKey$ | async); else loadPrivateKey">
+            <button mat-button (click)="getPrivateKey()">
+              <mat-icon>vpn_key</mat-icon>
+              <span>Show Private Key</span>
+            </button>
+          </ng-container>
+          <ng-template #loadPrivateKey>
+            <mat-icon class="loading">autorenew</mat-icon>
+          </ng-template>
+          <span *ngIf="privateKey$ | async as privKey">{{ privKey }}</span>
+        </article>
+      </ng-container>
+
+      <!-- Recover -->
+      <ng-template #recoverWallet class="recover">
+        <button mat-button (click)="recover()">
+          <mat-icon>cloud_upload</mat-icon>
+          <span>Recover your wallet</span>
+        </button>
+      </ng-template>
+    </ng-container>
+    <ng-template #noWallet>
+      <div class="wallet-loading">
+        <p>Your account has no Wallet</p>
+        <button mat-button color="primary">Create a Wallet</button>
+      </div>
+    </ng-template>
+    <!-- /WALLET -->
+  </ng-container>
+  <ng-template #userLoading>
+    <div class="wallet-loading">
+      <p>We are loading your informations...</p>
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  </ng-template>
+</main>

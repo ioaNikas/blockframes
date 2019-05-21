@@ -26,12 +26,12 @@ export class FinancingExplorerProfileComponent implements OnInit {
     this.amount = value;
   }
 
-  refreshBalance() {
-    this.authService.refreshBalance();
-  }
+  // refreshBalance() { // TODO FIX IN ISSUE #315
+  //   this.authService.refreshBalance();
+  // }
 
-  requestTokens() {
-    this.authService.requestTokens(this.amount);
-  }
+  // requestTokens() { // TODO FIX IN ISSUE #315
+  //   this.authService.requestTokens(this.amount);
+  // }
 
 }

@@ -29,7 +29,8 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', loadChildren: '@blockframes/movie#MovieModule' }, // loadChildren should lead to the Movie Module
       { path: 'organization', loadChildren: '@blockframes/organization#OrganizationModule' }, // loadChildren should lead to the Organization Module
-      { path: 'account', loadChildren: '@blockframes/account#AccountModule' }, // loadChildren should lead to the Account Module
+      // { path: 'account', loadChildren: '@blockframes/account#AccountModule' }, // loadChildren should lead to the Account Module
+      { path: 'account', loadChildren: 'libs/account/src/lib/account/account.module#AccountModule'},
       { path: ':movieId', loadChildren: './financing/financing.module#FinancingModule' } // should lead to the specific App
     ]
   },

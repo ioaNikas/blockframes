@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../+state';
 
 @Component({
-  selector: 'blockframes-notification-item',
+  selector: 'notification-item',
   templateUrl: './notification-item.component.html',
   styleUrls: ['./notification-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -10,8 +10,7 @@ import {default as createBlockie} from 'ethereum-blockies-base64';
 export class BlockieComponent implements OnInit, OnChanges {
   @Input() address = '0x0000000000000000000000000000000000000000';
   @Input() round = false;
-  @Input() height = 100;
-  @Input() width = 100;
+  @Input() size = 100;
   public blockie: string;
   public roundImg: string;
   constructor() {}

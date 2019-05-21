@@ -43,7 +43,7 @@ export class DeliverySignComponent {
     const delivery = this.deliveryQuery.getActive();
     const orgIdsOfUser = this.organizationQuery.getAll().map(org => org.id);
     const stakeholderId = delivery.stakeholders.find(({ orgId }) => orgIdsOfUser.includes(orgId)).id;
-    await this.service.signDelivery(delivery.id, stakeholderId);
+    // await this.service.signDelivery(delivery.id, stakeholderId);// TODO WALLET SERVICE ISSUE #315
 
     this.sign();
   }

@@ -52,6 +52,9 @@ import { AngularFullpageModule } from '@fullpage/angular-fullpage';
 import { FinancingMovieCardHorizontalComponent } from './explorer/movie-card-horizontal/movie-card-horizontal.component';
 import { registerLocaleData } from '@angular/common';
 import { FinancingExplorerCompareComponent } from './explorer/compare/compare.component';
+import { UtilsModule } from '@blockframes/utils';
+import { AccountModule, ProfileModule } from '@blockframes/account';
+
 registerLocaleData(localeFr)
 
 @NgModule({
@@ -79,6 +82,9 @@ registerLocaleData(localeFr)
     RouterModule,
     AuthModule,
     ToolbarModule,
+    AccountModule,
+    ProfileModule,
+    UtilsModule,
     // Material
     MatToolbarModule,
     MatListModule,

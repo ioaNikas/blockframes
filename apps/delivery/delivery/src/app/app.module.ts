@@ -28,23 +28,31 @@ import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { MovieModule } from '@blockframes/movie';
 import { OrganizationModule } from '@blockframes/organization';
+import { ProfileModule } from '@blockframes/account';
+import { AccountModule } from '@blockframes/account';
+import { WalletModule } from '@blockframes/ethers';
 
 // Material
-import { MatSnackBarModule, MatMenuModule } from '@angular/material';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatRippleModule } from '@angular/material/core';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {
+  MatSnackBarModule,
+  MatMenuModule,
+  MatBadgeModule,
+  MatCardModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatButtonModule,
+  MatListModule,
+  MatRippleModule,
+  MatDividerModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatChipsModule,
+  MatCheckboxModule,
+  MatProgressSpinnerModule,
+} from '@angular/material';
+import { NotificationModule } from 'libs/notification/notification.module';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -73,6 +81,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatMenuModule,
+    MatBadgeModule,
 
     // Libraries
     AuthModule,
@@ -81,6 +90,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     OrganizationModule,
     ToolbarModule,
     MovieModule,
+    AccountModule,
+    ProfileModule,
+    WalletModule,
+    NotificationModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),

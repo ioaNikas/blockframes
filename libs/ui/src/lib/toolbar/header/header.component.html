@@ -9,15 +9,7 @@
 
   <span class="fill-remaining-space"></span>
 
-  <mat-chip-list *ngIf="(encryting$ | async)">
-    <mat-chip
-      color="primary"
-      matTooltip="We are currently encryting your key pair, this process can take several minutes. DO NOT CLOSE THIS PAGE BEFORE THE END OF ENCRYPTION !"
-    >
-      ENCRYPTING
-      <mat-spinner [diameter]="20" [strokeWidth]="2" class="encrypting-spinner"></mat-spinner>
-    </mat-chip>
-  </mat-chip-list>
+  <ng-container select="[encrypting]"></ng-container>
 
   <!-- <form>
     <mat-icon color="primary" class="search-icon">search</mat-icon>
@@ -40,44 +32,7 @@
       <img src="/assets/fake-data/home_of_scripts.svg" alt="Home Of Scripts" />
     </a>
   </mat-menu>
-
-  <div *ngIf="(user$ | async) as user">
-    <button mat-icon-button [matMenuTriggerFor]="notifications" class="notification-button">
-      <mat-icon
-        *ngIf="(notificationsLength$ | async) as length; else empty"
-        svgIcon="notifications"
-        matBadge="{{ length }}"
-        matBadgeColor="primary"
-        matBadgeSize="medium"
-        class="notification-icon">
-      </mat-icon>
-      <ng-template #empty>
-        <mat-icon svgIcon="notifications" class="notification-icon"></mat-icon>
-      </ng-template>
-    </button>
-  </div>
-
-  <mat-menu #notifications="matMenu" xPosition="before" class="notifMenu mat-elevation-z6">
-    <mat-list>
-      <blockframes-notification-list></blockframes-notification-list>
-    </mat-list>
-  </mat-menu>
-
-  <ng-container *ngIf="(user$ | async) as user">
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button">
-      <mat-icon class="account-icon" color="primary">account_circle</mat-icon>
-    </button>
-  </ng-container>
-
-  <mat-menu #menu="matMenu" class="mat-elevation-z6">
-    <mat-list>
-      <account-widget></account-widget>
-      <mat-divider></mat-divider>
-      <org-widget></org-widget>
-      <mat-divider></mat-divider>
-      <ng-container (loggedOut)="logout()">
-        <button testId="logout" mat-menu-item (click)="logout()">Logout</button>
-      </ng-container>
-    </mat-list>
-  </mat-menu>
+  <ng-content select="[apps-icons]"></ng-content>
+  <ng-content select="[notifications]"></ng-content>
+  <ng-content select="[profile-menu]"></ng-content>
 </mat-toolbar>

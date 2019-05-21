@@ -19,13 +19,13 @@ import { MatToolbarModule, MatListModule, MatIconModule } from '@angular/materia
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { WalletModule } from '@blockframes/ethers';
-// TODO: find the correct way to pass lint'ing when we import OrganizationModule
-// tslint:disable-next-line
 import { OrganizationModule } from '@blockframes/organization';
 // Components
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LayoutComponent } from './layout/layout.component';
+import { UtilsModule } from '@blockframes/utils';
+import { AccountModule, ProfileModule } from '@blockframes/account';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -41,6 +41,9 @@ import { LayoutComponent } from './layout/layout.component';
     WalletModule,
     OrganizationModule,
     ToolbarModule,
+    AccountModule,
+    ProfileModule,
+    UtilsModule,
     // Angular Fire
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
