@@ -22,8 +22,8 @@ export class WalletViewComponent implements OnInit {
 
   wallet$: Observable<Wallet>;
   amount: number;
-  isLoading$: Observable<boolean>;
-  hasKeystore$: Observable<boolean>;
+  isBalanceLoading$: Observable<boolean>;
+  // hasKeystore$: Observable<boolean>;
   private mnemonic = new BehaviorSubject(null);
   private privateKey = new BehaviorSubject(null);
   private loadingPrivateKey = new BehaviorSubject(false);
@@ -40,8 +40,8 @@ export class WalletViewComponent implements OnInit {
 
   ngOnInit() {
     this.wallet$ = this.query.select();
-    this.isLoading$ = this.query.selectLoading();
-    this.hasKeystore$ = this.wallet.hasKeystore$; // TODO FIX THIS IN #315
+    this.isBalanceLoading$ = this.query.selectLoading();
+    // this.hasKeystore$ = this.wallet.hasKeystore$; // TODO FIX THIS IN #315
   }
 
   async getPrivateKey() {
@@ -58,7 +58,7 @@ export class WalletViewComponent implements OnInit {
   // requestTokens() { // TODO FIX THIS IN #315
   //   this.authService.requestTokens(this.amount);
   // }
-  
+
   recover() {
     this.dialog.open(WalletRecoverComponent, { width: '500px' });
   }

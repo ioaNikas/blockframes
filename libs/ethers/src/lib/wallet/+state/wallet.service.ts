@@ -5,6 +5,7 @@ import { toASCII } from 'punycode';
 import { baseEnsDomain, network, factoryContract } from '@env';
 import { bytecode as contractCode } from '../../../../../../contracts/build/ERC1077.json';
 import { WalletStore } from './wallet.store';
+import { KeyManagerService } from '../../key-manager/+state';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -12,7 +13,8 @@ export class WalletService {
   provider: providers.Provider
 
   constructor(
-    private store: WalletStore
+    private store: WalletStore,
+    private keyManager: KeyManagerService,
   ) {}
 
   public async updateFromEmail(email: string) {

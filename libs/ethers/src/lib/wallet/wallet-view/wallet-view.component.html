@@ -25,13 +25,13 @@
             <!--TODO FIX THIS IN #315 -->
             <!-- <button mat-raised-button color="primary" (click)="requestTokens()">Buy</button> -->
             <button mat-raised-button color="primary">Buy</button>
-            
+
           </div>
         </div>
       </header>
 
-      <ng-container *ngIf="hasKeystore$ | async; else recoverWallet">
-        <!-- Private Key -->
+      <!-- <ng-container *ngIf="hasKeystore$ | async; else recoverWallet">
+
         <article fxLayout="row" fxLayoutAlign="start center" class="private-key">
           <ng-container *ngIf="!(loadingPrivateKey$ | async); else loadPrivateKey">
             <button mat-button (click)="getPrivateKey()">
@@ -44,22 +44,15 @@
           </ng-template>
           <span *ngIf="privateKey$ | async as privKey">{{ privKey }}</span>
         </article>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Recover -->
-      <ng-template #recoverWallet class="recover">
+      <!-- <ng-template #recoverWallet class="recover">
         <button mat-button (click)="recover()">
           <mat-icon>cloud_upload</mat-icon>
           <span>Recover your wallet</span>
         </button>
-      </ng-template>
-      <!-- /WALLET -->
-      <ng-container *ngIf="!wallet.hasErc1077">
-        <div>
-          <p>Your Wallet has not been deployed yet</p>
-          <button mat-raised-button color="primary">Deploy</button>
-        </div>
-      </ng-container>
+      </ng-template> -->
     </ng-container>
   </ng-container>
   <ng-template #walletLoading>
