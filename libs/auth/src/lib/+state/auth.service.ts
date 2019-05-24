@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthStore, User, createUser } from './auth.store';
 import { switchMap, takeWhile} from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
+import { Wallet, WalletService } from 'libs/ethers/src/lib/wallet/+state';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,7 +13,8 @@ export class AuthService {
     private store: AuthStore,
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private wallet: WalletService
   ) {}
 
   //////////
@@ -41,6 +43,7 @@ export class AuthService {
 
     const userCredentials = await this.afAuth.auth.createUserWithEmailAndPassword(email, password);
     await this.create(userCredentials.user);
+    this.wallet.createKeyFromRandom(email, password);
 
      // TODO MOVE IN WALLET ISSUE #315
     // this.wallet.createLocalKey('web', password, email)  // no await -> do the job in background

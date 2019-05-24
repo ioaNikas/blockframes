@@ -23,7 +23,7 @@ export class RelayerWallet implements ethers.Signer {
 
   constructor(
     private dialog: MatDialog,
-    private vault: LocalStorageVault,
+    // private vault: LocalStorageVault,
     private relayer: Relayer,
     public provider: Provider
   ) {}
@@ -51,7 +51,7 @@ export class RelayerWallet implements ethers.Signer {
   /** Save the encryptedJSON into the vault */
   private async saveIntoVault(wallet: Wallet, keyName: string, password: string) {
     const encryptedJSON = await wallet.encrypt(password);
-    this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
+    // this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
   }
 
   /** Return the signing key or ask  */
@@ -87,10 +87,10 @@ export class RelayerWallet implements ethers.Signer {
   public async loadKey(keyName: string, password: string) {
     try {
       this._requireUsername();
-      const json = await this.vault.get(`${this.username}:${keyName}`);
-      if (!json) throw new Error(`no key named "${this.username}:${keyName}" in local storage`);
-      const wallet = await Wallet.fromEncryptedJson(json, password);
-      this._setSigningKey(wallet);
+      // const json = await this.vault.get(`${this.username}:${keyName}`);
+      // if (!json) throw new Error(`no key named "${this.username}:${keyName}" in local storage`);
+      // const wallet = await Wallet.fromEncryptedJson(json, password);
+      // this._setSigningKey(wallet);
       return this.signingKey;
     } catch (err) {
       throw new Error(err);
@@ -101,7 +101,7 @@ export class RelayerWallet implements ethers.Signer {
     this._requireUsername();
     const wallet = new Wallet(privateKey);
     const json = await wallet.encrypt(password);
-    await this.vault.set(`${this.username}:web`, json); // TODO remove hardcoded ":web"
+    // await this.vault.set(`${this.username}:web`, json); // TODO remove hardcoded ":web"
   }
 
   /** Create a key from a mnemonic */

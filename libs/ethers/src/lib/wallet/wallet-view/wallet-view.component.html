@@ -30,29 +30,18 @@
         </div>
       </header>
 
-      <!-- <ng-container *ngIf="hasKeystore$ | async; else recoverWallet">
+      <section *ngIf="!wallet.hasERC1077">
+        <p>
+          Your Wallet is not yet deployed on the Blockchain,
+          you can deployed it now, or it will be deployed automatically during your first Blockchain interaction
+        </p>
+        <button mat-raised-button color="primary">Deploy Wallet</button>
+      </section>
 
-        <article fxLayout="row" fxLayoutAlign="start center" class="private-key">
-          <ng-container *ngIf="!(loadingPrivateKey$ | async); else loadPrivateKey">
-            <button mat-button (click)="getPrivateKey()">
-              <mat-icon>vpn_key</mat-icon>
-              <span>Show Private Key</span>
-            </button>
-          </ng-container>
-          <ng-template #loadPrivateKey>
-            <mat-icon class="loading">autorenew</mat-icon>
-          </ng-template>
-          <span *ngIf="privateKey$ | async as privKey">{{ privKey }}</span>
-        </article>
-      </ng-container> -->
+      <section>
+        <key-manager-list [ensDomain]="wallet.ensDomain"></key-manager-list>
+      </section>
 
-      <!-- Recover -->
-      <!-- <ng-template #recoverWallet class="recover">
-        <button mat-button (click)="recover()">
-          <mat-icon>cloud_upload</mat-icon>
-          <span>Recover your wallet</span>
-        </button>
-      </ng-template> -->
     </ng-container>
   </ng-container>
   <ng-template #walletLoading>

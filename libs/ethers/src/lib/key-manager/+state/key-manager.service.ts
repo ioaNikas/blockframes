@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { KeyManagerStore } from './key-manager.store';
+import { KeyManagerStore, createKey } from './key-manager.store';
 import { utils, Wallet } from 'ethers';
 
 @Injectable({ providedIn: 'root' })
@@ -28,20 +28,16 @@ export class KeyManagerService {
     this._setSigningKey(wallet);
     this.store.setLoading(true);
     wallet.encrypt(encryptionPassword).then(keyStore => {
-      console.log(keyStore);
-      this.store.set([{
-        ensDomain,
-        keyStore,
-        keyName: 'default'
-      }])
+      console.log(`keystore ${keyStore} stored !`);
+      this.store.add(createKey({ensDomain, keyStore}));
     });
   }
-  // create / encrypt / store / from mnemonic
-  // create / encrypt / store / from private key
-  // load key (retreive / decrypt, set into process memory)
-  // delete key
-  // get pub key (address)
-  // get priv key (for export)
-  // get mnemonic (for export)
+  // TODO create / encrypt / store / from mnemonic
+  // TODO create / encrypt / store / from private key
+  // TODO load key (retreive / decrypt, set into process memory)
+  // TODO delete key
+  // TODO get pub key (address)
+  // TODO get priv key (for export)
+  // TODO get mnemonic (for export)
 
 }

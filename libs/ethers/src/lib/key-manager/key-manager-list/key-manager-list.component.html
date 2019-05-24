@@ -1,0 +1,11 @@
+
+<ng-container *ngIf="(keys$ | async) as keys; else keysLoading">
+  <span>There is {{keys.length}} stored in this browser</span>
+  <button mat-button color="primary">Import Key</button>
+  <button mat-button color="primary">Create Key</button>
+  <key-manager-item *ngFor="let key of keys" [key]="key"></key-manager-item>
+</ng-container>
+<ng-template #keysLoading>
+  Your keys are loading ...
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</ng-template>

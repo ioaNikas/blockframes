@@ -91,4 +91,9 @@ export class WalletService {
   public cleanWallet() {
     delete this.provider;
   }
+
+  public createKeyFromRandom(email: string, password: string) {
+    const ensDomain = this.emailToEnsDomain(email);
+    this.keyManager.createFromRandom(ensDomain, password);
+  }
 }

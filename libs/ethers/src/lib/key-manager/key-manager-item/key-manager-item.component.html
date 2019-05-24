@@ -1,0 +1,8 @@
+
+<mat-card>
+  <div class="round-image" [ngStyle]="{'background': '#'+addressStart}"></div>
+  <div class="round-image" [ngStyle]="{'background': '#'+addressEnd}"></div>
+  {{'0x' + addressStart + '...' + addressEnd}}
+  <button mat-icon-button><mat-icon>lock</mat-icon></button>
+  <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
+</mat-card>
