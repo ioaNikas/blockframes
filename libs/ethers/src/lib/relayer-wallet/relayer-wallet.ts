@@ -81,17 +81,7 @@ export class RelayerWallet implements ethers.Signer {
     return privateKey;
   }
 
-  /**
-   * Convert email to username and sanitize it:
-   * convert to lower case punycode and replace special chars by their ASCII code
-   * @example `漢micHel+9@exemple.com` -> `xn--michel439-2c2s`
-   */
-  public setUsername(email: string) {
-    this.username = toASCII(email.split('@')[0]).toLowerCase()
-      .split('')
-      .map(char => /[^\w\d-.]/g.test(char) ? char.charCodeAt(0) : char) // replace every non a-z or 0-9 chars by their ASCII code : '?' -> '63'
-      .join('');
-  }
+  
 
   /** Load a key from an encrypted JSON */
   public async loadKey(keyName: string, password: string) {
@@ -124,7 +114,7 @@ export class RelayerWallet implements ethers.Signer {
 
   /** Create a key and store it into the vault */
   public async createLocalKey(keyName: string, password: string, email?: string) {
-    if(email) this.setUsername(email);
+    // if(email) this.setUsername(email);
     this._requireUsername();
     const wallet = Wallet.createRandom();
     this._setSigningKey(wallet);

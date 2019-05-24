@@ -22,7 +22,7 @@ export class WalletViewComponent implements OnInit {
 
   wallet$: Observable<Wallet>;
   amount: number;
-  isBalanceLoading$: Observable<boolean>;
+  isLoading$: Observable<boolean>;
   hasKeystore$: Observable<boolean>;
   private mnemonic = new BehaviorSubject(null);
   private privateKey = new BehaviorSubject(null);
@@ -40,7 +40,7 @@ export class WalletViewComponent implements OnInit {
 
   ngOnInit() {
     this.wallet$ = this.query.select();
-    this.isBalanceLoading$ = this.query.selectLoading();
+    this.isLoading$ = this.query.selectLoading();
     this.hasKeystore$ = this.wallet.hasKeystore$; // TODO FIX THIS IN #315
   }
 

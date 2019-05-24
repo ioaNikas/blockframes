@@ -1,24 +1,20 @@
 <main>
-  <ng-container *ngIf="(wallet$ | async) as wallet; else userLoading">
-    <ng-container *ngIf="wallet.exist; else noWallet">
+  <ng-container *ngIf="!(isLoading$ | async); else walletLoading">
+    <ng-container *ngIf="(wallet$ | async) as wallet; else walletLoading">
       <header fxLayout="row" fxLayoutAlign="space-between center">
         <!-- Wallet Profile -->
         <div class="wallet-profile">
           <eth-blockie mat-card-avatar size="40" [address]="wallet.address">
           </eth-blockie>
-          <h4>{{wallet.domain}}</h4>
+          <h4>{{wallet.ensDomain}}</h4>
           <a [href]="explorerUrl + wallet.address" target="_blank" rel="noopener">
             {{wallet.address}}
           </a>
         </div>
         <div class="wallet-balance">
           <!-- Balance -->
-          <ng-container *ngIf="!(isBalanceLoading$ | async); else isLoading">
-            <span>{{wallet.balance || '0.0'}} ETH</span>
-          </ng-container>
-          <ng-template #isLoading>
-            <mat-spinner diameter="24" strokeWidth="2"></mat-spinner>
-          </ng-template>
+          <span>{{wallet.balance}} ETH</span>
+    
           <div>
             <mat-form-field appearance="outline" floatLabel="always">
               <mat-label>Buy Tokens</mat-label>
@@ -57,16 +53,16 @@
           <span>Recover your wallet</span>
         </button>
       </ng-template>
+      <!-- /WALLET -->
+      <ng-container *ngIf="!wallet.hasErc1077">
+        <div>
+          <p>Your Wallet has not been deployed yet</p>
+          <button mat-raised-button color="primary">Deploy</button>
+        </div>
+      </ng-container>
     </ng-container>
-    <ng-template #noWallet>
-      <div class="wallet-loading">
-        <p>Your account has no Wallet</p>
-        <button mat-button color="primary">Create a Wallet</button>
-      </div>
-    </ng-template>
-    <!-- /WALLET -->
   </ng-container>
-  <ng-template #userLoading>
+  <ng-template #walletLoading>
     <div class="wallet-loading">
       <p>We are loading your informations...</p>
       <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>

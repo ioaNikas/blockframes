@@ -1,61 +1,92 @@
 import { Injectable } from '@angular/core';
+
+import { providers, getDefaultProvider, utils } from 'ethers';
+import { toASCII } from 'punycode';
+import { baseEnsDomain, network, factoryContract } from '@env';
+import { bytecode as contractCode } from '../../../../../../contracts/build/ERC1077.json';
 import { WalletStore } from './wallet.store';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
 
+  provider: providers.Provider
+
   constructor(
     private store: WalletStore
   ) {}
 
-  // public async initWallet(email: string) { // TODO MOVE IN WALLET ISSUE #315
-  //   this.wallet.setUsername(email);
-  //   this.refreshBalance();
-  // }
+  public async updateFromEmail(email: string) {
+    this.store.setLoading(true);
+    const ensDomain = this.emailToEnsDomain(email);
+    const address = await this.retreiveAddress(ensDomain, '0x0000000000000000000000000000000000000000'); // TODO use a real pubK from the Key Manager
+    this.addBalanceListener(address);
+    this.store.update({ensDomain, address});
+    this.store.setLoading(false);
+  }
 
-  // public async signin(email: string, password: string) {
+  /**
+   * Convert email to username and sanitize it:
+   * convert to lower case punycode and replace special chars by their ASCII code
+   * then add base ens domain
+   * @example `漢micHel+9@exemple.com` -> `xn--michel439-2c2s.blockframes.eth`
+   */
+  public emailToEnsDomain(email: string) {
+    return toASCII(email.split('@')[0]).toLowerCase()
+      .split('')
+      .map(char => /[^\w\d-.]/g.test(char) ? char.charCodeAt(0) : char) // replace every non a-z or 0-9 chars by their ASCII code : '?' -> '63'
+      .join('') + '.' + baseEnsDomain;
+  }
 
-     // TODO MOVE IN WALLET ISSUE #315
-    // this.initWallet(email);
-    // this.wallet.loadKey('web', password);  // no await -> do the job in background
-  // }
+  /**
+   * Get address of the given ENS domain, if this ENS domain doesn't exist
+   * (i.e. the ERC1077 is not yet deployed) we precompute the address with CREATE2
+   * @param ensDomain the full ENS domain : `alice.blockframes.eth`
+   */
+  public async retreiveAddress(ensDomain: string, publicKey: string) {
+    this._requireProvider();
+    const address = await this.provider.resolveName(ensDomain);
+    if(!!address){
+      this.store.update({hasERC1077: true});
+      return address;
+    }
+    return await this.precomputeAddress(ensDomain, publicKey);
+  }
 
-  // public async createWallet(email: string, password: string) {
-     // TODO MOVE IN WALLET ISSUE #315
-    // this.wallet.createLocalKey('web', password, email)  // no await -> do the job in background
-    // .then(() => this.wallet.createERC1077(userCredentials.user.uid))
-    // .then(() => {
-    //   this.subscribeOnUser();
-    //   this.store.update({isEncrypting: false});
-    //   this.snackBar.open('Your key pair has been successfully stored', 'OK', {
-    //     duration: 2000,
-    //   });
-    // }).catch(error => console.error(error));
-  // }
+  /**
+   * This function precompute a contract address as defined in the EIP 1014
+   * @param ensDomain this is use as a salt (salt need to be unique for each user)
+   */
+  public async precomputeAddress(ensDomain: string, publicKey: string) {
+    this._requireProvider();
 
-  // public async logout() {
-    // this.wallet.logout(); // TODO MOVE IN WALLET ISSUE #315
-  // }
+    // compute full contract byte code
+    const abiEncoder = new utils.AbiCoder();
+    const constructorArgs = abiEncoder.encode(['address'], [publicKey]).replace(/0x/, '');
+    const byteCode = `0x${contractCode}${constructorArgs}`;
 
-  // public async refreshBalance() { // TODO MOVE IN WALLET ISSUE #315
-  //   this.store.update({isBalanceLoading: true});
-  //   const balance = await this.wallet.getBalance();
-  //   this.store.updateUser({balance});
-  //   this.store.update({isBalanceLoading: false});
-  // }
+    // CREATE2 address
+    const factoryAddress = await this.provider.resolveName(factoryContract);
+    const payload = '0x' + [
+      'ff',
+      factoryAddress,
+      utils.keccak256(utils.toUtf8Bytes(ensDomain)), //! THIS IS NOT SECURE anybody can guess the salt
+      utils.keccak256(byteCode)
+    ].map(part => part.replace(/0x/, '')).join('');
+    return `0x${utils.keccak256(payload).slice(-40)}`;
+  }
 
-  // public async requestTokens(amount: number) { // TODO MOVE IN WALLET ISSUE #315
-  //   this.store.update({isBalanceLoading: true});
-  //   try {
-  //     await this.wallet.requestTokens(amount);
-  //     this.refreshBalance();
-  //   } catch(error) {
-  //     console.error('Request Tokens FAILED because of :',error);
-  //     this.store.update({isBalanceLoading: false});
-  //   }
-  // }
+  private _requireProvider() {
+    if(!this.provider) {
+      this.provider = getDefaultProvider(network);
+    }
+  }
 
-  // public async signDelivery(deliveryId: string, stakeholderId: string) { // TODO MOVE IN WALLET ISSUE #315
-  //   return this.wallet.signDelivery(deliveryId, stakeholderId);
-  // }
+  public addBalanceListener(address: string){
+    this._requireProvider();
+    this.provider.on(address, (newBalance: utils.BigNumber) => this.store.update({balance: utils.formatEther(newBalance)}));
+  }
+
+  public cleanWallet() {
+    delete this.provider;
+  }
 }

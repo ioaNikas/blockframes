@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
 export interface Wallet {
-  exist: boolean,
   ensDomain: string,
   address: string,
   balance: string,
+  hasERC1077: boolean,
 }
 
 export function createWallet(wallet: Partial<Wallet>) {
@@ -13,10 +13,10 @@ export function createWallet(wallet: Partial<Wallet>) {
 }
 
 const initialState: Wallet = {
-  exist: false,
   ensDomain: null,
   address: null,
   balance: null,
+  hasERC1077: false
 };
 
 @Injectable({ providedIn: 'root' })
