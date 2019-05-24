@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { WalletStore } from './wallet.store';
+import { KeyManagerService } from '../../key-manager/+state';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
 
   constructor(
-    private store: WalletStore
+    private store: WalletStore,
+    private keyManager: KeyManagerService,
   ) {}
 
   // public async initWallet(email: string) { // TODO MOVE IN WALLET ISSUE #315

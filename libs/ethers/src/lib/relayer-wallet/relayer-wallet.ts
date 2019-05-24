@@ -3,7 +3,7 @@ import { ethers, utils, Wallet, providers } from 'ethers';
 
 import { Provider } from '../provider/provider';
 import { Relayer } from '../relayer/relayer';
-import { Vault } from '../vault/vault';
+import { LocalStorageVault } from '../vault/vault';
 import { baseEnsDomain } from '@env';
 import { toASCII } from 'punycode';
 import { MatDialog } from '@angular/material';
@@ -23,7 +23,7 @@ export class RelayerWallet implements ethers.Signer {
 
   constructor(
     private dialog: MatDialog,
-    private vault: Vault,
+    private vault: LocalStorageVault,
     private relayer: Relayer,
     public provider: Provider
   ) {}
@@ -36,12 +36,12 @@ export class RelayerWallet implements ethers.Signer {
   }
 
   /** check if there is a keystore for the current user */
-  get hasKeystore$() {
-    return this.username$.pipe(
-      switchMap(username => this.vault.select(`${username}:web`)),// TODO remove hardcoded ":web"
-      map(json => !!json)
-    );
-  }
+  // get hasKeystore$() {
+  //   return this.username$.pipe(
+  //     switchMap(username => this.vault.select(`${username}:web`)),// TODO remove hardcoded ":web"
+  //     map(json => !!json)
+  //   );
+  // }
 
   /** Set signing key into process memory */
   private _setSigningKey(wallet: Wallet) {
@@ -189,7 +189,7 @@ export class RelayerWallet implements ethers.Signer {
     });
     return utils.formatEther(balance);
   }
-  
+
   // TODO
   // public async balance$() {
   //   this._requireUsername();
