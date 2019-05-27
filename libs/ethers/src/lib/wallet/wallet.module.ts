@@ -13,19 +13,17 @@ import {
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatDialogModule,
-  MatChipsModule,
   MatMenuModule,
+  MatCardModule,
 } from '@angular/material';
 
 import { BlockieModule } from '@blockframes/ui';
 import { KeyManagerModule } from '../key-manager/key-manger.module';
 
 import { WalletActiveGuard } from './guards/wallet-active.guard';
-import { AskPasswordComponent } from './ask-password/ask-password.component';
-import { WalletRecoverComponent } from './recover/recover.component';
 import { WalletViewComponent } from './wallet-view/wallet-view.component';
 import { WalletWidgetComponent } from './wallet-widget/wallet-widget.component';
-import { EncryptingChipsComponent } from './encrypting-chips/encrypting-chips.component';
+
 
 
 
@@ -53,24 +51,16 @@ export const walletRoutes: Routes = [
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatDialogModule,
-    MatChipsModule,
     MatMenuModule,
+    MatCardModule,
     RouterModule.forChild(walletRoutes),
   ],
-  entryComponents: [
-    AskPasswordComponent,
-    WalletRecoverComponent,
-  ],
   declarations: [
-    AskPasswordComponent,
-    WalletRecoverComponent,
     WalletViewComponent,
     WalletWidgetComponent,
-    EncryptingChipsComponent,
   ],
   exports: [
     WalletWidgetComponent,
-    EncryptingChipsComponent,
   ],
 })
 export class WalletModule {}

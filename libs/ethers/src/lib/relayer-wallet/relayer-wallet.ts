@@ -7,7 +7,7 @@ import { LocalStorageVault } from '../vault/vault';
 import { baseEnsDomain } from '@env';
 import { toASCII } from 'punycode';
 import { MatDialog } from '@angular/material';
-import { AskPasswordComponent } from '../wallet/ask-password/ask-password.component';
+// import { AskPasswordComponent } from '../wallet/ask-password/ask-password.component';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -57,16 +57,16 @@ export class RelayerWallet implements ethers.Signer {
   /** Return the signing key or ask  */
   private async getSigningKey(): Promise<utils.SigningKey> {
     if (this.signingKey) return this.signingKey;
-    return this.askPassword()
+    // return this.askPassword()
   }
 
   /** Open a dialog to get the password */
-  private async askPassword() {
-    const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
-    const password = await ref.afterClosed().toPromise()
-    if (!password) throw new Error('No password provided');
-    return this.loadKey('web', password); // TODO : Don't hardcode "web"
-  }
+  // private async askPassword() {
+  //   const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
+  //   const password = await ref.afterClosed().toPromise()
+  //   if (!password) throw new Error('No password provided');
+  //   return this.loadKey('web', password); // TODO : Don't hardcode "web"
+  // }
 
   private _requireUsername() {
     if (!this.username) throw new Error('the wallet\'s username is undefined, please call setUsername() before this function !');

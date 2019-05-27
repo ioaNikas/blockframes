@@ -30,13 +30,13 @@
         </div>
       </header>
 
-      <section *ngIf="!wallet.hasERC1077">
+      <mat-card *ngIf="!wallet.hasERC1077" fxLayout="row" fxLayoutAlign="space-between center">
         <p>
           Your Wallet is not yet deployed on the Blockchain,
-          you can deployed it now, or it will be deployed automatically during your first Blockchain interaction
+          you can deploy it now, or it will be automatically deployed during your first Blockchain interaction
         </p>
-        <button mat-raised-button color="primary">Deploy Wallet</button>
-      </section>
+        <button mat-stroked-button color="primary">Deploy Wallet</button>
+      </mat-card>
 
       <section>
         <key-manager-list [ensDomain]="wallet.ensDomain"></key-manager-list>

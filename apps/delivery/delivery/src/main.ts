@@ -9,7 +9,12 @@ import { LocalStorageVault } from 'libs/ethers/src/lib/vault/vault';
 // ethereum private keys storage
 persistState({
   include: ['key'],
-  storage: LocalStorageVault
+  deserialize: (data) => {
+    const state = JSON.parse(data);
+    delete state.key.active;
+    return state;
+  },
+  storage: LocalStorageVault // could use different type of vault as long as they implement `PersistStateStorage`
 });
 
 // TODO uncomment this one day

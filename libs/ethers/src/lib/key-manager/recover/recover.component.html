@@ -1,9 +1,18 @@
 <ng-container *ngIf="!loading; else loader">
   <form [formGroup]="form" (ngSubmit)="recover()" fxLayout="column">
-    <h3>Recover you wallet with </h3>
-    <mat-form-field>
-      <input type="text" matInput placeholder="Enter your Private Key" formControlName="privateKey" />
-    </mat-form-field>
+    <h3>Import a Key</h3>
+    <mat-tab-group>
+      <mat-tab label="Mnemonic">
+        <mat-form-field>
+          <textarea matInput placeholder="Enter your Mnemonic" formControlName="mnemonic"></textarea>
+        </mat-form-field>
+      </mat-tab>
+      <mat-tab label="Private Key">
+        <mat-form-field>
+          <input type="text" matInput placeholder="Enter your Private Key" formControlName="privateKey" />
+        </mat-form-field>
+      </mat-tab>
+    </mat-tab-group>
     <mat-form-field>
       <input type="password" matInput placeholder="Enter your password" formControlName="password" />
     </mat-form-field>
@@ -12,7 +21,7 @@
     </mat-form-field>
     <div fxLayout="row" fxLayoutAlign="end center">
       <button type="button" mat-button (click)="cancel()">Cancel</button>
-      <button type="submit" mat-raised-button>Recover my Wallet</button>
+      <button type="submit" mat-raised-button>Import</button>
     </div>
   </form>
 </ng-container>
@@ -20,6 +29,6 @@
 <ng-template #loader>
   <mat-icon class="loading">autorenew</mat-icon>
   <p>
-    We are recovering your wallet. This might take a minute.
+    We are importing your key. This might take a minute.
   </p>
 </ng-template>

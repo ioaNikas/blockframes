@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { StoreConfig, EntityStore, EntityState, ID, guid } from '@datorama/akita';
+import { StoreConfig, EntityStore, EntityState, ID, guid, ActiveState } from '@datorama/akita';
 
 export interface Key {
   ensDomain: string,
@@ -7,7 +7,7 @@ export interface Key {
   id: ID
 }
 
-export interface KeyState extends EntityState<Key> {}
+export interface KeyState extends EntityState<Key>, ActiveState {}
 
 export function createKey(key: Partial<Key>) {
   return { ...key, id: guid()} as Key;
@@ -18,5 +18,6 @@ export function createKey(key: Partial<Key>) {
 export class KeyManagerStore extends EntityStore<KeyState, Key> {
   constructor() {
     super();
+    this.setLoading(false);
   }
 }

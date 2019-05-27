@@ -1,9 +1,13 @@
 
 mat-card {
+  margin-top: 10px;
   .round-image {
     border-radius: 50%;
     width: 34px;
     height: 34px;
-    background: red;
+  }
+  .second {
+    position: relative;
+    left: -20px;
   }
 }
