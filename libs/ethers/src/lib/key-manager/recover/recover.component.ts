@@ -28,7 +28,7 @@ export interface ImportKeyData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecoverComponent implements OnInit {
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(
     private service: KeyManagerService,

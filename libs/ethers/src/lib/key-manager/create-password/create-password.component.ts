@@ -17,7 +17,7 @@ function samePassword(control: FormGroup) {
 })
 export class CreatePasswordComponent implements OnInit {
 
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(
     private snackBar: MatSnackBar,

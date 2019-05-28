@@ -10,7 +10,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class AskPasswordComponent implements OnInit {
 
-  private form: FormGroup;
+  form: FormGroup;
 
   constructor(
     private snackBar: MatSnackBar,
