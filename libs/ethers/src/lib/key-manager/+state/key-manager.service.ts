@@ -36,8 +36,30 @@ export class KeyManagerService {
       this.store.setLoading(false);
     });
   }
-  // TODO create / encrypt / store / from mnemonic
-  // TODO create / encrypt / store / from private key
+  // create / encrypt / store / from mnemonic
+  importFromMnemonic(ensDomain: string, mnemonic: string, encryptionPassword: string) {
+    this.store.setLoading(true);
+    const wallet = EthersWallet.fromMnemonic(mnemonic);
+    this._setSigningKey(wallet);
+    wallet.encrypt(encryptionPassword).then(keyStore => {
+      const key = createKey({ensDomain, keyStore});
+      this.store.add(key);
+      this.store.setActive(key.id);
+      this.store.setLoading(false);
+    });
+  }
+  // create / encrypt / store / from private key
+  importFromPrivateKey(ensDomain: string, privateKey: string, encryptionPassword: string) {
+    this.store.setLoading(true);
+    const wallet = new EthersWallet(privateKey);
+    this._setSigningKey(wallet);
+    wallet.encrypt(encryptionPassword).then(keyStore => {
+      const key = createKey({ensDomain, keyStore});
+      this.store.add(key);
+      this.store.setActive(key.id);
+      this.store.setLoading(false);
+    });
+  }
 
   // load key (retreive / decrypt, set into process memory)
   unlockAndSetActive(key: Key, encryptionPassword: string) {

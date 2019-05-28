@@ -36,7 +36,6 @@ export class KeyManagerListComponent implements OnInit {
   }
 
   async importKey() {
-    const ref = this.dialog.open(RecoverComponent);
-    console.log(await ref.afterClosed().toPromise());
+    this.dialog.open(RecoverComponent, {data: {ensDomain: this.ensDomain}});
   }
 }

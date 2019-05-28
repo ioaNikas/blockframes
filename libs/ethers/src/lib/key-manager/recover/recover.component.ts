@@ -1,6 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, ChangeDetectionStrategy, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
+
+import { KeyManagerService } from '../+state';
 
 function samePassword(control: FormGroup) {
   const { password, confirm } = control.value;
@@ -9,9 +12,13 @@ function samePassword(control: FormGroup) {
     : { notSame: true }
 }
 
-function requireMnemonicOrPrivateKey(control: FormControl) {
+function requireMnemonicXorPrivateKey(control: FormControl) {
   const { mnemonic, privateKey } = control.value;
-  return (!!mnemonic || !!privateKey) ? null : {bothEmpty: true};
+  return (!!mnemonic !== !!privateKey) ? null : {bothEmpty: true}; // logical XOR
+}
+
+export interface ImportKeyData {
+  ensDomain: string,
 }
 
 @Component({
@@ -25,17 +32,19 @@ export class RecoverComponent implements OnInit {
   public loading = false;
 
   constructor(
+    private service: KeyManagerService,
     private dialog: MatDialogRef<RecoverComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: ImportKeyData
   ) { }
 
   ngOnInit() {
     this.form = new FormGroup({
       privateKey: new FormControl('', []),
       mnemonic: new FormControl('', []),
-      password: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirm: new FormControl('', [])
-    }, { validators: [samePassword, requireMnemonicOrPrivateKey] });
+    }, { validators: [samePassword, requireMnemonicXorPrivateKey] });
   }
 
   cancel() {
@@ -49,8 +58,12 @@ export class RecoverComponent implements OnInit {
     }
     try {
       this.loading = true;
-      const { privateKey, password } = this.form.value;
-      // await this.wallet.recoverWithPrivateKey(privateKey, password);
+      const { mnemonic, privateKey, password } = this.form.value;
+      if (!!mnemonic) {
+        this.service.importFromMnemonic(this.data.ensDomain, mnemonic, password);
+      } else {
+        this.service.importFromPrivateKey(this.data.ensDomain, privateKey, password);
+      }
       this.dialog.close(true);
     } catch(err) {
       this.snackBar.open(err, 'close', { duration: 1000 });
