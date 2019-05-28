@@ -49,10 +49,10 @@ export class RelayerWallet implements ethers.Signer {
   }
 
   /** Save the encryptedJSON into the vault */
-  private async saveIntoVault(wallet: Wallet, keyName: string, password: string) {
-    const encryptedJSON = await wallet.encrypt(password);
+  // private async saveIntoVault(wallet: Wallet, keyName: string, password: string) {
+    // const encryptedJSON = await wallet.encrypt(password);
     // this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
-  }
+  // }
 
   /** Return the signing key or ask  */
   private async getSigningKey(): Promise<utils.SigningKey> {
@@ -109,7 +109,7 @@ export class RelayerWallet implements ethers.Signer {
     this._requireUsername();
     const wallet = Wallet.fromMnemonic(mnemonic);
     this._setSigningKey(wallet);
-    this.saveIntoVault(wallet, keyName, password);
+    // this.saveIntoVault(wallet, keyName, password);
   }
 
   /** Create a key and store it into the vault */
@@ -118,7 +118,7 @@ export class RelayerWallet implements ethers.Signer {
     this._requireUsername();
     const wallet = Wallet.createRandom();
     this._setSigningKey(wallet);
-    this.saveIntoVault(wallet, keyName, password);
+    // this.saveIntoVault(wallet, keyName, password);
   }
 
   /** Deploy a new ERC1077 contract with the current key */
