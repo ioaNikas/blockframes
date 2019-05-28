@@ -20,7 +20,6 @@ import { TemplateModule} from '@blockframes/material'; // TODO: find better way 
 
 // Firebase
 import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 
 // Libraries
@@ -32,6 +31,7 @@ import { ProfileModule } from '@blockframes/account';
 import { AccountModule } from '@blockframes/account';
 import { WalletModule } from '@blockframes/ethers';
 import { KeyManagerModule } from '@blockframes/ethers';
+import { NotificationModule } from 'libs/notification/notification.module';
 
 // Material
 import {
@@ -53,7 +53,6 @@ import {
   MatCheckboxModule,
   MatProgressSpinnerModule,
 } from '@angular/material';
-import { NotificationModule } from 'libs/notification/notification.module';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -99,7 +98,6 @@ import { NotificationModule } from 'libs/notification/notification.module';
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
     AngularFireFunctionsModule,
 
     // Akita

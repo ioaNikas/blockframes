@@ -1,32 +1,28 @@
-import { Material } from "../../material/+state/material.model";
+import { Material } from '../../material/+state/material.model';
+import { firestore } from 'firebase/app';
 
-export interface Template {
+export interface BaseTemplate {
   id: string;
   name: string;
+  orgId: string;
+}
+
+export interface Template extends BaseTemplate {
   materials?: Material[];
-  materialsId: string[];
-  orgId?: string; // only storage in akita store
-  orgName?: string; // only storage in akita store
+  created: firestore.Timestamp;
 }
 
 export interface TemplateView {
-  category: string,
-  materials: Material[]
+  category: string;
+  materials: Material[];
 }
-
-export interface TemplatesByOrgs {
-  orgName: string,
-  templates: Template[]
-}
-
 
 /**
  * A factory function that creates Template
  */
-export function createTemplate(template: Partial<Template>) {
-  return template ? {
-    materialsId: [],
-    ...template
+export function createTemplate(template: BaseTemplate) {
+  return template?{
+    ...(template || {}),
+    created: firestore.Timestamp.now() // TODO: Figure out a way to use FieldValue to get a consistent date.
   } as Template : {} as Template
 }
-

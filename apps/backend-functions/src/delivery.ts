@@ -1,48 +1,59 @@
 import { db, functions } from './firebase';
 import { triggerNotifications, prepareNotification } from './notify';
-import { getOrgsOfDelivery, Organization } from './stakeholder';
+import {
+  Organization,
+  getDocument,
+  getOrgsOfDelivery,
+  getCollection,
+  Stakeholder,
+  Movie,
+  Material,
+  getCount
+} from './utils';
 
 // This string refers to svg icon name
 export const APP_DELIVERY_ICON = 'media_delivering';
 
-export async function getCollection(path: string) {
-  return db
-    .collection(path)
-    .get()
-    .then(collection => collection.docs.map(doc => doc.data()));
-}
-
-export async function getDocument(path: string) {
-  return db
-    .doc(path)
-    .get()
-    .then(doc => doc.data());
-}
-
 async function notifyOnNewSignee(delivery: any, orgs: Organization[]): Promise<void> {
   const newStakeholderId = delivery.validated[delivery.validated.length - 1];
-  const newStakeholder = await getDocument(
+  const newStakeholder = await getDocument<Stakeholder>(
     `deliveries/${delivery.id}/stakeholders/${newStakeholderId}`
   );
-  const newStakeholderOrg = await getDocument(`orgs/${newStakeholder!.orgId}`);
-  const movie = await getDocument(`movies/${delivery.movieId}`);
+
+  if(!newStakeholder) {
+    throw new Error(`This stakeholder doesn't exist !`);
+  }
+
+  const [newStakeholderOrg, movie] = await Promise.all([
+    getDocument<Organization>(`orgs/${newStakeholder!.orgId}`),
+    getDocument<Movie>(`movies/${delivery.movieId}`)
+  ]);
+
+  if(!movie) {
+    throw new Error(`This movie doesn't exist !`);
+  }
+
+  if (!newStakeholderOrg) {
+    throw new Error(`This organization doesn't exist !`);
+  }
+
   const notifications = orgs
     .filter(org => !!org && !!org.userIds)
     .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
     .map((userId: string) =>
       prepareNotification({
         app: APP_DELIVERY_ICON,
-        message: `${newStakeholderOrg!.name} signed delivery ${movie!.title.original}'s delivery`,
+        message: `${newStakeholderOrg.name} signed delivery ${movie.title.original}'s delivery`,
         userId,
-        path: `/layout/${delivery.movieId}/form/${delivery.id}`,
-        docID: {id: delivery.id, type: 'delivery'}
+        path: `/layout/${delivery.movieId}/${delivery.id}/edit`,
+        docID: { id: delivery.id, type: 'delivery' }
       })
     );
 
   await triggerNotifications(notifications);
 }
 
-export async function onDeliveryUpdate (
+export async function onDeliveryUpdate(
   change: functions.Change<FirebaseFirestore.DocumentSnapshot>,
   context: functions.EventContext
 ) {
@@ -66,23 +77,22 @@ export async function onDeliveryUpdate (
   const deliveryDoc = await db.doc(`deliveries/${delivery.id}`).get();
   const processedId = deliveryDoc.data()!.processedId;
 
-  const orgs = await getOrgsOfDelivery(delivery.id);
-  const movie = await getDocument(`movies/${delivery.movieId}`);
-  const stakeholderCount = await db
-    .collection(`deliveries/${delivery.id}/stakeholders`).where('isAccepted', '==', true)
-    .get()
-    .then(snap => snap.size);
+  const [orgs, movie, stakeholderCount] = await Promise.all([
+    getOrgsOfDelivery(delivery.id),
+    getDocument<Movie>(`movies/${delivery.movieId}`),
+    getCount(`deliveries/${delivery.id}/stakeholders`)
+  ]);
 
   /** Notifications are triggered when a new id is pushed into delivery.validated, which is considered as a signature
    *  Note: It doesn't trigger if this is the last signature, as another notification will be sent to notify
    *  that all stakeholders approved the delivery.
    */
 
-  const isNewSignature = delivery.validated.length === deliveryBefore.validated.length;
+  const isNewSignature = delivery.validated.length === deliveryBefore.validated.length + 1;
   const isFullSignatures = delivery.validated.length === stakeholderCount;
   const isBeforeStateClean = deliveryBefore.validated.length === stakeholderCount - 1;
 
-  if (!isNewSignature && !isFullSignatures) {
+  if (isNewSignature && !isFullSignatures) {
     await notifyOnNewSignee(delivery, orgs);
   }
 
@@ -98,8 +108,8 @@ export async function onDeliveryUpdate (
   try {
     await db.doc(`deliveries/${delivery.id}`).update({ processedId: context.eventId });
     const [materialsMovie, materialsDelivery] = await Promise.all([
-      getCollection(`movies/${delivery.movieId}/materials`),
-      getCollection(`deliveries/${delivery.id}/materials`)
+      getCollection<Material>(`movies/${delivery.movieId}/materials`),
+      getCollection<Material>(`deliveries/${delivery.id}/materials`)
     ]);
 
     const promises = materialsDelivery.map(materialDelivery => {
@@ -129,8 +139,8 @@ export async function onDeliveryUpdate (
           app: APP_DELIVERY_ICON,
           message: `${movie!.title.original}'s delivery has been approved by all stakeholders.`,
           userId,
-          path: `/layout/${delivery.movieId}/view/${delivery.id}`,
-          docID: {id: delivery.id, type: 'delivery'}
+          path: `/layout/${delivery.movieId}/${delivery.id}/view`,
+          docID: { id: delivery.id, type: 'delivery' }
         })
       );
 
@@ -141,4 +151,4 @@ export async function onDeliveryUpdate (
     throw e;
   }
   return true;
-};
+}

@@ -2,7 +2,7 @@ export const CONTEXT_MENU = [
   {
     route: 'default',
     items: [
-      { name: 'templates', path: '/layout/template/list' },
+      { name: 'templates', path: '/layout/templates/list' },
     ]
   },
   {
@@ -13,16 +13,16 @@ export const CONTEXT_MENU = [
     ]
   },
   {
-    route: '/layout/template/list',
+    route: '/layout/templates/list',
     items: [
-      { name: 'templates', path: '/layout/template/list'},
+      { name: 'templates', path: '/layout/templates/list'},
     ]
   },
   {
-    route: '/layout/template/:templateId',
+    route: '/layout/templates/:templateId',
     items: [
-      { name: 'templates', path: '/layout/template/list'},
-      { name: 'edit', path: '/layout/template/:templateId'}
+      { name: 'templates', path: '/layout/templates/list'},
+      { name: 'edit', path: '/layout/templates/:templateId'}
     ]
   },
   {
@@ -37,6 +37,14 @@ export const CONTEXT_MENU = [
     items: [
       { name: 'delivery schedules', path: '/layout/:movieId/list'},
       { name: 'movie materials', path: '/layout/:movieId/movie-materials'},
+    ]
+  },
+  {
+    route: '/layout/:movieId/template-picker',
+    items: [
+      { name: 'delivery schedules', path: '/layout/:movieId/list'},
+      { name: 'movie materials', path: '/layout/:movieId/movie-materials'},
+      { name: 'template picker', path: '/layout/:movieId/template-picker'},
     ]
   },
   {

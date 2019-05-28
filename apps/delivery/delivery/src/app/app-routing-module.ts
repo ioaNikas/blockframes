@@ -29,8 +29,7 @@ export const routes: Routes = [
       },
       {
         path: 'account',
-        // loadChildren: '@blockframes/account#AccountModule' // TODO this fail with "Error: Uncaught (in promise): Error: Cannot find 'AccountModule' in '@blockframes/account'"
-        loadChildren: 'libs/account/src/lib/account/account.module#AccountModule'
+        loadChildren: '@blockframes/account#AccountModule'
       },
       {
         path: 'home',
@@ -38,9 +37,10 @@ export const routes: Routes = [
         canDeactivate: [MovieListGuard],
         loadChildren: '@blockframes/movie#MovieModule'
       },
-      { path: 'template',
-        loadChildren: 'libs/material/src/lib/template/template.module#TemplateModule'
-      }, //ToDo find why @blockframes doesn't work
+      { path: 'templates',
+        loadChildren: '@blockframes/template#TemplateModule'
+        // TODO: remove this in favor of dynamic imports when Angular 8 is live
+      },
       {
         path: ':movieId',
         canActivate: [MovieActiveGuard],

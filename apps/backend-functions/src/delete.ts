@@ -1,16 +1,16 @@
 import { db, functions } from './firebase';
 import { APP_DELIVERY_ICON } from './delivery';
 import { prepareNotification, triggerNotifications } from './notify';
-import { getOrgsOfDelivery } from './stakeholder';
+import { getOrgsOfDelivery, getDocument, Delivery, Material } from './utils';
 
-export const deleteFirestoreMovie = async (
+export async function deleteFirestoreMovie (
   snap: FirebaseFirestore.DocumentSnapshot,
   context: functions.EventContext
-) => {
+) {
   const movie = snap.data();
+
   if (!movie) {
-    console.error(`This movie doesn\'t exist !`);
-    return null;
+    throw new Error(`This movie doesn\'t exist !`);
   }
 
   /**
@@ -50,18 +50,17 @@ export const deleteFirestoreMovie = async (
   return true;
 };
 
-export const deleteFirestoreDelivery = async (
+export async function deleteFirestoreDelivery (
   snap: FirebaseFirestore.DocumentSnapshot,
   context: functions.EventContext
-) => {
+) {
   const delivery = snap.data();
 
   if (!delivery) {
-    console.error(`This delivery doesn't exist !`);
-    return null;
+    throw new Error(`This delivery doesn't exist !`);
   }
 
-  /** We store the orgs before the delivery is deleted */
+  // We store the orgs before the delivery is deleted
   const orgs = await getOrgsOfDelivery(delivery.id);
 
   const batch = db.batch();
@@ -76,7 +75,7 @@ export const deleteFirestoreDelivery = async (
     if (doc.data().deliveriesIds.includes(delivery.id)) {
       if (doc.data().deliveriesIds.length === 1) batch.delete(doc.ref);
       else {
-        const newdeliveriesIds: string[] = doc
+        const newdeliveriesIds = doc
           .data()
           .deliveriesIds.filter((id: string) => id !== delivery.id);
         batch.update(doc.ref, { deliveriesIds: newdeliveriesIds });
@@ -86,7 +85,7 @@ export const deleteFirestoreDelivery = async (
 
   await batch.commit();
 
-  /** When delivery is deleted, notifications are created for each stakeholder of this delivery */
+  // When delivery is deleted, notifications are created for each stakeholder of this delivery
   const notifications = orgs
     .filter(org => !!org && !!org.userIds)
     .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
@@ -100,5 +99,58 @@ export const deleteFirestoreDelivery = async (
 
   await triggerNotifications(notifications);
 
+  return true;
+};
+
+export async function deleteFirestoreTemplate (
+  snap: FirebaseFirestore.DocumentSnapshot,
+  context: functions.EventContext
+) {
+  const template = snap.data();
+
+  if (!template) {
+    throw new Error(`This template doesn't exist !`);
+  }
+
+  const batch = db.batch();
+  const templateMaterials = await db.collection(`templates/${template.id}/materials`).get();
+  templateMaterials.forEach(doc => batch.delete(doc.ref));
+
+  return batch.commit();
+
+}
+
+export async function deleteFirestoreMaterial (
+  snap: FirebaseFirestore.DocumentSnapshot,
+  context: functions.EventContext
+) {
+  const material = snap.data();
+
+  if (!material) {
+    throw new Error(`This material doesn't exist !`);
+  }
+
+  const delivery = await getDocument<Delivery>(`deliveries/${context.params.deliveryId}`);
+
+  if (!delivery) {
+    throw new Error(`This delivery doesn't exist !`);
+  }
+
+  const movieMaterial = await getDocument<Material>(`movies/${delivery.movieId}/materials/${material.id}`)
+
+  if (!movieMaterial) {
+    throw new Error(`This material doesn't exist on this movie`);
+  }
+
+  if (movieMaterial.deliveriesIds.includes(delivery.id)) {
+    if (movieMaterial.deliveriesIds.length === 1) {
+      db.doc(`movies/${delivery.movieId}/materials/${movieMaterial.id}`).delete()
+    }
+    else {
+      const newdeliveriesIds = movieMaterial.deliveriesIds.filter((id: string) => id !== delivery.id);
+      db.doc(`movies/${delivery.movieId}/materials/${movieMaterial.id}`)
+        .update({ deliveriesIds: newdeliveriesIds });
+    }
+  }
   return true;
 };

@@ -1,7 +1,7 @@
 <section>
   <mat-expansion-panel
-    *ngFor="let org of (orgsWithTemplates$ | async); first as isFirst"
-    [expanded]="isFirst"
+    *ngFor="let org of (orgsWithTemplates$ | async)"
+    [expanded]="true"
     class="mat-elevation-z0"
   >
     <mat-expansion-panel-header>
@@ -18,7 +18,7 @@
       </div>
       <button
       mat-raised-button
-      (click)="addTemplateDialog($event, org.name)"
+      (click)="addTemplateDialog($event, org)"
       class="add-template mat-elevation-z0"
     >
       Create a template <mat-icon class="icon">add</mat-icon>
@@ -35,6 +35,6 @@
         <template-item class="mat-cards" [template]="template"></template-item>
       </article>
     </div>
+    <template-empty *ngIf="!(hasTemplates$ |async)"></template-empty>
   </mat-expansion-panel>
-  <template-empty *ngIf="!(hasTemplates$ |async)"></template-empty>
 </section>

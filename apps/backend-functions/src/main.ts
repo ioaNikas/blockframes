@@ -10,7 +10,12 @@ import {
   relayerSendLogic,
   relayerSignDeliveryLogic
 } from './relayer';
-import { deleteFirestoreDelivery, deleteFirestoreMovie } from './delete';
+import {
+  deleteFirestoreDelivery,
+  deleteFirestoreMovie,
+  deleteFirestoreMaterial,
+  deleteFirestoreTemplate
+} from './delete';
 import {
   onDeliveryStakeholderCreate,
   onDeliveryStakeholderDelete,
@@ -19,6 +24,8 @@ import {
 } from './stakeholder';
 import * as users from './users';
 import * as backup from './backup';
+import * as migrations from './migrations';
+import { onDocumentDelete, onDocumentUpdate, onDocumentCreate } from './utils';
 
 
 /**
@@ -78,48 +85,48 @@ export const backupFirestore = functions.https
 export const restoreFirestore = functions.https
   .onRequest(backup.restore);
 
+/**
+ * Trigger: REST call to migrate the database to V2
+ */
+export const updateToV2 = functions.https
+.onRequest(migrations.updateToV2);
 
 /**
  * Trigger: when signature (`orgId`) is added to or removed from `validated[]`
  */
-export const onDeliveryUpdateEvent = functions.firestore
-  .document('deliveries/{deliveryID}')
-  .onUpdate(backup.skipWhenRestoring(onDeliveryUpdate));
-
-/**
- * Trigger: when material state or step is modified
- */
-// export const onMaterialUpdateEvent = functions.firestore
-//   .document('movies/{movieID}/materials/{materialID}')
-//   .onUpdate(backup.skipWhenRestoring(onMaterialUpdate));
+export const onDeliveryUpdateEvent = onDocumentUpdate('deliveries/{deliveryID}', onDeliveryUpdate);
 
 /**
  * Trigger: when a stakeholder is added to a delivery
  */
-export const onDeliveryStakeholderCreateEvent = functions.firestore
-  .document('deliveries/{deliveryID}/stakeholders/{stakeholerID}')
-  .onCreate(backup.skipWhenRestoring(onDeliveryStakeholderCreate));
+export const onDeliveryStakeholderCreateEvent = onDocumentCreate(
+  'deliveries/{deliveryID}/stakeholders/{stakeholerID}',
+  onDeliveryStakeholderCreate
+);
 
 /**
  * Trigger: when a stakeholder is removed from a delivery
  */
-export const onDeliveryStakeholderDeleteEvent = functions.firestore
-  .document('deliveries/{deliveryID}/stakeholders/{stakeholerID}')
-  .onDelete(backup.skipWhenRestoring(onDeliveryStakeholderDelete));
+export const onDeliveryStakeholderDeleteEvent = onDocumentDelete(
+  'deliveries/{deliveryID}/stakeholders/{stakeholerID}',
+  onDeliveryStakeholderDelete
+);
 
 /**
  * Trigger: when a stakeholder is added to a movie
  */
-export const onMovieStakeholderCreateEvent = functions.firestore
-  .document('movies/{movieID}/stakeholders/{stakeholerID}')
-  .onCreate(backup.skipWhenRestoring(onMovieStakeholderCreate));
+export const onMovieStakeholderCreateEvent = onDocumentCreate(
+  'movies/{movieID}/stakeholders/{stakeholerID}',
+  onMovieStakeholderCreate
+);
 
 /**
  * Trigger: when a stakeholder is removed from a movie
  */
-export const onMovieStakeholderDeleteEvent = functions.firestore
-  .document('movies/{movieID}/stakeholders/{stakeholerID}')
-  .onDelete(backup.skipWhenRestoring(onMovieStakeholderDelete));
+export const onMovieStakeholderDeleteEvent = onDocumentDelete(
+  'movies/{movieID}/stakeholders/{stakeholerID}',
+  onMovieStakeholderDelete
+);
 
 //--------------------------------
 //            RELAYER           //
@@ -141,10 +148,10 @@ export const relayerSignDelivery = functions.https
 //   PROPER FIRESTORE DELETION  //
 //--------------------------------
 
-export const deleteMovie = functions.firestore
-  .document('movies/{movieId}')
-  .onDelete(backup.skipWhenRestoring(deleteFirestoreMovie));
+export const deleteMovie = onDocumentDelete('movies/{movieId}', deleteFirestoreMovie);
 
-export const deleteDelivery = functions.firestore
-  .document('deliveries/{deliveryId}')
-  .onDelete(backup.skipWhenRestoring(deleteFirestoreDelivery));
+export const deleteDelivery = onDocumentDelete('deliveries/{deliveryId}', deleteFirestoreDelivery);
+
+export const deleteMaterial = onDocumentDelete('deliveries/{deliveryId}/materials/{materialId}',deleteFirestoreMaterial);
+
+export const deleteTemplate = onDocumentDelete('templates/{templateId}', deleteFirestoreTemplate)
