@@ -20,6 +20,7 @@ import { KeyManagerItemComponent } from "./key-manager-item/key-manager-item.com
 import { EncryptingChipsComponent } from './encrypting-chips/encrypting-chips.component';
 import { AskPasswordComponent } from './ask-password/ask-password.component';
 import { RecoverComponent } from './recover/recover.component';
+import { CreatePasswordComponent } from "./create-password/create-password.component";
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { RecoverComponent } from './recover/recover.component';
     KeyManagerItemComponent,
     EncryptingChipsComponent,
     AskPasswordComponent,
+    CreatePasswordComponent,
     RecoverComponent,
   ],
   exports: [
@@ -50,6 +52,7 @@ import { RecoverComponent } from './recover/recover.component';
   ],
   entryComponents: [
     AskPasswordComponent,
+    CreatePasswordComponent,
     RecoverComponent,
   ]
 })

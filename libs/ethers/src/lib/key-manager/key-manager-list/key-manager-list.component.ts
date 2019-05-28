@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy, OnInit, Input } from "@angular/core
 import { KeyManagerQuery, Key, KeyManagerService } from "../+state";
 import { Observable } from "rxjs";
 import { MatDialog } from "@angular/material";
-import { AskPasswordComponent } from "../ask-password/ask-password.component";
 import { RecoverComponent } from "../recover/recover.component";
+import { CreatePasswordComponent } from "../create-password/create-password.component";
 
 @Component({
   selector: 'key-manager-list',
@@ -29,9 +29,12 @@ export class KeyManagerListComponent implements OnInit {
   }
 
   async createRandom() {
-    const ref = this.dialog.open(AskPasswordComponent, { width: '250px', data: {confirm: true}});
+    const ref = this.dialog.open(CreatePasswordComponent, { width: '250px', data: {confirm: true}});
     const password = await ref.afterClosed().toPromise();
-    if (!password) throw new Error('No password provided');
+    if (!password) {
+      console.warn('No password provided !');
+      return;
+    }
     this.service.createFromRandom(this.ensDomain, password);
   }
 

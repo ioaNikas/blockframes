@@ -29,7 +29,6 @@ export interface ImportKeyData {
 })
 export class RecoverComponent implements OnInit {
   private form: FormGroup;
-  public loading = false;
 
   constructor(
     private service: KeyManagerService,
@@ -56,19 +55,12 @@ export class RecoverComponent implements OnInit {
       this.snackBar.open('Invalid values', 'close', { duration: 1000 });
       return;
     }
-    try {
-      this.loading = true;
-      const { mnemonic, privateKey, password } = this.form.value;
-      if (!!mnemonic) {
-        this.service.importFromMnemonic(this.data.ensDomain, mnemonic, password);
-      } else {
-        this.service.importFromPrivateKey(this.data.ensDomain, privateKey, password);
-      }
-      this.dialog.close(true);
-    } catch(err) {
-      this.snackBar.open(err, 'close', { duration: 1000 });
-      this.dialog.close(false);
+    const { mnemonic, privateKey, password } = this.form.value;
+    if (!!mnemonic) {
+      this.service.importFromMnemonic(this.data.ensDomain, mnemonic, password);
+    } else {
+      this.service.importFromPrivateKey(this.data.ensDomain, privateKey, password);
     }
-
+    this.dialog.close(true);
   }
 }
