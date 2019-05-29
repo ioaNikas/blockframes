@@ -1,5 +1,4 @@
 import { db, functions } from './firebase';
-import { APP_DELIVERY_ICON } from './delivery';
 import { prepareNotification, triggerNotifications } from './notify';
 import { getOrgsOfDelivery, getDocument, Delivery, Material, getCollection } from './utils';
 
@@ -91,9 +90,9 @@ export async function deleteFirestoreDelivery (
     .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
     .map((userId: string) =>
       prepareNotification({
-        app: APP_DELIVERY_ICON,
         message: `Delivery with id ${delivery.id} has been deleted.`,
-        userId
+        userId,
+        docID: {id: delivery.id, type: 'delivery'}
       })
     );
 
