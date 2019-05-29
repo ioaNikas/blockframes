@@ -6,11 +6,7 @@ export interface OrganizationState extends EntityState<Organization>, ActiveStat
 }
 
 const initialState: OrganizationState  = {
-  form: {
-    'id': null,
-    'name': null,
-    'address': null
-  },
+  form: {},
   active: null
 }
 
