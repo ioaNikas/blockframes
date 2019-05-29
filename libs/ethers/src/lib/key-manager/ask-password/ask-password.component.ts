@@ -19,7 +19,7 @@ export class AskPasswordComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      password: new FormControl('', [Validators.required, Validators.minLength(6)]), // TODO ISSUE #408
     });
   }
 

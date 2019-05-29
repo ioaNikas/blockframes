@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { KeyManagerQuery } from "../+state";
 
 @Component({
-  selector: 'key-manager-encrypting-chips',
+  selector: 'encrypting-chips',
   templateUrl: './encrypting-chips.component.html',
   styleUrls: ['./encrypting-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

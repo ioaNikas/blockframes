@@ -5,13 +5,14 @@ import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 
 import { KeyManagerService } from '../+state';
 
-function samePassword(control: FormGroup) {
+function samePassword(control: FormGroup) { // TODO ISSUE #408
   const { password, confirm } = control.value;
   return password === confirm
     ? null
     : { notSame: true }
 }
 
+/** Require **either** mnemonic **or** private key **but not both** */
 function requireMnemonicXorPrivateKey(control: FormControl) {
   const { mnemonic, privateKey } = control.value;
   return (!!mnemonic !== !!privateKey) ? null : {bothEmpty: true}; // logical XOR
@@ -53,13 +54,17 @@ export class RecoverComponent implements OnInit {
   async recover() {
     if (!this.form.valid) {
       this.snackBar.open('Invalid values', 'close', { duration: 1000 });
+      this.dialog.close(false);
       return;
     }
     const { mnemonic, privateKey, password } = this.form.value;
     if (!!mnemonic) {
       this.service.importFromMnemonic(this.data.ensDomain, mnemonic, password);
-    } else {
+    } else if (!!privateKey) {
       this.service.importFromPrivateKey(this.data.ensDomain, privateKey, password);
+    } else {
+      this.dialog.close(false);
+      throw new Error('There should be either a mnemonic or a private key but none was provided !');
     }
     this.dialog.close(true);
   }

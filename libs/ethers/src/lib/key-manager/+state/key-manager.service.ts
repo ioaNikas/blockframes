@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { KeyManagerStore, createKey, Key } from './key-manager.store';
+import { KeyManagerStore,Key } from './key-manager.store';
 import { utils, Wallet as EthersWallet } from 'ethers';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { AskPasswordComponent } from '../ask-password/ask-password.component';
+import { CreatePasswordComponent } from '../create-password/create-password.component';
 
 @Injectable({ providedIn: 'root' })
 export class KeyManagerService {
@@ -9,6 +11,7 @@ export class KeyManagerService {
   private signingKey: utils.SigningKey;
 
   constructor(
+    private dialog: MatDialog,
     private store: KeyManagerStore,
     private snackBar: MatSnackBar,
   ) {}
@@ -20,69 +23,81 @@ export class KeyManagerService {
 
   private _requireSigningKey() {
     if (!this.signingKey) {
-      throw new Error('A signing key is required ! If you are a Cascade8 dev, ask PL'); // TODO change error in prod
+      throw new Error('A signing key is required !');
     }
   }
 
-  // create / encrypt / store / from random
-  createFromRandom(ensDomain: string, encryptionPassword: string) {
+  private async _encryptAndStore(wallet: EthersWallet, ensDomain: string, encryptionPassword: string) {
     this.store.setLoading(true);
-    const wallet = EthersWallet.createRandom();
-    this._setSigningKey(wallet);
-    wallet.encrypt(encryptionPassword).then(keyStore => {
-      const key = createKey({ensDomain, keyStore});
-      this.store.add(key);
-      this.store.setActive(key.id);
-      this.store.setLoading(false);
-    });
-  }
-  // create / encrypt / store / from mnemonic
-  importFromMnemonic(ensDomain: string, mnemonic: string, encryptionPassword: string) {
-    this.store.setLoading(true);
-    const wallet = EthersWallet.fromMnemonic(mnemonic);
-    this._setSigningKey(wallet);
-    wallet.encrypt(encryptionPassword).then(keyStore => {
-      const key = createKey({ensDomain, keyStore});
-      this.store.add(key);
-      this.store.setActive(key.id);
-      this.store.setLoading(false);
-    });
-  }
-  // create / encrypt / store / from private key
-  importFromPrivateKey(ensDomain: string, privateKey: string, encryptionPassword: string) {
-    this.store.setLoading(true);
-    const wallet = new EthersWallet(privateKey);
-    this._setSigningKey(wallet);
-    wallet.encrypt(encryptionPassword).then(keyStore => {
-      const key = createKey({ensDomain, keyStore});
-      this.store.add(key);
-      this.store.setActive(key.id);
-      this.store.setLoading(false);
-    });
+    const keyStore = await wallet.encrypt(encryptionPassword);
+    const key = {address: wallet.address, ensDomain, keyStore};
+    this.store.add(key);
+    this._activateKey(key.address, wallet); // ? Should creating a key also activate this key ?
+    this.store.setLoading(false);
   }
 
-  // load key (retreive / decrypt, set into process memory)
-  unlockAndSetActive(key: Key, encryptionPassword: string) {
+  /**  create / encrypt / store / from random */
+  async createFromRandom(ensDomain: string, password?: string) { // at signup password already is provided and we don't want to ask again for a password
+    if (!password) {
+      const ref = this.dialog.open(CreatePasswordComponent, { width: '250px' });
+      password = await ref.afterClosed().toPromise();
+      if (!password) {
+        console.warn('No password provided !');
+        return;
+      }
+    }
+
+    const wallet = EthersWallet.createRandom();
+    this._encryptAndStore(wallet, ensDomain, password);
+  }
+  /** create / encrypt / store / from mnemonic */
+  importFromMnemonic(ensDomain: string, mnemonic: string, encryptionPassword: string) {
+    const wallet = EthersWallet.fromMnemonic(mnemonic);
+    this._encryptAndStore(wallet, ensDomain, encryptionPassword);
+  }
+  /** create / encrypt / store / from private key */
+  importFromPrivateKey(ensDomain: string, privateKey: string, encryptionPassword: string) {
+    const wallet = new EthersWallet(privateKey);
+    this._encryptAndStore(wallet, ensDomain, encryptionPassword);
+  }
+
+  /** load key (retreive / decrypt, set into process memory) */
+  async unlockAndSetActive(key: Key) {
+    const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
+    const encryptionPassword = await ref.afterClosed().toPromise()
+    if (!encryptionPassword) throw new Error('No password provided');
+
     this.store.setLoading(true);
-    EthersWallet.fromEncryptedJson(key.keyStore, encryptionPassword).then(wallet => {
-      this._setSigningKey(wallet);
-      this.store.setActive(key.id);
+    try {
+      const wallet = await EthersWallet.fromEncryptedJson(key.keyStore, encryptionPassword)
+      this._activateKey(key.address, wallet);
       this.store.setLoading(false);
-    }).catch(error => {
+    }
+    catch(error) {
       console.warn(error);
       this.snackBar.open('Invalid Password', 'close', { duration: 1000 });
       this.store.setLoading(false);
-    });
+    };
   }
-  // clean process memory
-  lockActiveKey() {
+
+  private _activateKey(id: string, wallet: EthersWallet){
+    this._setSigningKey(wallet);
+    this.store.setActive(id);
+  }
+  /** clean process memory */
+  deactivateKey() {
     this.store.setActive(null);
     delete this.signingKey;
   }
 
-  // delete key
-  deleteKey(key: Key) {
-    this.store.remove(key.id);
+  /** delete key */
+  async deleteKey(key: Key) {
+    const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
+    const password = await ref.afterClosed().toPromise()
+    if (!password) {
+      throw new Error('No password provided');
+    }
+    this.store.remove(key.address);
   }
 
   // TODO get pub key (address)

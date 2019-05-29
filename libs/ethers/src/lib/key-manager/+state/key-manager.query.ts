@@ -15,16 +15,9 @@ export class KeyManagerQuery extends QueryEntity<KeyState, Key> {
    * **except for the active key !**
    * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)
    */
-  getAllKeysOfUser(ensDomain: string) {
+  getAllKeysOfUser$(ensDomain: string) {
     return this.selectAll().pipe(
       map(keys => keys.filter(key => key.ensDomain === ensDomain)),
     );
-    // return this.selectActive().pipe(
-    //   switchMap(active => 
-    //     this.selectAll().pipe(
-    //       map(keys => keys.filter(key => key.ensDomain === ensDomain && (!!active ? key.id !== active.id : true)))
-    //     )
-    //   )
-    // );
   }
 }

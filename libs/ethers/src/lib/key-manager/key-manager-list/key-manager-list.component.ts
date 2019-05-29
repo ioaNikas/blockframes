@@ -25,17 +25,11 @@ export class KeyManagerListComponent implements OnInit {
 
   ngOnInit() {
     this.activeKey$ = this.query.selectActive();
-    this.keys$ = this.query.getAllKeysOfUser(this.ensDomain);
+    this.keys$ = this.query.getAllKeysOfUser$(this.ensDomain);
   }
 
   async createRandom() {
-    const ref = this.dialog.open(CreatePasswordComponent, { width: '250px', data: {confirm: true}});
-    const password = await ref.afterClosed().toPromise();
-    if (!password) {
-      console.warn('No password provided !');
-      return;
-    }
-    this.service.createFromRandom(this.ensDomain, password);
+    this.service.createFromRandom(this.ensDomain);
   }
 
   async importKey() {

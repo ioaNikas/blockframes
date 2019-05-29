@@ -4,17 +4,13 @@ import { StoreConfig, EntityStore, EntityState, ID, guid, ActiveState } from '@d
 export interface Key {
   ensDomain: string,
   keyStore: string,
-  id: ID
+  address: string
 }
 
-export interface KeyState extends EntityState<Key>, ActiveState {}
-
-export function createKey(key: Partial<Key>) {
-  return { ...key, id: guid()} as Key;
-}
+export interface KeyState extends EntityState<Key>, ActiveState<string> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'key' })
+@StoreConfig({ name: 'key', idKey: 'address' })
 export class KeyManagerStore extends EntityStore<KeyState, Key> {
   constructor() {
     super();

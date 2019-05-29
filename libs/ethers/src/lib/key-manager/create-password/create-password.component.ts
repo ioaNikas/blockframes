@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-function samePassword(control: FormGroup) {
+function samePassword(control: FormGroup) { // TODO ISSUE #408
   const { password, confirm } = control.value;
   return password === confirm
     ? null

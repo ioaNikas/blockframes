@@ -1,12 +1,13 @@
 
-<mat-card fxLayout="row" fxLayoutAlign="space-between center">
-    <div fxLayout="row" fxLayoutAlign="start center">
-      <div class="round-image" [ngStyle]="{'background': '#'+addressStart}"></div>
-      <div class="round-image second" [ngStyle]="{'background': '#'+addressEnd}"></div>
+<mat-card>
+  <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card-header fxLayout="row" fxLayoutAlign="start center">
+      <div mat-card-avatar class="round-image" [ngStyle]="{'background': '#'+addressStart}"></div>
+      <div mat-card-avatar class="round-image second" [ngStyle]="{'background': '#'+addressEnd}"></div>
       <div>{{'0x' + addressStart + '...' + addressEnd}}</div>
-    </div>
+    </mat-card-header>
     
-    <div>
+    <mat-card-actions>
       <ng-container *ngIf="active; else notActive">
         <button mat-icon-button (click)="lockKey()"><mat-icon>close</mat-icon></button>
       </ng-container>
@@ -15,5 +16,6 @@
         <button mat-icon-button><mat-icon>cloud_download</mat-icon></button>
         <button mat-icon-button (click)="deleteKey()"><mat-icon>delete</mat-icon></button>
       </ng-template>
-    </div>
+    </mat-card-actions>
+  </mat-card-content>
 </mat-card>
