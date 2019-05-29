@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IpState } from '@blockframes/ip';
 import { AuthQuery, User } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { first, takeWhile } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { createOrganization, OrganizationQuery, OrganizationService } from '../+state';
+import { createOrganization, OrganizationQuery, OrganizationService, OrganizationState } from '../+state';
 
 @Component({
   selector: 'org-form',
@@ -15,7 +14,7 @@ import { createOrganization, OrganizationQuery, OrganizationService } from '../+
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrgFormComponent implements OnInit, OnDestroy {
-  public persistForm: PersistNgFormPlugin<IpState>;
+  public persistForm: PersistNgFormPlugin<OrganizationState>;
   public user: User;
   public form: FormGroup;
   private alive = true;
@@ -55,11 +54,11 @@ export class OrgFormComponent implements OnInit, OnDestroy {
   // ACTIONS //
   /////////////
 
-  /** Add a new IP to the list of ips */
+  /** Add a new Organization */
   public async submit() {
     if (!this.form.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 1000 });
-      throw new Error('Invalid form');
+      return;
     }
 
     const id = await this.service.add(this.form.value, await this.user.uid);
