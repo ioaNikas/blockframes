@@ -1,5 +1,5 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractFormControls } from '@blockframes/ui';
+import { FormGroup } from '@angular/forms';
+import { AbstractFormControls, EmailControl, PasswordControl } from '@blockframes/ui';
 
 
 export class SigninFormControls extends AbstractFormControls{
@@ -8,8 +8,8 @@ export class SigninFormControls extends AbstractFormControls{
     super();
 
     this.controls =  {
-      email: new FormControl('', [Validators.required, Validators.email]),
-      pwd: new FormControl('', this.passwordValidators),
+      email: new EmailControl(''),
+      pwd: new PasswordControl(''),
     };
   }
 }

@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractFormControls } from '@blockframes/ui';
+import { AbstractFormControls, EmailControl } from '@blockframes/ui';
 
 
 export class ProfilEditFormControls extends AbstractFormControls{
@@ -9,7 +9,7 @@ export class ProfilEditFormControls extends AbstractFormControls{
 
     this.controls =  {
       uid: new FormControl({ value: user.uid, disabled: true }),
-      email: new FormControl({ value: user.email, disabled: true }),
+      email: new EmailControl(user.email, true),
       first_name: new FormControl(user.firstName, [Validators.required]),
       last_name: new FormControl(user.lastName, [Validators.required]),
       biography: new FormControl(user.biography),
