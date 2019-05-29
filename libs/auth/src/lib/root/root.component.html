@@ -3,30 +3,11 @@
   <section testId="signin" id="signin" fxLayout="column" fxLayoutAlign="start center">
     <h1>Sign in</h1>
     <form [formGroup]="signinForm" (ngSubmit)="signin()" fxLayout="column">
-      <mat-form-field>
-        <input matInput type="email" placeholder="Email" formControlName="email" required />
-        <mat-error *ngIf="signinForm.get('email').hasError('email') && !signinForm.get('email').hasError('required')">
-          Please enter a <strong>valid</strong> email address.
-        </mat-error>
-        <mat-error *ngIf="signinForm.get('email').hasError('required')">
-          Email is <strong>required</strong>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Password" formControlName="pwd" required />
-        <mat-error *ngIf="signinForm.get('pwd').hasError('required')">
-          Password is <strong>required</strong>.
-        </mat-error>
-        <mat-error *ngIf="signinForm.get('pwd').hasError('minlength')">
-          Password with less than <strong>{{ signinForm.getRules('password').min }}</strong> characters.
-        </mat-error>
-        <mat-error *ngIf="signinForm.get('pwd').hasError('maxlength')">
-          Password with more than <strong>{{ signinForm.getRules('password').max }}</strong> characters.
-        </mat-error>
-      </mat-form-field>
+      <input-email [form]="signinForm"></input-email>
+      <input-password [form]="signinForm" [showHint]=false></input-password>
       <div fxLayout="row" fxLayoutAlign="end center">
-          <button mat-raised-button color="primary">Signin</button>
-        </div>
+        <button mat-raised-button color="primary">Signin</button>
+      </div>
     </form>
   </section>
   <hr/>
@@ -34,38 +15,8 @@
   <section testId="signup" id="signup" fxLayout="column" fxLayoutAlign="start center">
     <h1>Sign Up</h1>
     <form [formGroup]="signupForm" (ngSubmit)="signup()" fxLayout="column">
-      <mat-form-field>
-        <input matInput type="email" placeholder="Email" formControlName="email" required />
-        <mat-error *ngIf="signupForm.get('email').hasError('email') && !signupForm.get('email').hasError('required')">
-          Please enter a <strong>valid</strong> email address.
-        </mat-error>
-        <mat-error *ngIf="signupForm.get('email').hasError('required')">
-          Email is <strong>required</strong>
-        </mat-error>
-
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Password" formControlName="pwd" required />
-        <mat-hint>Between {{ signupForm.getRules('password').min }} and {{ signupForm.getRules('password').max }} characters.</mat-hint>
-        <mat-error *ngIf="signupForm.get('pwd').hasError('required')">
-          Password is <strong>required</strong>.
-        </mat-error>
-        <mat-error *ngIf="signupForm.get('pwd').hasError('minlength')">
-          Password with less than <strong>{{ signupForm.getRules('password').min }}</strong> characters.
-        </mat-error>
-        <mat-error *ngIf="signupForm.get('pwd').hasError('maxlength')">
-          Password with more than <strong>{{ signupForm.getRules('password').max }}</strong> characters.
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput type="password" placeholder="Password confirm" formControlName="confirm" [errorStateMatcher]="signupForm.getPasswordMatcher()" required />
-        <mat-error *ngIf="signupForm.get('confirm').hasError('required')">
-          Password is <strong>required</strong>.
-        </mat-error>
-        <mat-error *ngIf="signupForm.hasError('passwordsNotMatching')">
-          Passwords do not <strong>match</strong>.
-        </mat-error>  
-      </mat-form-field>
+      <input-email [form]="signupForm"></input-email>
+      <form-group-password-confirm [form]="signupForm"></form-group-password-confirm>
       <div fxLayout="row" fxLayoutAlign="end center">
         <button mat-raised-button color="primary">Signup</button>
       </div>
