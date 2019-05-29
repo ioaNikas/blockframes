@@ -14,7 +14,6 @@
       </mat-form-field>
       <mat-form-field>
         <input matInput type="password" placeholder="Password" formControlName="pwd" required />
-        <mat-hint>Between {{ signinForm.getRules('password').min }} and {{ signinForm.getRules('password').max }} characters.</mat-hint>
         <mat-error *ngIf="signinForm.get('pwd').hasError('required')">
           Password is <strong>required</strong>.
         </mat-error>
