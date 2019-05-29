@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RepeatPasswordStateMatcher, AbstractFormControls } from './abstract.form';
+import { RepeatPasswordStateMatcher, AbstractFormControls } from '@blockframes/ui';
 import { SigninFormControls, SigninForm } from './signin.form';
 
 export class SignupFormControls extends SigninFormControls{

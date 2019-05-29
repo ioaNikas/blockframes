@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractFormControls } from './abstract.form';
+import { AbstractFormControls } from '@blockframes/ui';
 
 
 export class SigninFormControls extends AbstractFormControls{
