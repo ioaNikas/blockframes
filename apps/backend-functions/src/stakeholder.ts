@@ -1,9 +1,6 @@
 import { functions, db } from './firebase';
-import { APP_DELIVERY_ICON } from './delivery';
-import { prepareNotification, triggerNotifications, DocID, customMessage } from './notify';
-import { getDocument, getCount, getOrgsOfDelivery, getOrgsOfMovie, Delivery, Organization, Movie } from './utils';
-
-const APP_MOVIE_ICON = 'media_financiers';
+import { prepareNotification, triggerNotifications, customMessage } from './notify';
+import { getDocument, getCount, getOrgsOfDelivery, getOrgsOfMovie, Delivery, DocID, Organization, Movie } from './utils';
 
 export async function onDeliveryStakeholderCreate (
   snap: FirebaseFirestore.DocumentSnapshot,
@@ -42,10 +39,8 @@ export async function onDeliveryStakeholderCreate (
       const snapInformations = {
         movieTitle: movie!.title.original,
         docID,
-        stakeholderId: newStakeholder.id,
-        orgName: newStakeholderOrg.name,
+        org: newStakeholderOrg,
         count: stakeholderCount,
-        userIds: newStakeholderOrg.userIds
       };
 
       const notifications = orgs
@@ -53,7 +48,6 @@ export async function onDeliveryStakeholderCreate (
         .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
         .map((userId: string) => {
           return prepareNotification({
-            app: APP_DELIVERY_ICON,
             message: customMessage(userId, snapInformations),
             userId,
             path: `/layout/${delivery.movieId}/${delivery.id}/teamwork`,
@@ -105,16 +99,17 @@ export async function onDeliveryStakeholderDelete (
         getDocument<Movie>(`movies/${delivery.movieId}`),
         getOrgsOfDelivery(delivery.id)
       ])
+      const docID = {id: delivery.id, type: 'delivery'} as DocID;
 
       const notifications = orgs
         .filter(org => !!org && !!org.userIds)
         .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
         .map((userId: string) =>
           prepareNotification({
-            app: APP_DELIVERY_ICON,
             message: `${stakeholderOrg.name}
             has been removed from ${movie!.title.original}'s delivery`,
             userId,
+            docID,
             path: `/layout/${delivery.movieId}/${delivery.id}/teamwork`
           })
         );
@@ -166,10 +161,8 @@ export async function onMovieStakeholderCreate (
       const snapInformations = {
         movieTitle: movie.title.original,
         docID,
-        stakeholderId: newStakeholder.id,
-        orgName: newStakeholderOrg.name,
-        count: stakeholderCount,
-        userIds: newStakeholderOrg.userIds
+        org: newStakeholderOrg,
+        count: stakeholderCount
       }
 
       const notifications = orgs
@@ -177,7 +170,6 @@ export async function onMovieStakeholderCreate (
         .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
         .map((userId: string) => {
           return prepareNotification({
-            app: APP_MOVIE_ICON,
             message: customMessage(userId, snapInformations),
             userId,
             path: `/layout/home/form/${movie.id}/teamwork`,
@@ -226,15 +218,16 @@ export async function onMovieStakeholderDelete (
 
     try {
       const orgs = await getOrgsOfMovie(movie.id);
+      const docID = {id: movie.id, type: 'movie'} as DocID;
       const notifications = orgs
         .filter(org => !!org && !!org.userIds)
         .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
         .map((userId: string) =>
           prepareNotification({
-            app: APP_MOVIE_ICON,
             message: `${stakeholderOrg.name}
             has been removed from ${movie.title.original}`,
             userId,
+            docID,
             path: `/layout/home/form/${movie.id}/teamwork`
           })
         );
