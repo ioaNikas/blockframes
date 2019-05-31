@@ -42,8 +42,7 @@ export class KeyManagerService {
       const ref = this.dialog.open(CreatePasswordComponent, { width: '250px' });
       password = await ref.afterClosed().toPromise();
       if (!password) {
-        console.warn('No password provided !');
-        return;
+        throw new Error('No password provided');
       }
     }
 
@@ -74,9 +73,8 @@ export class KeyManagerService {
       this.store.setLoading(false);
     }
     catch(error) {
-      console.warn(error);
-      this.snackBar.open('Invalid Password', 'close', { duration: 1000 });
       this.store.setLoading(false);
+      throw new Error('Invalid Password');
     };
   }
 

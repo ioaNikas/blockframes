@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Input } from "@angular/core";
 import { Key, KeyManagerService } from "../+state";
-import { keyToAddressPart } from "@blockframes/utils";
+import { keyToAddressPart, AddressParts } from "@blockframes/utils";
 
 @Component({
   selector: 'key-manager-item',
@@ -12,17 +12,14 @@ export class KeyManagerItemComponent implements OnInit {
   @Input() key: Key;
   @Input() active = false;
 
-  addressStart: string;
-  addressEnd: string;
+  address: AddressParts;
 
   constructor(
     private service: KeyManagerService
   ){}
 
   ngOnInit() {
-    const addressParts = keyToAddressPart(this.key, 6);
-    this.addressStart = addressParts.start;
-    this.addressEnd = addressParts.end;
+    this.address = keyToAddressPart(this.key, 6);
   }
 
   async unlockKey() {
