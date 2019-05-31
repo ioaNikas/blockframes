@@ -11,7 +11,7 @@ persistState({
   include: ['key'],
   deserialize: (data) => {
     const state = JSON.parse(data);
-    delete state.key.active;
+    if (!!state.key && !!state.key.active) delete state.key.active;
     return state;
   },
   storage: LocalStorageVault // could use different type of vault as long as they implement `PersistStateStorage`
