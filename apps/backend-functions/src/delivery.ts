@@ -9,7 +9,8 @@ import {
   Movie,
   Material,
   getCount,
-  Delivery
+  Delivery,
+  isTheSame
 } from './utils';
 
 export async function onDeliveryUpdate(
@@ -20,7 +21,8 @@ export async function onDeliveryUpdate(
     return true;
   }
 
-  const [deliveryDoc, deliveryDocBefore] = [change.after.data(), change.before.data()];
+  const deliveryDoc = change.after.data();
+  const deliveryDocBefore = change.before.data();
 
   if (!deliveryDoc || !deliveryDocBefore) {
     return true;
@@ -89,10 +91,7 @@ function copyMaterialsToMovie(
 ) {
   return deliveryMaterials.map(deliveryMaterial => {
     const duplicateMaterial = movieMaterials.find(
-      materialMovie =>
-        deliveryMaterial.value === materialMovie.value &&
-        deliveryMaterial.category === materialMovie.category &&
-        deliveryMaterial.description === materialMovie.description
+      movieMaterial => isTheSame(movieMaterial, deliveryMaterial)
     );
 
     if (!!duplicateMaterial) {
@@ -155,14 +154,11 @@ function createNotifications(
     .filter(org => !!org && !!org.userIds)
     .reduce((ids: string[], { userIds }) => [...ids, ...userIds], [])
     .map((userId: string) => {
-      let customMessage: string;
-      if (!!newStakeholderOrg) {
-        customMessage = `${newStakeholderOrg.name} just signed ${movie.title.original}'s delivery`;
-      } else {
-        customMessage = `${movie.title.original}'s delivery has been approved by all stakeholders.`;
-      }
+      const message = (!!newStakeholderOrg)
+        ? `${newStakeholderOrg.name} just signed ${movie.title.original}'s delivery`
+        : `${movie.title.original}'s delivery has been approved by all stakeholders.`;
       return prepareNotification({
-        message : customMessage,
+        message,
         userId,
         path: `/layout/${delivery.movieId}/${delivery.id}/view`,
         docID: { id: delivery.id, type: 'delivery' }

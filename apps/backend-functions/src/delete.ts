@@ -1,6 +1,6 @@
 import { db, functions } from './firebase';
 import { prepareNotification, triggerNotifications } from './notify';
-import { getOrgsOfDelivery, getDocument, Delivery, Material, getCollection } from './utils';
+import { getOrgsOfDelivery, getDocument, Delivery, Material, getCollection, isTheSame } from './utils';
 
 export async function deleteFirestoreMovie (
   snap: FirebaseFirestore.DocumentSnapshot,
@@ -140,10 +140,7 @@ export async function deleteFirestoreMaterial (
   // As material and movieMaterial don't share the same document ID, we have to look at
   // some property values to find the matching one.
   const movieMaterial = movieMaterials.find(
-    movieMat =>
-      material.value === movieMat.value &&
-      material.category === movieMat.category &&
-      material.description === movieMat.description
+    movieMat => isTheSame(movieMat, material as Material)
   );
 
   if (!movieMaterial) {
