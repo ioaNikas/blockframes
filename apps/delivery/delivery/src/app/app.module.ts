@@ -18,9 +18,10 @@ import { LayoutComponent } from './layout/layout.component';
 import { DeliveryQuery} from '@blockframes/material'; // TODO: find better way to load material lib
 import { TemplateModule} from '@blockframes/material'; // TODO: find better way to load material lib
 
-// Firebase
+// Angular Fire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
@@ -98,6 +99,7 @@ import {
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(environment.persistenceSettings),
     AngularFireFunctionsModule,
 
     // Akita

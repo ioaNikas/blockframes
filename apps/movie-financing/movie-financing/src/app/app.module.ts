@@ -27,6 +27,13 @@ import {
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
+
+// Modules
+
+
+// Angular Fire
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+
 // Components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -54,6 +61,7 @@ import { registerLocaleData } from '@angular/common';
 import { FinancingExplorerCompareComponent } from './explorer/compare/compare.component';
 import { UtilsModule } from '@blockframes/utils';
 import { AccountModule, ProfileModule } from '@blockframes/account';
+import { WalletModule, KeyManagerModule } from '@blockframes/ethers';
 
 registerLocaleData(localeFr)
 
@@ -85,6 +93,8 @@ registerLocaleData(localeFr)
     AccountModule,
     ProfileModule,
     UtilsModule,
+    WalletModule,
+    KeyManagerModule,
     // Material
     MatToolbarModule,
     MatListModule,
@@ -104,6 +114,7 @@ registerLocaleData(localeFr)
     AkitaNgRouterStoreModule.forRoot(),
     environment.production ? [] : [AkitaNgDevtools.forRoot()],
     AngularFireFunctionsModule,
+    AngularFirestoreModule.enablePersistence(environment.persistenceSettings),
     FlexModule,
     // Fullpage (homepage)
     AngularFullpageModule,
