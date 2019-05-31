@@ -1,6 +1,7 @@
-import { production, firebase } from '@env';
+import { production, firebase, persistenceSettings } from '@env';
 
 export const environment = {
   production,
-  firebase
+  firebase,
+  persistenceSettings
 };
