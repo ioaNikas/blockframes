@@ -30,6 +30,7 @@ import { OrganizationModule } from '@blockframes/organization';
 import { ProfileModule } from '@blockframes/account';
 import { AccountModule } from '@blockframes/account';
 import { WalletModule } from '@blockframes/ethers';
+import { KeyManagerModule } from '@blockframes/ethers';
 import { NotificationModule } from 'libs/notification/notification.module';
 
 // Material
@@ -92,6 +93,7 @@ import {
     AccountModule,
     ProfileModule,
     WalletModule,
+    KeyManagerModule,
     NotificationModule,
 
     // Firebase
