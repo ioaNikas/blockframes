@@ -20,7 +20,7 @@ import { AskPasswordComponent } from './ask-password/ask-password.component';
 import { RecoverComponent } from './recover/recover.component';
 import { CreatePasswordComponent } from "./create-password/create-password.component";
 import { ExportComponent } from "./export-dialog/export-dialog.component";
-import { UploadModule } from "@blockframes/ui";
+import { UiFormModule } from '@blockframes/ui';
 
 @NgModule({
   imports: [
@@ -37,7 +37,7 @@ import { UploadModule } from "@blockframes/ui";
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
-    UploadModule,
+    UiFormModule
   ],
   declarations: [
     KeyManagerListComponent,

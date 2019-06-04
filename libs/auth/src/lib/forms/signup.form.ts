@@ -1,4 +1,3 @@
-import { FormGroup } from '@angular/forms';
 import { RepeatPasswordStateMatcher, PasswordControl } from '@blockframes/ui';
 import { SigninFormControls, SigninForm } from './signin.form';
 
@@ -6,13 +5,10 @@ export class SignupFormControls extends SigninFormControls{
 
   constructor() {
     super();
-    this.passwordsMatcher = new RepeatPasswordStateMatcher('pwd', 'confirm');
+    const customPasswordFieldName = 'pwd';
+    this.passwordsMatcher = new RepeatPasswordStateMatcher(customPasswordFieldName);
     this.controls.confirm = new PasswordControl('');
-    this.validators.push(this.checkPasswords);
-  }
-
-  private checkPasswords(group: FormGroup) {
-    return group.controls.pwd.value === group.controls.confirm.value ? null : { passwordsNotMatching: true }     
+    this.validators.push(this.checkPasswords(customPasswordFieldName));
   }
 }
 
@@ -25,9 +21,5 @@ export class SignupForm extends SigninForm {
       validators !== undefined ? validators : f.validators
     );
     this.form = f;
-  }
-
-  public getPasswordMatcher() {
-    return this.form.passwordsMatcher;
   }
 }

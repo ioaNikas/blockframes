@@ -2,17 +2,17 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'input-password',
-  templateUrl: './password.component.html',
-  styleUrls: ['./password.component.scss'],
+  selector: 'input-textarea',
+  templateUrl: './textarea.component.html',
+  styleUrls: ['./textarea.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PasswordComponent  {
+export class TextareaComponent  {
 
   @Input() form: FormGroup;
-  @Input() showHint = true;
-  @Input() name = 'password';
-  @Input() placeholder = 'Password';
+  @Input() type = 'text';
+  @Input() placeholder = 'placeholder';
+  @Input() name = 'default';
   @Input() matcher = false;
   
   constructor() {}

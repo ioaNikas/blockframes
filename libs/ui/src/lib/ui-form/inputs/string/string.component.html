@@ -1,0 +1,9 @@
+<mat-form-field [formGroup]="form">
+  <input matInput [type]="type" [placeholder]="placeholder" [formControlName]="name" [required]="required" [errorStateMatcher]="matcher ? form.getXorControlsMatcher() : undefined"/>
+  <mat-error *ngIf="form.get(name).hasError('required')">
+    {{ name }} is <strong>required</strong>
+  </mat-error>
+  <mat-error *ngIf="matcher && form.hasError('bothEmpty')">
+    Both fields <strong>cannot be setted</strong> at the same time.
+  </mat-error>
+</mat-form-field>

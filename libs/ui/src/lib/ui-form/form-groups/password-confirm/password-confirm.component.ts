@@ -10,6 +10,8 @@ import { FormGroup } from '@angular/forms';
 export class PasswordConfirmComponent  {
 
   @Input() form: FormGroup;
+  @Input() password = 'password';
+  @Input() confirm = 'confirm';
   
   constructor() {}
 }
