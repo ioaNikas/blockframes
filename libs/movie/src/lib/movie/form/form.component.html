@@ -1,6 +1,17 @@
 <form [formGroup]="movieForm">
   <mat-card class="movie-form-container">
     <mat-card-content class="movie-form-card">
+      <nav mat-tab-nav-bar>
+        <a mat-tab-link
+        *ngFor="let link of navLinks"
+        [routerLink]="link.link"
+        routerLinkActive #rla="routerLinkActive"
+        [active]="rla.isActive">
+        {{ link.label }}
+        </a>
+      </nav>
+      <router-outlet ></router-outlet>
+
       <mat-tab-group>
         <mat-tab label="Main Informations">
           <movie-form-main-section
