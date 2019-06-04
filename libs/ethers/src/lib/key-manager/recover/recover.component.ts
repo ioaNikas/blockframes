@@ -1,22 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 
 import { KeyManagerService } from '../+state';
-
-function samePassword(control: FormGroup) { // TODO ISSUE #408
-  const { password, confirm } = control.value;
-  return password === confirm
-    ? null
-    : { notSame: true }
-}
-
-/** Require **either** mnemonic **or** private key **but not both** */
-function requireMnemonicXorPrivateKey(control: FormControl) {
-  const { mnemonic, privateKey } = control.value;
-  return (!!mnemonic !== !!privateKey) ? null : {bothEmpty: true}; // logical XOR
-}
+import { RecoverForm } from '../forms/recover.form';
 
 export interface ImportKeyData {
   ensDomain: string,
@@ -29,7 +16,7 @@ export interface ImportKeyData {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecoverComponent implements OnInit {
-  form: FormGroup;
+  form: RecoverForm;
 
   constructor(
     private service: KeyManagerService,
@@ -39,12 +26,7 @@ export class RecoverComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.form = new FormGroup({
-      privateKey: new FormControl('', []),
-      mnemonic: new FormControl('', []),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confirm: new FormControl('', [])
-    }, { validators: [samePassword, requireMnemonicXorPrivateKey] });
+    this.form = new RecoverForm();
   }
 
   cancel() {

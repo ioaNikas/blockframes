@@ -1,6 +1,4 @@
-import { FormGroup } from '@angular/forms';
-import { AbstractFormControls, EmailControl, PasswordControl } from '@blockframes/ui';
-
+import { AbstractFormControls, EmailControl, PasswordControl, AbstractFormGroup } from '@blockframes/ui';
 
 export class SigninFormControls extends AbstractFormControls{
 
@@ -14,7 +12,7 @@ export class SigninFormControls extends AbstractFormControls{
   }
 }
 
-export class SigninForm extends FormGroup {
+export class SigninForm extends AbstractFormGroup {
   protected form : AbstractFormControls;
 
   constructor(controls? : any, validators?: any ) {
@@ -24,9 +22,5 @@ export class SigninForm extends FormGroup {
       validators !== undefined ? validators : f.validators
     );
     this.form = f;
-  }
-
-  public getRules (ruleName: string) {
-    return this.form.rules[ruleName];
   }
 }

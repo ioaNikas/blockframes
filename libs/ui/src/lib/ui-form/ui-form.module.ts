@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Components
+import { StringComponent } from './inputs/string/string.component';
+import { TextareaComponent } from './inputs/textarea/textarea.component';
 import { ChipsAutocompleteComponent } from './chips-autocomplete/chips-autocomplete.component';
 import { EmailComponent } from './inputs/email/email.component';
 import { PasswordComponent } from './inputs/password/password.component';
@@ -26,12 +28,16 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule
   ],
   declarations: [
+    StringComponent,
+    TextareaComponent,
     ChipsAutocompleteComponent,
     EmailComponent,
     PasswordComponent,
     PasswordConfirmComponent
   ],
   exports: [
+    StringComponent,
+    TextareaComponent,
     ChipsAutocompleteComponent,
     EmailComponent,
     PasswordComponent,
