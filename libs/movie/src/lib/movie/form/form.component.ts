@@ -4,6 +4,7 @@ import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
+import { MovieForm } from './movie.form';
 
 @Component({
   selector: 'movie-form',
@@ -14,8 +15,10 @@ import { Router } from '@angular/router';
 })
 export class FormComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin;
-  public movieForm: FormGroup;
+  public movieForm: MovieForm;
   public movie: Movie;
+  navLinks: any[];
+  activeLinkIndex = -1; 
 
   constructor(
     private query: MovieQuery,
@@ -23,42 +26,69 @@ export class FormComponent implements OnInit, OnDestroy {
     private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
+    public form: MovieForm,
   ) {
+    this.navLinks = [
+      {
+          label: 'Main Informations',
+          link: './main',
+          index: 0
+      }, {
+          label: 'Second',
+          link: './second',
+          index: 1
+      }, {
+          label: 'Third',
+          link: './third',
+          index: 2
+      }, 
+    ];
+
+    this.movieForm = form;
   }
 
   ngOnInit() {
+
+    this.router.events.subscribe((res) => {
+      this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
+  });
+
     this.movie = this.query.getActive();
-    this.movieForm = this.builder.group({
-      originalTitle: [this.movie.title.original],
-      internationalTitle: [this.movie.title.international],
+
+    // Akita Persist Form 
+    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
+
+    this.populateForm();
+
+
+    /*
+
       directorName: [this.movie.directorName],
       poster: [this.movie.poster],
       productionYear: [this.movie.productionYear],
       types: [this.movie.types],
-      genres: [this.movie.genres],
+      : [],
       originCountry: [this.movie.originCountry],
       coProducerCountries: [this.movie.coProducerCountries],
       languages: [this.movie.languages],
       status: [this.movie.status],
       logline: [this.movie.logline, Validators.maxLength(180)],
       synopsis: [this.movie.synopsis, Validators.maxLength(500)],
-      keywords: this.builder.array([]),
-      credits: this.builder.array([]),
-      images: this.builder.array([]),
-      promotionalElements: this.builder.array([]),
     });
-    
-    // Akita Persist Form 
-    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
-
-    this.populateForm();
+    */
     
     /* Do not be afraid great Smurf, this is a temporary hack ;)*/
+
+    // @todo remove
     this.movieForm.get('originalTitle').setValue('undefined');
     this.movieForm.get('originalTitle').setValue(this.movie.title.original);
   }
 
   private populateForm() {
+    this.movieForm.get('originalTitle').setValue(this.movie.title.original);
+    this.movieForm.get('internationalTitle').setValue(this.movie.title.international);
+    this.movieForm.get('genres').setValue(this.movie.genres);
+
     // Populate custom fields
     if (this.movie.keywords && this.movie.keywords.length) {
       this.movie.keywords.forEach((keyword) => {

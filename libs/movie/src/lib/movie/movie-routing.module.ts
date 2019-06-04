@@ -6,6 +6,7 @@ import { ContainerComponent } from './form/container.component';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { TitleFormComponent } from './title-form/title-form.component';
+import { FormTestComponent } from './form/form.test.component';
 
 // Guards
 import { StakeholderViewComponent } from '../stakeholder/view/view.component';
@@ -25,6 +26,9 @@ export const routes: Routes = [
     path: 'form/:movieId',
     component: ContainerComponent,
     canActivate: [MovieActiveGuard],
+    children: [
+      { path: 'main',component: FormTestComponent },
+    ]
   },
   {
     path: 'form/:movieId/teamwork',

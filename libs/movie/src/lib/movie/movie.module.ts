@@ -40,6 +40,7 @@ import { FormTeamComponent } from './form/form.team.component';
 import { FormPromotionalComponent } from './form/form.promotional.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
+import { FormTestComponent} from './form/form.test.component';
 
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
@@ -50,7 +51,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HomeEmptyComponent } from './home-empty/home-empty.component';
 import { DelayedWrapperComponent } from './delayed-wrapper/delayed-wrapper.component';
-
+import { MovieForm } from './form/movie.form';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { DelayedWrapperComponent } from './delayed-wrapper/delayed-wrapper.compo
     FormStoryComponent,
     ListComponent,
     ViewComponent,
+    FormTestComponent,
     TitleFormComponent,
     FormMainComponent,
     FormTeamComponent,
@@ -104,6 +106,7 @@ import { DelayedWrapperComponent } from './delayed-wrapper/delayed-wrapper.compo
   ],
   providers: [
     { provide: FirestoreSettingsToken, useValue: {} },// TODO: Remove when @angular/fire is updated
+    MovieForm
   ],
   entryComponents: [TitleFormComponent],
   exports: [TitleFormComponent],

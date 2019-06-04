@@ -24,3 +24,9 @@ export class MnemonicControl extends FormControl{
     super({ value, disabled }, validators !== undefined ? validators : stringValidators);
   }
 }
+
+export class StringControl extends FormControl{
+  constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
+    super({ value, disabled }, validators !== undefined ? validators : stringValidators);
+  }
+}
