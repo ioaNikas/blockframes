@@ -13,6 +13,7 @@ export const firebase = {
 
 export const network = 'goerli';
 export const baseEnsDomain = 'blockframes.test';
+export const factoryContract = 'create2.eth';
 
 // TODO : change the address
 export const contracts = {
@@ -20,3 +21,8 @@ export const contracts = {
   testErc1077: '0x758011e12E57a81f93D1e59AdF8867463349A54d',
   ensResolver: '0xc1EA41786094D1fBE5aded033B5370d51F7a3F96',
 };
+
+export const persistenceSettings = {
+  // TODO : change to synchronizeTabs when available (angularFire 5.2)
+  experimentalTabSynchronization:true
+}

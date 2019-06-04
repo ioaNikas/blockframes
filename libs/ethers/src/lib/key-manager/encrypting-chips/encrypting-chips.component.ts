@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { AuthQuery } from "@blockframes/auth";
+import { KeyManagerQuery } from "../+state";
 
 @Component({
-  selector: 'wallet-encrypting-chips',
+  selector: 'encrypting-chips',
   templateUrl: './encrypting-chips.component.html',
   styleUrls: ['./encrypting-chips.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,9 +11,9 @@ import { AuthQuery } from "@blockframes/auth";
 export class EncryptingChipsComponent implements OnInit {
   public encryting$: Observable<boolean>;
 
-  constructor(private auth: AuthQuery) {}
+  constructor(private query: KeyManagerQuery) {}
 
   ngOnInit() {
-    this.encryting$ = this.auth.encrytping$; // TODO USE WALLET STATE AFTER ISSUE #315
+    this.encryting$ = this.query.selectLoading();
   }
 }

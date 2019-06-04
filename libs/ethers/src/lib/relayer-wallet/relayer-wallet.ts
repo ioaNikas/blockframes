@@ -3,11 +3,11 @@ import { ethers, utils, Wallet, providers } from 'ethers';
 
 import { Provider } from '../provider/provider';
 import { Relayer } from '../relayer/relayer';
-import { Vault } from '../vault/vault';
+import { LocalStorageVault } from '../vault/vault';
 import { baseEnsDomain } from '@env';
 import { toASCII } from 'punycode';
 import { MatDialog } from '@angular/material';
-import { AskPasswordComponent } from '../wallet/ask-password/ask-password.component';
+// import { AskPasswordComponent } from '../wallet/ask-password/ask-password.component';
 import { BehaviorSubject } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -23,7 +23,7 @@ export class RelayerWallet implements ethers.Signer {
 
   constructor(
     private dialog: MatDialog,
-    private vault: Vault,
+    // private vault: LocalStorageVault,
     private relayer: Relayer,
     public provider: Provider
   ) {}
@@ -36,12 +36,12 @@ export class RelayerWallet implements ethers.Signer {
   }
 
   /** check if there is a keystore for the current user */
-  get hasKeystore$() {
-    return this.username$.pipe(
-      switchMap(username => this.vault.select(`${username}:web`)),// TODO remove hardcoded ":web"
-      map(json => !!json)
-    );
-  }
+  // get hasKeystore$() {
+  //   return this.username$.pipe(
+  //     switchMap(username => this.vault.select(`${username}:web`)),// TODO remove hardcoded ":web"
+  //     map(json => !!json)
+  //   );
+  // }
 
   /** Set signing key into process memory */
   private _setSigningKey(wallet: Wallet) {
@@ -49,24 +49,24 @@ export class RelayerWallet implements ethers.Signer {
   }
 
   /** Save the encryptedJSON into the vault */
-  private async saveIntoVault(wallet: Wallet, keyName: string, password: string) {
-    const encryptedJSON = await wallet.encrypt(password);
-    this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
-  }
+  // private async saveIntoVault(wallet: Wallet, keyName: string, password: string) {
+    // const encryptedJSON = await wallet.encrypt(password);
+    // this.vault.set(`${this.username}:${keyName}`, encryptedJSON);
+  // }
 
   /** Return the signing key or ask  */
   private async getSigningKey(): Promise<utils.SigningKey> {
     if (this.signingKey) return this.signingKey;
-    return this.askPassword()
+    // return this.askPassword()
   }
 
   /** Open a dialog to get the password */
-  private async askPassword() {
-    const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
-    const password = await ref.afterClosed().toPromise()
-    if (!password) throw new Error('No password provided');
-    return this.loadKey('web', password); // TODO : Don't hardcode "web"
-  }
+  // private async askPassword() {
+  //   const ref = this.dialog.open(AskPasswordComponent, { width: '250px' })
+  //   const password = await ref.afterClosed().toPromise()
+  //   if (!password) throw new Error('No password provided');
+  //   return this.loadKey('web', password); // TODO : Don't hardcode "web"
+  // }
 
   private _requireUsername() {
     if (!this.username) throw new Error('the wallet\'s username is undefined, please call setUsername() before this function !');
@@ -81,26 +81,16 @@ export class RelayerWallet implements ethers.Signer {
     return privateKey;
   }
 
-  /**
-   * Convert email to username and sanitize it:
-   * convert to lower case punycode and replace special chars by their ASCII code
-   * @example `漢micHel+9@exemple.com` -> `xn--michel439-2c2s`
-   */
-  public setUsername(email: string) {
-    this.username = toASCII(email.split('@')[0]).toLowerCase()
-      .split('')
-      .map(char => /[^\w\d-.]/g.test(char) ? char.charCodeAt(0) : char) // replace every non a-z or 0-9 chars by their ASCII code : '?' -> '63'
-      .join('');
-  }
+  
 
   /** Load a key from an encrypted JSON */
   public async loadKey(keyName: string, password: string) {
     try {
       this._requireUsername();
-      const json = await this.vault.get(`${this.username}:${keyName}`);
-      if (!json) throw new Error(`no key named "${this.username}:${keyName}" in local storage`);
-      const wallet = await Wallet.fromEncryptedJson(json, password);
-      this._setSigningKey(wallet);
+      // const json = await this.vault.get(`${this.username}:${keyName}`);
+      // if (!json) throw new Error(`no key named "${this.username}:${keyName}" in local storage`);
+      // const wallet = await Wallet.fromEncryptedJson(json, password);
+      // this._setSigningKey(wallet);
       return this.signingKey;
     } catch (err) {
       throw new Error(err);
@@ -111,7 +101,7 @@ export class RelayerWallet implements ethers.Signer {
     this._requireUsername();
     const wallet = new Wallet(privateKey);
     const json = await wallet.encrypt(password);
-    await this.vault.set(`${this.username}:web`, json); // TODO remove hardcoded ":web"
+    // await this.vault.set(`${this.username}:web`, json); // TODO remove hardcoded ":web"
   }
 
   /** Create a key from a mnemonic */
@@ -119,16 +109,16 @@ export class RelayerWallet implements ethers.Signer {
     this._requireUsername();
     const wallet = Wallet.fromMnemonic(mnemonic);
     this._setSigningKey(wallet);
-    this.saveIntoVault(wallet, keyName, password);
+    // this.saveIntoVault(wallet, keyName, password);
   }
 
   /** Create a key and store it into the vault */
   public async createLocalKey(keyName: string, password: string, email?: string) {
-    if(email) this.setUsername(email);
+    // if(email) this.setUsername(email);
     this._requireUsername();
     const wallet = Wallet.createRandom();
     this._setSigningKey(wallet);
-    this.saveIntoVault(wallet, keyName, password);
+    // this.saveIntoVault(wallet, keyName, password);
   }
 
   /** Deploy a new ERC1077 contract with the current key */
@@ -189,7 +179,7 @@ export class RelayerWallet implements ethers.Signer {
     });
     return utils.formatEther(balance);
   }
-  
+
   // TODO
   // public async balance$() {
   //   this._requireUsername();

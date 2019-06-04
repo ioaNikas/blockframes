@@ -1,9 +1,19 @@
 import { db, functions } from "./firebase";
 import * as backup from './backup';
 
+///////////////
+// VARIABLES //
+///////////////
+
+// String refers to svg icon name
+export const APP_DELIVERY_ICON = 'media_delivering';
+export const APP_MOVIE_ICON = 'media_financiers';
+
 ////////////////
 // INTERFACES //
 ////////////////
+
+// TODO: Figure out how we can access our front models
 
 export interface Organization {
   id: string;
@@ -19,6 +29,7 @@ export interface Stakeholder {
 export interface Delivery {
   id: string;
   movieId: string;
+  processedId: string;
 }
 
 export interface Movie {
@@ -35,6 +46,18 @@ export interface Material {
   category: string;
   deliveriesIds: string[];
   state: string;
+}
+
+export interface SnapObject {
+  movieTitle: string;
+  docID: DocID;
+  count: number;
+  org: Organization;
+}
+
+export interface DocID {
+  id: string,
+  type : 'movie' | 'delivery' | 'material'
 }
 
 ////////////////////////////////////
@@ -91,4 +114,16 @@ export function onDocumentCreate(docPath: string, fn: Function) {
   return functions.firestore
   .document(docPath)
   .onCreate(backup.skipWhenRestoring(fn));
+}
+
+////////////////////
+// MISC FUNCTIONS //
+////////////////////
+
+/**
+ * Checks properties of two material to tell if they are the same or not.
+ */
+export function isTheSame(matA: Material, matB: Material): boolean {
+  const getProperties = ({value, description, category}: Material) => ({ value, description, category });
+  return JSON.stringify(getProperties(matA)) === JSON.stringify(getProperties(matB));
 }

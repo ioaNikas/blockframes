@@ -1,6 +1,5 @@
 import { flatten, uniqBy } from 'lodash';
 import { db, functions } from './firebase';
-import { APP_DELIVERY_ICON } from './delivery';
 import { triggerNotifications, prepareNotification } from './notify';
 import { getDocument, getOrgsOfDelivery, Organization, Material, Movie } from './utils';
 
@@ -51,11 +50,11 @@ export const onMaterialUpdate = async (
         }, [])
         .map((userId: string) =>
           prepareNotification({
-            app: APP_DELIVERY_ICON,
             message: `Material : ${material.value} from movie : ${
               movie.title.original
             } is now in state : ${material.state}`,
             userId,
+            docID: {id: material.id, type: 'material'},
             path: `/layout/${movie.id}/view/${material.deliveriesIds[0]}`
             // mocked path using first delivery in array
           })
