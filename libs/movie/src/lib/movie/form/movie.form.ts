@@ -1,4 +1,4 @@
-import { AbstractFormControls, AbstractFormGroup, StringControl } from '@blockframes/ui';
+import { AbstractFormControls, AbstractFormGroup, StringControl, YearControl } from '@blockframes/ui';
 import { Injectable } from '@angular/core';
 import { Validators, FormArray, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material';
@@ -9,17 +9,17 @@ export class MovieFormControls extends AbstractFormControls{
     super();
 
     this.controls =  {
-      originalTitle: new StringControl(''),
-      internationalTitle: new StringControl(''),
-      directorName: new StringControl(''),
+      originalTitle: new StringControl('', false, [Validators.required]),
+      internationalTitle: new StringControl('', false, [Validators.required]),
+      directorName: new StringControl('', false, [Validators.required]),
       poster: new StringControl(''),
-      productionYear: new StringControl(''),
+      productionYear: new YearControl(''),
       types:  new StringControl(''),
       genres:  new StringControl(''),
       originCountry:  new StringControl(''),
       coProducerCountries:  new StringControl(''),
       languages:  new StringControl(''),
-      status:  new StringControl(''),
+      status:  new StringControl('', false, [Validators.required]),
       logline:  new StringControl('', false, [Validators.maxLength(180)]),
       synopsis: new StringControl('', false, [Validators.maxLength(500)]),
       keywords: new FormArray([]),
