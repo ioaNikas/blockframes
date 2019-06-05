@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input} from '@angular/core';
-import { Material } from '../+state';
+import { Material } from '../../+state';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -11,7 +11,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class MaterialTemplateFormComponent implements OnInit {
   @Input() material: Material;
   @Output() update = new EventEmitter<Material>();
-  @Output() cancelForm = new EventEmitter();
+  @Output() canceled = new EventEmitter();
 
   public form = new FormGroup({
     value: new FormControl(),
@@ -35,6 +35,6 @@ export class MaterialTemplateFormComponent implements OnInit {
   }
 
   public cancel() {
-    this.cancelForm.emit();
+    this.canceled.emit();
   }
 }

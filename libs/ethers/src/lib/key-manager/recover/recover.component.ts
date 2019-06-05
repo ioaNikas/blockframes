@@ -9,6 +9,8 @@ export interface ImportKeyData {
   ensDomain: string,
 }
 
+type ImportType = 'mnemonic' | 'private-key';
+
 @Component({
   selector: 'key-manager-recover',
   templateUrl: './recover.component.html',
@@ -33,21 +35,30 @@ export class RecoverComponent implements OnInit {
     this.dialog.close(false);
   }
 
-  async recover() {
+  async recover(importType: ImportType) {
     if (!this.form.valid) {
       this.snackBar.open('Invalid values', 'close', { duration: 1000 });
       this.dialog.close(false);
       return;
     }
-    const { mnemonic, privateKey, password } = this.form.value;
-    if (!!mnemonic) {
-      this.service.importFromMnemonic(this.data.ensDomain, mnemonic, password);
-    } else if (!!privateKey) {
-      this.service.importFromPrivateKey(this.data.ensDomain, privateKey, password);
-    } else {
-      this.dialog.close(false);
-      throw new Error('There should be either a mnemonic or a private key but none was provided !');
+    const { importValue, password } = this.form.value;
+    switch (importType) {
+      case 'mnemonic':
+        this.service.importFromMnemonic(this.data.ensDomain, importValue, password);
+        break;
+      case 'private-key':
+        this.service.importFromPrivateKey(this.data.ensDomain, importValue, password);
+        break;
+      default:
+        this.dialog.close(false);
+        throw new Error('There should be either a mnemonic or a private key but none was provided !');
     }
+    this.dialog.close(true);
+  }
+
+  fromFile(event: Uint8Array) {
+    const jsonString = new TextDecoder('utf8').decode(event);
+    this.service.importFromJsonFile(jsonString);
     this.dialog.close(true);
   }
 }
