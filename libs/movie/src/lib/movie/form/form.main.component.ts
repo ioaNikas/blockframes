@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MovieForm } from './movie.form';
+import { FormControl } from '@angular/forms';
 import { default as staticModels } from '../staticModels';
-import { startWith, debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { Movie } from '../+state';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged, startWith, debounceTime, map } from 'rxjs/operators';
 
 interface StaticModel {
   label: string;
@@ -17,10 +17,6 @@ interface StaticModel {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormMainComponent implements OnInit {
-  
-  @Input() movieForm: FormGroup;
-  @Input() movie: Movie;
-  @Input() currentFormValue: any;
 
   public staticModels: any;
   public countriesFilterCtrl: FormControl = new FormControl();
@@ -31,8 +27,8 @@ export class FormMainComponent implements OnInit {
   public languages$: Observable<StaticModel[]>;
   public genres$: Observable<StaticModel[]>;
   public audiovisualTypes$: Observable<StaticModel[]>;
-  
-  constructor() {}
+
+  constructor(public form: MovieForm) {}
 
   ngOnInit() {
     this.staticModels = staticModels;
@@ -55,9 +51,4 @@ export class FormMainComponent implements OnInit {
       map(name => model.filter(item => item.label.toLowerCase().indexOf(name.toLowerCase()) > -1))
     )
   }
-
-  public setPoster(poster: string) {
-    this.movieForm.patchValue({ poster });
-  }
-
 }

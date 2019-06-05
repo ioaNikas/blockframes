@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MovieForm } from './movie.form';
 
 @Component({
   selector: 'movie-form-promotional-section',
@@ -9,28 +9,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder } from '@angular/forms';
 })
 export class FormPromotionalComponent {
 
-  @Input() movieForm: FormGroup;
-  @Input() images: FormArray;
-  @Input() promotionalElements: FormArray;
-  @Input() removeFormControl: any;
-  @Input() addFormControl: any;
-  @Input() currentFormValue: any;
-
   constructor(
-    private builder: FormBuilder,
+    public form: MovieForm
   ) {}
-
-  public setImage(image: string, index: number): void {
-    this.images.controls[index].setValue(image);
-  }
-
-  public addImage(): void {
-    this.addFormControl(new FormControl(''), 'images');
-  }
-
-  public addPromotionalElement(): void {
-    const defaultFormGroup = { label: '', url: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'promotionalElements');
-  }
-
 }

@@ -40,7 +40,6 @@ import { FormTeamComponent } from './form/form.team.component';
 import { FormPromotionalComponent } from './form/form.promotional.component';
 import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
-import { FormTestComponent} from './form/form.test.component';
 
 import { MovieRoutingModule } from './movie-routing.module';
 import { AngularFireModule } from '@angular/fire';
@@ -61,7 +60,6 @@ import { MovieForm } from './form/movie.form';
     FormStoryComponent,
     ListComponent,
     ViewComponent,
-    FormTestComponent,
     TitleFormComponent,
     FormMainComponent,
     FormTeamComponent,
