@@ -1,7 +1,7 @@
-<div [formGroup]="movieForm">
+<div [formGroup]="form">
   <!-- CREDITS -->
   <h3> Credits </h3>
-  <div formArrayName="credits" *ngFor="let credit of movieCredits.controls; let i = index;">
+  <div formArrayName="credits" *ngFor="let credit of form.movieCredits.controls; let i = index;">
     <div [formGroupName]="i" class="full-width">
       <mat-form-field class="small-margin">
         <input matInput formControlName="firstName" placeholder="First Name">
@@ -19,12 +19,12 @@
       <button mat-icon-button color="primary" (click)="addCredit()">
         <mat-icon>add_circle</mat-icon>
       </button>
-      <button mat-icon-button color="primary" (click)="removeFormControl(i, 'movieCredits')">
+      <button mat-icon-button color="primary" (click)="form.removeFormControl(i, 'movieCredits')">
         <mat-icon>delete_circle</mat-icon>
       </button>
     </div>
   </div>
-  <div *ngIf="movieCredits.controls.length == 0">
+  <div *ngIf="form.movieCredits.controls.length == 0">
     <button mat-icon-button color="primary" (click)="addCredit()">
       <mat-icon>add_circle</mat-icon>
     </button>

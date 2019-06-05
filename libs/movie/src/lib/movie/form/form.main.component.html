@@ -1,4 +1,4 @@
-<div [formGroup]="movieForm">
+<div [formGroup]="form">
   <!-- TITLES -->
   <h3> Titles </h3>
   <mat-form-field class="full-width">
@@ -17,8 +17,8 @@
   <!-- POSTER -->
   <h3> Poster </h3>
   <mat-card class="movie-poster-thumbnail mat-elevation-z0">
-    <ng-container *ngIf="currentFormValue('poster'); else fileUpload">
-      <img mat-card-image [src]="currentFormValue('poster')">
+    <ng-container *ngIf="form.currentFormValue('poster'); else fileUpload">
+      <img mat-card-image [src]="form.currentFormValue('poster')">
       <mat-card-actions>
         <button mat-raised-button color="warn" (click)="setPoster('')">
           <mat-icon>delete_circle</mat-icon> Remove
@@ -30,7 +30,7 @@
         accept="['.jpg', '.png']"
         path='test'
         [types]="['image/jpeg', 'image/png']"
-        (storeUploaded)="setPoster($event)"
+        (storeUploaded)="form.setPoster($event)"
       ></file-upload>
     </ng-template>
   </mat-card>
