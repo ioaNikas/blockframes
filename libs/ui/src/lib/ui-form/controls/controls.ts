@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { emailValidators, passwordValidators, stringValidators } from './validators';
+import { emailValidators, passwordValidators, stringValidators, yearValidators } from './validators';
 
 export class EmailControl extends FormControl{
   constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
@@ -28,5 +28,11 @@ export class MnemonicControl extends FormControl{
 export class StringControl extends FormControl{
   constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
     super({ value, disabled }, validators !== undefined ? validators : stringValidators);
+  }
+}
+
+export class YearControl extends FormControl{
+  constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
+    super({ value, disabled }, validators !== undefined ? validators : yearValidators);
   }
 }

@@ -15,6 +15,7 @@ export class StringComponent  {
   @Input() name = 'default';
   @Input() required = false;
   @Input() matcher = false;
+  @Input() class = '';
   
   constructor() {}
 }

@@ -21,3 +21,7 @@ export const passwordValidators = [
 export const stringValidators = [
 
 ];
+
+export const yearValidators = [
+  Validators.pattern("^[1-2][0-9]{3}$"),
+];

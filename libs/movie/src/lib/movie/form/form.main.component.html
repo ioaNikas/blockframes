@@ -1,18 +1,11 @@
 <div [formGroup]="form">
   <!-- TITLES -->
   <h3> Titles </h3>
-  <mat-form-field class="full-width">
-    <input matInput formControlName="originalTitle" placeholder="Original title">
-  </mat-form-field>
-
-  <mat-form-field class="full-width">
-    <input matInput formControlName="internationalTitle" placeholder="International title">
-  </mat-form-field>
-
+  <input-string class="full-width" required=true [form]="form" placeholder="Original title" name="originalTitle"></input-string>
+  <input-string class="full-width" required=true [form]="form" placeholder="International title" name="internationalTitle"></input-string>
+  
   <h3> Directed By </h3>
-  <mat-form-field class="full-width">
-    <input matInput formControlName="directorName" placeholder="Director name">
-  </mat-form-field>
+  <input-string class="full-width" required=true [form]="form" placeholder="Director name" name="directorName"></input-string>
 
   <!-- POSTER -->
   <h3> Poster </h3>
@@ -35,9 +28,7 @@
     </ng-template>
   </mat-card>
   <h3> Production </h3>
-  <mat-form-field class="full-width">
-    <input matInput formControlName="productionYear" placeholder="Production year">
-  </mat-form-field>
+  <input-string class="full-width" type="number" [form]="form" placeholder="Production year" name="productionYear"></input-string>
 
   <!-- AUDIOVISUAL TYPES -->
   <h3> Types </h3>
