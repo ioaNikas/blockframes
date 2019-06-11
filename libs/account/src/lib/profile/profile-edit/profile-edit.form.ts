@@ -2,7 +2,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AbstractFormControls, EmailControl } from '@blockframes/ui';
 
 
-export class ProfilEditFormControls extends AbstractFormControls{
+export class ProfileFormControls extends AbstractFormControls{
 
   constructor(user) {
     super();
@@ -21,7 +21,7 @@ export class ProfileForm extends FormGroup {
   protected form : AbstractFormControls;
 
   constructor(data?: any, controls? : any, validators?: any ) {
-    const f = new ProfilEditFormControls(data);
+    const f = new ProfileFormControls(data);
     super(
       controls !== undefined ? controls : f.controls,
       validators !== undefined ? validators : f.validators
