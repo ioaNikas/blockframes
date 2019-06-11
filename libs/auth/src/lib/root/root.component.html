@@ -4,7 +4,7 @@
     <h1>Sign in</h1>
     <form [formGroup]="signinForm" (ngSubmit)="signin()" fxLayout="column">
       <input-email [form]="signinForm"></input-email>
-      <input-password [form]="signinForm" [showHint]=false name='pwd'></input-password>
+      <input-password [form]="signinForm" [showHint]=false></input-password>
       <div fxLayout="row" fxLayoutAlign="end center">
         <button mat-raised-button color="primary">Signin</button>
       </div>
@@ -16,7 +16,7 @@
     <h1>Sign Up</h1>
     <form [formGroup]="signupForm" (ngSubmit)="signup()" fxLayout="column">
       <input-email [form]="signupForm"></input-email>
-      <form-group-password-confirm [form]="signupForm" password='pwd'></form-group-password-confirm>
+      <form-group-password-confirm [form]="signupForm"></form-group-password-confirm>
       <div fxLayout="row" fxLayoutAlign="end center">
         <button mat-raised-button color="primary">Signup</button>
       </div>

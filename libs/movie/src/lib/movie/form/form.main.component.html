@@ -13,7 +13,7 @@
     <ng-container *ngIf="form.currentFormValue('poster'); else fileUpload">
       <img mat-card-image [src]="form.currentFormValue('poster')">
       <mat-card-actions>
-        <button mat-raised-button color="warn" (click)="setPoster('')">
+        <button mat-raised-button color="warn" (click)="form.setPoster('')">
           <mat-icon>delete_circle</mat-icon> Remove
         </button>
       </mat-card-actions>

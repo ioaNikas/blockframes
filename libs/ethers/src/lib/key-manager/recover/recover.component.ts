@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { KeyManagerService } from '../+state';
 import { RecoverForm } from '../forms/recover.form';
-import { XorControlsStateMatcher } from '@blockframes/ui';
+import { XorControlsStateMatcher } from '@blockframes/utils';
 
 export interface ImportKeyData {
   ensDomain: string,
