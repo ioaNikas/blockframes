@@ -34,7 +34,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.user$ = this.authQuery.user$;
-
+    // @todo use snapshot instead of observable #438
     this.user$.pipe(takeWhile(_ => this.alive))
     .subscribe(user => {
       if (user !== null ) {
