@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { default as staticModels } from '../staticModels';
+import { MovieForm } from './movie.form';
 
 @Component({
   selector: 'movie-form-team-section',
@@ -9,16 +10,12 @@ import { default as staticModels } from '../staticModels';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormTeamComponent implements OnInit {
-  
-  @Input() movieForm: FormGroup;
-  @Input() movieCredits: FormArray;
-  @Input() removeFormControl: any;
-  @Input() addFormControl: any;
 
   public staticModels: any;
 
   constructor(
     private builder: FormBuilder,
+    public form: MovieForm
   ) {}
 
   ngOnInit() {
@@ -27,7 +24,7 @@ export class FormTeamComponent implements OnInit {
 
   public addCredit(): void {
     const defaultFormGroup = { firstName: '', lastName: '', creditRole: ''};
-    this.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
+    this.form.addFormControl(this.builder.group(defaultFormGroup), 'movieCredits');
   }
 
 }

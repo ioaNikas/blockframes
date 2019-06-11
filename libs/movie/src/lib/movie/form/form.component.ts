@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { createMovie, Movie, MovieQuery, MovieService } from '../+state';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { createMovie, MovieQuery, MovieService } from '../+state';
+import { MatSnackBar } from '@angular/material';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { Router } from '@angular/router';
+import { MovieForm } from './movie.form';
 
 @Component({
   selector: 'movie-form',
@@ -14,112 +14,58 @@ import { Router } from '@angular/router';
 })
 export class FormComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin;
-  public movieForm: FormGroup;
-  public movie: Movie;
+  navLinks: any[];
+  activeLinkIndex = -1; 
 
   constructor(
     private query: MovieQuery,
     private service: MovieService,
-    private builder: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
+    public form: MovieForm,
   ) {
+
+    this.navLinks = [
+      {
+        label: 'Main Informations',
+        link: './main',
+        index: 0
+      }, {
+        label: 'Story description',
+        link: './story',
+        index: 1
+      }, {
+        label: 'Movie Team',
+        link: './team',
+        index: 2
+      }, {
+        label: 'Promotional elements',
+        link: './promo',
+        index: 3
+      }, 
+    ];
   }
 
   ngOnInit() {
-    this.movie = this.query.getActive();
-    this.movieForm = this.builder.group({
-      originalTitle: [this.movie.title.original],
-      internationalTitle: [this.movie.title.international],
-      directorName: [this.movie.directorName],
-      poster: [this.movie.poster],
-      productionYear: [this.movie.productionYear],
-      types: [this.movie.types],
-      genres: [this.movie.genres],
-      originCountry: [this.movie.originCountry],
-      coProducerCountries: [this.movie.coProducerCountries],
-      languages: [this.movie.languages],
-      status: [this.movie.status],
-      logline: [this.movie.logline, Validators.maxLength(180)],
-      synopsis: [this.movie.synopsis, Validators.maxLength(500)],
-      keywords: this.builder.array([]),
-      credits: this.builder.array([]),
-      images: this.builder.array([]),
-      promotionalElements: this.builder.array([]),
+
+    this.router.events.subscribe(() => {
+      this.activeLinkIndex = this.navLinks.indexOf(this.navLinks.find(tab => tab.link === '.' + this.router.url));
     });
-    
+
     // Akita Persist Form 
-    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.movieForm);
+    this.persistForm = new PersistNgFormPlugin(this.query, createMovie).setForm(this.form);
 
-    this.populateForm();
-    
-    /* Do not be afraid great Smurf, this is a temporary hack ;)*/
-    this.movieForm.get('originalTitle').setValue('undefined');
-    this.movieForm.get('originalTitle').setValue(this.movie.title.original);
-  }
-
-  private populateForm() {
-    // Populate custom fields
-    if (this.movie.keywords && this.movie.keywords.length) {
-      this.movie.keywords.forEach((keyword) => {
-        this.addFormControl(new FormControl(keyword), 'keywords');
-      })
-    }
-
-    if (this.movie.credits && this.movie.credits.length) {
-      this.movie.credits.forEach((credit) => {
-        this.addFormControl(this.builder.group(credit), 'movieCredits');
-      })
-    }
-
-    if (this.movie.images && this.movie.images.length) {
-      this.movie.images.forEach((image) => {
-        this.addFormControl(new FormControl(image), 'images');
-      })
-    }
-
-    if (this.movie.promotionalElements && this.movie.promotionalElements.length) {
-      this.movie.promotionalElements.forEach((element) => {
-        this.addFormControl(this.builder.group(element), 'promotionalElements');
-      })
-    }
-  }
-
-  /* Getters for all form inputs */
-  public currentFormValue(attr: string, index?: number) {
-    if (index !== undefined) {
-      const formArray = this.movieForm.get(attr) as FormArray;
-      return formArray.controls[index] !== null ? formArray.controls[index].value : '' as String;
-    } else {
-      const input = this.movieForm.get(attr);
-      return input !== null ? input.value: '' as String;
-    }
-  }
-
-  public get keywords() {
-    return this.movieForm.get('keywords') as FormArray;
-  }
-
-  public get movieCredits() {
-    return this.movieForm.get('credits') as FormArray;
-  }
-
-  public get promotionalElements() {
-    return this.movieForm.get('promotionalElements') as FormArray;
-  }
-
-  public get images() {
-    return this.movieForm.get('images') as FormArray;
+    this.form.populate(this.query.getActive());
   }
 
   /* Saves the form */
   public submit() {
-    if (!this.movieForm.valid) {
+    if (!this.form.valid) {
       this.snackBar.open('form invalid', 'close', { duration: 2000 });
       throw new Error('Invalid form');
     } else {
-      this.snackBar.open(`${this.movieForm.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
-      this.service.update(this.query.getActiveId(), this.preUpdate({ ...this.movieForm.value }));
+      this.snackBar.open(`${this.form.get('originalTitle').value} saved.`, 'close', { duration: 2000 });
+      this.service.update(this.query.getActiveId(), this.preUpdate({ ...this.form.value }));
     }
   }
 
@@ -141,20 +87,12 @@ export class FormComponent implements OnInit, OnDestroy {
 
   private clear() {
     this.persistForm.reset();
-    this.movieForm.reset();
+    this.form.reset();
   }
 
   public cancel() {
     this.clear();
     this.router.navigateByUrl('');
-  }
-
-  public addFormControl(value: FormControl | FormGroup, key: string): void {
-    this[key].push(value);
-  }
-
-  public removeFormControl(index: number, key: string): void {
-    this[key].removeAt(index);
   }
 
   ngOnDestroy() {

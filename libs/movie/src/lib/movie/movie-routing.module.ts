@@ -6,11 +6,14 @@ import { ContainerComponent } from './form/container.component';
 import { HomeComponent } from './home/home.component';
 import { ViewComponent } from './view/view.component';
 import { TitleFormComponent } from './title-form/title-form.component';
+import { FormMainComponent } from './form/form.main.component';
+import { FormStoryComponent } from './form/form.story.component';
+import { FormTeamComponent } from './form/form.team.component';
+import { FormPromotionalComponent } from './form/form.promotional.component';
 
 // Guards
 import { StakeholderViewComponent } from '../stakeholder/view/view.component';
 import { MovieActiveGuard } from './guards/movie-active.guard';
-
 
 export const routes: Routes = [
   { path: '',  component: HomeComponent },
@@ -25,6 +28,13 @@ export const routes: Routes = [
     path: 'form/:movieId',
     component: ContainerComponent,
     canActivate: [MovieActiveGuard],
+    children: [
+      { path: '', redirectTo: 'main', pathMatch: 'full' },
+      { path: 'main',component: FormMainComponent },
+      { path: 'story',component: FormStoryComponent },
+      { path: 'team',component: FormTeamComponent },
+      { path: 'promo',component: FormPromotionalComponent },
+    ]
   },
   {
     path: 'form/:movieId/teamwork',

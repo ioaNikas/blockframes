@@ -50,7 +50,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HomeEmptyComponent } from './home-empty/home-empty.component';
 import { DelayedWrapperComponent } from './delayed-wrapper/delayed-wrapper.component';
-
+import { MovieForm } from './form/movie.form';
 
 @NgModule({
   declarations: [
@@ -104,6 +104,7 @@ import { DelayedWrapperComponent } from './delayed-wrapper/delayed-wrapper.compo
   ],
   providers: [
     { provide: FirestoreSettingsToken, useValue: {} },// TODO: Remove when @angular/fire is updated
+    MovieForm
   ],
   entryComponents: [TitleFormComponent],
   exports: [TitleFormComponent],

@@ -1,4 +1,4 @@
-<div [formGroup]="movieForm">
+<div [formGroup]="form">
   <!-- LOGLINE -->
   <h3> Logline </h3>
   <mat-form-field class="full-width">
@@ -17,15 +17,15 @@
   <h3> Keywords </h3>
   <mat-form-field class="full-width">
     <mat-chip-list #chipList>
-      <mat-chip *ngFor="let keyword of keywords.controls ; let i = index;" [selectable]="true" [removable]="true" (removed)="removeFormControl(i, 'keywords')">
+      <mat-chip *ngFor="let keyword of form.keywords.controls ; let i = index;" [selectable]="true" [removable]="true" (removed)="form.removeFormControl(i, 'keywords')">
         {{ keyword.value }}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>
       <input placeholder="Keywords"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="true"
-              (matChipInputTokenEnd)="addChip($event, 'keywords')">
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="form.addChip($event, 'keywords')">
     </mat-chip-list>
   </mat-form-field>
 </div>
