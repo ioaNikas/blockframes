@@ -1,11 +1,5 @@
 import { Validators, FormGroup, ValidatorFn, FormControl } from '@angular/forms';
-
-export const rules = {
-  password : {
-    min: 6,
-    max: 24
-  }
-}
+import { rules } from './rules';
 
 export const emailValidators = [
   Validators.required,

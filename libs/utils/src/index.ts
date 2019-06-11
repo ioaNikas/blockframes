@@ -5,5 +5,5 @@ export * from './lib/abstract-state-guard';
 export * from './lib/helpers';
 export * from './lib/form/entity';
 export * from './lib/form/controls';
-export * from './lib/form/validators';
+export * from './lib/form/validators/validators';
 export * from './lib/form/matchers';

@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { emailValidators, passwordValidators, stringValidators, yearValidators } from './validators';
+import { emailValidators, passwordValidators, stringValidators, yearValidators } from './validators/validators';
 
 /* Checks if input is a valid email */
 export class EmailControl extends FormControl{

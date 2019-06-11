@@ -1,9 +1,9 @@
 import { FormControl, FormGroup, FormArray } from "@angular/forms";
-import { rules } from "./validators";
+import { rules } from "./validators/rules";
 
 // Generic Control 
 export type EntityControl<T> = {
-  [key in keyof T]: FormControl | FormArray
+  [key in keyof T]: FormControl | FormArray | FormGroup
 }
 
 // Generic Entities
@@ -14,13 +14,13 @@ export class EntityForm<T> extends FormGroup {
 }
 
 export class EntityRulesForm<T> extends EntityForm<T> {
-  public rules = rules;
+  public validatorsRules = rules;
   
   constructor(controls: EntityControl<T>, validators?: any) {
     super(controls, validators)
   }
 
-  public getRules (ruleName: string) {
-    return this.rules[ruleName];
+  public getValidatorRules (ruleName: string) {
+    return this.validatorsRules[ruleName];
   }
 }
