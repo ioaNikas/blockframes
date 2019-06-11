@@ -18,7 +18,7 @@
         [form]="form"
         name= "mnemonic"
         placeholder= "Enter your Mnemonic"
-        matcher=true
+        [matcher]=xorControlsMatcher
       ></input-textarea>
       <form-group-password-confirm [form]="form"></form-group-password-confirm>
       <div fxLayout="row" fxLayoutAlign="end center">
@@ -35,7 +35,7 @@
         [form]="form"
         name= "privateKey"
         placeholder= "Enter your Private Key"
-        matcher=true
+        [matcher]=xorControlsMatcher
       ></input-string>
       <form-group-password-confirm [form]="form"></form-group-password-confirm>
       <div fxLayout="row" fxLayoutAlign="end center">

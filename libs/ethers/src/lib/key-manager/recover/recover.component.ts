@@ -4,6 +4,7 @@ import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 
 import { KeyManagerService } from '../+state';
 import { RecoverForm } from '../forms/recover.form';
+import { XorControlsStateMatcher } from '@blockframes/ui';
 
 export interface ImportKeyData {
   ensDomain: string,
@@ -19,6 +20,7 @@ type ImportType = 'mnemonic' | 'private-key';
 })
 export class RecoverComponent implements OnInit {
   form: RecoverForm;
+  public xorControlsMatcher: XorControlsStateMatcher;
 
   constructor(
     private service: KeyManagerService,
@@ -29,7 +31,9 @@ export class RecoverComponent implements OnInit {
 
   ngOnInit() {
     this.form = new RecoverForm();
+    this.xorControlsMatcher = new XorControlsStateMatcher('mnemonic','privateKey');
   }
+
 
   cancel() {
     this.dialog.close(false);

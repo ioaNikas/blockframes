@@ -1,12 +1,11 @@
-import { RepeatPasswordStateMatcher, PasswordControl } from '@blockframes/ui';
+import { PasswordControl } from '@blockframes/ui';
 import { SigninFormControls, SigninForm } from './signin.form';
 
 export class SignupFormControls extends SigninFormControls{
 
   constructor() {
     super();
-    const customPasswordFieldName = 'pwd';
-    this.passwordsMatcher = new RepeatPasswordStateMatcher(customPasswordFieldName);
+    const customPasswordFieldName = 'pwd'; // @todo use "password"
     this.controls.confirm = new PasswordControl('');
     this.validators.push(this.checkPasswords(customPasswordFieldName));
   }

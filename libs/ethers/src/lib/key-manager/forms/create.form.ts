@@ -1,11 +1,9 @@
-import { AbstractFormControls, PasswordControl, RepeatPasswordStateMatcher, AbstractFormGroup } from '@blockframes/ui';
+import { AbstractFormControls, PasswordControl, AbstractFormGroup } from '@blockframes/ui';
 
 export class CreateFormControls extends AbstractFormControls{
 
   constructor() {
     super();
-
-    this.passwordsMatcher = new RepeatPasswordStateMatcher();
 
     this.controls =  {
       password: new PasswordControl(''),

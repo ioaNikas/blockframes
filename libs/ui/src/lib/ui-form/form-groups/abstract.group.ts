@@ -7,12 +7,4 @@ export class AbstractFormGroup extends FormGroup {
   public getRules (ruleName: string) {
     return this.form.rules[ruleName];
   }
-
-  public getPasswordMatcher() {
-    return this.form.passwordsMatcher;
-  }
-
-  public getXorControlsMatcher() {
-    return this.form.xorControlsMatcher
-  }
 }
