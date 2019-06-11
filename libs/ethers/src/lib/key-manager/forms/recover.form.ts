@@ -3,18 +3,13 @@ import {
   PasswordControl,
   PrivateKeyControl,
   MnemonicControl,
-  RepeatPasswordStateMatcher,
-  AbstractFormGroup,
-  XorControlsStateMatcher
+  AbstractFormGroup
 } from '@blockframes/ui';
 
 export class RecoverFormControls extends AbstractFormControls{
 
   constructor() {
     super();
-
-    this.passwordsMatcher = new RepeatPasswordStateMatcher();
-    this.xorControlsMatcher = new XorControlsStateMatcher('mnemonic','privateKey');
 
     this.controls =  {
       privateKey: new PrivateKeyControl(''),

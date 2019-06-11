@@ -1,5 +1,5 @@
 <mat-form-field [formGroup]="form" [class]="class">
-  <input matInput [type]="type" [placeholder]="placeholder" [formControlName]="name" [required]="required" [errorStateMatcher]="matcher ? form.getXorControlsMatcher() : undefined"/>
+  <input matInput [type]="type" [placeholder]="placeholder" [formControlName]="name" [required]="required" [errorStateMatcher]="matcher ? matcher : undefined"/>
   <mat-error *ngIf="form.get(name).hasError('required')">
     {{ name }} is <strong>required</strong>
   </mat-error>

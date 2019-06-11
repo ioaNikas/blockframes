@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material';
 
 @Component({
   selector: 'input-password',
@@ -13,7 +14,7 @@ export class PasswordComponent  {
   @Input() showHint = true;
   @Input() name = 'password';
   @Input() placeholder = 'Password';
-  @Input() matcher = false;
+  @Input() matcher: ErrorStateMatcher;
   
   constructor() {}
 }

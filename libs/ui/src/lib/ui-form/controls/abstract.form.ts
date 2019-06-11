@@ -35,8 +35,6 @@ export class XorControlsStateMatcher implements ErrorStateMatcher {
 export class AbstractFormControls {
   public controls: any;
   public validators  = [];
-  public passwordsMatcher: RepeatPasswordStateMatcher;
-  public xorControlsMatcher: XorControlsStateMatcher;
 
   public rules = rules;
 
