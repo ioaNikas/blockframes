@@ -10,14 +10,14 @@ export class ProfilEditFormControls extends AbstractFormControls{
     this.controls =  {
       uid: new FormControl({ value: user.uid, disabled: true }),
       email: new EmailControl(user.email, true),
-      first_name: new FormControl(user.firstName, [Validators.required]),
-      last_name: new FormControl(user.lastName, [Validators.required]),
+      firstName: new FormControl(user.firstName, [Validators.required]),
+      lastName: new FormControl(user.lastName, [Validators.required]),
       biography: new FormControl(user.biography),
     };
   }
 }
 
-export class ProfilEditForm extends FormGroup {
+export class ProfileForm extends FormGroup {
   protected form : AbstractFormControls;
 
   constructor(data?: any, controls? : any, validators?: any ) {

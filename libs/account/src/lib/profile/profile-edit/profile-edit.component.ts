@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { takeWhile } from 'rxjs/operators';
 import { ProfileDeleteComponent } from '../profile-delete/profile-delete.component';
 
-import { ProfilEditForm } from './profile-edit.form';
+import { ProfileForm } from './profile-edit.form';
 
 @Component({
   selector: 'account-profile-edit',
@@ -19,7 +19,7 @@ import { ProfilEditForm } from './profile-edit.form';
 })
 export class ProfileEditComponent implements OnInit, OnDestroy {
 
-  public accountForm: ProfilEditForm;
+  public accountForm: ProfileForm;
   public persistForm: PersistNgFormPlugin<AccountForm>;
   public user$: Observable<User>;
   private alive = true;
@@ -39,7 +39,7 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     this.user$.pipe(takeWhile(_ => this.alive))
     .subscribe(user => {
       if (user !== null ) {
-        this.accountForm = new ProfilEditForm(user);
+        this.accountForm = new ProfileForm(user);
         this.persistForm = new PersistNgFormPlugin(this.authQuery, 'accountForm');
         this.persistForm.setForm(this.accountForm);
       }
@@ -53,9 +53,9 @@ export class ProfileEditComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const { first_name, last_name, biography } = this.accountForm.value;
+      const { firstName, lastName, biography } = this.accountForm.value;
 
-      this.authService.update(this.authQuery.user.uid, { firstName: first_name, lastName: last_name, biography })
+      this.authService.update(this.authQuery.user.uid, { firstName, lastName, biography })
       .then(() => {
         this.snackBar.open(`account updated`, 'close', { duration: 2000 });
         //this.accountForm.reset();
