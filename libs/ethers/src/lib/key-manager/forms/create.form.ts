@@ -11,14 +11,23 @@ interface Create {
   confirm: string
 }
 
-function createControls(entity?: Create): EntityControl<Create> {
+function createCreate(params?: Partial<Create>): Create {
   return {
-    password: new PasswordControl(entity? entity.password : ''),
-    confirm: new PasswordControl(entity? entity.confirm : ''),
+    password: '',
+    confirm: '',
+    ...(params || {})
+  } as Create
+}
+
+function createCreateControls(entity: Partial<Create>): EntityControl<Create> {
+  const create = createCreate(entity);
+  return {
+    password: new PasswordControl(create.password),
+    confirm: new PasswordControl(create.confirm),
   }
 }
 
-function createValidators(validators?: any[]): ValidatorFn[]{
+function createCreateValidators(validators?: any[]): ValidatorFn[]{
   if(validators && validators.length) {
     return validators;
   } else {
@@ -29,8 +38,8 @@ function createValidators(validators?: any[]): ValidatorFn[]{
 export class CreateForm extends EntityRulesForm<Create> {
   constructor(data?: Create, validators?: any[]) {
     super(
-      createControls(data),
-      createValidators(validators),
+      createCreateControls(data),
+      createCreateValidators(validators),
     )
   }
 }

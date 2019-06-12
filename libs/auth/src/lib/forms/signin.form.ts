@@ -10,15 +10,24 @@ interface SignIn {
   password: string
 }
 
-function createControls(entity?: SignIn): EntityControl<SignIn> {
+function createSignin(params?: Partial<SignIn>): SignIn {
   return {
-    email: new EmailControl(entity? entity.email : ''),
-    password: new PasswordControl(entity? entity.password : ''),
+    email: '',
+    password: '',
+    ...(params || {})
+  } as SignIn
+}
+
+function createSigninControls(entity: Partial<SignIn>): EntityControl<SignIn> {
+  const signin = createSignin(entity);
+  return {
+    email: new EmailControl(signin.email),
+    password: new PasswordControl(signin.password),
   }
 }
 
 export class SigninForm extends EntityRulesForm<SignIn> {
   constructor(data?: SignIn) {
-    super(createControls(data))
+    super(createSigninControls(data))
   }
 }

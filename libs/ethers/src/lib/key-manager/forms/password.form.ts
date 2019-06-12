@@ -4,14 +4,22 @@ interface Password {
   password: string 
 }
 
-function createControls(entity?: Password): EntityControl<Password> {
+function createPassword(params?: Partial<Password>): Password {
   return {
-    password: new PasswordControl(entity? entity.password : ''),
+    password: '',
+    ...(params || {})
+  } as Password
+}
+
+function createPasswordControls(entity: Partial<Password>): EntityControl<Password> {
+  const create = createPassword(entity);
+  return {
+    password: new PasswordControl(create.password),
   }
 }
 
 export class PasswordForm extends EntityRulesForm<Password> {
   constructor(data?: Password) {
-    super(createControls(data))
+    super(createPasswordControls(data))
   }
 }

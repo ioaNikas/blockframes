@@ -23,25 +23,49 @@ interface Movie {
   promotionalElements: any[],
 }
 
-function createControls(): EntityControl<Movie> {
+function createMovie(params?: Partial<Movie>): Movie {
   return {
-    originalTitle: new StringControl('', false, [Validators.required]),
-    internationalTitle: new StringControl('', false, [Validators.required]),
-    directorName: new StringControl('', false, [Validators.required]),
-    poster: new StringControl(''),
-    productionYear: new YearControl(''),
-    types:  new StringControl(''),
-    genres:  new StringControl(''),
-    originCountry:  new StringControl(''),
-    coProducerCountries:  new StringControl(''),
-    languages:  new StringControl(''),
-    status:  new StringControl('', false, [Validators.required]),
-    logline:  new StringControl('', false, [Validators.maxLength(180)]),
-    synopsis: new StringControl('', false, [Validators.maxLength(500)]),
-    keywords: new FormArray([]),
-    credits: new FormArray([]),
-    images: new FormArray([]),
-    promotionalElements: new FormArray([]),
+    originalTitle: '',
+    internationalTitle: '',
+    directorName: '',
+    poster: '',
+    productionYear: '',
+    types: '',
+    genres: '',
+    originCountry: '',
+    coProducerCountries: '',
+    languages: '',
+    status: '',
+    logline: '',
+    synopsis:'',
+    keywords: [],
+    credits: [],
+    images: [],
+    promotionalElements: [],
+    ...(params || {})
+  } as Movie
+}
+
+function createMovieControls(entity?: Partial<Movie>): EntityControl<Movie> {
+  const movie = createMovie(entity);
+  return {
+    originalTitle: new StringControl(movie.originalTitle, false, [Validators.required]),
+    internationalTitle: new StringControl(movie.internationalTitle, false, [Validators.required]),
+    directorName: new StringControl(movie.directorName, false, [Validators.required]),
+    poster: new StringControl(movie.poster),
+    productionYear: new YearControl(movie.productionYear),
+    types:  new StringControl(movie.types),
+    genres:  new StringControl(movie.genres),
+    originCountry:  new StringControl(movie.originCountry),
+    coProducerCountries:  new StringControl(movie.coProducerCountries),
+    languages:  new StringControl(movie.languages),
+    status:  new StringControl(movie.status, false, [Validators.required]),
+    logline:  new StringControl(movie.logline, false, [Validators.maxLength(180)]),
+    synopsis: new StringControl(movie.synopsis, false, [Validators.maxLength(500)]),
+    keywords: new FormArray(movie.keywords),
+    credits: new FormArray(movie.credits),
+    images: new FormArray(movie.images),
+    promotionalElements: new FormArray(movie.promotionalElements),
   }
 }
 
@@ -49,7 +73,7 @@ function createControls(): EntityControl<Movie> {
 export class MovieForm extends EntityForm<Movie> {
   protected builder : FormBuilder;
   constructor() {
-    super(createControls());
+    super(createMovieControls());
     this.builder = new FormBuilder;
   }
 

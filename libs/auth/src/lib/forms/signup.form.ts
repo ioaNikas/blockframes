@@ -13,15 +13,25 @@ interface SignUp {
   confirm: string
 }
 
-function createControls(entity?: SignUp): EntityControl<SignUp> {
+function createSignup(params?: Partial<SignUp>): SignUp {
   return {
-    email: new EmailControl(entity? entity.email : ''),
-    password: new PasswordControl(entity? entity.password : ''),
-    confirm: new PasswordControl(entity? entity.confirm : ''),
+    email: '',
+    password: '',
+    confirm: '',
+    ...(params || {})
+  } as SignUp
+}
+
+function createSignupControls(entity: Partial<SignUp>): EntityControl<SignUp> {
+  const singup = createSignup(entity);
+  return {
+    email: new EmailControl(singup.email),
+    password: new PasswordControl(singup.password),
+    confirm: new PasswordControl(singup.confirm),
   }
 }
 
-function createValidators(validators?: any[]): ValidatorFn[]{
+function createSignupValidators(validators?: any[]): ValidatorFn[]{
   if(validators && validators.length) {
     return validators;
   } else {
@@ -32,8 +42,8 @@ function createValidators(validators?: any[]): ValidatorFn[]{
 export class SignupForm extends EntityRulesForm<SignUp> {
   constructor(data?: SignUp, validators?: any[]) {
     super(
-      createControls(data),
-      createValidators(validators),
+      createSignupControls(data),
+      createSignupValidators(validators),
     )
   }
 }

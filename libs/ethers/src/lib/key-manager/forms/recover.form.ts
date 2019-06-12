@@ -16,16 +16,27 @@ interface Recover {
   confirm: string
 }
 
-function createControls(entity?: Recover): EntityControl<Recover> {
+function createRecover(params?: Partial<Recover>): Recover {
   return {
-    privateKey: new PrivateKeyControl(entity? entity.privateKey : ''),
-    mnemonic: new MnemonicControl(entity? entity.mnemonic : ''),
-    password: new PasswordControl(entity? entity.password : ''),
-    confirm: new PasswordControl(entity? entity.confirm : ''),
+    privateKey: '',
+    mnemonic: '',
+    password: '',
+    confirm: '',
+    ...(params || {})
+  } as Recover
+}
+
+function createRecoverControls(entity: Partial<Recover>): EntityControl<Recover> {
+  const recover = createRecover(entity);
+  return {
+    privateKey: new PrivateKeyControl(recover.privateKey),
+    mnemonic: new MnemonicControl(recover.mnemonic),
+    password: new PasswordControl(recover.password),
+    confirm: new PasswordControl(recover.confirm),
   }
 }
 
-function createValidators(validators?: any[]): ValidatorFn[]{
+function createRecoverValidators(validators?: any[]): ValidatorFn[]{
   if(validators && validators.length) {
     return validators;
   } else {
@@ -36,8 +47,8 @@ function createValidators(validators?: any[]): ValidatorFn[]{
 export class RecoverForm extends EntityRulesForm<Recover> {
   constructor(data?: Recover, validators?: any[]) {
     super(
-      createControls(data),
-      createValidators(validators),
+      createRecoverControls(data),
+      createRecoverValidators(validators),
     )
   }
 }
