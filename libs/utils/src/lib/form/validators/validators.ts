@@ -20,6 +20,17 @@ export const yearValidators = [
   Validators.pattern("^[1-2][0-9]{3}$"),
 ];
 
+export const ethereumPublicAddressValidators = [
+  Validators.pattern('^0x[0-9a-fA-F]{40}$'),
+];
+
+export const ethereumPrivateAddressValidators = [
+  Validators.pattern('^[0-9a-fA-F]{64}$'),
+];
+
+export const ethereumMnemonicValidators = [
+  //@todo
+];
 
 /** Require password and password confirm inputs to be the same */
 export function checkPasswords(password: string = 'password', confirm: string = 'confirm'): ValidatorFn {

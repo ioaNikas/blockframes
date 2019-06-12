@@ -2,10 +2,10 @@ import {
   PasswordControl,
   checkPasswords,
   requireMnemonicXorPrivateKey,
-  PrivateKeyControl,
-  MnemonicControl,
   EntityControl,
-  EntityRulesForm
+  EntityRulesForm,
+  EthereumMnemonicControl,
+  EthereumPrivateKeyControl
 } from '@blockframes/utils';
 import { ValidatorFn } from '@angular/forms';
 
@@ -29,8 +29,8 @@ function createRecover(params?: Partial<Recover>): Recover {
 function createRecoverControls(entity: Partial<Recover>): EntityControl<Recover> {
   const recover = createRecover(entity);
   return {
-    privateKey: new PrivateKeyControl(recover.privateKey),
-    mnemonic: new MnemonicControl(recover.mnemonic),
+    privateKey: new EthereumPrivateKeyControl(recover.privateKey),
+    mnemonic: new EthereumMnemonicControl(recover.mnemonic),
     password: new PasswordControl(recover.password),
     confirm: new PasswordControl(recover.confirm),
   }

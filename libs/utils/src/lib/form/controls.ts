@@ -1,5 +1,13 @@
 import { FormControl } from '@angular/forms';
-import { emailValidators, passwordValidators, stringValidators, yearValidators } from './validators/validators';
+import {
+  emailValidators,
+  passwordValidators,
+  stringValidators,
+  yearValidators,
+  ethereumPublicAddressValidators,
+  ethereumPrivateAddressValidators,
+  ethereumMnemonicValidators
+} from './validators/validators';
 
 /* Checks if input is a valid email */
 export class EmailControl extends FormControl{
@@ -16,16 +24,23 @@ export class PasswordControl extends FormControl{
 }
 
 /* Checks if input is a valid Ethereum private key */
-export class PrivateKeyControl extends FormControl{
+export class EthereumPrivateKeyControl extends FormControl{
   constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
-    super({ value, disabled }, validators !== undefined ? validators : stringValidators);
+    super({ value, disabled }, validators !== undefined ? validators : ethereumPrivateAddressValidators);
+  }
+}
+
+/* Checks if input is a valid Ethereum public key */
+export class EthereumPublicKeyControl extends FormControl{
+  constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
+    super({ value, disabled }, validators !== undefined ? validators : ethereumPublicAddressValidators);
   }
 }
 
 /* Checks if input is a valid Ethereum Mnemonic */
-export class MnemonicControl extends FormControl{
+export class EthereumMnemonicControl extends FormControl{
   constructor (value : string = '', disabled : boolean = false, validators? : any[]) {
-    super({ value, disabled }, validators !== undefined ? validators : stringValidators);
+    super({ value, disabled }, validators !== undefined ? validators : ethereumMnemonicValidators);
   }
 }
 
