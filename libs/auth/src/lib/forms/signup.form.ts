@@ -1,24 +1,39 @@
-import { PasswordControl } from '@blockframes/ui';
-import { SigninFormControls, SigninForm } from './signin.form';
+import {
+  EntityControl,
+  EntityRulesForm,
+  PasswordControl,
+  EmailControl,
+  checkPasswords
+} from '@blockframes/utils';
+import { ValidatorFn } from '@angular/forms';
 
-export class SignupFormControls extends SigninFormControls{
+interface SignUp {
+  email: string
+  password: string 
+  confirm: string
+}
 
-  constructor() {
-    super();
-    const customPasswordFieldName = 'pwd'; // @todo use "password"
-    this.controls.confirm = new PasswordControl('');
-    this.validators.push(this.checkPasswords(customPasswordFieldName));
+function createControls(entity?: SignUp): EntityControl<SignUp> {
+  return {
+    email: new EmailControl(entity? entity.email : ''),
+    password: new PasswordControl(entity? entity.password : ''),
+    confirm: new PasswordControl(entity? entity.confirm : ''),
   }
 }
 
-export class SignupForm extends SigninForm {
+function createValidators(validators?: any[]): ValidatorFn[]{
+  if(validators && validators.length) {
+    return validators;
+  } else {
+    return [checkPasswords()];
+  }
+}
 
-  constructor(controls? : any, validators?: any ) {
-    const f = new SignupFormControls();
+export class SignupForm extends EntityRulesForm<SignUp> {
+  constructor(data?: SignUp, validators?: any[]) {
     super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+      createControls(data),
+      createValidators(validators),
+    )
   }
 }

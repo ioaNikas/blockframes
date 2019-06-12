@@ -1,35 +1,31 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractFormControls, EmailControl } from '@blockframes/ui';
+import { Validators } from '@angular/forms';
+import {
+  EntityControl,
+  EntityForm,
+  EmailControl,
+  StringControl
+} from '@blockframes/utils';
 
+interface Profile {
+  uid: string
+  email: string
+  firstName: string 
+  lastName: string
+  biography: string
+}
 
-export class ProfileFormControls extends AbstractFormControls{
-
-  constructor(user) {
-    super();
-
-    this.controls =  {
-      uid: new FormControl({ value: user.uid, disabled: true }),
-      email: new EmailControl(user.email, true),
-      firstName: new FormControl(user.firstName, [Validators.required]),
-      lastName: new FormControl(user.lastName, [Validators.required]),
-      biography: new FormControl(user.biography),
-    };
+function createControls(entity: Profile): EntityControl<Profile> {
+  return {
+    uid: new StringControl(entity? entity.uid : '', true),
+    email: new EmailControl(entity? entity.email : '', true),
+    firstName: new StringControl(entity? entity.firstName : '', false, [Validators.required]),
+    lastName: new StringControl(entity? entity.lastName : '', false, [Validators.required]),
+    biography: new StringControl(entity? entity.biography : ''),
   }
 }
 
-export class ProfileForm extends FormGroup {
-  protected form : AbstractFormControls;
-
-  constructor(data?: any, controls? : any, validators?: any ) {
-    const f = new ProfileFormControls(data);
-    super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
-  }
-
-  public getRules (ruleName: string) {
-    return this.form.rules[ruleName];
+export class ProfileForm extends EntityForm<Profile> {
+  constructor(data?: Profile) {
+    super(createControls(data))
   }
 }

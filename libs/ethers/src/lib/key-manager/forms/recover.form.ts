@@ -1,38 +1,43 @@
 import {
-  AbstractFormControls,
   PasswordControl,
+  checkPasswords,
+  requireMnemonicXorPrivateKey,
   PrivateKeyControl,
   MnemonicControl,
-  AbstractFormGroup
-} from '@blockframes/ui';
+  EntityControl,
+  EntityRulesForm
+} from '@blockframes/utils';
+import { ValidatorFn } from '@angular/forms';
 
-export class RecoverFormControls extends AbstractFormControls{
+interface Recover {
+  privateKey: string
+  mnemonic: string
+  password: string 
+  confirm: string
+}
 
-  constructor() {
-    super();
-
-    this.controls =  {
-      privateKey: new PrivateKeyControl(''),
-      mnemonic: new MnemonicControl(''),
-      password: new PasswordControl(''),
-      confirm: new PasswordControl(''),
-    };
-
-    this.validators.push(this.checkPasswords());
-    this.validators.push(this.requireMnemonicXorPrivateKey);
-
+function createControls(entity?: Recover): EntityControl<Recover> {
+  return {
+    privateKey: new PrivateKeyControl(entity? entity.privateKey : ''),
+    mnemonic: new MnemonicControl(entity? entity.mnemonic : ''),
+    password: new PasswordControl(entity? entity.password : ''),
+    confirm: new PasswordControl(entity? entity.confirm : ''),
   }
 }
 
-export class RecoverForm extends AbstractFormGroup {
-  protected form : AbstractFormControls;
+function createValidators(validators?: any[]): ValidatorFn[]{
+  if(validators && validators.length) {
+    return validators;
+  } else {
+    return [checkPasswords(), requireMnemonicXorPrivateKey];
+  }
+}
 
-  constructor(controls? : any, validators?: any ) {
-    const f = new RecoverFormControls();
+export class RecoverForm extends EntityRulesForm<Recover> {
+  constructor(data?: Recover, validators?: any[]) {
     super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+      createControls(data),
+      createValidators(validators),
+    )
   }
 }

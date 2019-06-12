@@ -1,28 +1,37 @@
-import { AbstractFormControls, PasswordControl, AbstractFormGroup } from '@blockframes/ui';
+import {
+  EntityControl,
+  EntityRulesForm,
+  PasswordControl,
+  checkPasswords }
+from '@blockframes/utils';
+import { ValidatorFn } from '@angular/forms';
 
-export class CreateFormControls extends AbstractFormControls{
+interface Create {
+  password: string 
+  confirm: string
+}
 
-  constructor() {
-    super();
-
-    this.controls =  {
-      password: new PasswordControl(''),
-      confirm: new PasswordControl(''),
-    };
-
-    this.validators.push(this.checkPasswords());
+function createControls(entity?: Create): EntityControl<Create> {
+  return {
+    password: new PasswordControl(entity? entity.password : ''),
+    confirm: new PasswordControl(entity? entity.confirm : ''),
   }
 }
 
-export class CreateForm extends AbstractFormGroup {
-  protected form : AbstractFormControls;
+function createValidators(validators?: any[]): ValidatorFn[]{
+  if(validators && validators.length) {
+    return validators;
+  } else {
+    return [checkPasswords()];
+  }
+}
 
-  constructor(controls? : any, validators?: any ) {
-    const f = new CreateFormControls();
+export class CreateForm extends EntityRulesForm<Create> {
+  constructor(data?: Create, validators?: any[]) {
     super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+      createControls(data),
+      createValidators(validators),
+    )
   }
 }
+
