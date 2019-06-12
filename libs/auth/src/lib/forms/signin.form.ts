@@ -1,26 +1,33 @@
-import { AbstractFormControls, EmailControl, PasswordControl, AbstractFormGroup } from '@blockframes/ui';
+import {
+  EntityControl,
+  EntityRulesForm,
+  PasswordControl,
+  EmailControl
+} from '@blockframes/utils';
 
-export class SigninFormControls extends AbstractFormControls{
+interface SignIn {
+  email: string
+  password: string
+}
 
-  constructor() {
-    super();
+function createSignin(params?: Partial<SignIn>): SignIn {
+  return {
+    email: '',
+    password: '',
+    ...(params || {})
+  } as SignIn
+}
 
-    this.controls =  {
-      email: new EmailControl(''),
-      pwd: new PasswordControl(''),
-    };
+function createSigninControls(entity: Partial<SignIn>): EntityControl<SignIn> {
+  const signin = createSignin(entity);
+  return {
+    email: new EmailControl(signin.email),
+    password: new PasswordControl(signin.password),
   }
 }
 
-export class SigninForm extends AbstractFormGroup {
-  protected form : AbstractFormControls;
-
-  constructor(controls? : any, validators?: any ) {
-    const f = new SigninFormControls();
-    super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+export class SigninForm extends EntityRulesForm<SignIn> {
+  constructor(data?: SignIn) {
+    super(createSigninControls(data))
   }
 }

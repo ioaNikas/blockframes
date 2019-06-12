@@ -1,25 +1,25 @@
-import { AbstractFormControls, PasswordControl, AbstractFormGroup } from '@blockframes/ui';
+import { PasswordControl, EntityControl, EntityRulesForm } from '@blockframes/utils';
 
-export class PasswordFormControls extends AbstractFormControls{
+interface Password {
+  password: string 
+}
 
-  constructor() {
-    super();
+function createPassword(params?: Partial<Password>): Password {
+  return {
+    password: '',
+    ...(params || {})
+  } as Password
+}
 
-    this.controls =  {
-      password: new PasswordControl(''),
-    };
+function createPasswordControls(entity: Partial<Password>): EntityControl<Password> {
+  const create = createPassword(entity);
+  return {
+    password: new PasswordControl(create.password),
   }
 }
 
-export class PasswordForm extends AbstractFormGroup {
-  protected form : AbstractFormControls;
-
-  constructor(controls? : any, validators?: any ) {
-    const f = new PasswordFormControls();
-    super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+export class PasswordForm extends EntityRulesForm<Password> {
+  constructor(data?: Password) {
+    super(createPasswordControls(data))
   }
 }

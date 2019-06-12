@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RepeatPasswordStateMatcher } from '../../controls/abstract.form';
+import { RepeatPasswordStateMatcher } from '@blockframes/utils';
 
 @Component({
   selector: 'form-group-password-confirm',

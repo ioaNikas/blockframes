@@ -1,38 +1,54 @@
 import {
-  AbstractFormControls,
   PasswordControl,
-  PrivateKeyControl,
-  MnemonicControl,
-  AbstractFormGroup
-} from '@blockframes/ui';
+  checkPasswords,
+  requireMnemonicXorPrivateKey,
+  EntityControl,
+  EntityRulesForm,
+  EthereumMnemonicControl,
+  EthereumPrivateKeyControl
+} from '@blockframes/utils';
+import { ValidatorFn } from '@angular/forms';
 
-export class RecoverFormControls extends AbstractFormControls{
+interface Recover {
+  privateKey: string
+  mnemonic: string
+  password: string 
+  confirm: string
+}
 
-  constructor() {
-    super();
+function createRecover(params?: Partial<Recover>): Recover {
+  return {
+    privateKey: '',
+    mnemonic: '',
+    password: '',
+    confirm: '',
+    ...(params || {})
+  } as Recover
+}
 
-    this.controls =  {
-      privateKey: new PrivateKeyControl(''),
-      mnemonic: new MnemonicControl(''),
-      password: new PasswordControl(''),
-      confirm: new PasswordControl(''),
-    };
-
-    this.validators.push(this.checkPasswords());
-    this.validators.push(this.requireMnemonicXorPrivateKey);
-
+function createRecoverControls(entity: Partial<Recover>): EntityControl<Recover> {
+  const recover = createRecover(entity);
+  return {
+    privateKey: new EthereumPrivateKeyControl(recover.privateKey),
+    mnemonic: new EthereumMnemonicControl(recover.mnemonic),
+    password: new PasswordControl(recover.password),
+    confirm: new PasswordControl(recover.confirm),
   }
 }
 
-export class RecoverForm extends AbstractFormGroup {
-  protected form : AbstractFormControls;
+function createRecoverValidators(validators?: any[]): ValidatorFn[]{
+  if(validators && validators.length) {
+    return validators;
+  } else {
+    return [checkPasswords(), requireMnemonicXorPrivateKey];
+  }
+}
 
-  constructor(controls? : any, validators?: any ) {
-    const f = new RecoverFormControls();
+export class RecoverForm extends EntityRulesForm<Recover> {
+  constructor(data?: Recover, validators?: any[]) {
     super(
-      controls !== undefined ? controls : f.controls,
-      validators !== undefined ? validators : f.validators
-    );
-    this.form = f;
+      createRecoverControls(data),
+      createRecoverValidators(validators),
+    )
   }
 }

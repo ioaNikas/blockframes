@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AuthService, AuthQuery } from '../+state';
 import { MatSnackBar } from '@angular/material';
 import { SignupForm } from '../forms/signup.form';
@@ -36,8 +35,8 @@ export class AuthRootComponent implements OnInit {
       return;
     }
     try {
-      const { email, pwd } = this.signinForm.value;
-      await this.service.signin(email, pwd);
+      const { email, password } = this.signinForm.value;
+      await this.service.signin(email, password);
       const route = this.query.requestedRoute || 'layout';
       this.router.navigate([route]);
     } catch (err) {
@@ -52,8 +51,8 @@ export class AuthRootComponent implements OnInit {
       return;
     }
     try {
-      const { email, pwd } = this.signupForm.value;
-      await this.service.signup(email, pwd);
+      const { email, password } = this.signupForm.value;
+      await this.service.signup(email, password);
       const route = this.query.requestedRoute || 'layout';
       this.router.navigate([route]);
     } catch (err) {
