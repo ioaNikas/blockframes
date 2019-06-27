@@ -158,20 +158,14 @@ contract Organization {
     /// if the action does not exist it will be created,
     /// and if the current approval let the action reach its quorum, then the action tx will be triggered
     function approve(
-        bytes32 hash, uint256 operationId, address payable to, uint256 value, bytes memory data
-    ) public operationShouldExists(operationId) operationIsActive(operationId) onlyAuthorizedUser(operationId, hash) {
+        bytes32 hash, uint256 operationId, address payable to, uint256 value, bytes calldata data
+    ) external operationShouldExists(operationId) operationIsActive(operationId) onlyAuthorizedUser(operationId, hash) {
 
         require(to != address(0x0), "You cannot use the 0x0 address as a destination"); // because we check actionExists() on the 0x0 address
 
         // if action doesn't exists create it
         if(!actionExists(hash)) {
-            actions[hash].operationId = operationId;
-            actions[hash].approvalsCount = 0;
-            actions[hash].to = to;
-            actions[hash].value = value;
-            actions[hash].data = data;
-            actions[hash].active = true;
-            actions[hash].executed = false;
+            actions[hash] = Action(operationId, 0, true, false, to, value, data);
         }
 
         // same as "actionIsActive", cannot be perform by modifier because the action could have been created just above
@@ -208,8 +202,8 @@ contract Organization {
 
     /// @dev Create a new operation
     function admin_createOperation(
-        uint256 operationId, string memory name, address[] memory whitelist, uint256 quorum
-    ) public onlyAdmin() operationShouldNotExists(operationId) {
+        uint256 operationId, string calldata name, address[] calldata whitelist, uint256 quorum
+    ) external onlyAdmin() operationShouldNotExists(operationId) {
         require(whitelist.length > 0, "Whitelist cannot be empty");
         require(quorum > 0, "Quorum cannot be inferior to one");
         require(quorum <= whitelist.length + adminCount, "Quorum cannot be superior to whitelist length");
@@ -224,45 +218,45 @@ contract Organization {
     }
 
     /// @dev Activate/Deactivate an operation
-    function admin_operationSetActive(uint256 operationId, bool active) public onlyAdmin() operationShouldExists(operationId) {
+    function admin_operationSetActive(uint256 operationId, bool active) external onlyAdmin() operationShouldExists(operationId) {
         operations[operationId].active = active;
     }
 
     /// @dev Add a new Admin
-    function admin_addAdmin(address newAdmin) public onlyAdmin() {
+    function admin_addAdmin(address newAdmin) external onlyAdmin() {
         require(newAdmin != address(this), "An organization cannot be admin of itself");
         adminCount++;
         adminList[newAdmin] = true;
     }
 
     /// @dev Remove an Admin
-    function admin_removeAdmin(address newAdmin) public onlyAdmin() canRemoveAdmin() {
+    function admin_removeAdmin(address newAdmin) external onlyAdmin() canRemoveAdmin() {
         adminCount--;
         adminList[newAdmin] = true;
     }
 
     /// @dev Add a user to the whitelist of an operation
-    function admin_addUserToWhitelist(uint256 operationId, address user) public
+    function admin_addUserToWhitelist(uint256 operationId, address user) external
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) userNotAuthorized(operationId, user) {
         operations[operationId].whitelistLength++;
         operations[operationId].whitelist[user] = true;
     }
 
     /// @dev Remove a user from the whitelist of an operation
-    function admin_removeUserFromWhitelist(uint256 operationId, address user) public
+    function admin_removeUserFromWhitelist(uint256 operationId, address user) external
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) canRemoveUser(operationId) {
         operations[operationId].whitelistLength--;
         operations[operationId].whitelist[user] = false;
     }
 
     /// @dev Modify the quorum of an operation
-    function admin_modifyQuorum(uint256 operationId, uint256 newQuorum) public
+    function admin_modifyQuorum(uint256 operationId, uint256 newQuorum) external
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) canModifyQuorum(operationId, newQuorum) {
         operations[operationId].quorum = newQuorum;
     }
 
     /// @dev Activate/Deactivate an action
-    function admin_actionSetActive(bytes32 hash, bool active) public onlyAdmin() actionShouldExists(hash) {
+    function admin_actionSetActive(bytes32 hash, bool active) external onlyAdmin() actionShouldExists(hash) {
         actions[hash].active = active;
     }
 
@@ -273,7 +267,7 @@ contract Organization {
     }
 
     /// @dev allow an admin to withdraw all the ether
-    function admin_withdraw() public onlyAdmin() {
+    function admin_withdraw() external onlyAdmin() {
         msg.sender.transfer(address(this).balance);
     }
 
@@ -286,7 +280,7 @@ contract Organization {
         if (actions[hash].to == address(0x0)) return false;
         return true;
     }
-    function getAction(bytes32 hash) public view returns(
+    function getAction(bytes32 hash) external view returns(
       uint256 operationId,
       uint256 approvalsCount,
       bool active,
@@ -301,7 +295,7 @@ contract Organization {
           actions[hash].to, actions[hash].value, actions[hash].data
         );
     }
-    function hasApprovedAction(address user, bytes32 hash) public view returns(bool) {
+    function hasApprovedAction(address user, bytes32 hash) external view returns(bool) {
         return actions[hash].approvals[user];
     }
 
@@ -310,7 +304,7 @@ contract Organization {
         if (bytes(operations[operationId].name).length == 0) return false;
         return true;
     }
-    function getOperation(uint256 operationId) public view returns(string memory name, uint256 whitelistLength, uint256 quorum, bool active) {
+    function getOperation(uint256 operationId) external view returns(string memory name, uint256 whitelistLength, uint256 quorum, bool active) {
         return (
           operations[operationId].name,
           operations[operationId].whitelistLength,
@@ -323,7 +317,7 @@ contract Organization {
     }
 
     // Admin ----------------------
-    function isAdmin(address user) public view returns (bool){
+    function isAdmin(address user) external view returns (bool){
         return adminList[user];
     }
     function getAdminCount() public view returns(uint256) {
