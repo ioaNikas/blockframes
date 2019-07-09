@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from "@angular/core";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Key } from "../../key-manager/+state";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'wallet-import-key-form',
@@ -11,11 +11,14 @@ import { FormControl, FormGroup } from "@angular/forms";
 })
 export class WalletImportKeyFormComponent {
 
+  fileUploaded = false;
   isMnemonic = false;
   keyObject: Key;
-  mnemonic = '';
-  mnemonicField = new FormControl(''); // TODO use Max's custom mnemonic control
   
+  mnemonicForm = new FormGroup({
+    mnemonicField: new FormControl('', [Validators.required]), // TODO use Max's custom mnemonic control
+  });
+
   @Output() importKey = new EventEmitter<Key>();
   @Output() importMnemonic = new EventEmitter<string>();
 
@@ -29,6 +32,7 @@ export class WalletImportKeyFormComponent {
     try {
       const jsonString = new TextDecoder('utf-8').decode(jsonFile);
       this.keyObject = JSON.parse(jsonString);
+      this.fileUploaded = true;
     } catch(err) {
       this.snackBar.open(`Ooops : ${err}`, 'close', { duration: 1000 });
     }
@@ -36,7 +40,7 @@ export class WalletImportKeyFormComponent {
 
   import() {
     this.isMnemonic
-      ? this.importMnemonic.emit(this.mnemonic)
+      ? this.importMnemonic.emit(this.mnemonicForm.value.mnemonicField)
       : this.importKey.emit(this.keyObject);
   }
 }
