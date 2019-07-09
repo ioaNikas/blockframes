@@ -7,31 +7,27 @@ import { AuthQuery } from '@blockframes/auth';
 import { KeyManagerQuery } from '../../key-manager/+state';
 
 @Injectable({ providedIn: 'root' })
-export class WalletActiveGuard implements CanActivate, CanDeactivate<Wallet> {
+export class WalletKeyGuard implements CanActivate, CanDeactivate<Wallet> {
 
-  urlFallback = 'layout/o/account';
-  subscription: Subscription;
+  urlFallback = 'layout/o/account/wallet/add';
 
   constructor(
-    private authQuery: AuthQuery,
-    private walletService: WalletService,
+    private walletQuery: WalletQuery,
+    private keyQuery: KeyManagerQuery,
     private router: Router,
   ) {}
 
   canActivate(): Promise<boolean | UrlTree> | UrlTree {
     return new Promise((res, rej) => {
-      this.subscription = this.authQuery.user$.pipe(
-        filter(user => !!user),
-        tap(async user => await this.walletService.updateFromEmail(user.email))
-      ).subscribe({
-        next: result => res(!!result),
-        error: err => res(this.router.parseUrl(this.urlFallback))
-      });
+      const { ensDomain } = this.walletQuery.getValue();
+      const count = this.keyQuery.getKeyCountOfUser(ensDomain);
+      count === 0
+        ? res(this.router.parseUrl(this.urlFallback))
+        : res(true);
     });
   }
 
   canDeactivate() {
-    this.subscription.unsubscribe();
     return true;
   }
 }
