@@ -9,8 +9,6 @@ import { KeyManagerQuery } from '../../key-manager/+state';
 @Injectable({ providedIn: 'root' })
 export class WalletKeyGuard implements CanActivate, CanDeactivate<Wallet> {
 
-  urlFallback = 'layout/o/account/wallet/add';
-
   constructor(
     private walletQuery: WalletQuery,
     private keyQuery: KeyManagerQuery,
@@ -22,7 +20,7 @@ export class WalletKeyGuard implements CanActivate, CanDeactivate<Wallet> {
       const { ensDomain } = this.walletQuery.getValue();
       const count = this.keyQuery.getKeyCountOfUser(ensDomain);
       count === 0
-        ? res(this.router.parseUrl(this.urlFallback))
+        ? res(this.router.parseUrl('layout/o/account/wallet/add'))
         : res(true);
     });
   }

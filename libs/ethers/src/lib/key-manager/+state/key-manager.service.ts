@@ -14,17 +14,17 @@ export class KeyManagerService {
   ) {}
 
   /** Set signing key into process memory */
-  private _setSigningKey(wallet: EthersWallet) {
+  private setSigningKey(wallet: EthersWallet) {
     this.signingKey = new utils.SigningKey(wallet.privateKey);
   }
 
-  private _requireSigningKey() {
+  private requireSigningKey() {
     if (!this.signingKey) {
       throw new Error('A signing key is required !');
     }
   }
 
-  private async _encrypt(keyName: string, wallet: EthersWallet, ensDomain: string, encryptionPassword: string): Promise<Key> {
+  private async encrypt(keyName: string, wallet: EthersWallet, ensDomain: string, encryptionPassword: string): Promise<Key> {
     this.store.setLoading(true);
     const keyStore = await wallet.encrypt(encryptionPassword);
     let isMainKey = false;
@@ -39,17 +39,27 @@ export class KeyManagerService {
   /**  create / encrypt / from random */
   async createFromRandom(keyName: string, ensDomain: string, password: string): Promise<Key> {
     const wallet = EthersWallet.createRandom();
-    return await this._encrypt(keyName, wallet, ensDomain, password);
+    return await this.encrypt(keyName, wallet, ensDomain, password);
   }
-  /** create / encrypt / store / from mnemonic */
+  /** create / encrypt / from mnemonic
+  * @param keyName the name of the new key
+  * @param ensDomain the ens name of the new key owner
+  * @param mnemonic the seed phrase to transform into a new key
+  * @param encryptionPassword a password to encrypt the new key
+  */
   async importFromMnemonic(keyName:string, ensDomain: string, mnemonic: string, encryptionPassword: string) {
     const privateKey = utils.HDNode.mnemonicToEntropy(mnemonic); // mnemonic is a 24 word phrase corresponding to private key !== BIP32/39 seed phrase
-    return await this.importFromPrivateKey(keyName, ensDomain, privateKey, encryptionPassword);
+    return this.importFromPrivateKey(keyName, ensDomain, privateKey, encryptionPassword);
   }
-  /** create / encrypt / store / from private key */
+  /** create / encrypt / from private key
+  * @param keyName the name of the new key
+  * @param ensDomain the ens name of the new key owner
+  * @param privateKey the private key to transform into a new key
+  * @param encryptionPassword a password to encrypt the new key
+  */
   async importFromPrivateKey(keyName:string, ensDomain: string, privateKey: string, encryptionPassword: string) {
     const wallet = new EthersWallet(privateKey);
-    return await this._encrypt(keyName, wallet, ensDomain, encryptionPassword);
+    return this.encrypt(keyName, wallet, ensDomain, encryptionPassword);
   }
   /** store an encrypted key to the storage */
   public storeKey(key: Key) {
@@ -71,7 +81,7 @@ export class KeyManagerService {
     this.store.setLoading(true);
     try {
       const wallet = await EthersWallet.fromEncryptedJson(key.keyStore, encryptionPassword)
-      this._activateKey(key.address, wallet);
+      this.activateKey(key.address, wallet);
       this.store.setLoading(false);
     }
     catch(error) {
@@ -80,8 +90,8 @@ export class KeyManagerService {
     };
   }
 
-  private _activateKey(id: string, wallet: EthersWallet){
-    this._setSigningKey(wallet);
+  private activateKey(id: string, wallet: EthersWallet){
+    this.setSigningKey(wallet);
     this.store.setActive(id);
   }
   /** clean process memory */
@@ -97,7 +107,7 @@ export class KeyManagerService {
 
   /** export key : expose it's mnemonic/private key */
   async exportActiveKey() {
-    this._requireSigningKey();
+    this.requireSigningKey();
     const wallet = new EthersWallet(this.signingKey);
     // TODO add a way to show the mnemonic
   }

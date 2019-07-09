@@ -4,13 +4,12 @@ import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
-const steps = {
-  PASSWORD: 'PASSWORD',
-  IMPORT: 'IMPORT',
-  EXPORT: 'EXPORT',
-  END: 'END'
+enum steps {
+  PASSWORD,
+  IMPORT,
+  EXPORT,
+  END
 }
-
 @Component({
   selector: 'wallet-add-key-tunnel',
   templateUrl: './wallet-add-key.component.html',
@@ -18,8 +17,9 @@ const steps = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WalletAddKeyTunnelComponent implements OnInit {
-
-  step = steps.PASSWORD;
+  
+  steps = steps; //retreive the enum defined above, so we can use it in html
+  step = this.steps.PASSWORD;
   key: Key;
   loading$ = new Observable<boolean>();
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;

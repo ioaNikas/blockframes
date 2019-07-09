@@ -1,6 +1,6 @@
 <main [ngSwitch]="[step]">
   <h1>Create a new Key</h1>
-  <section *ngSwitchCase="'PASSWORD'">
+  <section *ngSwitchCase="steps.PASSWORD">
     <ng-container *ngIf="!(loading$ | async) as loading; else isLoading">
       <!-- TODO issue 557 integrate Max's components -->
       <h2>Create a password</h2>
@@ -17,20 +17,20 @@
       </section>
     </ng-template>
   </section>
-  <section *ngSwitchCase="'EXPORT'">
+  <section *ngSwitchCase="steps.EXPORT">
     <h2>Download your key</h2>
     <p>
       Your key is precious, download it to save a copy on your computer !
       Download should start automaticaly, if it is not the case please click on the link below.
     </p>
     <a mat-button [href]="jsonKeystore(true)" [download]="keyName">Download</a>
-    <button mat-raised-button color="accent" (click)="step = 'IMPORT'">Next</button>
+    <button mat-raised-button color="accent" (click)="step = steps.IMPORT">Next</button>
   </section>
-  <section *ngSwitchCase="'IMPORT'">
+  <section *ngSwitchCase="steps.IMPORT">
     <wallet-import-key-form (importKey)="setKey($event)" [lockMnemonic]="true"></wallet-import-key-form>
-    <button mat-button (click)="step = 'EXPORT'">Previous</button>
+    <button mat-button (click)="step = steps.EXPORT">Previous</button>
   </section>
-  <section *ngSwitchCase="'END'">
+  <section *ngSwitchCase="steps.END">
     <h2>Congratulation</h2>
 
     <!-- TODO issue 557 integrate Max's components -->
