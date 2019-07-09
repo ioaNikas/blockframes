@@ -3,6 +3,8 @@ import { KeyManagerService, Key, KeyManagerQuery } from "../../key-manager/+stat
 import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
+import { map } from "rxjs/operators";
 
 enum steps {
   PASSWORD,
@@ -22,9 +24,11 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   step = this.steps.PASSWORD;
   key: Key;
   loading$ = new Observable<boolean>();
+  redirectRoute$ = new Observable<string>();
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 
   constructor(
+    private route: ActivatedRoute,
     private walletQuery: WalletQuery,
     private keyQuery: KeyManagerQuery,
     private KeyService: KeyManagerService,
@@ -33,6 +37,13 @@ export class WalletAddKeyTunnelComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.keyQuery.selectLoading();
+    this.redirectRoute$ = this.route.queryParams.pipe( // check if there is a ?redirect=<redirect url> in the route, otherwise use default redirect
+      map(params => 
+        'redirect' in params
+          ? params.redirect
+          : '/layout/o/account/wallet'
+      ),
+    );
   }
 
   async setPassword(password: string) {
