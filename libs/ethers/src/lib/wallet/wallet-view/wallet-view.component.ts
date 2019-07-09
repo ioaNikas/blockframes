@@ -43,11 +43,6 @@ export class WalletViewComponent implements OnInit {
     console.warn('NOT IMPLEMENTED');
   }
 
-  // TODO implment this function : issue 543
-  addKey() {
-    console.warn('NOT IMPLEMENTED');
-  }
-
   // TODO implment this function : issue 542
   deleteKey(key: Key) {
     console.warn('NOT IMPLEMENTED');
