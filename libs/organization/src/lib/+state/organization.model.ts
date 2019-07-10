@@ -1,8 +1,5 @@
-import { Movie } from "@blockframes/movie";
-import { Template } from "@blockframes/material";
-
 export interface OrgMember {
-  id: string;
+  uid: string;
   email: string;
   roles: string[];
 }
@@ -14,9 +11,7 @@ export interface Organization {
   created: number;
   updated: number;
   movieIds: string[];
-  movies?: Movie[];
   templateIds: string[];
-  templates?: Template[];
   userIds: string[];
   members?: OrgMember[];
 }
@@ -24,16 +19,6 @@ export interface Organization {
 export interface OrgForm {
   name: string;
   adress: string;
-}
-
-export interface OrganizationRights {
-  orgId: string;
-  superAdmin: string;
-  canCreate: string[];
-  canRead: string[];
-  canUpdate: string[];
-  canDelete: string[];
-  admins: string[];
 }
 
 /**

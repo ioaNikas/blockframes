@@ -14,6 +14,12 @@
     "ip-upload-e2e": {
       "tags": []
     },
+    "catalog": {
+      "tags": ["catalog"]
+    },
+    "catalog-e2e": {
+      "tags": []
+    },
     "ip": {
       "tags": ["ip"]
     },
@@ -62,7 +68,7 @@
     "backend-ops": {
       "tags": []
     },
-    "libs-rights": {
+    "libs-permissions": {
       "tags": []
     }
   }

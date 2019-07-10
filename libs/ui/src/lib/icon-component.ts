@@ -8,6 +8,18 @@ const ICONS_SVG = [
     url: 'assets/icons/accepted.svg'
   },
   {
+    name: 'adjustable_wrench',
+    url: 'assets/icons/adjustable_wrench.svg'
+  },
+  {
+    name: 'magic_wand',
+    url: 'assets/icons/magic_wand.svg'
+  },
+  {
+    name: 'magnifying_glass',
+    url: 'assets/icons/magnifying_glass.svg'
+  },
+  {
     name: 'arrow',
     url: 'assets/icons/arrow.svg'
   },
@@ -41,6 +53,10 @@ const ICONS_SVG = [
   },
   {
     name: 'home_of_scripts',
+    url: 'assets/apps/home_of_scripts.svg'
+  },
+  {
+    name: 'bigger_boat',
     url: 'assets/apps/home_of_scripts.svg'
   },
   {

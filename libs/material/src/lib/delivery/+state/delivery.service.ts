@@ -3,7 +3,7 @@ import { DeliveryQuery } from './delivery.query';
 import { Material } from '../../material/+state/material.model';
 import { createDelivery, Delivery, Step, DeliveryDB } from './delivery.model';
 import { MovieQuery, Stakeholder, createDeliveryStakeholder } from '@blockframes/movie';
-import { OrganizationQuery, RightsService } from '@blockframes/organization';
+import { OrganizationQuery, PermissionsService } from '@blockframes/organization';
 import { FireQuery, BFDoc } from '@blockframes/utils';
 import { MaterialQuery } from '../../material/+state';
 import { TemplateQuery } from '../../template/+state';
@@ -27,7 +27,7 @@ export class DeliveryService {
     private materialQuery: MaterialQuery,
     private organizationQuery: OrganizationQuery,
     private query: DeliveryQuery,
-    private rightsService: RightsService,
+    private permissionsService: PermissionsService,
     private db: FireQuery
   ) {}
 
@@ -96,14 +96,16 @@ export class DeliveryService {
       true
     );
 
+    // Create document permissions
+    await this.permissionsService.createDocAndPermissions(delivery, stakeholder.orgId);
+
     const promises = [];
 
-    promises.push([
-      this.rightsService.createDocAndRights(delivery, stakeholder.orgId),
+    promises.push(
       this.db
-      .doc<Stakeholder>(`deliveries/${id}/stakeholders/${deliveryStakeholder.id}`)
-      .set(deliveryStakeholder)
-    ])
+        .doc<Stakeholder>(`deliveries/${id}/stakeholders/${deliveryStakeholder.id}`)
+        .set(deliveryStakeholder)
+    );
 
     if (!!templateId) {
       const template = this.templateQuery.getEntity(templateId);
@@ -128,17 +130,14 @@ export class DeliveryService {
       true
     );
 
-    const promises = [];
+    await this.permissionsService.createDocAndPermissions(delivery, stakeholder.orgId);
 
-    promises.push([
-      this.rightsService.createDocAndRights(delivery, stakeholder.orgId),
+    await Promise.all([
       this.copyMaterials(delivery, movie),
       this.db
-      .doc<Stakeholder>(`deliveries/${id}/stakeholders/${deliveryStakeholder.id}`)
-      .set(deliveryStakeholder)
+        .doc<Stakeholder>(`deliveries/${id}/stakeholders/${deliveryStakeholder.id}`)
+        .set(deliveryStakeholder)
     ]);
-
-    await Promise.all(promises);
 
     return id;
   }
@@ -213,14 +212,16 @@ export class DeliveryService {
 
   /** Create a transaction to copy the template/movie materials into the delivery materials */
   public async copyMaterials(delivery: Delivery, document: BFDoc) {
-    const materials = await this.db.snapshot<Material[]>(`${document._type}/${document.id}/materials`)
+    const materials = await this.db.snapshot<Material[]>(
+      `${document._type}/${document.id}/materials`
+    );
 
     return this.db.firestore.runTransaction(async (tx: firebase.firestore.Transaction) => {
-
       const promises = materials.map(material => {
-        const materialRef = this.db.doc<Material>(`deliveries/${delivery.id}/materials/${material.id}`)
-          .ref;
-        return tx.set(materialRef, {...material, state: '', stepId: ''});
+        const materialRef = this.db.doc<Material>(
+          `deliveries/${delivery.id}/materials/${material.id}`
+        ).ref;
+        return tx.set(materialRef, { ...material, state: '', stepId: '' });
       });
 
       return Promise.all(promises);

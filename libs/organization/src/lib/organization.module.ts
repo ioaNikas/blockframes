@@ -1,6 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+// Modules
+import { AuthModule } from '@blockframes/auth';
+
+// Material
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -12,21 +19,30 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthModule } from '@blockframes/auth';
-import { OrgFormComponent } from './org-form/org-form.component';
-import { OrgShowComponent } from './org-show/org-show.component';
-import { OrgMembersShowComponent } from './org-members-show/org-members-show.component';
-import { OrgWidgetComponent } from './org-widget/org-widget.component';
+
+// Components
+import { OrgFormComponent } from './components/org-form/org-form.component';
+import { MemberFormComponent } from './components/member-form/member-form.component';
+import { OrgWidgetComponent } from './components/org-widget/org-widget.component';
+
+// Pages
+import { OrgViewComponent } from './pages/org-view/org-view.component';
+import { MemberListComponent } from './pages/member-list/member-list.component';
+import { MemberViewComponent } from './pages/member-view/member-view.component';
+import { OrganizationHomeComponent } from './pages/organization-home/organization-home.component';
 
 export const organizationRoutes: Routes = [
+  {
+    path: 'organization-home',
+    component: OrganizationHomeComponent
+  },
   {
     path: 'form',
     component: OrgFormComponent
   },
   {
     path: ':orgId',
-    component: OrgShowComponent
+    component: OrgViewComponent
   }
 ];
 
@@ -36,6 +52,10 @@ export const organizationRoutes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    AuthModule,
+    FlexLayoutModule,
+
+    // Material
     MatFormFieldModule,
     MatIconModule,
     MatMenuModule,
@@ -47,14 +67,16 @@ export const organizationRoutes: Routes = [
     MatButtonModule,
     MatAutocompleteModule,
     MatCheckboxModule,
-    AuthModule,
     RouterModule.forChild(organizationRoutes)
   ],
   declarations: [
     OrgFormComponent,
-    OrgShowComponent,
-    OrgMembersShowComponent,
-    OrgWidgetComponent
+    OrgViewComponent,
+    OrgWidgetComponent,
+    MemberListComponent,
+    MemberViewComponent,
+    MemberFormComponent,
+    OrganizationHomeComponent
   ],
   exports: [
     OrgWidgetComponent

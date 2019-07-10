@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { createMovieStakeholder, StakeholderService } from '../../stakeholder/+state';
 import { Movie, createMovie } from './movie.model';
 import { FireQuery } from '@blockframes/utils';
-import { RightsService, OrganizationQuery, Organization } from '@blockframes/organization';
+import { PermissionsService, OrganizationQuery, Organization } from '@blockframes/organization';
 import { MovieStore } from './movie.store';
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +13,7 @@ export class MovieService {
   private db: FireQuery,
   private shService: StakeholderService,
   private orgQuery: OrganizationQuery,
-  private rightsService: RightsService,
+  private permissionsService: PermissionsService,
   private store: MovieStore,
   ) {}
 
@@ -23,20 +23,20 @@ export class MovieService {
     const owner = createMovieStakeholder({orgId, isAccepted: true});
     const movie: Movie = createMovie({ id, title: { original }});
 
-    // TODO: correct race condition
-    await this.rightsService.createDocAndRights<Movie>(movie, orgId);
+    await this.permissionsService.createDocAndPermissions<Movie>(movie, orgId);
 
     await this.shService.add(id, owner, firstAdd);
 
     return movie;
   }
 
-  public update(id: string, movie: any) {
+  public update(id: string, movie: any) : Promise<void>{
     // we don't want to keep orgId in our Movie object
     if (movie.org) delete movie.org;
     if (movie.stakeholders) delete movie.stakeholders;
+    if (movie.errors) delete movie.errors;
 
-    this.db.doc<Movie>(`movies/${id}`).update(movie);
+    return this.db.doc<Movie>(`movies/${id}`).update(movie);
   }
 
   public remove(movieId: string): Promise<void> {

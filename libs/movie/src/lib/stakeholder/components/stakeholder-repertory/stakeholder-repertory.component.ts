@@ -2,8 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { StakeholderService, createMovieStakeholder } from '../../+state';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as firebase from 'firebase';
-import { takeWhile } from 'rxjs/operators';
+import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MovieQuery } from '@blockframes/movie/movie/+state';
+import { Subject } from 'rxjs';
 
 interface Organization {
   id: string;
@@ -19,12 +20,12 @@ interface Organization {
 export class StakeholderRepertoryComponent implements OnInit, OnDestroy {
   public addStakeholderForm: FormGroup;
   public orgOptions: Organization[];
-  public isAlive = true;
+  private destroyed$ = new Subject();
 
   constructor(
     private service: StakeholderService,
     private builder: FormBuilder,
-    private movieQuery: MovieQuery,
+    private movieQuery: MovieQuery
   ) {}
 
   ngOnInit() {
@@ -51,18 +52,22 @@ export class StakeholderRepertoryComponent implements OnInit, OnDestroy {
     return call({ prefix }).then(matchingOrgs => matchingOrgs.data);
   }
 
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
+
   private async onChange() {
-    this.addStakeholderForm.valueChanges.pipe(takeWhile(() => this.isAlive)).subscribe(typingOrgName => {
-      // TODO: debounce
-      this.listOrgsByName(typingOrgName.org)
-        .then(matchingOrgs => {
-          // TODO: use an observable
+    this.addStakeholderForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroyed$)
+      ).subscribe(typingOrgName => {
+        this.listOrgsByName(typingOrgName.org).then(matchingOrgs => {
+          // TODO: use an observable => ISSUE#608
           this.orgOptions = matchingOrgs;
         });
     });
-  }
-
-  ngOnDestroy() {
-    this.isAlive = false;
   }
 }
