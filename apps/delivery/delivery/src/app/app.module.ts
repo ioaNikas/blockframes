@@ -1,9 +1,12 @@
 // Angular
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, Injectable, NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+
+// Analytics
+import * as Sentry from "@sentry/browser";
 
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -51,6 +54,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
+Sentry.init({
+  dsn: "https://2ef084dd8ff947e0943115d949f3adcf@sentry.io/1501525"
+});
+
+@Injectable()
+export class SentryErrorHandler implements ErrorHandler {
+  constructor() {}
+  handleError(error) {
+    const eventId = Sentry.captureException(error.originalError || error);
+    Sentry.showReportDialog({ eventId });
+  }
+}
+
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -104,7 +121,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AkitaNgRouterStoreModule.forRoot(),
     environment.production ? [] : [AkitaNgDevtools.forRoot()]
   ],
-  providers: [],
+  providers: [{ provide: ErrorHandler, useClass: SentryErrorHandler }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
