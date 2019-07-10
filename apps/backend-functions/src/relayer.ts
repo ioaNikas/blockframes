@@ -180,6 +180,12 @@ export const relayerCreateLogic = async (
   }
 };
 
+
+
+//---------------------------------------------------
+//                   SEND
+//---------------------------------------------------
+
 export const relayerSendLogic = async (
   { username, tx }: SendParams,
   config: RelayerConfig

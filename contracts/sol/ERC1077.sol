@@ -96,7 +96,7 @@ contract ERC1077 is KeyHolder, IERC1077, Initable {
         address to, uint256 value, bytes memory data, uint256 nonce,    // tx
         uint256 gasPrice, address gasToken, uint256 gasLimit,           // gas
         OperationType operationType,                                    // staticcall/call/delegatecal
-        bytes memory signatures
+        bytes memory signatures                                         // signatures
     ) public requireInit() returns (bytes32) {
 
         // checks
