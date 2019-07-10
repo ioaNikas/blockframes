@@ -1,6 +1,6 @@
 <main [ngSwitch]="step">
   <h1>Create a new Key</h1>
-  <section *ngSwitchCase="steps.PASSWORD">
+  <section *ngSwitchCase="steps.password">
     <ng-container *ngIf="!(loading$ | async) as loading; else isLoading">
       <!-- TODO issue 557 integrate Max's components -->
       <h2>Create a password</h2>
@@ -35,7 +35,7 @@
 
     <!-- TODO issue 557 integrate Max's components -->
     <p>This is a mock component, it will be replaced by "wallet-message-view"</p>
-    <a mat-raised-button color="accent" [routerLink]="(redirectRoute$ | async)">OK</a>
+    <button mat-raised-button color="accent" (redirectUser)="handleRedirect()">OK</button>
     <!-- TODO -->
 
   </section>

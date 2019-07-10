@@ -3,14 +3,14 @@ import { KeyManagerService, Key, KeyManagerQuery } from "../../key-manager/+stat
 import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { map } from "rxjs/operators";
 
 enum steps {
-  PASSWORD,
-  IMPORT,
-  EXPORT,
-  END
+  password,
+  import,
+  export,
+  end
 }
 @Component({
   selector: 'wallet-add-key-tunnel',
@@ -20,14 +20,15 @@ enum steps {
 })
 export class WalletAddKeyTunnelComponent implements OnInit {
   
-  steps = steps; //retreive the enum defined above, so we can use it in html
-  step = this.steps.PASSWORD;
+  steps = steps;
+  step = this.steps.password;
   key: Key;
   loading$ = new Observable<boolean>();
-  redirectRoute$ = new Observable<string>();
+  redirectRoute: string;
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private walletQuery: WalletQuery,
     private keyQuery: KeyManagerQuery,
@@ -37,20 +38,18 @@ export class WalletAddKeyTunnelComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.keyQuery.selectLoading();
-    this.redirectRoute$ = this.route.queryParams.pipe( // check if there is a ?redirect=<redirect url> in the route, otherwise use default redirect
-      map(params => 
-        'redirect' in params
-          ? params.redirect
-          : '/layout/o/account/wallet'
-      ),
-    );
+
+    // check if there is a ?redirect=<redirect url> in the route, otherwise use default redirect
+    this.route.queryParams.pipe(map(params => 'redirect' in params ? params.redirect : '/layout/o/account/wallet'))
+      .subscribe(redirectRoute => this.redirectRoute = redirectRoute);
+    
   }
 
   async setPassword(password: string) {
     const { ensDomain } = this.walletQuery.getValue();
     const keyName = this.KeyService.getDefaultKeyName(ensDomain);
     this.key = await this.KeyService.createFromRandom(keyName, ensDomain, password);
-    this.step = steps.EXPORT;
+    this.step = steps.export;
 
     // try to trigger an auto-download of the json file
     this.downloadLink.nativeElement.download = this.keyName;
@@ -64,7 +63,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
     }
     this.KeyService.storeKey(key);
     delete this.key;
-    this.step = steps.END;
+    this.step = steps.end;
   }
 
   /** create a name for the downloadable file */
@@ -83,5 +82,9 @@ export class WalletAddKeyTunnelComponent implements OnInit {
       return this.sanitizer.bypassSecurityTrustResourceUrl(url); // regular download link : bypass security to prevent angular from escaping our data
     }
     return url; // for auto-download we have to return a non-bypassed string
+  }
+
+  handleRedirect() {
+    this.router.navigateByUrl(this.redirectRoute);
   }
 }
