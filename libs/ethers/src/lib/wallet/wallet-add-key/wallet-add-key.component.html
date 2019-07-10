@@ -17,20 +17,20 @@
       </section>
     </ng-template>
   </section>
-  <section *ngSwitchCase="steps.EXPORT">
+  <section *ngSwitchCase="steps.export">
     <h2>Download your key</h2>
     <p>
       Your key is precious, download it to save a copy on your computer !
       Download should start automaticaly, if it is not the case please click on the link below.
     </p>
     <a mat-button [href]="jsonKeystore(true)" [download]="keyName">Download</a>
-    <button mat-raised-button color="accent" (click)="step = steps.IMPORT">Next</button>
+    <button mat-raised-button color="accent" (click)="step = steps.import">Next</button>
   </section>
-  <section *ngSwitchCase="steps.IMPORT">
+  <section *ngSwitchCase="steps.import">
     <wallet-import-key-form (importKey)="setKey($event)" [lockMnemonic]="true"></wallet-import-key-form>
     <button mat-button (click)="step = steps.EXPORT">Previous</button>
   </section>
-  <section *ngSwitchCase="steps.END">
+  <section *ngSwitchCase="steps.end">
     <h2>Congratulation</h2>
 
     <!-- TODO issue 557 integrate Max's components -->
