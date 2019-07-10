@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Wallet, WalletService, WalletQuery } from "../+state";
-import { Router, UrlTree, CanActivate, CanDeactivate } from "@angular/router";
-import { Subscription } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
-import { AuthQuery } from '@blockframes/auth';
+import { WalletQuery } from "../+state";
+import { Router, UrlTree, CanActivate } from "@angular/router";
 import { KeyManagerQuery } from '../../key-manager/+state';
 
 @Injectable({ providedIn: 'root' })
-export class WalletKeyGuard implements CanActivate, CanDeactivate<Wallet> {
+export class WalletKeyGuard implements CanActivate {
 
   constructor(
     private walletQuery: WalletQuery,
@@ -15,17 +12,12 @@ export class WalletKeyGuard implements CanActivate, CanDeactivate<Wallet> {
     private router: Router,
   ) {}
 
-  canActivate(): Promise<boolean | UrlTree> | UrlTree {
-    return new Promise((res, rej) => {
-      const { ensDomain } = this.walletQuery.getValue();
-      const count = this.keyQuery.getKeyCountOfUser(ensDomain);
-      count === 0
-        ? res(this.router.parseUrl('layout/o/account/wallet/add'))
-        : res(true);
-    });
-  }
-
-  canDeactivate() {
+  canActivate(): boolean | UrlTree {
+    const { ensDomain } = this.walletQuery.getValue();
+    const count = this.keyQuery.getKeyCountOfUser(ensDomain);
+    if (count === 0) {
+      return this.router.parseUrl('layout/o/account/wallet/add');
+    }
     return true;
   }
 }

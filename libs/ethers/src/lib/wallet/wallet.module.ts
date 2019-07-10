@@ -37,7 +37,6 @@ export const walletRoutes: Routes = [
       {
         path: '',
         canActivate: [WalletKeyGuard],
-        canDeactivate: [WalletKeyGuard],
         component: WalletViewComponent,
       },
       { path: 'add', component: WalletAddKeyTunnelComponent },

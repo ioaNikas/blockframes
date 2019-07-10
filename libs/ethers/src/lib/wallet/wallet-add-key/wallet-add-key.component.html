@@ -10,11 +10,11 @@
       <!-- TODO -->
     </ng-container>
     <ng-template #isLoading>
-      <section>
+      <article>
         <h2>Please wait</h2>
         <p>We are encrypting your key with your password, be sure to remember it or your key will be lost !</p>
         <mat-progress-spinner color="accent" mode="indeterminate"></mat-progress-spinner>
-      </section>
+      </article>
     </ng-template>
   </section>
   <section *ngSwitchCase="steps.export">

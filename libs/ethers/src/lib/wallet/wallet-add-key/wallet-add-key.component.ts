@@ -32,7 +32,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
     private route: ActivatedRoute,
     private walletQuery: WalletQuery,
     private keyQuery: KeyManagerQuery,
-    private KeyService: KeyManagerService,
+    private keyService: KeyManagerService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -47,8 +47,8 @@ export class WalletAddKeyTunnelComponent implements OnInit {
 
   async setPassword(password: string) {
     const { ensDomain } = this.walletQuery.getValue();
-    const keyName = this.KeyService.getDefaultKeyName(ensDomain);
-    this.key = await this.KeyService.createFromRandom(keyName, ensDomain, password);
+    const keyName = this.keyService.getDefaultKeyName(ensDomain);
+    this.key = await this.keyService.createFromRandom(keyName, ensDomain, password);
     this.step = steps.export;
 
     // try to trigger an auto-download of the json file
@@ -61,7 +61,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
     if (JSON.stringify(this.key) !== JSON.stringify(key)) { // object deep equal
       throw new Error(`You did not import the good file ! Please import the file named ${this.keyName}`);
     }
-    this.KeyService.storeKey(key);
+    this.keyService.storeKey(key);
     delete this.key;
     this.step = steps.end;
   }
