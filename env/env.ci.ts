@@ -9,7 +9,7 @@ export const persistenceSettings = {
 // Analytics
 // =========
 
-export const sentryDsn = 'https://2ef084dd8ff947e0943115d949f3adcf@sentry.io/1501525';
+export const sentryDsn = null;
 
 // Firebase
 // ========
