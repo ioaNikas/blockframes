@@ -26,6 +26,7 @@ import { WalletViewComponent } from './wallet-view/wallet-view.component';
 import { WalletImportKeyFormComponent } from './wallet-import-key-form/wallet-import-key-form.component';
 import { WalletWidgetComponent } from './wallet-widget/wallet-widget.component';
 import { WalletAddKeyTunnelComponent } from './wallet-add-key/wallet-add-key.component';
+import { WalletMessageViewComponent } from './wallet-message-view/wallet-message-view.component';
 
 
 export const walletRoutes: Routes = [
@@ -73,6 +74,7 @@ export const walletRoutes: Routes = [
     WalletImportKeyFormComponent,
     WalletWidgetComponent,
     WalletAddKeyTunnelComponent,
+    WalletMessageViewComponent
   ],
   exports: [
     WalletWidgetComponent,
