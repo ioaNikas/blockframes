@@ -9,7 +9,7 @@
   <section>
     <div fxLayout="row" fxLayoutAlign="end">
       <span>json</span>
-      <mat-slide-toggle (change)="toggleMnemonic()">mnemonic</mat-slide-toggle>
+      <mat-slide-toggle (change)="toggleMnemonic()" [disabled]="lockMnemonic">mnemonic</mat-slide-toggle>
     </div>
     <ng-container *ngIf="!isMnemonic; else mnemonicImport">
       <file-upload [accept]="['.json']" [types]="['application/json']" (uploaded)="importedJson($event)"></file-upload>

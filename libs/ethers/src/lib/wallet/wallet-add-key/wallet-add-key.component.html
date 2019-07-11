@@ -1,0 +1,44 @@
+<main [ngSwitch]="step">
+  <h1>Create a new Key</h1>
+  <section *ngSwitchCase="steps.password">
+    <ng-container *ngIf="!(loading$ | async) as loading; else isLoading">
+      <!-- TODO issue 557 integrate Max's components -->
+      <h2>Create a password</h2>
+      <p>This is a mock component, it will be replaced by "wallet-password-form"</p>
+      <button mat-raised-button color="accent" (click)="setPassword('azerty')">Create</button>
+      <!-- <wallet-password-form [passwordView]="false" (password)="setPassword($event)"></wallet-password-form> -->
+      <!-- TODO -->
+    </ng-container>
+    <ng-template #isLoading>
+      <article>
+        <h2>Please wait</h2>
+        <p>We are encrypting your key with your password, be sure to remember it or your key will be lost !</p>
+        <mat-progress-spinner color="accent" mode="indeterminate"></mat-progress-spinner>
+      </article>
+    </ng-template>
+  </section>
+  <section *ngSwitchCase="steps.export">
+    <h2>Download your key</h2>
+    <p>
+      Your key is precious, download it to save a copy on your computer !
+      Download should start automaticaly, if it is not the case please click on the link below.
+    </p>
+    <a mat-button [href]="jsonKeystore(true)" [download]="keyName">Download</a>
+    <button mat-raised-button color="accent" (click)="step = steps.import">Next</button>
+  </section>
+  <section *ngSwitchCase="steps.import">
+    <wallet-import-key-form (importKey)="setKey($event)" [lockMnemonic]="true"></wallet-import-key-form>
+    <button mat-button (click)="step = steps.EXPORT">Previous</button>
+  </section>
+  <section *ngSwitchCase="steps.end">
+    <h2>Congratulation</h2>
+
+    <!-- TODO issue 557 integrate Max's components -->
+    <p>This is a mock component, it will be replaced by "wallet-message-view"</p>
+    <button mat-raised-button color="accent" (redirectUser)="handleRedirect()">OK</button>
+    <!-- TODO -->
+
+  </section>
+  <a mat-button routerLink="/layout/o/account/wallet">Cancel</a>
+  <a #downloadLink hidden>automatic_download</a>
+</main>
