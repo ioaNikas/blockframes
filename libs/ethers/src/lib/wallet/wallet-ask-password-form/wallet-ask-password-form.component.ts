@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { PasswordControl } from '@blockframes/utils';
 
 @Component({
   selector: 'wallet-ask-password-form',
@@ -8,17 +8,11 @@ import { FormControl, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WalletAskPasswordFormComponent {
-  public password: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(6),
-    Validators.maxLength(24)
-  ]);
+  public password = new PasswordControl();
 
   /** An event that will send the setted password by the user */
   @Output() userPassword: EventEmitter<string> = new EventEmitter();
-  
+
   /** An event that will notify the parent component that the user forgot his password */
   @Output() forgotPassword: EventEmitter<void> = new EventEmitter();
-
-  constructor() {}
 }

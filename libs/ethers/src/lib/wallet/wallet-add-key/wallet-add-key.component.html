@@ -2,9 +2,7 @@
   <h1>Create a new Key</h1>
   <section *ngSwitchCase="steps.password">
     <ng-container *ngIf="!(loading$ | async) as loading; else: isLoading">
-      <wallet-create-password-form
-        (userPassword)="setPassword($event)"
-      ></wallet-create-password-form>
+      <wallet-create-password-form (userPassword)="setPassword($event)"></wallet-create-password-form>
     </ng-container>
     <ng-template #isLoading>
       <article>
@@ -29,7 +27,7 @@
   <section *ngSwitchCase="steps.import">
     <wallet-import-key-form
       (importKey)="setKey($event)"
-      [lockMnemonic]="true"
+      lockMnemonic
     ></wallet-import-key-form>
     <button mat-button (click)="step = steps.export">Previous</button>
   </section>

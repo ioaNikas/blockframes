@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { CreateKeyPasswordForm } from '../forms/create-key-password-form';
+import { PasswordControl } from '@blockframes/utils';
 
 @Component({
   selector: 'wallet-create-password-form',
@@ -8,14 +8,12 @@ import { CreateKeyPasswordForm } from '../forms/create-key-password-form';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WalletCreatePasswordFormComponent {
-  public confirmPasswordForm = new CreateKeyPasswordForm();
+  public password = new PasswordControl();
 
   /** An event that will send the setted password by the user */
   @Output() userPassword: EventEmitter<string> = new EventEmitter();
 
-  constructor() {}
-
   public submitPassword(){
-    this.userPassword.emit(this.confirmPasswordForm.get('password').value);
+    this.userPassword.emit(this.password.value);
   }
 }
