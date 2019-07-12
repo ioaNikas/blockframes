@@ -1,5 +1,5 @@
-import { Validators, FormGroup, ValidatorFn, FormControl } from '@angular/forms';
-import { rules } from './rules';
+import { Validators, FormGroup, ValidatorFn, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
+import { ethers } from 'ethers';
 
 export const emailValidators = [
   Validators.required,
@@ -26,10 +26,6 @@ export const ethereumPrivateAddressValidators = [
   Validators.pattern('^[0-9a-fA-F]{64}$'),
 ];
 
-export const ethereumMnemonicValidators = [
-  //@todo
-];
-
 /** Require password and password confirm inputs to be the same */
 export function confirmPasswords(password: string = 'password', confirm: string = 'confirm'): ValidatorFn {
   return (group: FormGroup): { [key: string]: boolean } | null => {
@@ -43,4 +39,16 @@ export function confirmPasswords(password: string = 'password', confirm: string 
 export function requireMnemonicXorPrivateKey(control: FormControl) {
   const { mnemonic, privateKey } = control.value;
   return (!!mnemonic !== !!privateKey) ? null : { bothEmpty: true }; // logical XOR
+}
+
+/** Checks if the inputted mnemonic is a valid mnemonic */
+export function validMnemonic(control: AbstractControl): ValidationErrors | null {
+  // Every Mnemonic has 24 words, if not it is not a Mnemonic
+  const size = control.value.split(' ').length;
+  if (size !== 24) {
+    return { mnemonic: true };
+  }
+  // Use ethersjs build in function to check for a correct Mnemonic
+  const isValidMnemonic = ethers.utils.HDNode.isValidMnemonic(control.value);
+  return isValidMnemonic ? { mnemonic: true } : null;
 }
