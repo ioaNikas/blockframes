@@ -1,19 +1,7 @@
-<!-- Section to display the inputted message -->
-<section
-  fxLayout="column"
-  fxLayoutAlign="center center"
-  *ngIf="!message.isError; else isError"
->
+<section fxLayout="column" fxLayoutAlign="center center">
   <h1>{{ message.headline }}</h1>
   <p>{{ message.subline }}</p>
-  <img
-    src="/assets/images/ppl_celebrating.png"
-    alt="People celebrating"
-  />
+  <img src="/assets/images/ppl_celebrating.png" alt="People celebrating" />
   <a mat-button (click)="redirectUser.emit()">Okay</a>
 </section>
-<!-- Section to display the inputted error message -->
-<ng-template #isError>
-  <h1>Something went wrong. Please go back. 404 or something like that</h1>
-  <a mat-button (click)="redirectUser.emit()">Back to wallet</a>
-</ng-template>
+
