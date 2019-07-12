@@ -22,6 +22,4 @@ export class WalletMessageViewComponent {
    * to his wallet or depending on the routerparams where he came from
    */
   @Output() public redirectUser: EventEmitter<void> = new EventEmitter();
-
-  constructor() {}
 }
