@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-interface WalletCreationMsg {
+interface InputMessage {
   headline: string;
   subline: string;
   isError: boolean;
@@ -14,8 +14,8 @@ interface WalletCreationMsg {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WalletMessageViewComponent {
-  /** The message which should be displayed when this component is called. Could also be an error message */
-  @Input() public message: WalletCreationMsg;
+  /** The message which should be displayed when this component is called. */
+  @Input() public message: InputMessage;
 
   /** 
    * An event that notify the parent component that the user want to back
