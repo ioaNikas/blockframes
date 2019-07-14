@@ -9,15 +9,10 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 })
 export class ProfileEditableComponent {
   public opened = false;
-  public isProfileEdit = true;
+  public editContent = "profile";
 
-  public openPasswordEdit() {
-    this.isProfileEdit = false;
-    this.opened = true;
-  }
-
-  public openProfileEdit() {
-    this.isProfileEdit = true;
+  public openSidenav(name: string) {
+    this.editContent = name;
     this.opened = true;
   }
 }
