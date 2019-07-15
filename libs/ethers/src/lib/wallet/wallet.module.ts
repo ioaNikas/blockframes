@@ -17,8 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper'; 
 
-import { BlockieModule, UploadModule, UiFormModule } from '@blockframes/ui';
-import { UploadModule } from '@blockframes/ui';
+import { UploadModule, UiFormModule } from '@blockframes/ui';
 import { KeyManagerModule } from '../key-manager/key-manager.module';
 
 import { WalletActiveGuard } from './guards/wallet-active.guard';
@@ -82,6 +81,7 @@ export const walletRoutes: Routes = [
     WalletCreatePasswordFormComponent,
     WalletBlockieComponent,
     WalletAddressViewComponent
+    
   ],
   exports: [
     WalletWidgetComponent,
