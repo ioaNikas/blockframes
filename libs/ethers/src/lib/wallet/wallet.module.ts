@@ -75,7 +75,7 @@ export const walletRoutes: Routes = [
     WalletImportKeyFormComponent,
     WalletWidgetComponent,
     WalletAddKeyTunnelComponent,
-    WalletMessageViewComponent
+    WalletMessageViewComponent,
     WalletBlockieComponent,
     WalletAddressViewComponent
   ],
