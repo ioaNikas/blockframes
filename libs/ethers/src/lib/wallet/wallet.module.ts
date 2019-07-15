@@ -28,6 +28,7 @@ import { WalletWidgetComponent } from './wallet-widget/wallet-widget.component';
 import { WalletAddKeyTunnelComponent } from './wallet-add-key/wallet-add-key.component';
 import { WalletAskPasswordFormComponent } from './wallet-ask-password-form/wallet-ask-password-form.component';
 import { WalletCreatePasswordFormComponent } from './wallet-create-password-form/wallet-create-password-form.component';
+import { WalletMessageViewComponent } from './wallet-message-view/wallet-message-view.component';
 import { WalletBlockieComponent } from './wallet-blockie/wallet-blockie.component';
 import { WalletAddressViewComponent } from './wallet-address-view/wallet-address-view.component';
 
@@ -79,6 +80,7 @@ export const walletRoutes: Routes = [
     WalletAddKeyTunnelComponent,
     WalletAskPasswordFormComponent,
     WalletCreatePasswordFormComponent,
+    WalletMessageViewComponent,
     WalletBlockieComponent,
     WalletAddressViewComponent
     
