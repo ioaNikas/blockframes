@@ -2,6 +2,8 @@ import { Component, ChangeDetectionStrategy, OnInit, Input } from "@angular/core
 import { Key, KeyManagerService } from "../+state";
 import { keyToAddressPart, AddressParts } from "@blockframes/utils";
 import { DomSanitizer } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { WalletService } from "../../wallet/+state";
 
 @Component({
   selector: 'key-manager-item',
@@ -16,7 +18,9 @@ export class KeyManagerItemComponent implements OnInit {
   address: AddressParts;
 
   constructor(
+    private router: Router,
     private service: KeyManagerService,
+    private walletService: WalletService,
     private sanitizer: DomSanitizer
   ){}
 
@@ -29,7 +33,8 @@ export class KeyManagerItemComponent implements OnInit {
   }
 
   async deleteKey() {
-    this.service.deleteKey(this.key);
+    await this.walletService.setDeleteKeyTx(this.key.address);
+    this.router.navigateByUrl('/layout/o/account/wallet/send')
   }
 
   async exportKey() {

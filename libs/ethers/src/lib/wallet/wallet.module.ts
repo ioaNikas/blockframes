@@ -26,6 +26,7 @@ import { WalletViewComponent } from './wallet-view/wallet-view.component';
 import { WalletImportKeyFormComponent } from './wallet-import-key-form/wallet-import-key-form.component';
 import { WalletWidgetComponent } from './wallet-widget/wallet-widget.component';
 import { WalletAddKeyTunnelComponent } from './wallet-add-key/wallet-add-key.component';
+import { WalletSendTxTunnelComponent } from './wallet-send-tx/wallet-send-tx.component';
 
 
 export const walletRoutes: Routes = [
@@ -41,7 +42,11 @@ export const walletRoutes: Routes = [
       },
       { path: 'add', component: WalletAddKeyTunnelComponent },
       // { path: 'import', component: WalletAddKeyTunnelComponent }, // TODO issue 544
-      // { path: 'send', component: WalletAddKeyTunnelComponent }, // TODO issue 542
+      {
+        path: 'send',
+        canActivate: [WalletKeyGuard],
+        component: WalletSendTxTunnelComponent
+      },
     ]
   },
 ];
@@ -73,6 +78,7 @@ export const walletRoutes: Routes = [
     WalletImportKeyFormComponent,
     WalletWidgetComponent,
     WalletAddKeyTunnelComponent,
+    WalletSendTxTunnelComponent,
   ],
   exports: [
     WalletWidgetComponent,
