@@ -50,11 +50,6 @@ export class KeyManagerItemComponent implements OnInit {
     this.service.deactivateKey();
   }
 
-  async deleteKey() {
-    await this.walletService.setDeleteKeyTx(this.key.address);
-    this.router.navigateByUrl('/layout/o/account/wallet/send')
-  }
-
   async exportKey() {
     this.service.exportActiveKey();
   }

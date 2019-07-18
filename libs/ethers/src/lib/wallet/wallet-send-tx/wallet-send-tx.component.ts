@@ -76,7 +76,7 @@ export class WalletSendTxTunnelComponent implements OnInit {
     }
     this.step = this.steps.end;
     this.isPending$.next(true);
-    const signedMetaTx = await this.walletService.prepareMetaTx(this.key.ensDomain, this.activeKey);
+    const signedMetaTx = await this.walletService.prepareMetaTx(this.activeKey);
     this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx).then(() => {
       this.isPending$.next(false);
     });

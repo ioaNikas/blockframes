@@ -11,7 +11,7 @@
       <a mat-icon-button [href]="jsonKeystore">
         <mat-icon class="material-icons-outlined">cloud_download</mat-icon>
       </a>
-      <button mat-icon-button (click)="deleteKeyEvent.emit(key)">
+      <button mat-icon-button (click)="deleteKeyEvent.emit(keyObject)">
         <mat-icon class="material-icons-outlined">delete</mat-icon>
       </button>
     </mat-card-actions>
@@ -28,7 +28,7 @@
     <mat-card-content>
       <span>{{ keyObject.name }}</span></mat-card-content>
     <mat-card-actions>
-      <mat-icon (click)="selectedKey.emit(key)">keyboard_arrow_right</mat-icon>
+      <mat-icon (click)="selectedKey.emit(keyObject)">keyboard_arrow_right</mat-icon>
     </mat-card-actions>
   </mat-card>
 </ng-template>

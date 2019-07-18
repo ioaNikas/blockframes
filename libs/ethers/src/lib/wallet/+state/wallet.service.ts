@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { providers, getDefaultProvider, utils, Contract, Wallet as EthersWallet } from 'ethers';
 import { toASCII } from 'punycode';
 import { baseEnsDomain, network, factoryContract } from '@env';
-import { ERC1077, Factory2 } from '@blockframes/contracts';
+import { ERC1077 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
-import { KeyManagerService, KeyManagerQuery } from '../../key-manager/+state';
+import { KeyManagerService } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
 import { MetaTx, SignedMetaTx, Tx } from '../../types';
 import { WalletQuery } from './wallet.query';
@@ -73,7 +73,7 @@ export class WalletService {
     // CREATE2 address
     let payload = '0xff';
     payload += factoryAddress.substr(2);
-    payload += utils.keccak256(utils.toUtf8Bytes(ensDomain.split('.')[0])).substr(2); // salt
+    payload += utils.keccak256(utils.toUtf8Bytes(this.getNameFromENS(ensDomain))).substr(2); // salt
     payload += utils.keccak256(`0x${ERC1077.bytecode}`).substr(2);
     return `0x${utils.keccak256(payload).slice(-40)}`;
   }
@@ -91,13 +91,18 @@ export class WalletService {
     return key;
   }
 
+  /** Get first part of an ens domain : `alice.blockframes.eth` -> `alice` */
+  public getNameFromENS(ensDomain: string) {
+    return ensDomain.split('.')[0];
+  }
+
   public async deployERC1077(ensDomain: string, pubKey: string) {
     if (this.query.getValue().hasERC1077) {
       throw new Error('Your smart-wallet is already deployed');
     }
     this.store.setLoading(true);
     try {
-      const name = ensDomain.split('.')[0]; // `alice.blockframes.eth` -> `alice`
+      const name =  this.getNameFromENS(ensDomain);
       const erc1077Address = await this.precomputeAddress(ensDomain);
       const result = await this.relayer.deploy(name, pubKey, erc1077Address);
       this.relayer.registerENSName(name, erc1077Address); // do not wait for ens register, this can be done in the background
@@ -111,14 +116,15 @@ export class WalletService {
     }
   }
 
+  /** return an instance of an ERC10777 contract */
   private getUsersERC1077(ensDomainOrAddress: string) {
     this._requireProvider();
     return new Contract(ensDomainOrAddress, ERC1077.abi, this.provider);
   }
 
   public async setDeleteKeyTx(pubKey: string) {
-    this.setTx(getMockTx()); // TODO use getDeleteKeyTx
-    // TODO call key manager delete key to delete localy after the tx has been mined
+    this.setTx(getMockTx()); // TODO use getDeleteKeyTx : issue#655
+    // TODO call key manager delete key to delete localy after the tx has been mined : issue#655
   }
 
   public setTx(tx: Tx) {
@@ -153,7 +159,7 @@ export class WalletService {
     ]);
   }
 
-  public async prepareMetaTx(ensDomain: string, wallet: EthersWallet): Promise<SignedMetaTx> {
+  public async prepareMetaTx(wallet: EthersWallet): Promise<SignedMetaTx> {
     this._requireProvider();
     const from = this.query.getValue().address;
     const erc1077 = this.getUsersERC1077(from);
@@ -187,7 +193,7 @@ export class WalletService {
   }
 
   public async sendSignedMetaTx(ensDomain: string, signedMetaTx: SignedMetaTx) {
-    return this.relayer.send(await this.retreiveAddress(ensDomain.split('.')[0]), signedMetaTx);
+    return this.relayer.send(await this.retreiveAddress(this.getNameFromENS(ensDomain)), signedMetaTx);
   }
 
   public async waitForTx(txHash: string) {

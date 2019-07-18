@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 
 import { WalletQuery, Wallet, WalletService } from "../+state";
 import { Key } from "../../key-manager/+state";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -18,6 +19,7 @@ export class WalletViewComponent implements OnInit {
   // ensName$: Observable<string>;
 
   constructor(
+    public router: Router,
     public service: WalletService,
     public query: WalletQuery
   ) {}
@@ -33,8 +35,8 @@ export class WalletViewComponent implements OnInit {
     console.warn('NOT IMPLEMENTED');
   }
 
-  // TODO implment this function : issue 542
-  deleteKey(key: Key) {
-    console.warn('NOT IMPLEMENTED');
+  async deleteKey(key: Key) {
+    await this.service.setDeleteKeyTx(key.address);
+    this.router.navigateByUrl('/layout/o/account/wallet/send');
   }
 }

@@ -25,14 +25,14 @@ export interface RelayerConfig {
 }
 
 /** Regular Ethereum transaction */
-export interface Tx {
+export interface BaseTx {
   to: string; // address
   value: string; // uint256
   data: string; // bytes
 }
 
 /** A Meta Transaction that encapsulate a regular tx (it will need a signatures before being sent)*/
-export interface MetaTx extends Tx {
+export interface MetaTx extends BaseTx {
   nonce: string; // uint256
   gasPrice: string; // uint256
   gasToken: string; // address
@@ -60,7 +60,7 @@ export interface SignDeliveryParams {
   stakeholderId: string;
 }
 
-export const initRelayer = (config: RelayerConfig): Relayer => {
+export function initRelayer(config: RelayerConfig): Relayer {
   let wallet = Wallet.fromMnemonic(config.mnemonic);
   const provider = getDefaultProvider(config.network);
   wallet = wallet.connect(provider);
@@ -93,11 +93,13 @@ interface RegisterParams {
 //                   DEPLOY
 //---------------------------------------------------
 
-export const relayerDeployLogic = async (
+export async function relayerDeployLogic(
   { username, key, erc1077address }: DeployParams,
   config: RelayerConfig
-) => {
+) {
   const relayer: Relayer = initRelayer(config);
+
+  const recoverAddress = '0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3'; // TODO this will be the org address in the future, pass this as a function params : issue #654
 
   // check required params
   if (!username || !key || !erc1077address) {
@@ -116,7 +118,7 @@ export const relayerDeployLogic = async (
 
   try {
 
-    const result: {[key: string]: TxReceipt | undefined } = {};
+    const result: Record<string, TxReceipt> = {};
  
     const codeAtAddress = await relayer.wallet.provider.getCode(erc1077address);
     if (codeAtAddress === '0x') { // if there is already some code at this address : skip deploy
@@ -124,7 +126,7 @@ export const relayerDeployLogic = async (
         hash,
         `0x${ERC1077.bytecode}`,
         key.toLocaleLowerCase(),
-        '0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3'.toLocaleLowerCase(), // TODO this will be the org address in the future
+        recoverAddress.toLocaleLowerCase(),
       )
         
       result['deploy'] = await deployTx.wait();
@@ -142,10 +144,10 @@ export const relayerDeployLogic = async (
 //                   REGISTER
 //---------------------------------------------------
 
-export const relayerRegisterENSLogic = async (
+export async function relayerRegisterENSLogic(
   { name, address }: RegisterParams,
   config: RelayerConfig
-) => {
+) {
   const relayer: Relayer = initRelayer(config);
 
   // check required params
@@ -178,7 +180,7 @@ export const relayerRegisterENSLogic = async (
     if (!!retreivedAddress && retreivedAddress !== ZERO_ADDRESS) { // if name is already link to a non-zero address : skip
       throw new Error(`${fullName} already linked to an address (${retreivedAddress})`);
     }
-    const result: {[key: string]: TxReceipt | undefined } = {};
+    const result: Record<string, TxReceipt> = {};
 
     // (A) register the user ens username
     const nameOwner = await relayer.registry.owner(utils.namehash(fullName));
@@ -224,10 +226,10 @@ export const relayerRegisterENSLogic = async (
 //                   SEND
 //---------------------------------------------------
 
-export const relayerSendLogic = async (
+export async function relayerSendLogic(
   { address, tx }: SendParams,
   config: RelayerConfig
-) => {
+) {
   const relayer: Relayer = initRelayer(config);
   // check required params
   if (!address || !tx) {
