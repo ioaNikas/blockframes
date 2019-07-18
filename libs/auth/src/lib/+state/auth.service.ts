@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AuthStore, User, createUser } from './auth.store';
-import { WalletService } from 'libs/ethers/src/lib/wallet/+state';
 import { FireQuery } from '@blockframes/utils';
 import { Router } from '@angular/router';
+import { AuthQuery } from './auth.query';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,14 +11,20 @@ export class AuthService {
   constructor(
     private store: AuthStore,
     private afAuth: AngularFireAuth,
-    private wallet: WalletService,
     private db: FireQuery,
-    private router: Router
+    private router: Router,
+    private query: AuthQuery
   ) {}
 
   //////////
   // AUTH //
   //////////
+
+  public async updatePassword(currentPassword: string, newPassword: string) {
+    const userEmail = this.query.user.email;
+    await this.afAuth.auth.signInWithEmailAndPassword(userEmail, currentPassword);
+    await this.afAuth.auth.currentUser.updatePassword(newPassword);
+  }
 
   public async signin(email: string, password: string) {
     await this.afAuth.auth.signInWithEmailAndPassword(email, password);
@@ -43,7 +49,7 @@ export class AuthService {
     return this.db.doc<User>(`users/${uid}`).set(user);
   }
 
-  /** Upate a user */
+  /** Update a user */
   public update(uid: string, user: Partial<User>) {
     return this.db.doc<User>(`users/${uid}`).update(user);
   }
