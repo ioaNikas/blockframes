@@ -7,7 +7,9 @@ import { ERC1077, Factory2 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
 import { KeyManagerService, KeyManagerQuery } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
-import { Tx, MetaTx, SignedMetaTx } from '../../types';
+import { MetaTx, SignedMetaTx, Tx } from '../../types';
+import { WalletQuery } from './wallet.query';
+import { getMockTx } from './wallet-known-tx';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -15,18 +17,16 @@ export class WalletService {
   provider: providers.Provider
 
   constructor(
-    private keyManagerQuery: KeyManagerQuery,
+    private query: WalletQuery,
     private store: WalletStore,
     private keyManager: KeyManagerService,
     private relayer: Relayer,
   ) {}
 
   public async updateFromEmail(email: string) {
-    this.store.setLoading(true);
     const ensDomain = this.emailToEnsDomain(email);
     const address = await this.retreiveAddress(ensDomain);
     this.store.update({ensDomain, address});
-    this.store.setLoading(false);
   }
 
   /**
@@ -50,9 +50,12 @@ export class WalletService {
   public async retreiveAddress(ensDomain: string) {
     this._requireProvider();
     const address = await this.provider.resolveName(ensDomain);
-    if(!!address){
-      this.store.update({hasERC1077: true});
-      return address;
+    if (!!address){
+      const code = await this.provider.getCode(ensDomain);
+      if (code !== '0x') {
+        this.store.update({hasERC1077: true});
+        return address;
+      }
     }
     return await this.precomputeAddress(ensDomain);
   }
@@ -67,15 +70,11 @@ export class WalletService {
 
     const factoryAddress = await this.provider.resolveName(factoryContract);
 
-    // retreive init code
-    const factory2 = new Contract(factoryAddress, Factory2.abi, this.provider);
-    const initCode = await factory2.getInitCode();
-
     // CREATE2 address
     let payload = '0xff';
     payload += factoryAddress.substr(2);
     payload += utils.keccak256(utils.toUtf8Bytes(ensDomain.split('.')[0])).substr(2); // salt
-    payload += utils.keccak256(initCode).substr(2);
+    payload += utils.keccak256(`0x${ERC1077.bytecode}`).substr(2);
     return `0x${utils.keccak256(payload).slice(-40)}`;
   }
 
@@ -92,15 +91,24 @@ export class WalletService {
     return key;
   }
 
-  public async deployERC1077(ensDomain: string) {
-    // TODO check if not already deployed
-    let pubKey = null;
-    try{
-      pubKey = this.keyManagerQuery.getMainKeyOfUser(ensDomain).address;
-    } catch(error) {
-      throw new Error('You are trying to deploy an ERC1077 without any key');
+  public async deployERC1077(ensDomain: string, pubKey: string) {
+    if (this.query.getValue().hasERC1077) {
+      throw new Error('Your smart-wallet is already deployed');
     }
-    return this.relayer.create(ensDomain.split('.')[0], pubKey, await this.precomputeAddress(ensDomain));
+    this.store.setLoading(true);
+    try {
+      const name = ensDomain.split('.')[0]; // `alice.blockframes.eth` -> `alice`
+      const erc1077Address = await this.precomputeAddress(ensDomain);
+      const result = await this.relayer.deploy(name, pubKey, erc1077Address);
+      this.relayer.registerENSName(name, erc1077Address); // do not wait for ens register, this can be done in the background
+      this.store.update({hasERC1077: true})
+      this.store.setLoading(false);
+      return result;
+    } catch(err) {
+      this.store.setLoading(false);
+      console.error(err);
+      throw new Error('Deploy seems to have failed, but firebase function is maybe still runing');
+    }
   }
 
   private getUsersERC1077(ensDomainOrAddress: string) {
@@ -108,22 +116,21 @@ export class WalletService {
     return new Contract(ensDomainOrAddress, ERC1077.abi, this.provider);
   }
 
+  public async setDeleteKeyTx(pubKey: string) {
+    this.setTx(getMockTx()); // TODO use getDeleteKeyTx
+    // TODO call key manager delete key to delete localy after the tx has been mined
+  }
+
+  public setTx(tx: Tx) {
+    this.store.update({tx});
+  }
+
   private hashMetaTx(from: string, metaTx: MetaTx) {
-    return utils.solidityKeccak256([
-      'address', // from
-      'address', // to
-      'uint256', // value
-      'bytes32', // keccak256(data)
-      'uint256', // nonce
-      'uint256', // gasPrice
-      'address', // gasToken
-      'uint256', // gasLimit
-      'uint8' // operationType
-    ], [
-      from, metaTx.to, metaTx.value, utils.keccak256(metaTx.data), metaTx.nonce, // tx
+    return this.getUsersERC1077(from).calculateMessageHash(
+      from, metaTx.to, metaTx.value, metaTx.data, metaTx.nonce, // tx
       metaTx.gasPrice, metaTx.gasToken, metaTx.gasLimit, // gas
       metaTx.operationType // op type
-    ]);
+    );
   }
 
   private signedMetaTxToData(signedMetaTx: SignedMetaTx) {
@@ -146,15 +153,15 @@ export class WalletService {
     ]);
   }
 
-  private async prepareMetaTx(ensDomain: string, tx: Tx, wallet: EthersWallet): Promise<SignedMetaTx> {
+  public async prepareMetaTx(ensDomain: string, wallet: EthersWallet): Promise<SignedMetaTx> {
     this._requireProvider();
-    const from = await this.provider.resolveName(ensDomain);
+    const from = this.query.getValue().address;
     const erc1077 = this.getUsersERC1077(from);
 
     // prepare
     const metaTx = {
-      ...tx,
-      nonce: await erc1077.lastNonce(),
+      ...this.query.getValue().tx,
+      nonce: await erc1077.getLastNonce(),
       gasPrice: await this.provider.getGasPrice().then(bigNum => bigNum.toHexString()),
       gasLimit: '0x0', // temporary gas limit
       gasToken: '0x0000000000000000000000000000000000000000', // zero address means ether instead of erc20
@@ -162,7 +169,7 @@ export class WalletService {
     }
 
     // estimate gas
-    const mockTxHash = this.hashMetaTx(from, metaTx);
+    const mockTxHash = await this.hashMetaTx(from, metaTx);
     const mockSignature = await wallet.signMessage(mockTxHash);
     const mockSignedMetaTx: SignedMetaTx = {...metaTx, signatures: mockSignature};
     const mockTx: providers.TransactionRequest = {
@@ -173,9 +180,18 @@ export class WalletService {
     const estimatedGasLimit = await this.provider.estimateGas(mockTx).then(bigNum => bigNum.toHexString());
 
     // hash & sign
-    metaTx.gasLimit = estimatedGasLimit;
-    const txHash = this.hashMetaTx(from, metaTx);
-    const signature = await wallet.signMessage(txHash);
+    metaTx.gasLimit = estimatedGasLimit; // replace temporary gasLimit by its estimation
+    const txHash = await this.hashMetaTx(from, metaTx);
+    const signature = await wallet.signMessage(utils.arrayify(txHash));
     return {...metaTx, signatures: signature};
+  }
+
+  public async sendSignedMetaTx(ensDomain: string, signedMetaTx: SignedMetaTx) {
+    return this.relayer.send(await this.retreiveAddress(ensDomain.split('.')[0]), signedMetaTx);
+  }
+
+  public async waitForTx(txHash: string) {
+    this._requireProvider();
+    return this.provider.waitForTransaction(txHash);
   }
 }
