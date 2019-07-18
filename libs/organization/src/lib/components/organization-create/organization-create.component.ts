@@ -7,6 +7,7 @@ import { first, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { createOrganization, OrganizationQuery, OrganizationService, OrganizationState } from '../../+state';
 import { Subject } from 'rxjs';
+import { App, AppInformations, getAppInformations } from '../../permissions/+state';
 
 @Component({
   selector: 'organization-create',
@@ -18,6 +19,14 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin<OrganizationState>;
   public user: User;
   public form: FormGroup;
+  public availablesApps: App[] = [
+    App.mediaFinanciers,
+    App.mediaDelivering,
+    App.storiesAndMore,
+    App.biggerBoat
+  ]
+  public applications: AppInformations[];
+  public selectedApp: AppInformations;
   private destroyed$ = new Subject();
 
   constructor(
@@ -32,6 +41,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.applications = this.availablesApps.map(app => getAppInformations(app));
     this.user = this.auth.user;
     this.form = this.builder.group({
       'id': [''],
@@ -63,7 +73,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const id = await this.service.add(this.form.value, await this.user);
+    const id = await this.service.add(this.form.value, await this.user, this.selectedApp);
 
     this.router.navigate(['layout/o/organization', id])
     this.snackBar.open(`Created ${this.form.get('name').value}`, 'close', { duration: 1000 });

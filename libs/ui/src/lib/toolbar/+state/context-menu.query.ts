@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import { ContextMenuStore, ContextMenuState } from './context-menu.store';
 import { ContextMenu, MenuItem } from './context-menu.model';
 import { RouterQuery } from '@datorama/akita-ng-router-store';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { RouterStateSnapshot } from '@angular/router';
 
@@ -18,9 +18,9 @@ export class ContextMenuQuery extends QueryEntity<ContextMenuState, ContextMenu>
   ) {
     super(store);
   }
-  
+
   get menu$(): Observable<any> {
-    return this.routerQuery.select(router => router.state)
+    return this.routerQuery.select('state')
     .pipe(
       switchMap((snapshot) => {
 

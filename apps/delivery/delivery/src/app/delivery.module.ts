@@ -1,7 +1,5 @@
 // Angular
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -12,7 +10,6 @@ import { environment } from '../environments/environment';
 
 // Components
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
 import { DeliveryQuery} from '@blockframes/material'; // TODO: find better way to load material lib
 import { TemplateModule} from '@blockframes/material'; // TODO: find better way to load material lib
@@ -51,14 +48,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: '',
+    component: MovieListComponent
+  }
+]
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
   imports: [
     // Angular
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
 
@@ -102,10 +103,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
-    environment.production ? [] : [AkitaNgDevtools.forRoot()]
+    environment.production ? [] : [AkitaNgDevtools.forRoot()],
+
+    RouterModule.forChild(routes)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
-export class AppModule {}
+export class DeliveryModule {}
 

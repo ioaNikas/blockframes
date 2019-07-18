@@ -7,6 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Guards
 import { AuthGuard } from '@blockframes/auth';
+import { OrganizationHomeComponent, OrgFormComponent, OrganizationGuard, PermissionsGuard } from '@blockframes/organization';
 import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
@@ -23,7 +24,30 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: OrganizationHomeComponent
+      },
+      {
+        path: 'create',
+        component: OrgFormComponent
+      },
+      {
+        path: 'home',
+        canActivate: [OrganizationGuard, PermissionsGuard],
+        canDeactivate: [OrganizationGuard, PermissionsGuard],
+        children: [
+          {
+            path: '',
+            component: HomeComponent
+          },
+          {
+            path: 'organization',
+            loadChildren: () => import('@blockframes/organization').then(m => m.OrganizationModule)
+          },
+          {
+            path: 'delivery',
+            loadChildren: () => import('@blockframes/delivery').then(m => m.DeliveryModule)
+          }
+        ]
       }
     ]
   },

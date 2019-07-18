@@ -15,7 +15,7 @@ export const orgQuery = (orgId: string): Query<Organization> => ({
     // TODO(#681): refactoring
   // actions: (organization: Organization) => ({
   //   path: `orgs/${organization.id}/actions`,
-  //   // TODO(#681): remove activeMembers subscripton 
+  //   // TODO(#681): remove activeMembers subscripton
   //   activeMembers: (action: OrganizationAction) => {
   //     return action.activeMembers.map(id => ({
   //       path: `users/${id}`
@@ -45,7 +45,7 @@ export class OrganizationGuard {
             }
             return this.fireQuery.fromQuery<Organization>(orgQuery(user.orgId));
           }),
-          
+
           tap(organization => this.store.updateOrganization(organization))
         )
         .subscribe({

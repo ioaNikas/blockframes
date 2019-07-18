@@ -1,7 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+import { DeliveryModule } from './app/delivery.module';
 import { environment } from './environments/environment';
 import { persistState } from '@datorama/akita';
 import { LocalStorageVault } from 'libs/ethers/src/lib/vault/vault';
@@ -28,5 +28,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic()
-  .bootstrapModule(AppModule)
+  .bootstrapModule(DeliveryModule)
   .catch(err => console.error(err));

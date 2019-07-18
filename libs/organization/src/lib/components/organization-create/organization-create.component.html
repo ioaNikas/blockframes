@@ -30,4 +30,16 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <mat-card>
+    <mat-card-header> <mat-card-title>Choose your DApp</mat-card-title> </mat-card-header>
+    <mat-card-content *ngFor="let app of applications">
+      <mat-radio-group aria-labelledby="example-radio-group-label" [(ngModel)]="selectedApp">
+        <mat-radio-button [value]="app">
+          <h4>{{ app.name }}</h4>
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
 </section>

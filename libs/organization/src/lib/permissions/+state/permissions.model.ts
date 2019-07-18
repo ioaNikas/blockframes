@@ -12,7 +12,7 @@ export interface Permissions {
 }
 
 export interface AppPermissions {
-  name: App;
+  name: string;
   admins: string[];
   canCreate: string[];
   canRead: string[];
@@ -40,9 +40,28 @@ export interface OrgDocPermissions {
 }
 
 export enum App {
-  mediaDelivering = 'MediaDelivering',
-  mediaFinanciers = 'MediaFinanciers',
-  storiesAndMore = 'StoriesAndMore'
+  mediaDelivering,
+  mediaFinanciers,
+  storiesAndMore,
+  biggerBoat
+}
+
+export interface AppInformations {
+  name: string;
+  collection: string;
+}
+
+export function getAppInformations(app: App): AppInformations {
+  switch (app) {
+    case App.mediaDelivering:
+      return {name: 'Media Delivering', collection: 'mediaDelivering'};
+    case App.mediaFinanciers:
+      return {name: 'Media Financiers', collection: 'mediaFinanciers'};
+    case App.storiesAndMore:
+      return {name: 'Stories and More', collection: 'storiesAndMore'};
+    case App.biggerBoat:
+      return {name: 'Bigger Boat', collection: 'biggerBoat'}
+  }
 }
 
 export function createPermissions(params: Partial<Permissions> = {}): Permissions {
@@ -58,9 +77,9 @@ export function createPermissions(params: Partial<Permissions> = {}): Permission
   };
 }
 
-export function createAppPermissions(app: App): AppPermissions {
+export function createAppPermissions(name: string): AppPermissions {
   return {
-    name: app,
+    name,
     admins: [],
     canCreate: [],
     canRead: [],
