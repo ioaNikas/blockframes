@@ -1,0 +1,76 @@
+@import 'variables';
+
+mat-sidenav-container {
+  height: 100%;
+  padding-top: 50px;
+}
+
+mat-sidenav-content {
+  width: 60%;
+  padding-left: 100px;
+}
+
+.mat-sidenav {
+  background-color: rgba(0,0,0,0);
+  width: 40%;
+  padding: 50px 100px;
+  height: calc(100vh - var(--toolbarHeight));
+  position: fixed;
+  top: var(--toolbarHeight);
+}
+
+mat-card-header {
+  width: 100%;
+}
+
+mat-card {
+  width: 100%;
+  height: 100%;
+}
+
+.mat-drawer-side.mat-drawer-end {
+  border-left: none;
+}
+
+// medium
+ @include medium {
+  .mat-sidenav {
+    padding: 25px 50px;
+  }
+  mat-sidenav-content {
+    padding-left: 50px;
+  }
+  mat-sidenav-container {
+    padding-top: 25px;
+  }
+ }
+
+// small
+@include tablet {
+  .mat-sidenav {
+    padding: 25px 25px;
+  }
+  mat-sidenav-content {
+    padding-left: 25px;
+  }
+  mat-sidenav-container {
+    padding-top: 25px;
+  }
+}
+
+// extra small
+@include mobile {
+  .mat-sidenav {
+    padding: 10px 10px;
+  }
+  mat-sidenav-container {
+    padding: 10px 10px;
+  }
+  mat-sidenav-content {
+    width: 100%;
+    padding-left: 0;
+  }
+  .mat-sidenav {
+    width: 100%;
+  }
+}

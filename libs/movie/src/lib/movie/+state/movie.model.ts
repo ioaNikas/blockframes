@@ -2,9 +2,21 @@ import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
 
+export interface MovieAvailability {
+  movieId? : string;
+  movie?: Partial<Movie>
+  territories: string[];
+  rights: string[];
+  start: Date;
+  end: Date;
+  languages?: string[];
+  exclusivity: boolean;
+}
+
 export interface Movie {
+  _type: 'movies',
   id: string,
-  org?: Organization,
+  organization?: Organization,
   title: Title, // will contain all titles: original, international, suiss, etc
   directorName: string,
   poster: string,
@@ -21,6 +33,9 @@ export interface Movie {
   credits: {firstName: string, lastName: string, creditRole: string}[],
   images: string[],
   promotionalElements: {label: string, url: string}[],
+  materials?: Material[];
+  stakeholders?: Stakeholder[];
+  availabilities: MovieAvailability[],
 
   // not main movie attributes WIP
   ipId: string,
@@ -34,9 +49,7 @@ export interface Movie {
   backendProfit: number,
   potentialRevenues: number,
   selectionCategories: string,
-  _type: 'movies',
-  materials?: Material[];
-  stakeholders?: Stakeholder[];
+  deliveryIds: string[];
 }
 
 interface Title {
@@ -49,7 +62,8 @@ interface Title {
  */
 export function createMovie(params?: Partial<Movie>) {
   return {
-    ...params,
-    _type: 'movies'
+    deliveryIds: [],
+    _type: 'movies',
+    ...params
   } as Movie;
 }

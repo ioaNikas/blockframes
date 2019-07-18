@@ -56,6 +56,10 @@ const ICONS_SVG = [
     url: 'assets/apps/home_of_scripts.svg'
   },
   {
+    name: 'bigger_boat',
+    url: 'assets/apps/home_of_scripts.svg'
+  },
+  {
     name: 'library_books',
     url: 'assets/icons/library_books.svg'
   },
@@ -143,6 +147,10 @@ const ICONS_SVG = [
     name: 'circled_delete',
     url: 'assets/circled-icons/delete.svg'
   },
+  {
+    name: 'key_icon',
+    url: 'assets/icons/key_icon.svg'
+  }
 ];
 
 /**

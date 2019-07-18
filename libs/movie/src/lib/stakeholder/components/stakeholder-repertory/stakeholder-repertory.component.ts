@@ -1,15 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { StakeholderService, createMovieStakeholder } from '../../+state';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import * as firebase from 'firebase';
-import { takeUntil } from 'rxjs/operators';
+import { StakeholderService } from '../../+state';
+import { FormControl } from '@angular/forms';
+import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MovieQuery } from '@blockframes/movie/movie/+state';
 import { Subject } from 'rxjs';
-
-interface Organization {
-  id: string;
-  name?: string;
-}
+import { Organization, OrganizationService } from '@blockframes/organization';
 
 @Component({
   selector: 'stakeholder-repertory',
@@ -18,53 +13,44 @@ interface Organization {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StakeholderRepertoryComponent implements OnInit, OnDestroy {
-  public addStakeholderForm: FormGroup;
-  public orgOptions: Organization[];
+  public stakeholderForm = new FormControl();
+  public organizations: Organization[];
   private destroyed$ = new Subject();
 
   constructor(
     private service: StakeholderService,
-    private builder: FormBuilder,
     private movieQuery: MovieQuery,
+    private organizationService: OrganizationService
   ) {}
 
   ngOnInit() {
-    this.orgOptions = [];
-    this.addStakeholderForm = this.builder.group({
-      org: null
-    });
     this.onChange();
   }
 
-  public submit(org: Organization) {
-    const sh = createMovieStakeholder({ orgId: org.id });
-
-    // TODO: handle promises correctly (update loading status, send back error report, etc).
-    this.service.add(this.movieQuery.getActiveId(), sh);
+  public submit(organization: Partial<Organization>) {
+    // TODO: handle promises correctly (update loading status, send back error report, etc). => ISSUE#612
+    this.service.addStakeholder(this.movieQuery.getActive(), organization);
   }
 
-  public displayFn(org?: Organization): string | undefined {
-    return org ? org.name : undefined;
+  public displayFn(organization?: Organization): string | undefined {
+    return organization ? organization.name : undefined;
   }
 
-  private async listOrgsByName(prefix: string): Promise<Organization[]> {
-    const call = firebase.functions().httpsCallable('findOrgByName');
-    return call({ prefix }).then(matchingOrgs => matchingOrgs.data);
+  private async onChange() {
+    this.stakeholderForm.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(async stakeholderName => {
+        this.organizations = await this.organizationService.getOrganizationsByName(stakeholderName);
+        // TODO: use an observable => ISSUE#608
+      });
   }
 
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
-  }
-
-  private async onChange() {
-    this.addStakeholderForm.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(typingOrgName => {
-      // TODO: debounce
-      this.listOrgsByName(typingOrgName.org)
-        .then(matchingOrgs => {
-          // TODO: use an observable
-          this.orgOptions = matchingOrgs;
-        });
-    });
   }
 }

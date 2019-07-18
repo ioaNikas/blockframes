@@ -29,6 +29,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
 import { StakeholderModule } from '../stakeholder/stakeholder.module';
+import { MovieSharedModule } from './movie.shared.module';
+import { ImportMovieModule } from './components/import/import-movie.module';
 
 // Components
 import { MovieEditableComponent } from './pages/movie-editable/movie-editable.component';
@@ -38,7 +40,6 @@ import { MovieFormStoryComponent } from './components/movie-form/movie-form-stor
 import { MovieFormTeamComponent } from './components/movie-form/movie-form-team/movie-form-team.component';
 import { MovieFormPromotionalComponent } from './components/movie-form/movie-form-promotional/movie-form-promotional.component';
 import { MovieListComponent } from './pages/movie-list/movie-list.component';
-import { MovieViewComponent } from './pages/movie-view/movie-view.component';
 import { MovieEmptyComponent } from './components/movie-empty/movie-empty.component';
 
 import { MovieRoutingModule } from './movie-routing.module';
@@ -58,7 +59,6 @@ import { MovieCreateComponent } from './pages/movie-create/movie-create.componen
     MovieFormComponent,
     MovieFormStoryComponent,
     MovieListComponent,
-    MovieViewComponent,
     MovieTitleFormComponent,
     MovieFormMainComponent,
     MovieFormTeamComponent,
@@ -101,6 +101,8 @@ import { MovieCreateComponent } from './pages/movie-create/movie-create.componen
     UploadModule,
     UiFormModule,
     StakeholderModule,
+    ImportMovieModule,
+    MovieSharedModule,
   ],
   providers: [
     { provide: FirestoreSettingsToken, useValue: {} },// TODO: Remove when @angular/fire is updated
