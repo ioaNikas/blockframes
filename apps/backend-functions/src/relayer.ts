@@ -1,12 +1,11 @@
 import { Wallet, Contract, utils, getDefaultProvider, providers } from 'ethers';
-import { db } from './firebase';
 import * as CREATE2_FACTORY from './contracts/Factory2.json';
 import * as ERC1077 from './contracts/ERC1077.json';
 import * as ENS_REGISTRY from './contracts/ENSRegistry.json';
 import * as ENS_RESOLVER from './contracts/PublicResolver.json';
-import { getByteCode } from './contracts/byteCode';
 
 type TxResponse = providers.TransactionResponse;
+type TxReceipt = providers.TransactionReceipt;
 
 export interface Relayer {
   wallet: Wallet;
@@ -14,7 +13,6 @@ export interface Relayer {
   namehash: string;
   registry: Contract;
   resolver: Contract;
-  getNonce: () => Promise<number>;
 }
 
 export interface RelayerConfig {
@@ -26,9 +24,29 @@ export interface RelayerConfig {
   factoryContract: string;
 }
 
+/** Regular Ethereum transaction */
+export interface Tx {
+  to: string; // address
+  value: string; // uint256
+  data: string; // bytes
+}
+
+/** A Meta Transaction that encapsulate a regular tx (it will need a signatures before being sent)*/
+export interface MetaTx extends Tx {
+  nonce: string; // uint256
+  gasPrice: string; // uint256
+  gasToken: string; // address
+  gasLimit: string; // uint256
+  operationType: string; // uint8
+}
+
+/** A Meta Transaction with the user signature (ready to be sent) */
+export interface SignedMetaTx extends MetaTx {
+  signatures: string; // bytes
+}
 export interface SendParams {
-  username: string;
-  tx: any; // TODO META-TX INTERFACE
+  address: string;
+  tx: SignedMetaTx;
 }
 
 export interface RequestTokensParams {
@@ -42,7 +60,6 @@ export interface SignDeliveryParams {
   stakeholderId: string;
 }
 
-let nonceOffset = 0;
 export const initRelayer = (config: RelayerConfig): Relayer => {
   let wallet = Wallet.fromMnemonic(config.mnemonic);
   const provider = getDefaultProvider(config.network);
@@ -52,30 +69,32 @@ export const initRelayer = (config: RelayerConfig): Relayer => {
   const registry = new Contract(config.registryAddress, ENS_REGISTRY.abi, wallet);
   const resolver = new Contract(config.resolverAddress, ENS_RESOLVER.abi, wallet);
 
-  const getNonce = async() => { // TODO Ethers v5 will handle the nonce automatically, remove this after migration to v5
-    const nonce = await wallet.getTransactionCount();
-    nonceOffset++;
-    return nonce + nonceOffset;
-  };
-
   return <Relayer>{
     wallet,
     contractFactory,
     namehash,
     registry,
     resolver,
-    getNonce
   };
 };
 
-interface UserInfos {
+interface DeployParams {
   username: string;
-  key: string,
-  erc1077address: string
+  key: string;
+  erc1077address: string;
 };
 
-export const relayerCreateLogic = async (
-  { username, key, erc1077address }: UserInfos,
+interface RegisterParams {
+  name: string;
+  address: string;
+}
+
+//---------------------------------------------------
+//                   DEPLOY
+//---------------------------------------------------
+
+export const relayerDeployLogic = async (
+  { username, key, erc1077address }: DeployParams,
   config: RelayerConfig
 ) => {
   const relayer: Relayer = initRelayer(config);
@@ -93,87 +112,106 @@ export const relayerCreateLogic = async (
   }
 
   // compute needed values
-  const fullName = `${username}.${config.baseEnsDomain}`;
   const hash = utils.keccak256(utils.toUtf8Bytes(username));
-  const byteCode = getByteCode(key.toLocaleLowerCase(), '0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3'.toLocaleLowerCase()); // compute full contract byte code // TODO change hardcoded recover address
 
   try {
 
+    const result: {[key: string]: TxReceipt | undefined } = {};
+ 
+    const codeAtAddress = await relayer.wallet.provider.getCode(erc1077address);
+    if (codeAtAddress === '0x') { // if there is already some code at this address : skip deploy
+      const deployTx: TxResponse = await relayer.contractFactory.deploy(
+        hash,
+        `0x${ERC1077.bytecode}`,
+        key.toLocaleLowerCase(),
+        '0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3'.toLocaleLowerCase(), // TODO this will be the org address in the future
+      )
+        
+      result['deploy'] = await deployTx.wait();
+      console.log(`(D) tx sent (deploy) : ${deployTx.hash}`);
+    }
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+};
+
+//---------------------------------------------------
+//                   REGISTER
+//---------------------------------------------------
+
+export const relayerRegisterENSLogic = async (
+  { name, address }: RegisterParams,
+  config: RelayerConfig
+) => {
+  const relayer: Relayer = initRelayer(config);
+
+  // check required params
+  if (!name || !address) {
+    throw new Error('"name" and "address" are mandatory parameters !');
+  }
+
+  try {
+    utils.getAddress(address);
+  } catch (error) {
+    throw new Error('"address" should be a valid ethereum address !');
+  }
+
+  // compute needed values
+  const fullName = `${name}.${config.baseEnsDomain}`;
+  const hash = utils.keccak256(utils.toUtf8Bytes(name));
+
+  try {
     /*
-    Deployement require 5 interdependent txs to happens :
+    ENS registration require 3 interdependent txs to happens :
     here are the order of the tx and their dependencies
 
-       (A) --> (B) --> (C)     // ENS workflow
-        ||
-       (D)                     // Deploy workflow
+       (A) --> (B) --> (C)     // ENS workflow, (A) must complete before (B)
 
-      || means tx can happen at the same time,
-     (A)->(B) means (A) must complete before (B)
     */
 
     const ZERO_ADDRESS = '0x00000000000000000000000000000000000000';
-    const ensWorkFlow = async () => {
-      const retreivedAddress = await relayer.wallet.provider.resolveName(fullName);
-      if (retreivedAddress !== ZERO_ADDRESS) { // if name is already link to a non-zero address : skip ensWorkflow
-        const result: {[key: string]: string | undefined } = {};
+    
+    const retreivedAddress = await relayer.wallet.provider.resolveName(fullName);
+    if (!!retreivedAddress && retreivedAddress !== ZERO_ADDRESS) { // if name is already link to a non-zero address : skip
+      throw new Error(`${fullName} already linked to an address (${retreivedAddress})`);
+    }
+    const result: {[key: string]: TxReceipt | undefined } = {};
 
-        // (A) register the user ens username
-        const nameOWner = await relayer.registry.owner(utils.namehash(fullName));
-        if (nameOWner !== relayer.wallet.address) { // if name is already registered : skip registration
-          const registerTx: TxResponse = await relayer.registry.setSubnodeOwner(
-            relayer.namehash,
-            hash,
-            relayer.wallet.address,
-            { nonce: await relayer.getNonce() }
-          );
-          console.log(`(A) tx sent (register) : ${registerTx.hash}`); // display tx to firebase logging
-          result['register'] = registerTx.hash;
-          await registerTx.wait();
-        }
+    // (A) register the user ens username
+    const nameOwner = await relayer.registry.owner(utils.namehash(fullName));
+    if (nameOwner !== relayer.wallet.address) { // if name is already registered : skip registration
+      const registerTx: TxResponse = await relayer.registry.setSubnodeOwner(
+        relayer.namehash,
+        hash,
+        relayer.wallet.address,
+      );
+      result['register'] = await registerTx.wait();
+      console.log(`(A) tx sent (register) : ${registerTx.hash}`); // display tx to firebase logging
+    }
 
-        // (B) set a resolver to the ens username : require waiting for (A)
-        const resolverAddress = await relayer.registry.resolver(utils.namehash(fullName))
-        if (resolverAddress !== relayer.resolver.address) { // if a resolver is already set : skip set resolver
-          const resolverTx: TxResponse = await relayer.registry.setResolver(
-            utils.namehash(fullName),
-            relayer.resolver.address,
-            { nonce: await relayer.getNonce() }
-          );
-          console.log(`(B) tx sent (setResolver) : ${resolverTx.hash}`); // display tx to firebase logging
-          result['resolver'] = resolverTx.hash;
-          await resolverTx.wait();
-        }
+    // (B) set a resolver to the ens username : require waiting for (A)
+    const resolverAddress = await relayer.registry.resolver(utils.namehash(fullName))
+    if (resolverAddress !== relayer.resolver.address) { // if a resolver is already set : skip set resolver
+      const resolverTx: TxResponse = await relayer.registry.setResolver(
+        utils.namehash(fullName),
+        relayer.resolver.address,
+      );
+      result['resolver']= await resolverTx.wait();
+      console.log(`(B) tx sent (setResolver) : ${resolverTx.hash}`); // display tx to firebase logging
+    }
 
-        // (C) link the erc1077 to the ens username : require waiting for (B)
-        const linkTx: TxResponse = await relayer.resolver.setAddr(
-          utils.namehash(fullName),
-          erc1077address,
-          { nonce: await relayer.getNonce() }
-        );
-        console.log(`(C) tx sent (setAddress) : ${linkTx.hash}`); // display tx to firebase logging
-        result['link'] = linkTx.hash;
-        await linkTx.wait(); // ???
-        return result;
-      }
-      return;
-    };
-
-    const deployWorkFlow = async () => {
-      const result: {[key: string]: string | undefined } = {};
-     
-      // (E) deploy ERC1077 : require waiting for (D)
-      const codeAtAddress = await relayer.wallet.provider.getCode(erc1077address);
-      if (codeAtAddress === '0x') { // if there is already some code at this address : skip deploy
-        const deployTx: TxResponse = await relayer.contractFactory.deploy(hash, byteCode, { nonce: await relayer.getNonce() });
-        console.log(`(D) tx sent (deploy) : ${deployTx.hash}`); // display tx to firebase logging
-        result['deploy'] = deployTx.hash;
-        await deployTx.wait();
-      }
-
-      return result;
-    };
-    const [ ensResult, deployResult ] = await Promise.all([ensWorkFlow(), deployWorkFlow()]);
-    return { ens: ensResult, deploy: deployResult };
+    // (C) link the erc1077 to the ens username : require waiting for (B)
+    const linkTx: TxResponse = await relayer.resolver.setAddr(
+      utils.namehash(fullName),
+      address,
+    )
+    result['link'] = await linkTx.wait();
+    console.log(`(C) tx sent (setAddress) : ${linkTx.hash}`); // display tx to firebase logging
+    ;
+    return result;
   } catch (error) {
     console.error(error);
     throw new Error(error);
@@ -187,18 +225,23 @@ export const relayerCreateLogic = async (
 //---------------------------------------------------
 
 export const relayerSendLogic = async (
-  { username, tx }: SendParams,
+  { address, tx }: SendParams,
   config: RelayerConfig
 ) => {
   const relayer: Relayer = initRelayer(config);
   // check required params
-  if (!username || !tx) {
-    throw new Error('"username" and "tx" are mandatory parameters !');
+  if (!address || !tx) {
+    throw new Error('"address" and "tx" are mandatory parameters !');
+  }
+
+  try {
+    utils.getAddress(address);
+  } catch (error) {
+    throw new Error('"address" should be a valid ethereum address !');
   }
 
   // compute needed values
-  const fullName = `${username}.${config.baseEnsDomain}`;
-  const erc1077 = new Contract(fullName, ERC1077.abi, relayer.wallet);
+  const erc1077 = new Contract(address, ERC1077.abi, relayer.wallet);
 
   // check if tx will be accepted by erc1077
   const canExecute: boolean = await erc1077.functions.canExecute(
@@ -214,8 +257,9 @@ export const relayerSendLogic = async (
   );
 
   if (!canExecute) {
+    console.log(tx);
     throw new Error(
-      'The transaction has not been sent beacause it will be be rejected by the ERC1077, this is probably a nonce or signatures problem.'
+      'The transaction has not been sent because it will be be rejected by the ERC1077, this is probably a nonce or signatures problem.'
     );
   }
 
@@ -235,51 +279,3 @@ export const relayerSendLogic = async (
   const txReceipt = await sendTx.wait();
   return txReceipt;
 };
-
-// TODO BETTER SECURITY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-const MAX_AUTHORIZED_TOKEN_TRANSFER = 0.1;
-
-export const relayerRequestTokensLogic = async (
-  { username, amount }: RequestTokensParams,
-  config: RelayerConfig
-) => {
-  const relayer: Relayer = initRelayer(config);
-  // check required params
-  if (!username || !amount) {
-    throw new Error('"username" and "amount" are mandatory parameters !');
-  }
-  // prevent user to empty the wallet
-  if (amount > MAX_AUTHORIZED_TOKEN_TRANSFER) {
-    throw new Error(`"amount" (${amount}) must be less than ${MAX_AUTHORIZED_TOKEN_TRANSFER}`);
-  }
-  // compute needed values
-  const fullName = `${username}.${config.baseEnsDomain}`;
-
-  const weiAmount = utils.parseEther(`${amount}`);
-
-  const tx = await relayer.wallet.sendTransaction({to: fullName, value: weiAmount});
-  console.log(`tx sent (request tokens) : ${tx.hash}`); // display tx to firebase logging
-  return tx;
-};
-
-
-export const relayerSignDeliveryLogic = async (
-  { username, deliveryId, stakeholderId }: SignDeliveryParams,
-  config: RelayerConfig
-) => {
-  if (!username || !deliveryId || !stakeholderId) {
-    throw new Error('"username", "deliveryId" and "stakeholderId" are mandatory parameters !');
-  }
-  const relayer: Relayer = initRelayer(config);
-  // compute needed values
-  const fullName = `${username}.${config.baseEnsDomain}`;
-  const hash = utils.keccak256(utils.toUtf8Bytes(deliveryId));
-  const tx = await relayer.wallet.sendTransaction({to: fullName, data: hash});
-
-  await db.doc(`deliveries/${deliveryId}/stakeholders/${stakeholderId}`).update({tx: tx.hash});
-
-  console.log(`tx sent (sign delivery) : ${tx.hash}`); // display tx to firebase logging
-  return tx;
-
-}
