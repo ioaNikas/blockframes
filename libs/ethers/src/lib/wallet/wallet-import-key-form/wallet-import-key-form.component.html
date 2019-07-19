@@ -23,14 +23,15 @@
     </ng-container>
     <ng-template #mnemonicImport>
       <mat-form-field>
-        <textarea
-          matInput
-          placeholder="Enter or paste your mnemonic"
-          [formControl]="mnemonicField"
-        ></textarea>
+        <textarea matInput placeholder="Enter or paste your mnemonic" [formControl]="mnemonic"></textarea>
       </mat-form-field>
     </ng-template>
+    <img src="/assets/images/import_key_pic.png">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="isDisabled"
+      (click)="import()"
+    >Import your Key</button>
   </section>
-  <img src="/assets/images/import_key_pic.png" />
-  <button mat-raised-button color="primary" (click)="import()">Import your Key</button>
 </main>
