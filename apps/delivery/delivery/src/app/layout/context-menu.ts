@@ -1,7 +1,7 @@
 export const CONTEXT_MENU = [
   {
     route: 'default',
-    items: [{ name: 'templates', path: '/layout/o/templates/list' }]
+    items: []
   },
   {
     route: '/layout/welcome',
