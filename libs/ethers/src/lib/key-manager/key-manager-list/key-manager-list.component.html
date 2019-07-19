@@ -1,11 +1,7 @@
 <ng-container *ngIf="(keys$ | async) as keys; else: keysLoading">
   <h3>Stored key{{ keys.length > 1 ? 's' : '' }} ({{ keys.length }})</h3>
   <div fxLayout="row wrap">
-    <key-manager-item
-      *ngFor="let key of (keys$ | async)"
-      [key]="key"
-      (deleteKeyEvent)="delete($event)">
-    </key-manager-item>
+    <key-manager-item *ngFor="let key of (keys$ | async)" [key]="key" (deleteKeyEvent)="delete($event)"></key-manager-item>
   </div>
 </ng-container>
 <ng-template #keysLoading>

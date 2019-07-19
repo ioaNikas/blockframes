@@ -5,10 +5,9 @@ import { onDeliveryUpdate } from './delivery';
 import { functions } from './firebase';
 import {
   RelayerConfig,
-  relayerCreateLogic,
-  relayerRequestTokensLogic,
+  relayerDeployLogic,
+  relayerRegisterENSLogic,
   relayerSendLogic,
-  relayerSignDeliveryLogic
 } from './relayer';
 import {
   deleteFirestoreDelivery,
@@ -154,17 +153,14 @@ const RELAYER_CONFIG: RelayerConfig = {
   mnemonic
 };
 
-export const relayerCreate = functions.https
-  .onCall((data, context) => relayerCreateLogic(data, RELAYER_CONFIG));
+export const relayerDeploy = functions.runWith({timeoutSeconds: 540}).https
+  .onCall((data, context) => relayerDeployLogic(data, RELAYER_CONFIG));
+
+export const relayerRegister = functions.runWith({timeoutSeconds: 540}).https
+  .onCall((data, context) => relayerRegisterENSLogic(data, RELAYER_CONFIG));
 
 export const relayerSend = functions.https
   .onCall((data, context) => relayerSendLogic(data, RELAYER_CONFIG));
-
-export const relayerRequestTokens = functions.https
-  .onCall((data, context) => relayerRequestTokensLogic(data, RELAYER_CONFIG));
-
-export const relayerSignDelivery = functions.https
-  .onCall((data, context) => relayerSignDeliveryLogic(data, RELAYER_CONFIG));
 
 //--------------------------------
 //   PROPER FIRESTORE DELETION  //

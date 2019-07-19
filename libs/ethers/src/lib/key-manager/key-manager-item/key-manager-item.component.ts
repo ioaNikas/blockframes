@@ -1,14 +1,9 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  OnInit,
-  Input,
-  EventEmitter,
-  Output
-} from '@angular/core';
-import { Key, KeyManagerService } from '../+state';
-import { keyToAddressPart, AddressParts } from '@blockframes/utils';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, ChangeDetectionStrategy, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import { Key, KeyManagerService } from "../+state";
+import { keyToAddressPart, AddressParts } from "@blockframes/utils";
+import { DomSanitizer } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { WalletService } from "../../wallet/+state";
 
 @Component({
   selector: 'key-manager-item',
@@ -41,10 +36,11 @@ export class KeyManagerItemComponent implements OnInit {
   @Output() deleteKeyEvent: EventEmitter<Key> = new EventEmitter();
 
   constructor(
+    private router: Router,
     private service: KeyManagerService,
-    private sanitizer: DomSanitizer,
-  ) {
-  }
+    private walletService: WalletService,
+    private sanitizer: DomSanitizer
+  ){}
 
   ngOnInit() {
     this.address = keyToAddressPart(this.keyObject, 6);
@@ -52,10 +48,6 @@ export class KeyManagerItemComponent implements OnInit {
 
   lockKey() {
     this.service.deactivateKey();
-  }
-
-  async deleteKey() {
-    this.service.deleteKey(this.keyObject);
   }
 
   async exportKey() {
