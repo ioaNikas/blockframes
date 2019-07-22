@@ -32,6 +32,7 @@ import { WalletCreatePasswordFormComponent } from './wallet-create-password-form
 import { WalletMessageViewComponent } from './wallet-message-view/wallet-message-view.component';
 import { WalletBlockieComponent } from './wallet-blockie/wallet-blockie.component';
 import { WalletAddressViewComponent } from './wallet-address-view/wallet-address-view.component';
+import { WalletImportKeyComponent } from './wallet-import-key/wallet-import-key.component';
 
 
 export const walletRoutes: Routes = [
@@ -46,7 +47,7 @@ export const walletRoutes: Routes = [
         component: WalletViewComponent,
       },
       { path: 'add', component: WalletAddKeyTunnelComponent },
-      // { path: 'import', component: WalletAddKeyTunnelComponent }, // TODO issue 544
+      { path: 'import', component: WalletImportKeyComponent },
       {
         path: 'send',
         canActivate: [WalletKeyGuard],
@@ -88,8 +89,8 @@ export const walletRoutes: Routes = [
     WalletCreatePasswordFormComponent,
     WalletMessageViewComponent,
     WalletBlockieComponent,
-    WalletAddressViewComponent
-    
+    WalletAddressViewComponent,
+    WalletImportKeyComponent
   ],
   exports: [
     WalletWidgetComponent,

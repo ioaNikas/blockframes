@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from "@angular/core";
 import { KeyManagerService, Key, KeyManagerQuery } from "../../key-manager/+state";
-import { WalletQuery } from "../+state";
+import { WalletQuery, InputMessage } from "../+state";
 import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -26,6 +26,11 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   loading$ = new Observable<boolean>();
   redirectRoute: string;
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
+  message = <InputMessage> {
+    headline: 'Congratulation !',
+    subline: 'Your key was successfully created !',
+    isError: false,
+  };
 
   constructor(
     private router: Router,

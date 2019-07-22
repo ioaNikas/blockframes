@@ -1,11 +1,8 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { InputMessage } from '../+state';
 
-interface InputMessage {
-  headline: string;
-  subline: string;
-  isError: boolean;
-}
+
 
 @Component({
   selector: 'wallet-message-view',

@@ -1,0 +1,24 @@
+<main [ngSwitch]="step" fxLayout="column" fxLayoutAlign="start center">
+  <section *ngSwitchCase="steps.import">
+    <wallet-import-key-form
+      (importKey)="handleImportKey($event)"
+      (importMnemonic)="handleImportMnemonic($event)"
+    ></wallet-import-key-form>
+  </section>
+  <section *ngSwitchCase="steps.password">
+    <wallet-create-password-form (userPassword)="handlePassword($event)"></wallet-create-password-form>
+  </section>
+  <section *ngSwitchCase="steps.end">
+    <ng-container *ngIf="(isEncrypting$ | async); else imported">
+      <article fxLayout="column" fxLayoutAlign="start center">
+        <h2>Encrypting...</h2>
+        <p>We are encrypting your key in realy strong and secure way, that's why it can takes 20-30sec.</p>
+        <mat-progress-spinner color="accent" mode="indeterminate"></mat-progress-spinner>
+      </article>
+    </ng-container>
+    <ng-template #imported>
+      <wallet-message-view [message]="message" (redirectUser)="handleRedirection()"></wallet-message-view>
+    </ng-template>
+  </section>
+  <a mat-button routerLink="/layout/o/account/wallet">Cancel</a>
+</main>

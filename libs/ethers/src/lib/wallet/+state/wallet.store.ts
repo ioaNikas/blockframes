@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 import { Tx } from '../../types';
 
+export interface InputMessage {
+  headline: string;
+  subline: string;
+  isError: boolean;
+}
+
 export interface Wallet {
   ensDomain: string,
   address: string,
