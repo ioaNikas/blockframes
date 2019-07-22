@@ -12,7 +12,7 @@ const movieQuery = (id: string): Query<Movie> => ({
 
 @Injectable({ providedIn: 'root' })
 export class MovieListGuard extends StateListGuard<Movie> {
-  urlFallback = '/layout/o/home/create';
+  urlFallback = '/layout/o/delivery/movies/create-movie';
 
   constructor(
     private fireQuery: FireQuery,

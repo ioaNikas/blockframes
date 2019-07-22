@@ -27,6 +27,7 @@ import { IdentityComponent } from './pages/identity/identity.component';
 import { IdentityFeedbackComponent } from './pages/identity-feedback/identity-feedback.component';
 
 export const AuthRoutes: Routes = [
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   { path: 'welcome', component: WelcomeViewComponent },
   { path: 'connexion', component: LoginViewComponent },
   { path: 'identity', component: IdentityComponent },

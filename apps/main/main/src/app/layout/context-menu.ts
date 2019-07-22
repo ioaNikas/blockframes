@@ -4,16 +4,35 @@ export const CONTEXT_MENU = [
     items: []
   },
   {
-    route: '/home/delivery/view',
+    route: '/layout/o/home',
     items: [
-      { name: 'edit film', path: '' },
-      { name: 'teamwork', path: '' }
+      { name: 'home', path: '/layout/o/home' },
     ]
   },
   {
-    route: '/home',
+    route: '/layout/o/organization/view',
     items: [
-      { name: 'organization', path: ''}
+      { name: 'informations', path: '/layout/o/organization/view'},
+      { name: 'members', path: ''},
+      { name: 'administration', path: ''},
+      { name: 'activity report', path: '/layout/o/organization/activityreports'},
+      { name: 'dapps', path: ''}
+    ]
+  },
+  {
+    route: '/layout/o/organization/activityreports',
+    items: [
+      { name: 'informations', path: '/layout/o/organization/view'},
+      { name: 'members', path: ''},
+      { name: 'administration', path: ''},
+      { name: 'activity report', path: '/layout/o/organization/activityreports'},
+      { name: 'dapps', path: ''}
+    ]
+  },
+  {
+    route: '/layout/o/delivery',
+    items: [
+      { name: 'templates', path: '/layout/o/delivery/temlpates/list'}
     ]
   }
 ];

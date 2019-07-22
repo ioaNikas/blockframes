@@ -3,9 +3,8 @@ import { AuthQuery } from '@blockframes/auth';
 import { IconComponent } from '@blockframes/ui';
 
 @Component({
-  selector: 'delivery-root',
-  template: `
-    <router-outlet></router-outlet>`,
+  selector: 'app-root',
+  template: `<router-outlet></router-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {

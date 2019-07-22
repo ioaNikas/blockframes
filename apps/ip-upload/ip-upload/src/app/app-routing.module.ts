@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 // Component
 import { LayoutComponent } from './layout/layout.component';
 
@@ -8,7 +9,7 @@ import { AuthGuard } from '@blockframes/auth';
 import { IpGuard } from '@blockframes/ip'
 
 export const routes: Routes = [
-  { 
+  {
     path:'',
     redirectTo: 'layout',
     pathMatch:'full'
@@ -22,7 +23,7 @@ export const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { 
+      {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'
@@ -46,11 +47,11 @@ export const routes: Routes = [
       }
     ]
   },
-  { 
+  {
     path: 'not-found',
     loadChildren: '@blockframes/ui#ErrorNotFoundModule'
   },
-  { 
+  {
     path: '**',
     redirectTo: 'not-found'
   }

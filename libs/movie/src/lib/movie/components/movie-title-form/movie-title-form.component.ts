@@ -39,7 +39,7 @@ export class MovieTitleFormComponent implements OnInit {
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 3000 });
       const movie = await this.service.addMovie(title);
 
-      this.router.navigate([`/layout/o/home/${movie.id}/edit`]);
+      this.router.navigate([`/layout/o/delivery/movies/${movie.id}/edit`]);
       this.dialogRef.close();
     }
     catch (err) {

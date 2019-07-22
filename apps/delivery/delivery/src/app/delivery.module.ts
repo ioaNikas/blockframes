@@ -1,4 +1,3 @@
-// Angular
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
@@ -49,15 +48,30 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
+import { MovieActiveGuard } from '@blockframes/movie';
 
 const routes: Routes = [
   { path: '',
-    component: MovieListComponent
+    redirectTo: 'movies',
+    pathMatch: 'full'
+  },
+  { path: 'movies',
+    loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
+  },
+  {
+    path: 'templates',
+    loadChildren: () => import('@blockframes/material').then(m => m.TemplateModule)
+  },
+  {
+    path: ':movieId',
+    canActivate: [MovieActiveGuard],
+    canDeactivate: [MovieActiveGuard],
+    loadChildren: () => import('@blockframes/material').then(m => m.DeliveryModule)
   }
-]
+];
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [],
   imports: [
     // Angular
     FlexLayoutModule,
@@ -108,7 +122,5 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   providers: [],
-  bootstrap: []
 })
-export class DeliveryModule {}
-
+export class DeliveryAppModule {}

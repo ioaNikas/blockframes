@@ -1,23 +1,22 @@
 <section>
-  <h2 fxLayout="row" fxLayoutAlign="start center">
+  <h2 fxLayout="row" fxLayoutAlign="none center">
     <span>Welcome to Blockframes</span>
     <mat-divider></mat-divider>
   </h2>
-  <article>
-    <h3>My DApps</h3>
-    <article fxLayout="row" fxLayoutAlign="space-between center">
-      <mat-card *ngFor="let dapp of dapps">
-        <a routerLink="{{dapp.routerLink}}">
-          <mat-card-content><img src="{{dapp.logoSrc}}" alt="DApp logo"></mat-card-content>
-        </a>
-        <mat-divider></mat-divider>
-        <mat-card-footer>
-          <h4> {{ dapp.name }} </h4>
-          <small>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-          </small>
-        </mat-card-footer>
-      </mat-card>
-    </article>
+  <h3>My DApps</h3>
+  <article fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-card *ngFor="let dapp of dapps">
+      <a routerLink="{{dapp.routerLink}}">
+        <mat-card-content><mat-icon svgIcon="logoBFblue"></mat-icon></mat-card-content>
+      </a>
+      <mat-divider></mat-divider>
+      <mat-card-footer>
+        <h4>{{ dapp.name }}</h4>
+        <small>
+          Be careful, or I will spill the beans on your placeholder text. Look at that text! Would
+          anyone use that?
+        </small>
+      </mat-card-footer>
+    </mat-card>
   </article>
 </section>

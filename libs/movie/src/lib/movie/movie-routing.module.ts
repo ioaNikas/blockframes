@@ -25,7 +25,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'create',
+    path: 'create-movie',
     component: MovieCreateComponent
   },
   {

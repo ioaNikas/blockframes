@@ -73,9 +73,9 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const id = await this.service.add(this.form.value, await this.user, this.selectedApp);
+    await this.service.add(this.form.value, await this.user, this.selectedApp);
 
-    this.router.navigate(['layout/o/organization', id])
+    this.router.navigate(['layout/o/organization/view'])
     this.snackBar.open(`Created ${this.form.get('name').value}`, 'close', { duration: 1000 });
     this.form.reset();
     this.persistForm.reset();

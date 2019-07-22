@@ -9,5 +9,5 @@
 </a>
 
 <ng-container *ngIf="(organization$ | async) as organization">
-  <a mat-menu-item [routerLink]="['o/organization/',organization.id]">{{ organization.name }}</a>
+  <a mat-menu-item [routerLink]="['o/organization/view']">{{ organization.name }}</a>
 </ng-container>
