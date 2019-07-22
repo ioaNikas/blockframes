@@ -31,7 +31,7 @@
     <button mat-button (click)="step = steps.export">Previous</button>
   </section>
   <section *ngSwitchCase="steps.end">
-    <wallet-message-view [message]="message" (redirectUser)="handleRedirect()"></wallet-message-view>
+    <feedback-message [message]="message" (redirectUser)="handleRedirect()"></feedback-message>
   </section>
   <a mat-button routerLink="/layout/o/account/wallet">Cancel</a>
   <a #downloadLink hidden>automatic_download</a>

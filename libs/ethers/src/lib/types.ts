@@ -1,4 +1,5 @@
 import { ContractFunction } from 'ethers';
+import { FeedbackMessage } from '@blockframes/ui';
 
 export interface INgContract {
   [methods: string]: ContractFunction;
@@ -33,15 +34,8 @@ export interface SignedMetaTx extends MetaTx {
   signatures: string; // bytes
 }
 
-/** A message to display to the user at the end of a tunnel */
-export interface InformationMessage {
-  headline: string;
-  subline: string;
-  isError: boolean;
-}
-
 export interface LocalTx extends Tx {
-  message: InformationMessage;
+  message: FeedbackMessage;
   callback: (...args) => void;
 }
 

@@ -17,7 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper'; 
 
-import { UploadModule, UiFormModule } from '@blockframes/ui';
+import { UploadModule, UiFormModule, FeedbackMessageModule } from '@blockframes/ui';
 import { KeyManagerModule } from '../key-manager/key-manager.module';
 
 import { WalletActiveGuard } from './guards/wallet-active.guard';
@@ -29,7 +29,6 @@ import { WalletAddKeyTunnelComponent } from './wallet-add-key/wallet-add-key.com
 import { WalletSendTxTunnelComponent } from './wallet-send-tx/wallet-send-tx.component';
 import { WalletAskPasswordFormComponent } from './wallet-ask-password-form/wallet-ask-password-form.component';
 import { WalletCreatePasswordFormComponent } from './wallet-create-password-form/wallet-create-password-form.component';
-import { WalletMessageViewComponent } from './wallet-message-view/wallet-message-view.component';
 import { WalletBlockieComponent } from './wallet-blockie/wallet-blockie.component';
 import { WalletAddressViewComponent } from './wallet-address-view/wallet-address-view.component';
 import { WalletImportKeyComponent } from './wallet-import-key/wallet-import-key.component';
@@ -77,7 +76,8 @@ export const walletRoutes: Routes = [
     MatStepperModule,
     UploadModule,
     RouterModule.forChild(walletRoutes),
-    UiFormModule
+    UiFormModule,
+    FeedbackMessageModule,
   ],
   declarations: [
     WalletViewComponent,
@@ -87,7 +87,6 @@ export const walletRoutes: Routes = [
     WalletSendTxTunnelComponent,
     WalletAskPasswordFormComponent,
     WalletCreatePasswordFormComponent,
-    WalletMessageViewComponent,
     WalletBlockieComponent,
     WalletAddressViewComponent,
     WalletImportKeyComponent

@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map } from "rxjs/operators";
-import { InformationMessage } from "../../types";
+import { FeedbackMessage } from "@blockframes/ui";
 
 enum steps {
   password,
@@ -90,8 +90,8 @@ export class WalletAddKeyTunnelComponent implements OnInit {
     this.router.navigateByUrl(this.redirectRoute);
   }
 
-  get message() {
-    return <InformationMessage> {
+  get message(): FeedbackMessage {
+    return {
       headline: 'Congratulation !',
       subline: 'Your key was successfully created !',
       isError: false,

@@ -3,7 +3,7 @@ import { Key, KeyManagerService, KeyManagerQuery } from "../../key-manager/+stat
 import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
-import { InformationMessage } from "../../types";
+import { FeedbackMessage } from "@blockframes/ui";
 
 enum steps {
   import,
@@ -22,7 +22,7 @@ export class WalletImportKeyComponent implements OnInit {
   steps = steps;
   step = this.steps.import;
   mnemonic: string;
-  isEncrypting$ = new Observable<boolean>();
+  isEncrypting$: Observable<boolean>;
 
   constructor(
     private router: Router,
@@ -57,8 +57,8 @@ export class WalletImportKeyComponent implements OnInit {
     this.router.navigateByUrl('/layout/o/account/wallet'); // TODO handle dynamic redirect from state : issue#617
   }
 
-  get message() {
-    return <InformationMessage> {
+  get message(): FeedbackMessage {
+    return {
       headline: 'Congratulation !',
       subline: 'Your key was successfully imported',
       isError: false,

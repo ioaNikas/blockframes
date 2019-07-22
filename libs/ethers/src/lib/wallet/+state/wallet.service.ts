@@ -7,7 +7,7 @@ import { ERC1077 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
 import { KeyManagerService } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
-import { MetaTx, SignedMetaTx, LocalTx, InformationMessage } from '../../types';
+import { MetaTx, SignedMetaTx, LocalTx } from '../../types';
 import { WalletQuery } from './wallet.query';
 import { getMockTx } from './wallet-known-tx';
 

@@ -18,7 +18,7 @@
     </ng-template>
   </section>
   <section *ngSwitchCase="steps.end">
-    <wallet-message-view [message]="message" (redirectUser)="handleRedirection()"></wallet-message-view>
+    <feedback-message [message]="message" (redirectUser)="handleRedirection()"></feedback-message>
   </section>
   <a mat-button routerLink="/layout/o/account/wallet">Cancel</a>
 </main>
