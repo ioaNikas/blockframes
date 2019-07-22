@@ -24,7 +24,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   steps = steps;
   step = this.steps.password;
   key: Key;
-  encrypting$ = new Observable<boolean>();
+  encrypting$: Observable<boolean>;
   redirectRoute: string;
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 

@@ -13,7 +13,7 @@ export function getMockTx(callback: (...args) => void): LocalTx { // TODO remove
     isError: false,
   };
   
-  return <LocalTx> {...tx, message, callback};
+  return {...tx, message, callback};
 }
 
 /** Craft a transaction that will trigger the user ERC1077.deleteKey() function */
@@ -30,7 +30,7 @@ export function getDeleteKeyTx(erc1077Address:string, pubKey: string, callback: 
     isError: false,
   };
 
-  return <LocalTx> {...tx, message, callback};
+  return {...tx, message, callback};
 }
 
 /** Craft a transaction that will trigger the user ERC1077.addKey() function */
@@ -47,7 +47,7 @@ export function getAddeKeyTx(erc1077Address:string, pubKey: string, callback: (.
     isError: false,
   };
 
-  return <LocalTx> {...tx, message, callback};
+  return {...tx, message, callback};
 }
 
 // TODO define "sign delivery" tx
