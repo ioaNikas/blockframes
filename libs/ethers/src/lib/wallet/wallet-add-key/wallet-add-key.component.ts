@@ -1,10 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from "@angular/core";
 import { KeyManagerService, Key, KeyManagerQuery } from "../../key-manager/+state";
-import { WalletQuery, InputMessage } from "../+state";
+import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map } from "rxjs/operators";
+import { InformationMessage } from "../../types";
 
 enum steps {
   password,
@@ -23,14 +24,14 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   steps = steps;
   step = this.steps.password;
   key: Key;
-  loading$ = new Observable<boolean>();
+  encrypting$ = new Observable<boolean>();
   redirectRoute: string;
-  @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
-  message = <InputMessage> {
+  message = <InformationMessage> {
     headline: 'Congratulation !',
     subline: 'Your key was successfully created !',
     isError: false,
   };
+  @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 
   constructor(
     private router: Router,
@@ -42,7 +43,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loading$ = this.keyQuery.selectLoading();
+    this.encrypting$ = this.keyQuery.selectLoading();
 
     // TODO remove this ASAP see issue #617
     // check if there is a ?redirect=<redirect url> in the route, otherwise use default redirect

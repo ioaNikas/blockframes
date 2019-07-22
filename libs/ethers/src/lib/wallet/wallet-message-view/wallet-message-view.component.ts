@@ -1,6 +1,6 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { InputMessage } from '../+state';
+import { InformationMessage } from '../../types';
 
 
 
@@ -12,7 +12,7 @@ import { InputMessage } from '../+state';
 })
 export class WalletMessageViewComponent {
   /** The message which should be displayed when this component is called. */
-  @Input() public message: InputMessage;
+  @Input() public message: InformationMessage;
 
   /** 
    * An event that notify the parent component that the user want to back

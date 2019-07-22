@@ -1,9 +1,9 @@
 <main [ngSwitch]="step" fxLayout="column" fxLayoutAlign="start center">
   <section *ngSwitchCase="steps.password">
-    <ng-container *ngIf="!(loading$ | async) as loading; else: isLoading">
+    <ng-container *ngIf="!(encrypting$ | async) as loading; else: isEncrypting">
       <wallet-create-password-form (userPassword)="setPassword($event)"></wallet-create-password-form>
     </ng-container>
-    <ng-template #isLoading>
+    <ng-template #isEncrypting>
       <article fxLayout="column" fxLayoutAlign="start center">
         <h2>Please wait</h2>
         <p>

@@ -7,7 +7,7 @@ import { ERC1077 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
 import { KeyManagerService } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
-import { MetaTx, SignedMetaTx, Tx } from '../../types';
+import { MetaTx, SignedMetaTx, LocalTx, InformationMessage } from '../../types';
 import { WalletQuery } from './wallet.query';
 import { getMockTx } from './wallet-known-tx';
 
@@ -123,11 +123,11 @@ export class WalletService {
   }
 
   public async setDeleteKeyTx(pubKey: string) {
-    this.setTx(getMockTx()); // TODO use getDeleteKeyTx : issue#655
+    this.setTx(getMockTx(() => console.log('Mock Tx callback !!!'))); // TODO use getDeleteKeyTx : issue#655
     // TODO call key manager delete key to delete localy after the tx has been mined : issue#655
   }
 
-  public setTx(tx: Tx) {
+  public setTx(tx: LocalTx) {
     this.store.update({tx});
   }
 
@@ -192,8 +192,10 @@ export class WalletService {
     return {...metaTx, signatures: signature};
   }
 
-  public async sendSignedMetaTx(ensDomain: string, signedMetaTx: SignedMetaTx) {
-    return this.relayer.send(await this.retreiveAddress(this.getNameFromENS(ensDomain)), signedMetaTx);
+  public async sendSignedMetaTx(ensDomain: string, signedMetaTx: SignedMetaTx, ...args: any[]) {
+    const txResponse = await this.relayer.send(await this.retreiveAddress(this.getNameFromENS(ensDomain)), signedMetaTx);
+    this.query.getValue().tx.callback(...args); // execute tx callback (ex: delete local key)
+    return txResponse;
   }
 
   public async waitForTx(txHash: string) {

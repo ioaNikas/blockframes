@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { Key, KeyManagerService, KeyManagerQuery } from "../../key-manager/+state";
-import { WalletQuery, InputMessage } from "../+state";
+import { WalletQuery } from "../+state";
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { InformationMessage } from "../../types";
 
 enum steps {
   import,
@@ -21,7 +22,7 @@ export class WalletImportKeyComponent implements OnInit {
   steps = steps;
   step = this.steps.import;
   mnemonic: string;
-  message = <InputMessage> {
+  message = <InformationMessage> {
     headline: 'Congratulation !',
     subline: 'Your key was successfully imported',
     isError: false,
@@ -52,8 +53,8 @@ export class WalletImportKeyComponent implements OnInit {
   async handlePassword(encryptionPassword: string) {
     const { ensDomain } = this.walletQuery.getValue();
     const keyName = this.service.getDefaultKeyName(ensDomain);
-    this.service.importFromMnemonic(keyName, ensDomain, this.mnemonic, encryptionPassword)
-      .then(key => this.service.storeKey(key));
+    const key = await this.service.importFromMnemonic(keyName, ensDomain, this.mnemonic, encryptionPassword);
+    this.service.storeKey(key);
     this.step = this.steps.end;
   }
 

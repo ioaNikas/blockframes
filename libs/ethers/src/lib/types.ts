@@ -32,3 +32,26 @@ export interface MetaTx extends Tx {
 export interface SignedMetaTx extends MetaTx {
   signatures: string; // bytes
 }
+
+/** A message to display to the user at the end of a tunnel */
+export interface InformationMessage {
+  headline: string;
+  subline: string;
+  isError: boolean;
+}
+
+export interface LocalTx extends Tx {
+  message: InformationMessage;
+  callback: (...args) => void;
+}
+
+/** The Wallet structure in the state
+* (**DO NOT CONFUSE WITH ETHERS'S WALLET**,
+* in Blockframes ethers's wallet will always be called `EthersWallet`)
+*/
+export interface Wallet {
+  ensDomain: string,
+  address: string,
+  hasERC1077: boolean,
+  tx: LocalTx,
+}
