@@ -22,11 +22,6 @@ export class WalletImportKeyComponent implements OnInit {
   steps = steps;
   step = this.steps.import;
   mnemonic: string;
-  message = <InformationMessage> {
-    headline: 'Congratulation !',
-    subline: 'Your key was successfully imported',
-    isError: false,
-  };
   isEncrypting$ = new Observable<boolean>();
 
   constructor(
@@ -60,5 +55,13 @@ export class WalletImportKeyComponent implements OnInit {
 
   handleRedirection() {
     this.router.navigateByUrl('/layout/o/account/wallet'); // TODO handle dynamic redirect from state : issue#617
+  }
+
+  get message() {
+    return <InformationMessage> {
+      headline: 'Congratulation !',
+      subline: 'Your key was successfully imported',
+      isError: false,
+    };
   }
 }

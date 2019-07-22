@@ -26,11 +26,6 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   key: Key;
   encrypting$ = new Observable<boolean>();
   redirectRoute: string;
-  message = <InformationMessage> {
-    headline: 'Congratulation !',
-    subline: 'Your key was successfully created !',
-    isError: false,
-  };
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 
   constructor(
@@ -93,5 +88,13 @@ export class WalletAddKeyTunnelComponent implements OnInit {
 
   handleRedirect() {
     this.router.navigateByUrl(this.redirectRoute);
+  }
+
+  get message() {
+    return <InformationMessage> {
+      headline: 'Congratulation !',
+      subline: 'Your key was successfully created !',
+      isError: false,
+    };
   }
 }
