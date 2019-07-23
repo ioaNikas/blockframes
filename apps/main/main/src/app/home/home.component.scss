@@ -15,14 +15,33 @@ mat-icon {
   height: 100%;
 }
 
-mat-card-content {
-  height: 200px;
-}
-
 mat-card-footer {
   padding: 5px;
 }
 
 mat-card {
   width: 23%;
+}
+
+@include medium {
+  section {
+    margin: 20px;
+  }
+}
+
+@include tablet {
+  section {
+    margin: 20px;
+  }
+}
+
+@include mobile {
+  section {
+    margin: 20px;
+  }
+
+  mat-card {
+    width: 100%;
+    margin: 5px;
+  }
 }
