@@ -2,12 +2,12 @@ import 'hammerjs';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
+import { MovieFinancingAppModule } from './app/movie-financing.module';
 import { environment } from './environments/environment';
 import { enableAkitaProdMode, persistState } from '@datorama/akita';
 import { hmrBootstrap } from './hmr';
 
-const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
+const bootstrap = () => platformBrowserDynamic().bootstrapModule(MovieFinancingAppModule);
 
 // persistState({ // TODO UNCOMENT THAT DURING THE REFACTORING AFTER CANNES
 //   exclude: ['router'],

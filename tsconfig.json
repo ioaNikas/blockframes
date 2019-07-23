@@ -28,6 +28,7 @@
       "@blockframes/contracts": ["contracts/build"],
       "@blockframes/notification": ["libs/notification/index.ts"],
       "@blockframes/delivery": ["apps/delivery/delivery/src/index.ts"],
+      "@blockframes/movie-financing": ["apps/movie-financing/movie-financing/src/index.ts"],
     },
     "module": "commonjs",
     "rootDir": "."

@@ -12,7 +12,11 @@ const movieQuery = (id: string): Query<Movie> => ({
 
 @Injectable({ providedIn: 'root' })
 export class MovieListGuard extends StateListGuard<Movie> {
-  urlFallback = '/layout/o/delivery/movies/create-movie';
+  public get urlFallback() {
+    const appName = this.router.getCurrentNavigation().extractedUrl.root.children.primary
+      .segments[2].path;
+    return `/layout/o/${appName}/movies/create-movie`;
+  }
 
   constructor(
     private fireQuery: FireQuery,
@@ -28,9 +32,9 @@ export class MovieListGuard extends StateListGuard<Movie> {
       .select(state => state.org.movieIds)
       .pipe(
         switchMap(ids => {
-          if (!ids || ids.length === 0) throw new Error('No movie yet')
-          const queries = ids.map(id => this.fireQuery.fromQuery<Movie>(movieQuery(id)))
-          return combineLatest(queries)
+          if (!ids || ids.length === 0) throw new Error('No movie yet');
+          const queries = ids.map(id => this.fireQuery.fromQuery<Movie>(movieQuery(id)));
+          return combineLatest(queries);
         })
       );
   }
