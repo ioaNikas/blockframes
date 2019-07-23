@@ -43,7 +43,8 @@ export class AuthGuard implements CanActivate {
     });
   }
 
-  canDeactivate() {
-    this.subscription.unsubscribe();
-  }
+  // TODO: Fix the bug we're getting when trying to logout => ISSUE#670
+  // canDeactivate() {
+  //   this.subscription.unsubscribe();
+  // }
 }

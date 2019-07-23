@@ -49,7 +49,6 @@ export class AuthService {
   public async logout() {
     await this.afAuth.auth.signOut();
     this.store.update({ user: null });
-    return this.router.navigate(['/']);
   }
 
   //////////

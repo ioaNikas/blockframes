@@ -73,6 +73,11 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (!this.selectedApp) {
+      this.snackBar.open('You must select a DApp', 'close', { duration: 1000 });
+      return;
+    }
+
     await this.service.add(this.form.value, await this.user, this.selectedApp);
 
     this.router.navigate(['layout/o/organization/view'])
@@ -84,6 +89,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   /** Clear current form with cancellation */
   public clear() {
     const oldState = this.form.value;
+    this.selectedApp = null;
     this.form.reset();
     this.persistForm.reset();
     this.snackBar.open('Cleared', 'Cancel', { duration: 1000 })

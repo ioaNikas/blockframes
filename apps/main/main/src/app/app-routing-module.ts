@@ -29,7 +29,7 @@ export const routes: Routes = [
     path: 'layout',
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    canDeactivate: [AuthGuard],
+    // canDeactivate: [AuthGuard], // TODO: Fix the bug we're getting when trying to logout => ISSUE#670
     children: [
       {
         path: '',
