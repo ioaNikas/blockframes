@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { map } from "rxjs/operators";
+import { FeedbackMessage } from "@blockframes/ui";
 
 enum steps {
   password,
@@ -23,7 +24,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   steps = steps;
   step = this.steps.password;
   key: Key;
-  loading$ = new Observable<boolean>();
+  encrypting$: Observable<boolean>;
   redirectRoute: string;
   @ViewChild('downloadLink', {static: false}) downloadLink: ElementRef<HTMLAnchorElement>;
 
@@ -37,7 +38,7 @@ export class WalletAddKeyTunnelComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loading$ = this.keyQuery.selectLoading();
+    this.encrypting$ = this.keyQuery.selectLoading();
 
     // TODO remove this ASAP see issue #617
     // check if there is a ?redirect=<redirect url> in the route, otherwise use default redirect
@@ -87,5 +88,13 @@ export class WalletAddKeyTunnelComponent implements OnInit {
 
   handleRedirect() {
     this.router.navigateByUrl(this.redirectRoute);
+  }
+
+  get message(): FeedbackMessage {
+    return {
+      headline: 'Congratulation !',
+      subline: 'Your key was successfully created !',
+      isError: false,
+    };
   }
 }

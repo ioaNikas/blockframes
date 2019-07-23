@@ -1,4 +1,5 @@
 import { ContractFunction } from 'ethers';
+import { FeedbackMessage } from '@blockframes/ui';
 
 export interface INgContract {
   [methods: string]: ContractFunction;
@@ -31,4 +32,20 @@ export interface MetaTx extends Tx {
 /** A Meta Transaction with the user signature (ready to be sent) */
 export interface SignedMetaTx extends MetaTx {
   signatures: string; // bytes
+}
+
+export interface LocalTx extends Tx {
+  message: FeedbackMessage;
+  callback: (...args) => void;
+}
+
+/** The Wallet structure in the state
+* (**DO NOT CONFUSE WITH ETHERS'S WALLET**,
+* in Blockframes ethers's wallet will always be called `EthersWallet`)
+*/
+export interface Wallet {
+  ensDomain: string,
+  address: string,
+  hasERC1077: boolean,
+  tx: LocalTx,
 }
