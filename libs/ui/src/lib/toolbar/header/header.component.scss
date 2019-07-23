@@ -6,7 +6,7 @@
 }
 
 .app-logo {
-  width: 100px;
+
   height: calc(var(--toolbarHeight) - 2px);
 }
 
@@ -42,7 +42,7 @@ mat-toolbar {
 }
 
 .app-icon-container-toolbar {
-  margin-left: 10px;
+  width: 10%;
 }
 
 .encrypting-spinner {

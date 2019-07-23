@@ -25,7 +25,7 @@ export class HomeComponent {
     },
     {
       name: 'Media Delivering',
-      routerLink: '../delivery' // Change to mediaDelivering
+      routerLink: '../delivery'
     },
     {
       name: 'Bigger Boat',

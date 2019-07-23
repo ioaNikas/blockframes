@@ -8,15 +8,16 @@ import { IconComponent } from '@blockframes/ui';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor(private query: AuthQuery,
-              private icons: IconComponent
-  ) {
-  }
+  constructor(
+    private query: AuthQuery,
+    private icon: IconComponent // Find another way to load icons
+    ) {}
 
   @HostListener('window:beforeunload', ['$event'])
   closeProtection($event: any) {
     if (this.query.getValue().isEncrypting) {
-      $event.returnValue = 'Some critical data are still being processed and will be lost forever if you leave now !';
+      $event.returnValue =
+        'Some critical data are still being processed and will be lost forever if you leave now !';
     }
   }
 }

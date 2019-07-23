@@ -7,7 +7,12 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Guards
 import { AuthGuard } from '@blockframes/auth';
-import { OrgFormComponent, OrganizationGuard, PermissionsGuard, OrganizationHomeComponent } from '@blockframes/organization';
+import {
+  OrgFormComponent,
+  OrganizationGuard,
+  PermissionsGuard,
+  OrganizationHomeComponent
+} from '@blockframes/organization';
 import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
