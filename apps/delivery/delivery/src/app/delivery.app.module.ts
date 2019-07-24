@@ -1,4 +1,7 @@
+// Angular
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -9,6 +12,7 @@ import { environment } from '../environments/environment';
 
 // Components
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
 import { DeliveryQuery} from '@blockframes/material'; // TODO: find better way to load material lib
 import { TemplateModule} from '@blockframes/material'; // TODO: find better way to load material lib
@@ -22,7 +26,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthModule } from '@blockframes/auth';
 import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
 import { MovieModule } from '@blockframes/movie';
-import { OrganizationModule, NoOrganizationModule } from '@blockframes/organization';
+import { OrganizationModule } from '@blockframes/organization';
 import { ProfileModule } from '@blockframes/account';
 import { AccountModule } from '@blockframes/account';
 import { WalletModule } from '@blockframes/ethers';
@@ -47,33 +51,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule, Routes } from '@angular/router';
-import { MovieActiveGuard } from '@blockframes/movie';
-
-const routes: Routes = [
-  { path: '',
-    redirectTo: 'movies',
-    pathMatch: 'full'
-  },
-  { path: 'movies',
-    loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
-  },
-  {
-    path: 'templates',
-    loadChildren: () => import('@blockframes/material').then(m => m.TemplateModule)
-  },
-  {
-    path: ':movieId',
-    canActivate: [MovieActiveGuard],
-    canDeactivate: [MovieActiveGuard],
-    loadChildren: () => import('@blockframes/material').then(m => m.DeliveryModule)
-  }
-];
 
 @NgModule({
-  declarations: [],
+  declarations: [AppComponent, LayoutComponent],
   imports: [
     // Angular
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
 
@@ -108,7 +93,6 @@ const routes: Routes = [
     WalletModule,
     KeyManagerModule,
     NotificationModule,
-    NoOrganizationModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
@@ -117,10 +101,9 @@ const routes: Routes = [
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
-    environment.production ? [] : [AkitaNgDevtools.forRoot()],
-
-    RouterModule.forChild(routes)
+    environment.production ? [] : [AkitaNgDevtools.forRoot()]
   ],
   providers: [],
+  bootstrap: [AppComponent]
 })
 export class DeliveryAppModule {}

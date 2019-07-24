@@ -1,7 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { DeliveryAppModule } from './app/delivery.module';
+import { DeliveryAppModule } from './app/delivery.app.module';
 import { environment } from './environments/environment';
 import { persistState } from '@datorama/akita';
 import { LocalStorageVault } from 'libs/ethers/src/lib/vault/vault';

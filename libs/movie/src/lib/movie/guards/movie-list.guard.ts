@@ -12,10 +12,17 @@ const movieQuery = (id: string): Query<Movie> => ({
 
 @Injectable({ providedIn: 'root' })
 export class MovieListGuard extends StateListGuard<Movie> {
+  // TODO: Remove this temporary code when everyone switch to main application architecture
   public get urlFallback() {
-    const appName = this.router.getCurrentNavigation().extractedUrl.root.children.primary
-      .segments[2].path;
-    return `/layout/o/${appName}/movies/create-movie`;
+    const routerCurrentNavigation = this.router.getCurrentNavigation();
+
+    if (!!routerCurrentNavigation.extractedUrl.root.children.primary) {
+      const appName = routerCurrentNavigation.extractedUrl.root.children.primary.segments[2].path;
+      return `/layout/o/${appName}/movie/create`;
+    } else {
+      const appName = routerCurrentNavigation.finalUrl.root.children.primary.segments[2].path;
+      return `/layout/o/${appName}/create`;
+    }
   }
 
   constructor(

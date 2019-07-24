@@ -1,1 +1,1 @@
-export * from './app/delivery.module';
+export * from './app/delivery.sub.module';

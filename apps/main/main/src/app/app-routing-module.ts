@@ -68,7 +68,7 @@ export const routes: Routes = [
           },
           {
             path: 'delivery',
-            loadChildren: () => import('@blockframes/delivery').then(m => m.DeliveryAppModule)
+            loadChildren: () => import('@blockframes/delivery').then(m => m.DeliverySubModule)
           },
           {
             path: 'movie-financing',

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieService } from '../../+state';
 import { Router } from '@angular/router';
+import { initial } from 'lodash';
 
 @Component({
   selector: 'movie-title-form',
@@ -19,8 +20,8 @@ export class MovieTitleFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private builder: FormBuilder,
     private service: MovieService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.titleForm = this.builder.group({
@@ -31,7 +32,7 @@ export class MovieTitleFormComponent implements OnInit {
   public async newMovie() {
     if (!this.titleForm.valid) {
       this.snackBar.open('Invalid form', 'close', { duration: 1000 });
-      return
+      return;
     }
 
     try {
@@ -39,10 +40,13 @@ export class MovieTitleFormComponent implements OnInit {
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 3000 });
       const movie = await this.service.addMovie(title);
 
-      this.router.navigate([`/layout/o/delivery/movies/${movie.id}/edit`]);
+      // TODO: Figure out why router doesn't work with relative path:
+      // this.router.navigate([`../${movie.id}/edit`], {relativeTo: this.route});
+      const baseUrl = initial(this.router.url.split('/')).join('/');
+      this.router.navigate([`${baseUrl}/${movie.id}/edit`]);
+
       this.dialogRef.close();
-    }
-    catch (err) {
+    } catch (err) {
       this.snackBar.open('An error occured', 'close', { duration: 1000 });
       throw new Error(err);
     }
@@ -51,5 +55,4 @@ export class MovieTitleFormComponent implements OnInit {
   public cancel() {
     this.dialogRef.close();
   }
-
 }

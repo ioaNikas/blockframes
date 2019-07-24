@@ -4,10 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '',
-    redirectTo: 'movies',
+    redirectTo: 'movie',
     pathMatch: 'full'
   },
-  { path: 'movies',
+  { path: 'movie',
     loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
   }
 ];
