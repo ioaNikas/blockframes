@@ -1,4 +1,6 @@
-main {
+@import 'variables';
+
+section {
   background-color: var(--whiteBackground);
   margin-left: 200px;
   margin-right: 200px;
@@ -12,16 +14,43 @@ main {
       margin-left: 16px;
     }
   }
-  section {
-    margin-left: 200px;
-    margin-right: 200px;
+  article {
     h3 {
       color: var(--lightGrey);
     }
-    article {
+    div {
       background-color: white;
       border-radius: 10px;
       border: solid 1px var(--borderGrey);
+    }
+  }
+}
+
+@include tablet {
+  section {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 10px;
+    header {
+      .spacer {
+        display: none;
+      }
+      button {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+@include mobile {
+  section {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    article {
+      wallet-address-view {
+        margin-bottom: 20px;
+      }
     }
   }
 }

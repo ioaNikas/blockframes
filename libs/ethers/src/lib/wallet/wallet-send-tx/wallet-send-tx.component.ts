@@ -52,23 +52,29 @@ export class WalletSendTxTunnelComponent implements OnInit {
   }
 
   handleKeySelection(key: Key) {
-
-    // this.key = key; // TODO use emited key in params, i.e. use this line and delte the line below
-    this.key = this.keyManagerQuery.getMainKeyOfUser(this.query.getValue().ensDomain);
+    this.key = key;
     this.step = this.steps.password;
   }
 
   async setPassword(password: string) {
-
-    if (!this.query.getValue().hasERC1077) {
-      this.isDeploying$.next(true);
-      this.walletService.deployERC1077(this.key.ensDomain, this.key.address).then(res => {
-        this.isDeploying$.next(false);
-      });
-    }
-
     this.step = this.steps.confirm;
-    this.activeKey = await this.keyManagerService.unlockKey(this.key, password);
+    try {
+      this.activeKey = await this.keyManagerService.unlockKey(this.key, password);
+
+      if (!this.query.getValue().hasERC1077) { // we have to wait for password decryption to prevent deploying if the user entered a wrong password
+        this.isDeploying$.next(true);
+        this.walletService.deployERC1077(this.key.ensDomain, this.key.address).then(res => {
+          this.isDeploying$.next(false);
+        }).catch(err => { // TODO better error handling issue#671
+          console.warn('Oooops', err);
+          this.isDeploying$.next(false);
+          this.step = this.steps.end;
+        });
+      }
+    } catch (err) { // TODO better error handling issue#671
+      console.warn('Oooops Invalid Password', err);
+      this.step = this.steps.end;
+    }
   }
 
   async handleConfirmation() {
@@ -79,6 +85,9 @@ export class WalletSendTxTunnelComponent implements OnInit {
     this.isPending$.next(true);
     const signedMetaTx = await this.walletService.prepareMetaTx(this.activeKey);
     this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx).then(() => {
+      this.isPending$.next(false);
+    }).catch(err => {
+      console.warn('Ooops', err); // TODO better error handling issue#671
       this.isPending$.next(false);
     });
   }
