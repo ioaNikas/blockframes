@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieService } from '../../+state';
 import { Router } from '@angular/router';
-import { initial } from 'lodash';
+import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'movie-title-form',
@@ -42,8 +42,7 @@ export class MovieTitleFormComponent implements OnInit {
 
       // TODO: Figure out why router doesn't work with relative path:
       // this.router.navigate([`../${movie.id}/edit`], {relativeTo: this.route});
-      const baseUrl = initial(this.router.url.split('/')).join('/');
-      this.router.navigate([`${baseUrl}/${movie.id}/edit`]);
+      this.router.navigate([`${getBaseUrl(this.router)}/${movie.id}/edit`]);
 
       this.dialogRef.close();
     } catch (err) {

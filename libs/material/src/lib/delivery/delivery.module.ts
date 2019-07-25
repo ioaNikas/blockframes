@@ -64,11 +64,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // Guards
 import { DeliveryActiveGuard } from './guards/delivery-active.guard';
 import { DeliveryListGuard } from './guards/delivery-list.guard';
-import {
-  DeliveryMaterialsGuard,
-  MovieMaterialsGuard,
-  SignedDeliveryMaterialsGuard,
- } from '../material';
+import { DeliveryMaterialsGuard } from '../material/guards/delivery-materials.guard';
+import { MovieMaterialsGuard } from '../material/guards/movie-materials.guard';
+import { SignedDeliveryMaterialsGuard } from '../material/guards/signed-delivery-materials.guard';
 import { TemplateListGuard } from '../template/guards/template-list.guard';
 
 const routes: Routes = [
@@ -85,10 +83,10 @@ const routes: Routes = [
   },
   {
     path: 'template',
-    loadChildren: () => import('@blockframes/material').then(m => m.TemplateModule)
+    loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
   },
   {
-    path: 'template-picker',
+    path: 'create',
     // TODO: Getting redirected to templates/list if there is no template to load => ISSUE#648
     canActivate: [TemplateListGuard],
     canDeactivate: [TemplateListGuard],
@@ -197,6 +195,6 @@ const routes: Routes = [
 
     RouterModule.forChild(routes)
   ],
-  entryComponents: [NewTemplateComponent, DeliverySignComponent,]
+  entryComponents: [NewTemplateComponent, DeliverySignComponent]
 })
 export class DeliveryModule {}

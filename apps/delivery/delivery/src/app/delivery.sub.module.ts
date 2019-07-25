@@ -50,6 +50,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { MovieActiveGuard } from '@blockframes/movie';
 
+import { DeliveryQuery} from '@blockframes/delivery-lib'; // TODO: find better way to load delivery lib
+import { TemplateModule} from '@blockframes/template'; // TODO: find better way to load template lib
+
 export const routes: Routes = [
   { path: '',
     redirectTo: 'movie',
@@ -60,7 +63,7 @@ export const routes: Routes = [
     loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
   },
   {
-    path: 'templates',
+    path: 'template',
     loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
   },
   {

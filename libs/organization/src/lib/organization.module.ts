@@ -51,27 +51,21 @@ import { OrganizationHomeComponent } from './pages/organization-home/organizatio
 
 export const organizationRoutes: Routes = [
   {
-    path: 'organization-home',
-    component: OrganizationHomeComponent
-  },
-  {
-    path: 'create',
-    component: OrganizationCreateComponent
-  },
-  {
     path: '',
-    children: [
-      { path: '', redirectTo: 'edit', pathMatch: 'full' },
-      { path: 'edit', component: OrganizationEditableComponent },
-      {
-        path: 'activityreports',
-        component: OrganizationActivityViewComponent
-      },
-      {
-        path: 'administration',
-        component: OrganizationAdminViewComponent
-      }
-    ]
+    redirectTo: 'edit',
+    pathMatch: 'full'
+  },
+  {
+    path: 'edit',
+    component: OrganizationEditableComponent
+  },
+  {
+    path: 'activityreports',
+    component: OrganizationActivityViewComponent
+  },
+  {
+    path: 'administration',
+    component: OrganizationAdminViewComponent
   }
 ];
 

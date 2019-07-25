@@ -22,14 +22,14 @@ export const CONTEXT_MENU = [
     ]
   },
   {
-    route: '/layout/o/templates/list',
-    items: [{ name: 'templates', path: '/layout/o/templates/list' }]
+    route: '/layout/o/template/list',
+    items: [{ name: 'template', path: '/layout/o/template/list' }]
   },
   {
-    route: '/layout/o/templates/:templateId',
+    route: '/layout/o/template/:templateId',
     items: [
-      { name: 'templates', path: '/layout/o/templates/list' },
-      { name: 'edit', path: '/layout/o/templates/:templateId' }
+      { name: 'templates', path: '/layout/o/template/list' },
+      { name: 'edit', path: '/layout/o/template/:templateId' }
     ]
   },
   {

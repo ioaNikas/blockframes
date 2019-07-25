@@ -4,7 +4,8 @@ import { Movie } from 'libs/movie/src/lib/movie/+state/movie.model';
 import { MovieQuery } from 'libs/movie/src/lib/movie/+state/movie.query';
 import { DeliveryService, DeliveryQuery, Delivery } from '../../+state';
 import { Router } from '@angular/router';
-
+import { initial } from 'lodash';
+import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'delivery-list',
@@ -20,7 +21,7 @@ export class DeliveryListComponent implements OnInit {
     private movieQuery: MovieQuery,
     private service: DeliveryService,
     private router: Router,
-    private query: DeliveryQuery,
+    private query: DeliveryQuery
   ) {}
 
   ngOnInit() {
@@ -29,10 +30,11 @@ export class DeliveryListComponent implements OnInit {
   }
 
   public async selectDelivery(delivery: Delivery, movieId: string) {
+    // TODO: Figure out why router doesn't work with relative path:
+    // this.router.navigate([`../${movie.id}/edit`], {relativeTo: this.route});
     const validated = await this.service.isDeliveryValidated(delivery.id);
     validated
-      ? this.router.navigate([`layout/o/${movieId}/${delivery.id}/view`])
-      : this.router.navigate([`layout/o/${movieId}/${delivery.id}/edit`]);
+      ? this.router.navigate([`${getBaseUrl(this.router)}/${delivery.id}/view`])
+      : this.router.navigate([`${getBaseUrl(this.router)}/${delivery.id}/edit`]);
   }
-
 }

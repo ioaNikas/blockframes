@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Template, TemplateStore, TemplateQuery } from '../../../template/+state';
+import { Template, TemplateQuery } from '../../../template/+state';
 import { DeliveryService } from '../../+state';
 import { MovieQuery } from '@blockframes/movie';
 import { Router } from '@angular/router';
+import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'material-delivery-template-list',
@@ -18,7 +19,6 @@ export class DeliveryTemplateListComponent implements OnInit {
 
   constructor(
     private deliveryService: DeliveryService,
-    private templateStore: TemplateStore,
     private movieQuery: MovieQuery,
     private query: TemplateQuery,
     private router: Router
@@ -31,12 +31,12 @@ export class DeliveryTemplateListComponent implements OnInit {
   public async createDelivery(templateId?: string) {
 
     const deliveryId = await this.deliveryService.addDelivery(templateId);
-    this.router.navigate([`layout/o/${this.movieId}/${deliveryId}/settings`]);
+    this.router.navigate([`${getBaseUrl(this.router)}/${deliveryId}/settings`]);
   }
 
   public async useMovieAsTemplate() {
     const deliveryId = await this.deliveryService.addDeliveryWithMovieMaterials();
-    this.router.navigate([`layout/o/${this.movieId}/${deliveryId}/settings`]);
+    this.router.navigate([`${getBaseUrl(this.router)}/${deliveryId}/settings`]);
   }
 
 }

@@ -22,7 +22,7 @@ const deliveryQuery = (deliveryId: string): Query<DeliveryDB> => ({
 @Injectable({ providedIn: 'root' })
 export class DeliveryListGuard extends StateListGuard<Delivery> {
   public get urlFallback() {
-    return `layout/o/${this.movieQuery.getActiveId()}/template-picker`;
+    return `layout/o/delivery/${this.movieQuery.getActiveId()}/create`;
   }
 
   constructor(
