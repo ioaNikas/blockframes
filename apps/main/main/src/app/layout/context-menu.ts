@@ -32,7 +32,15 @@ export const CONTEXT_MENU = [
   {
     route: '/layout/o/delivery',
     items: [
-      { name: 'templates', path: '/layout/o/delivery/temlpates/list'}
+      { name: 'home', path: '/layout/o/delivery'},
+      { name: 'templates', path: '/layout/o/delivery/template/list'}
+    ]
+  },
+  {
+    route: '/layout/o/delivery/template/list',
+    items: [
+      { name: 'home', path: '/layout/o/delivery'},
+      { name: 'templates', path: '/layout/o/delivery/template/list'}
     ]
   }
 ];

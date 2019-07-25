@@ -10,13 +10,13 @@
       <div class="img-container clickable-item">
 
         <ng-container *ngIf="movie.poster; else: defaultPoster">
-          <a [routerLink]="['/layout/o', movie.id]">
+          <a [routerLink]="['../../', movie.id]">
             <img mat-card-image [src]="movie.poster" alt="Movie poster link" />
           </a>
         </ng-container>
 
         <ng-template #defaultPoster>
-          <a [routerLink]="['/layout/o', movie.id]">
+          <a [routerLink]="['../../', movie.id]">
             <img
               class="mat-card-image"
               src="/assets/images/default-movie-poster.png"
@@ -43,12 +43,12 @@
           </button>
         </mat-menu>
         <mat-menu #subMenu="matMenu">
-          <a mat-menu-item [routerLink]="[movie.id]">Explorer</a>
+          <a mat-menu-item [routerLink]="['../', movie.id]">Explorer</a>
         </mat-menu>
 
       </div>
 
-      <a [routerLink]="['/layout/o', movie.id]">
+      <a [routerLink]="['../../', movie.id]">
 
         <!-- Movie Informations (title, year, director) -->
         <mat-card-header class="clickable-item">

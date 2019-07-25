@@ -12,7 +12,7 @@ const templateQuery = (id: string): Query<Template> => ({
 
 @Injectable({ providedIn: 'root' })
 export class TemplateListGuard extends StateListGuard<Template> {
-  urlFallback = '/layout/o/templates/create';
+  urlFallback = '/layout/o/delivery/template/create';
 
   constructor(
     private fireQuery: FireQuery,
