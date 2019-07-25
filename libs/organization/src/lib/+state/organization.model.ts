@@ -8,6 +8,23 @@ export interface OrganizationMemberRequest {
 export interface OrganizationMember extends OrganizationMemberRequest {
   uid: string;
   name?: string;
+  avatar?: string;
+}
+
+export interface OrganizationOperation {
+  id: string;
+  name: string;
+	quorum: number;
+	members: OrganizationMember[]
+}
+
+export interface OrganizationAction {
+  id: string,
+  opid: string,
+  name: string,
+  signers: OrganizationMember[],
+  isApproved: boolean,
+  approvalDate?: string,
 }
 
 export interface Organization {
@@ -22,9 +39,15 @@ export interface Organization {
   userIds: string[];
   members?: OrganizationMember[];
   actions: OrganizationAction[]
+  operations?: OrganizationOperation[];
 }
 
-export interface OrganizationAction {
+export interface OrganizationForm {
+  name: string;
+  adress: string;
+}
+
+export interface OrganizationActionOld {
   id: string;
   actionName: string;
   quorumMembers: number;

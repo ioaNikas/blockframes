@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import {
   createOrganization,
   Organization,
-  OrganizationMemberRequest
+  OrganizationMemberRequest,
+  OrganizationAction,
+  OrganizationMember,
+  OrganizationOperation,
+  OrganizationMemberRequest,
+  OrganizationActionOld
 } from './organization.model';
 import { OrganizationStore } from './organization.store';
 import { FireQuery } from '@blockframes/utils';
@@ -103,15 +108,134 @@ export class OrganizationService {
   // TODO(#679): somehow the updateActiveMembers array don't filter correctly
   // the id out of the activeMembersArray.
   /* public async deleteActiveSigner(member: OrganizationMember) {
+  public async deleteActiveSigner(member: OrganizationMember, action: OrganizationActionOld) {
     const organizationId = this.query.getValue().org.id;
-    const actionData = await this.db.snapshot<OrganizationAction>(
+    const actionData = await this.db.snapshot<OrganizationActionOld>(
       `orgs/${organizationId}/actions/${action.id}`
     );
     const updatedActiveMembers = actionData.activeMembers.filter(
       _member => _member.uid !== member.uid
     );
     return this.db
-      .doc<OrganizationAction>(`orgs/${organizationId}/actions/${action.id}`)
+      .doc<OrganizationActionOld>(`orgs/${organizationId}/actions/${action.id}`)
       .update({ activeMembers: updatedActiveMembers });
   }*/
+  
+  //-------------------------------------------------
+  //            BLOCKCHAIN PART OF ORGS
+  //-------------------------------------------------
+
+  /** create a newOperation, or update it if it already exists */
+  private async upsertOperation(newOperation: OrganizationOperation) {
+    const { operations } = this.query.getValue().org // get every actions
+    const newOperations = operations.filter(currentOperation => currentOperation.id !== newOperation.id); // get all actions except the one we want to upsert
+
+    // add the updated action to the action list
+    newOperations.push(newOperation); // we could not use `actions.push(newAction)` direclty otherwise the action will have been duplicated
+
+    try {
+      // send tx to the org smart-contract and wait for result // TODO replace with the real implemntation : issue 676
+
+      // update the store
+      this.store.update(state => {
+        return {
+          ...state, // keep everything of the state
+          org: { // update only the org
+            ...state.org, // keep everything inside org
+            operations: newOperations, // update only the actions array
+          },
+        }
+      });
+    } catch(err) {
+      console.error('The transaction has failed :', err); // TODO better error handling : issue 671
+    }
+  }
+
+  updateOperationQuorum(id: string, newQuorum: number) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This action doesn\'t exists');
+    const newOperation = {
+      ...operation,
+      quorum: newQuorum,
+    };
+    this.upsertOperation(newOperation);
+  }
+
+  addOperationMember(id: string, newMember: OrganizationMember) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This action doesn\'t exists');
+    
+    const [memberExists] = operation.members.filter(member => member.uid === newMember.uid);
+    if (!!memberExists) throw new Error('This member is already a signer of this action');
+
+    const newOperation = {
+      ...operation,
+      members: [...operation.members, newMember],
+    };
+    
+    this.upsertOperation(newOperation);
+  }
+
+  removeOperationMember(id: string, memberToRemove: OrganizationMember) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This action doesn\'t exists');
+    
+    const newMembersList = operation.members.filter(member => member.uid !== memberToRemove.uid);
+    const newOperation = {
+      ...operation,
+      members: newMembersList,
+    };
+    
+    this.upsertOperation(newOperation);
+  }
+
+  // TODO REMOVE THIS ASAP : issue 676
+  public instantiateMockData() {
+    const Alice: OrganizationMember = {
+      avatar: 'https://fakeimg.pl/300/',
+      name: 'Alice',
+      uid: '0',
+      email: 'alice@test.com',
+      roles: []
+    };
+    const Bob: OrganizationMember = {
+      avatar: 'https://fakeimg.pl/300/',
+      name: 'Bob',
+      uid: '1',
+      email: 'bob@test.com',
+      roles: []
+    };
+    const Charlie: OrganizationMember = {
+      avatar: 'https://fakeimg.pl/300/',
+      name: 'Charlie',
+      uid: '2',
+      email: 'charlie@test.com',
+      roles: []
+    };
+    const David: OrganizationMember = {
+      avatar: 'https://fakeimg.pl/300/',
+      name: 'David',
+      uid: '3',
+      email: 'david@test.com',
+      roles: []
+    };
+    const operations: OrganizationOperation[] = [
+      { id: '0', name: 'Signing Delivery',  quorum: 2, members: [Alice, David] },
+      { id: '1', name: 'Buying a Film',     quorum: 3, members: [Alice, Bob, Charlie] },
+    ];
+    const actions: OrganizationAction[] = [
+      { id: '0', opid: '0', name: 'Delivery #123',    isApproved: false, signers: [Alice] },
+      { id: '1', opid: '0', name: 'Delivery #456',    isApproved: true, signers: [Alice, David], approvalDate: '14/02/19' },
+      { id: '2', opid: '0', name: 'Delivery #789',    isApproved: false, signers: [Alice] },
+      { id: '3', opid: '1', name: 'Buy Parasite',     isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
+      { id: '4', opid: '1', name: 'Buy Harry Potter', isApproved: false, signers: [Alice, Charlie] },
+      { id: '5', opid: '1', name: 'Buy Rubber',       isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
+      { id: '6', opid: '1', name: 'Buy LotR',         isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
+    ]
+    const mockOrgMembers: OrganizationMember[] = [Alice, Bob, Charlie, David];
+    const oldOrgMembers = this.query.getValue().org.members;
+    const newOrgMembers = mockOrgMembers.concat(oldOrgMembers);
+
+    this.update({actions, operations, members: newOrgMembers});
+  }
 }
