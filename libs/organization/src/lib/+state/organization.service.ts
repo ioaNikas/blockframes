@@ -153,7 +153,7 @@ export class OrganizationService {
 
   updateOperationQuorum(id: string, newQuorum: number) {
     const operation = this.query.getOperationById(id);
-    if(!operation) throw new Error('This action doesn\'t exists');
+    if(!operation) throw new Error('This operation doesn\'t exists');
     const newOperation = {
       ...operation,
       quorum: newQuorum,
@@ -163,10 +163,10 @@ export class OrganizationService {
 
   addOperationMember(id: string, newMember: OrganizationMember) {
     const operation = this.query.getOperationById(id);
-    if(!operation) throw new Error('This action doesn\'t exists');
+    if(!operation) throw new Error('This operation doesn\'t exists');
     
     const [memberExists] = operation.members.filter(member => member.uid === newMember.uid);
-    if (!!memberExists) throw new Error('This member is already a signer of this action');
+    if (!!memberExists) throw new Error('This member is already a signer of this operation');
 
     const newOperation = {
       ...operation,
@@ -178,7 +178,7 @@ export class OrganizationService {
 
   removeOperationMember(id: string, memberToRemove: OrganizationMember) {
     const operation = this.query.getOperationById(id);
-    if(!operation) throw new Error('This action doesn\'t exists');
+    if(!operation) throw new Error('This operation doesn\'t exists');
     
     const newMembersList = operation.members.filter(member => member.uid !== memberToRemove.uid);
     const newOperation = {
