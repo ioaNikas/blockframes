@@ -61,13 +61,13 @@ export const routes: Routes = [
   },
   {
     path: 'templates',
-    loadChildren: () => import('@blockframes/material').then(m => m.TemplateModule)
+    loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
   },
   {
     path: ':movieId',
     canActivate: [MovieActiveGuard],
     canDeactivate: [MovieActiveGuard],
-    loadChildren: () => import('@blockframes/material').then(m => m.DeliveryModule)
+    loadChildren: () => import('@blockframes/delivery-lib').then(m => m.DeliveryModule)
   }
 ];
 

@@ -6,7 +6,7 @@ import {
 } from './stakeholder.model';
 import { Organization } from '@blockframes/organization';
 import { FireQuery } from '@blockframes/utils';
-import { Delivery } from '@blockframes/material';
+import { Delivery } from '@blockframes/delivery-lib';
 import { Movie } from '../../movie/+state/movie.model';
 
 @Injectable({ providedIn: 'root' })

@@ -13,7 +13,10 @@
     "lib": ["es2017", "dom"],
     "baseUrl": ".",
     "paths": {
+      // Environment
       "@env": ["env/env.ts"],
+
+      // Libraries
       "@blockframes/ip": ["libs/ip/src/index.ts"],
       "@blockframes/auth": ["libs/auth/src/index.ts"],
       "@blockframes/ui": ["libs/ui/src/index.ts"],
@@ -25,8 +28,11 @@
       "@blockframes/account": ["libs/account/src/index.ts"],
       "@blockframes/material": ["libs/material/src/index.ts"],
       "@blockframes/template": ["libs/material/src/index.ts"],
+      "@blockframes/delivery-lib": ["libs/material/src/lib/delivery/index.ts"],
       "@blockframes/contracts": ["contracts/build"],
       "@blockframes/notification": ["libs/notification/index.ts"],
+
+      // Applications
       "@blockframes/delivery": ["apps/delivery/delivery/src/index.ts"],
       "@blockframes/movie-financing": ["apps/movie-financing/movie-financing/src/index.ts"],
     },

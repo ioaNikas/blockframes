@@ -8,7 +8,7 @@ import { LayoutComponent } from './layout/layout.component';
 // Guards
 import { AuthGuard } from '@blockframes/auth';
 import {
-  OrgFormComponent,
+  OrganizationCreateComponent,
   OrganizationGuard,
   PermissionsGuard,
   OrganizationHomeComponent
@@ -41,8 +41,8 @@ export const routes: Routes = [
         component: OrganizationHomeComponent
       },
       {
-        path: 'create-organization',
-        component: OrgFormComponent
+        path: 'create',
+        component: OrganizationCreateComponent
       },
       {
         path: 'o',
