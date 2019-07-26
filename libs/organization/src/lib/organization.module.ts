@@ -27,7 +27,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatRadioModule } from '@angular/material/radio';
 
 // Components
 import { OrganizationDisplayComponent } from './components/organization-display/organization-display.component';
@@ -47,7 +46,6 @@ import { MemberViewComponent } from './pages/member-view/member-view.component';
 import { OrganizationActivityViewComponent } from './pages/organization-activity-view/organization-activity-view.component';
 import { OrganizationAdminViewComponent } from './pages/organization-admin-view/organization-admin-view.component';
 import { OrganizationEditableComponent } from './pages/organization-editable/organization-editable.component';
-import { OrganizationHomeComponent } from './pages/organization-home/organization-home.component';
 
 export const organizationRoutes: Routes = [
   {
@@ -60,7 +58,7 @@ export const organizationRoutes: Routes = [
     component: OrganizationEditableComponent
   },
   {
-    path: 'activityreports',
+    path: 'activityreport',
     component: OrganizationActivityViewComponent
   },
   {
@@ -97,7 +95,6 @@ export const organizationRoutes: Routes = [
     MatSelectModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
-    MatRadioModule,
 
     RouterModule.forChild(organizationRoutes)
   ],

@@ -7,12 +7,6 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 
-// Components
-import { AppComponent } from './app.component';
-import { LayoutComponent } from './layout/layout.component';
-import { DeliveryQuery} from '@blockframes/material'; // TODO: find better way to load material lib
-import { TemplateModule} from '@blockframes/material'; // TODO: find better way to load material lib
-
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
@@ -49,9 +43,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, Routes } from '@angular/router';
 import { MovieActiveGuard } from '@blockframes/movie';
-
-import { DeliveryQuery} from '@blockframes/delivery-lib'; // TODO: find better way to load delivery lib
-import { TemplateModule} from '@blockframes/template'; // TODO: find better way to load template lib
 
 export const routes: Routes = [
   { path: '',

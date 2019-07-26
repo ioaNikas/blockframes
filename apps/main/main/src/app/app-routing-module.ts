@@ -7,12 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Guards
 import { AuthGuard } from '@blockframes/auth';
-import {
-  OrganizationCreateComponent,
-  OrganizationGuard,
-  PermissionsGuard,
-  OrganizationHomeComponent
-} from '@blockframes/organization';
+import { OrganizationGuard, PermissionsGuard } from '@blockframes/organization';
 import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
@@ -37,12 +32,8 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'organization-home',
-        component: OrganizationHomeComponent
-      },
-      {
-        path: 'create',
-        component: OrganizationCreateComponent
+        path: 'organization',
+        loadChildren: () => import('@blockframes/organization').then(m => m.NoOrganizationModule)
       },
       {
         path: 'o',
@@ -72,7 +63,8 @@ export const routes: Routes = [
           },
           {
             path: 'movie-financing',
-            loadChildren: () => import('@blockframes/movie-financing').then(m => m.MovieFinancingAppModule)
+            loadChildren: () =>
+              import('@blockframes/movie-financing').then(m => m.MovieFinancingAppModule)
           }
         ]
       }

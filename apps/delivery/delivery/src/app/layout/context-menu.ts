@@ -1,108 +1,138 @@
 export const CONTEXT_MENU = [
   {
     route: 'default',
-    items: [{ name: 'templates', path: '/layout/o/templates/list' }]
-  },
-  {
-    route: '/layout/welcome',
     items: []
   },
+  // User profile menus
   {
-    route: '/layout/o/home/:movieId/edit',
+    route: '/layout/o/account/profile/edit',
     items: [
-      { name: 'edit film', path: '/layout/o/home/:movieId/edit' },
-      { name: 'teamwork', path: '/layout/o/home/:movieId/teamwork' }
+      { name: 'profil', path: '/layout/o/account/profile/edit' },
+      { name: 'wallet', path: '/layout/o/account/wallet/add' }
     ]
   },
   {
-    route: '/layout/o/home/:movieId/teamwork',
+    route: '/layout/o/account/wallet/add',
     items: [
-      { name: 'edit film', path: '/layout/o/home/:movieId/edit' },
-      { name: 'teamwork', path: '/layout/o/home/:movieId/teamwork' }
+      { name: 'profil', path: '/layout/o/account/profile/edit' },
+      { name: 'wallet', path: '/layout/o/account/wallet/add' }
+    ]
+  },
+  // Organization profile menus
+  {
+    route: '/layout/o/organization/edit',
+    items: [
+      { name: 'informations', path: '/layout/o/organization/edit' },
+      { name: 'members', path: '' },
+      { name: 'administration', path: '/layout/o/organization/administration' },
+      { name: 'activity report', path: '/layout/o/organization/activityreport' },
+      { name: 'dapps', path: '' }
     ]
   },
   {
-    route: '/layout/o/template/list',
-    items: [{ name: 'template', path: '/layout/o/template/list' }]
-  },
-  {
-    route: '/layout/o/template/:templateId',
+    route: '/layout/o/organization/activityreport',
     items: [
-      { name: 'templates', path: '/layout/o/template/list' },
-      { name: 'edit', path: '/layout/o/template/:templateId' }
+      { name: 'informations', path: '/layout/o/organization/edit' },
+      { name: 'members', path: '' },
+      { name: 'administration', path: '/layout/o/organization/administration' },
+      { name: 'activity report', path: '/layout/o/organization/activityreport' },
+      { name: 'dapps', path: '' }
     ]
   },
   {
-    route: '/layout/o/:movieId',
+    route: '/layout/o/organization/administration',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'movie materials', path: '/layout/o/:movieId/movie-materials' }
+      { name: 'informations', path: '/layout/o/organization/edit' },
+      { name: 'members', path: '' },
+      { name: 'administration', path: '/layout/o/organization/administration' },
+      { name: 'activity report', path: '/layout/o/organization/activityreport' },
+      { name: 'dapps', path: '' }
+    ]
+  },
+  // Media delivering application menus
+  {
+    route: '/layout/o/delivery',
+    items: [
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'templates', path: '/layout/o/delivery/template/list' }
     ]
   },
   {
-    route: '/layout/o/:movieId/movie-materials',
+    route: '/layout/o/delivery/template/list',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'movie materials', path: '/layout/o/:movieId/movie-materials' }
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'templates', path: '/layout/o/delivery/template/list' }
     ]
   },
   {
-    route: '/layout/o/:movieId/template-picker',
+    route: '/layout/o/delivery/template/:templateId',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'movie materials', path: '/layout/o/:movieId/movie-materials' },
-      { name: 'template picker', path: '/layout/o/:movieId/template-picker' }
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'templates', path: '/layout/o/delivery/template/list' },
+      { name: 'edit', path: '/layout/o/delivery/template/:templateId' }
     ]
   },
   {
-    route: '/layout/o/:movieId/:deliveryId/view',
+    route: '/layout/o/delivery/:movieId/list',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'settings', path: '/layout/o/:movieId/:deliveryId/settings' },
-      { name: 'teamwork', path: '/layout/o/:movieId/:deliveryId/teamwork' },
-      { name: 'edit', path: '/layout/o/:movieId/:deliveryId/edit' },
-      { name: 'delivery list', path: '/layout/o/:movieId/:deliveryId/view' }
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'movie materials', path: '/layout/o/delivery/:movieId/movie-materials' }
     ]
   },
   {
-    route: '/layout/o/:movieId/:deliveryId/edit',
+    route: '/layout/o/delivery/:movieId/movie-materials',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'settings', path: '/layout/o/:movieId/:deliveryId/settings' },
-      { name: 'teamwork', path: '/layout/o/:movieId/:deliveryId/teamwork' },
-      { name: 'edit', path: '/layout/o/:movieId/:deliveryId/edit' },
-      { name: 'delivery list', path: '/layout/o/:movieId/:deliveryId/view' }
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'movie materials', path: '/layout/o/delivery/:movieId/movie-materials' }
     ]
   },
   {
-    route: '/layout/o/:movieId/:deliveryId/settings',
+    route: '/layout/o/delivery/:movieId/create',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'settings', path: '/layout/o/:movieId/:deliveryId/settings' },
-      { name: 'teamwork', path: '/layout/o/:movieId/:deliveryId/teamwork' },
-      { name: 'edit', path: '/layout/o/:movieId/:deliveryId/edit' },
-      { name: 'delivery list', path: '/layout/o/:movieId/:deliveryId/view' }
+      { name: 'home', path: '/layout/o/delivery' },
+      { name: 'movie materials', path: '/layout/o/delivery/:movieId/movie-materials' }
     ]
   },
   {
-    route: '/layout/o/:movieId/:deliveryId/teamwork',
+    route: '/layout/o/delivery/:movieId/:deliveryId/settings',
     items: [
-      { name: 'delivery schedules', path: '/layout/o/:movieId/list' },
-      { name: 'settings', path: '/layout/o/:movieId/:deliveryId/settings' },
-      { name: 'teamwork', path: '/layout/o/:movieId/:deliveryId/teamwork' },
-      { name: 'edit', path: '/layout/o/:movieId/:deliveryId/edit' },
-      { name: 'delivery list', path: '/layout/o/:movieId/:deliveryId/view' }
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'settings', path: '/layout/o/delivery/:movieId/:deliveryId/settings' },
+      { name: 'teamwork', path: '/layout/o/delivery/:movieId/:deliveryId/teamwork' },
+      { name: 'edit', path: '/layout/o/delivery/:movieId/:deliveryId/edit' },
+      { name: 'view', path: '/layout/o/delivery/:movieId/:deliveryId/view' }
     ]
   },
   {
-    route: '/layout/o/account',
+    route: '/layout/o/delivery/:movieId/:deliveryId/teamwork',
     items: [
-      { name: 'profile', path: '/layout/o/account/profile' },
-      { name: 'wallet', path: '/layout/o/account/wallet' }
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'settings', path: '/layout/o/delivery/:movieId/:deliveryId/settings' },
+      { name: 'teamwork', path: '/layout/o/delivery/:movieId/:deliveryId/teamwork' },
+      { name: 'edit', path: '/layout/o/delivery/:movieId/:deliveryId/edit' },
+      { name: 'view', path: '/layout/o/delivery/:movieId/:deliveryId/view' }
     ]
   },
   {
-    route: '/layout/o/organization/:orgId',
-    items: [{ name: 'activity reports', path: '/layout/o/organization/:orgId/activityreports' }]
+    route: '/layout/o/delivery/:movieId/:deliveryId/edit',
+    items: [
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'settings', path: '/layout/o/delivery/:movieId/:deliveryId/settings' },
+      { name: 'teamwork', path: '/layout/o/delivery/:movieId/:deliveryId/teamwork' },
+      { name: 'edit', path: '/layout/o/delivery/:movieId/:deliveryId/edit' },
+      { name: 'view', path: '/layout/o/delivery/:movieId/:deliveryId/view' }
+    ]
+  },
+  {
+    route: '/layout/o/delivery/:movieId/:deliveryId/view',
+    items: [
+      { name: 'deliveries', path: '/layout/o/delivery/:movieId/list' },
+      { name: 'settings', path: '/layout/o/delivery/:movieId/:deliveryId/settings' },
+      { name: 'teamwork', path: '/layout/o/delivery/:movieId/:deliveryId/teamwork' },
+      { name: 'edit', path: '/layout/o/delivery/:movieId/:deliveryId/edit' },
+      { name: 'view', path: '/layout/o/delivery/:movieId/:deliveryId/view' }
+    ]
   }
 ];

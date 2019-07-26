@@ -1,7 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TemplateService, TemplateQuery } from '../../+state';
+import { TemplateService } from '../../+state';
 import { Router } from '@angular/router';
+import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'material-template-add',
@@ -19,7 +20,7 @@ export class TemplateAddComponent {
   public async addTemplate(templateName: string) {
     const templateId = await this.service.addTemplate(templateName);
     this.close();
-    this.router.navigate([`layout/o/templates/${templateId}`])
+    this.router.navigate([`${getBaseUrl(this.router)}/${templateId}`])
   }
 
   public close(): void {

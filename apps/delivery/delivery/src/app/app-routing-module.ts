@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: 'layout',
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    canDeactivate: [AuthGuard],
+    // canDeactivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -40,7 +40,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'delivery',
             pathMatch: 'full'
           },
           {
@@ -56,18 +56,28 @@ export const routes: Routes = [
             loadChildren: () => import('@blockframes/account').then(m => m.AccountModule)
           },
           {
-            path: 'home',
-            loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
-          },
-          {
-            path: 'template',
-            loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
-          },
-          {
-            path: ':movieId',
-            canActivate: [MovieActiveGuard],
-            canDeactivate: [MovieActiveGuard],
-            loadChildren: () => import('@blockframes/delivery-lib').then(m => m.DeliveryModule)
+            path: 'delivery',
+            children: [
+              {
+                path: '',
+                redirectTo: 'movie',
+                pathMatch: 'full'
+              },
+              {
+                path: 'movie',
+                loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
+              },
+              {
+                path: 'template',
+                loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
+              },
+              {
+                path: ':movieId',
+                canActivate: [MovieActiveGuard],
+                canDeactivate: [MovieActiveGuard],
+                loadChildren: () => import('@blockframes/delivery-lib').then(m => m.DeliveryModule)
+              }
+            ]
           }
         ]
       }
