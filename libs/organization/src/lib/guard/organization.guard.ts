@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FireQuery, Query } from '@blockframes/utils';
-import { Organization, OrganizationStore, OrganizationAction } from '../+state';
+import { Organization, OrganizationStore, OrganizationActionOld } from '../+state';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthQuery } from '@blockframes/auth';
@@ -16,7 +16,7 @@ export const orgQuery = (orgId: string): Query<Organization> => ({
   actions: (organization: Organization) => ({
     path: `orgs/${organization.id}/actions`,
     // TODO(#681): remove activeMembers subscripton 
-    activeMembers: (action: OrganizationAction) => {
+    activeMembers: (action: OrganizationActionOld) => {
       return action.activeMembers.map(id => ({
         path: `users/${id}`
       }))
