@@ -128,11 +128,13 @@ export class OrganizationService {
   /** create a newOperation, or update it if it already exists */
   private async upsertOperation(newOperation: OrganizationOperation) {
     const { operations } = this.query.getValue().org // get every actions
-    const newOperations = operations.filter(currentOperation => currentOperation.id !== newOperation.id); // get all actions except the one we want to upsert
 
     // add the updated action to the action list
-    newOperations.push(newOperation); // we could not use `actions.push(newAction)` direclty otherwise the action will have been duplicated
-
+    // we could not use `operations.push(newOperation)` direclty otherwise the operation will have been duplicated
+    const newOperations = [
+      ...operations.filter(currentOperation => currentOperation.id !== newOperation.id),// get all operations except the one we want to upsert
+      newOperation
+    ]
     try {
       // send tx to the org smart-contract and wait for result // TODO replace with the real implemntation : issue 676
 
@@ -140,10 +142,7 @@ export class OrganizationService {
       this.store.update(state => {
         return {
           ...state, // keep everything of the state
-          org: { // update only the org
-            ...state.org, // keep everything inside org
-            operations: newOperations, // update only the actions array
-          },
+          org: { ...state.org, operations: newOperations }, // update only the operations array
         }
       });
     } catch(err) {
@@ -154,37 +153,31 @@ export class OrganizationService {
   updateOperationQuorum(id: string, newQuorum: number) {
     const operation = this.query.getOperationById(id);
     if(!operation) throw new Error('This operation doesn\'t exists');
-    const newOperation = {
+    this.upsertOperation({
       ...operation,
       quorum: newQuorum,
-    };
-    this.upsertOperation(newOperation);
+    });
   }
 
   addOperationMember(id: string, newMember: OrganizationMember) {
     const operation = this.query.getOperationById(id);
     if(!operation) throw new Error('This operation doesn\'t exists');
     
-    const [memberExists] = operation.members.filter(member => member.uid === newMember.uid);
+    const memberExists = operation.members.some(member => member.uid === newMember.uid);
     if (!!memberExists) throw new Error('This member is already a signer of this operation');
-
-    const newOperation = {
+    
+    this.upsertOperation({
       ...operation,
       members: [...operation.members, newMember],
-    };
-    
-    this.upsertOperation(newOperation);
+    });
   }
 
   removeOperationMember(id: string, memberToRemove: OrganizationMember) {
     const operation = this.query.getOperationById(id);
     if(!operation) throw new Error('This operation doesn\'t exists');
     
-    const newMembersList = operation.members.filter(member => member.uid !== memberToRemove.uid);
-    const newOperation = {
-      ...operation,
-      members: newMembersList,
-    };
+    const members = operation.members.filter(member => member.uid !== memberToRemove.uid);
+    const newOperation = { ...operation, members };
     
     this.upsertOperation(newOperation);
   }

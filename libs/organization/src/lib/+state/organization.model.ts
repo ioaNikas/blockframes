@@ -38,8 +38,8 @@ export interface Organization {
   templateIds: string[];
   userIds: string[];
   members?: OrganizationMember[];
-  actions: OrganizationAction[]
   operations?: OrganizationOperation[];
+  actions?: OrganizationAction[]
 }
 
 export interface OrganizationForm {
