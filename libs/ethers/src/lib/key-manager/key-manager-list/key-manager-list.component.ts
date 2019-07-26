@@ -11,7 +11,7 @@ import { KeyManagerQuery, Key } from "../+state";
 })
 export class KeyManagerListComponent implements OnInit {
 
-  @Input() small = false;
+  @Input() isSmall = false;
   @Input() ensDomain: string;
   @Output() deleteKey = new EventEmitter<Key>();
   @Output() selectKey = new EventEmitter<Key>();

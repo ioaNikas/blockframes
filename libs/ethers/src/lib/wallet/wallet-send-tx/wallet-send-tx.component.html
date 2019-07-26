@@ -2,7 +2,7 @@
   <ng-container [ngSwitch]="step">
     <section *ngSwitchCase="steps.select">
       <h2>Select a key</h2>
-      <key-manager-list [ensDomain]="wallet.ensDomain" [small]="true" (selectKey)="handleKeySelection($event)"></key-manager-list>
+      <key-manager-list [ensDomain]="wallet.ensDomain" [isSmall]="true" (selectKey)="handleKeySelection($event)"></key-manager-list>
     </section>
     <section *ngSwitchCase="steps.password">
       <wallet-ask-password-form (userPassword)="setPassword($event)"></wallet-ask-password-form>

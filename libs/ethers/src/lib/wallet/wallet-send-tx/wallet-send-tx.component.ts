@@ -63,16 +63,12 @@ export class WalletSendTxTunnelComponent implements OnInit {
 
       if (!this.query.getValue().hasERC1077) { // we have to wait for password decryption to prevent deploying if the user entered a wrong password
         this.isDeploying$.next(true);
-        this.walletService.deployERC1077(this.key.ensDomain, this.key.address).then(res => {
-          this.isDeploying$.next(false);
-        }).catch(err => { // TODO better error handling issue#671
-          console.warn('Oooops', err);
-          this.isDeploying$.next(false);
-          this.step = this.steps.end;
-        });
+        await this.walletService.deployERC1077(this.key.ensDomain, this.key.address);
+        this.isDeploying$.next(false);
       }
     } catch (err) { // TODO better error handling issue#671
-      console.warn('Oooops Invalid Password', err);
+      console.warn('Oooops', err);
+      this.isDeploying$.next(false);
       this.step = this.steps.end;
     }
   }
@@ -82,14 +78,15 @@ export class WalletSendTxTunnelComponent implements OnInit {
       throw new Error('Your smart-wallet is not yet deployed');
     }
     this.step = this.steps.end;
-    this.isPending$.next(true);
-    const signedMetaTx = await this.walletService.prepareMetaTx(this.activeKey);
-    this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx).then(() => {
+    try {
+      this.isPending$.next(true);
+      const signedMetaTx = await this.walletService.prepareMetaTx(this.activeKey);
+      this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx);
       this.isPending$.next(false);
-    }).catch(err => {
+    } catch(err) {
       console.warn('Ooops', err); // TODO better error handling issue#671
       this.isPending$.next(false);
-    });
+    }
   }
 
   handleRedirect() {

@@ -1,18 +1,18 @@
 <ng-container *ngIf="isSmall; else notSmall">
   <article class="small" fxLayout="row" fxLayoutAlign="space-between center">
     <h5>{{ keyObject.name }}</h5>
-    <section class="small" [ngStyle]="{ 'background-color': backgroundColor }">
+    <div class="small" [ngStyle]="{ 'background-color': backgroundColor }">
       <button mat-icon-button (click)="selectKey.emit(keyObject)">
         <mat-icon class="material-icons-outlined">keyboard_arrow_right</mat-icon>
       </button>
-    </section>
+    </div>
   </article>
 </ng-container>
 <ng-template #notSmall>
   <article fxLayout="row" fxLayoutAlign="start center">
-    <section [ngStyle]="{ 'background-color': backgroundColor }">
-      <img src="/assets/icons/key_icon.svg">
-    </section>
+    <div class="image" [ngStyle]="{ 'background-color': backgroundColor }">
+      <img src="/assets/icons/keyIcon.svg">
+    </div>
     <div>
       <h5>{{ keyObject.name }}</h5>
       <p>Lorem Ipsum</p>
