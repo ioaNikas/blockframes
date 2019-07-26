@@ -6,8 +6,7 @@ import {
   OrganizationAction,
   OrganizationMember,
   OrganizationOperation,
-  OrganizationMemberRequest,
-  OrganizationActionOld
+  OrganizationMemberRequest
 } from './organization.model';
 import { OrganizationStore } from './organization.store';
 import { FireQuery } from '@blockframes/utils';
@@ -27,7 +26,7 @@ export class OrganizationService {
   constructor(
     private store: OrganizationStore,
     private query: OrganizationQuery,
-    private permissionsQuery: PermissionsQuery,
+    // private permissionsQuery: PermissionsQuery,
     private authStore: AuthStore,
     private authService: AuthService,
     private db: FireQuery

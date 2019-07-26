@@ -1,5 +1,5 @@
 import { OrganizationForm } from './../../organization.form';
-import { Organization, OrganizationMember } from './../../+state/organization.model';
+import { Organization, OrganizationAction, OrganizationMember, OrganizationOperation } from './../../+state/organization.model';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { OrganizationQuery } from '../../+state';
 import { Observable } from 'rxjs';
@@ -41,8 +41,12 @@ export class OrganizationAdminViewComponent implements OnInit {
 
   public openSidenav(editContent: 'action' | 'member', index: number) {
     this.opened = true;
-    this.editContent = editContent;
-    this.activeForm = index;
+    this.optionsOrSigner = true;
+    this.action = action;
+  }
+
+  public deleteActiveSigner({member, operation}: {member: OrganizationMember, operation: OrganizationOperation}) {
+    this.service.removeOperationMember(operation.id, member);
   }
 
   /** This function should get triggered by the input field */

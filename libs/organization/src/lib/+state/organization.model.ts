@@ -47,13 +47,6 @@ export interface OrganizationForm {
   adress: string;
 }
 
-export interface OrganizationActionOld {
-  id: string;
-  actionName: string;
-  quorumMembers: number;
-  /** Array of uids from OrganizationMember. The u of uids stands for user not unique */
-  activeMembers: OrganizationMember[];
-}
 /**
  * A factory function that creates an Organization
  */
