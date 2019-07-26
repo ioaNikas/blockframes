@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { createOrganization, OrganizationQuery, OrganizationService, OrganizationState } from '../../+state';
 import { Subject } from 'rxjs';
 import { App, AppInformations, getAppInformations } from '../../permissions/+state';
+import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'organization-create',
@@ -80,7 +81,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
 
     await this.service.add(this.form.value, await this.user, this.selectedApp);
 
-    this.router.navigate(['layout/o/organization/view'])
+    this.router.navigate([`layout/o/organization/edit`])
     this.snackBar.open(`Created ${this.form.get('name').value}`, 'close', { duration: 1000 });
     this.form.reset();
     this.persistForm.reset();

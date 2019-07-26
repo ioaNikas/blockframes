@@ -1,18 +1,37 @@
 // Angular
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-// Components
-import { LayoutComponent } from './layout/layout.component';
-import { MovieEmptyComponent } from '@blockframes/movie';
-
-// Guards
-import { AuthGuard } from '@blockframes/auth';
 import { MovieActiveGuard } from '@blockframes/movie';
+import { LayoutComponent } from './layout/layout.component';
+import { AuthGuard } from '@blockframes/auth';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
 
-export const routes: Routes = [
-  { path: '', redirectTo: 'layout', pathMatch: 'full' },
+// Delivery Sub App Routes
+export const subDeliveryRoutes: Routes = [
+  { path: '', redirectTo: 'movie', pathMatch: 'full' },
+  {
+    path: 'movie',
+    loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
+  },
+  {
+    path: 'template',
+    loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
+  },
+  {
+    path: ':movieId',
+    canActivate: [MovieActiveGuard],
+    canDeactivate: [MovieActiveGuard],
+    loadChildren: () => import('@blockframes/delivery-lib').then(m => m.DeliveryModule)
+  }
+];
+
+// Delivery App Routes
+export const deliveryRoutes: Routes = [
+  {
+    path: '',
+    redirectTo: 'layout',
+    pathMatch: 'full'
+  },
   {
     path: 'auth',
     loadChildren: () => import('@blockframes/auth').then(m => m.AuthModule)
@@ -21,7 +40,7 @@ export const routes: Routes = [
     path: 'layout',
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    // canDeactivate: [AuthGuard],
+    canDeactivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -29,7 +48,6 @@ export const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        // The redirection route when user has no organization
         path: 'organization',
         loadChildren: () => import('@blockframes/organization').then(m => m.NoOrganizationModule)
       },
@@ -44,58 +62,35 @@ export const routes: Routes = [
             pathMatch: 'full'
           },
           {
-            path: 'no-movies',
-            component: MovieEmptyComponent
+            path: 'account',
+            loadChildren: () => import('@blockframes/account').then(m => m.AccountModule)
           },
           {
             path: 'organization',
             loadChildren: () => import('@blockframes/organization').then(m => m.OrganizationModule)
           },
           {
-            path: 'account',
-            loadChildren: () => import('@blockframes/account').then(m => m.AccountModule)
-          },
-          {
             path: 'delivery',
-            children: [
-              {
-                path: '',
-                redirectTo: 'movie',
-                pathMatch: 'full'
-              },
-              {
-                path: 'movie',
-                loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
-              },
-              {
-                path: 'template',
-                loadChildren: () => import('@blockframes/template').then(m => m.TemplateModule)
-              },
-              {
-                path: ':movieId',
-                canActivate: [MovieActiveGuard],
-                canDeactivate: [MovieActiveGuard],
-                loadChildren: () => import('@blockframes/delivery-lib').then(m => m.DeliveryModule)
-              }
-            ]
-          }
+            children: subDeliveryRoutes
+          },
+
         ]
+      },
+      {
+        path: 'not-found',
+        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
+      },
+      {
+        path: '**',
+        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
       }
     ]
-  },
-  {
-    path: 'not-found',
-    loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-  },
-  {
-    path: '**',
-    redirectTo: 'not-found'
   }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {
+    RouterModule.forRoot(deliveryRoutes, {
       anchorScrolling: 'enabled',
       onSameUrlNavigation: 'reload',
       paramsInheritanceStrategy: 'always'

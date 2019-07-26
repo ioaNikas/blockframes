@@ -14,8 +14,6 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
-import { DeliveryQuery} from '@blockframes/delivery-lib'; // TODO: find better way to load delivery lib
-import { TemplateModule} from '@blockframes/template'; // TODO: find better way to load template lib
 
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
