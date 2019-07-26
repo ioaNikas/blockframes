@@ -20,6 +20,7 @@ import {
   PermissionsQuery
 } from '../permissions/+state';
 import firebase from 'firebase';
+import { mockActions, mockOperations, mockOrgMembers } from './organization.mock';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
@@ -184,51 +185,10 @@ export class OrganizationService {
 
   // TODO REMOVE THIS ASAP : issue 676
   public instantiateMockData() {
-    const Alice: OrganizationMember = {
-      avatar: 'https://fakeimg.pl/300/',
-      name: 'Alice',
-      uid: '0',
-      email: 'alice@test.com',
-      roles: []
-    };
-    const Bob: OrganizationMember = {
-      avatar: 'https://fakeimg.pl/300/',
-      name: 'Bob',
-      uid: '1',
-      email: 'bob@test.com',
-      roles: []
-    };
-    const Charlie: OrganizationMember = {
-      avatar: 'https://fakeimg.pl/300/',
-      name: 'Charlie',
-      uid: '2',
-      email: 'charlie@test.com',
-      roles: []
-    };
-    const David: OrganizationMember = {
-      avatar: 'https://fakeimg.pl/300/',
-      name: 'David',
-      uid: '3',
-      email: 'david@test.com',
-      roles: []
-    };
-    const operations: OrganizationOperation[] = [
-      { id: '0', name: 'Signing Delivery',  quorum: 2, members: [Alice, David] },
-      { id: '1', name: 'Buying a Film',     quorum: 3, members: [Alice, Bob, Charlie] },
-    ];
-    const actions: OrganizationAction[] = [
-      { id: '0', opid: '0', name: 'Delivery #123',    isApproved: false, signers: [Alice] },
-      { id: '1', opid: '0', name: 'Delivery #456',    isApproved: true, signers: [Alice, David], approvalDate: '14/02/19' },
-      { id: '2', opid: '0', name: 'Delivery #789',    isApproved: false, signers: [Alice] },
-      { id: '3', opid: '1', name: 'Buy Parasite',     isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
-      { id: '4', opid: '1', name: 'Buy Harry Potter', isApproved: false, signers: [Alice, Charlie] },
-      { id: '5', opid: '1', name: 'Buy Rubber',       isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
-      { id: '6', opid: '1', name: 'Buy LotR',         isApproved: true, signers: [Alice, Bob, Charlie], approvalDate: '14/02/19' },
-    ]
-    const mockOrgMembers: OrganizationMember[] = [Alice, Bob, Charlie, David];
+    
     const oldOrgMembers = this.query.getValue().org.members;
     const newOrgMembers = mockOrgMembers.concat(oldOrgMembers);
 
-    this.update({actions, operations, members: newOrgMembers});
+    this.update({actions: mockActions, operations: mockOperations, members: newOrgMembers});
   }
 }
