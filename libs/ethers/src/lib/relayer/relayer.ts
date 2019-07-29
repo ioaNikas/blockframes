@@ -37,7 +37,7 @@ export class Relayer {
   }
 
   /** Send a transaction to the relayer  */
-  send(address: string, tx: providers.TransactionRequest): Promise<providers.TransactionResponse> {
+  send(address: string, tx: providers.TransactionRequest): Promise<providers.TransactionReceipt> {
     const call = this.functions.httpsCallable('relayerSend');
     return call({ address, tx }).toPromise();
   }

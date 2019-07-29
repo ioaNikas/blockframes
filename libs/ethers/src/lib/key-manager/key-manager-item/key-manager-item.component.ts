@@ -28,26 +28,20 @@ export class KeyManagerItemComponent implements OnInit {
   @Input() isSmall = false;
 
   /** Event to indicate the parent component which key is selected */
-  @Output() selectKey: EventEmitter<Key> = new EventEmitter();
+  @Output() selectKey = new EventEmitter();
 
   /** Event to indicate the parent component which key should be deleted */
-  @Output() deleteKey: EventEmitter<Key> = new EventEmitter();
+  @Output() deleteKey = new EventEmitter();
+
+  /** Event to indicate the parent component it should link this key to the user's ERC1077 */
+  @Output() linkKey = new EventEmitter();
 
   constructor(
-    private service: KeyManagerService,
     private sanitizer: DomSanitizer
   ){}
 
   ngOnInit() {
     this.address = keyToAddressPart(this.keyObject, 6);
-  }
-
-  lockKey() {
-    this.service.deactivateKey();
-  }
-
-  async exportKey() {
-    this.service.exportActiveKey();
   }
 
   get keyName() {

@@ -7,6 +7,7 @@ export interface Key {
   keyStore: string,
   address: string,
   isMainKey: boolean,
+  isLinked: boolean, // does the key also exists inside the ERC1077
 }
 
 export interface KeyState extends EntityState<Key>, ActiveState<string> {}

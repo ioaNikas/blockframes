@@ -9,7 +9,7 @@
       </a>
       <a mat-flat-button routerLink="/layout/o/account/wallet/add">
         <mat-icon>add</mat-icon>
-        Add Key
+        Create a Key
       </a>
     </div>
   </header>
@@ -19,7 +19,7 @@
       <wallet-blockie fxFlex="noshrink" [address]="wallet.address"></wallet-blockie>
       <wallet-address-view fxFlex="grow" [ethAddress]="wallet.address" [ensName]="wallet.ensDomain"></wallet-address-view>
     </article>
-    <key-manager-list [ensDomain]="wallet.ensDomain" (deleteKey)="deleteKey($event)"></key-manager-list>
+    <key-manager-list [ensDomain]="wallet.ensDomain" (linkKey)="linkKey($event)" (deleteKey)="deleteKey($event)"></key-manager-list>
   </section>
 </ng-container>
 <ng-template #walletLoading>

@@ -15,8 +15,10 @@ export class KeyManagerListComponent implements OnInit {
   @Input() ensDomain: string;
   @Output() deleteKey = new EventEmitter<Key>();
   @Output() selectKey = new EventEmitter<Key>();
+  @Output() linkKey = new EventEmitter<Key>();
 
   keys$: Observable<Key[]>;
+  linkedKeys$: Observable<Key[]>; // keys that exists inside the erc1077, i.e. keys that can send tx
 
   constructor(
     private query: KeyManagerQuery,
@@ -24,9 +26,6 @@ export class KeyManagerListComponent implements OnInit {
 
   ngOnInit() {
     this.keys$ = this.query.selectAllKeysOfUser$(this.ensDomain);
-  }
-
-  delete(key: Key) {
-    this.deleteKey.emit(key);
+    this.linkedKeys$ = this.query.selectAllLinkedKeysOfUser$(this.ensDomain);
   }
 }

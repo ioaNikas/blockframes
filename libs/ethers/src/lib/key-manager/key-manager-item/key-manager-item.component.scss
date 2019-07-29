@@ -13,15 +13,15 @@ article {
       margin: 38px 29px;
     }
   }
-  div {
+  div.content {
+    width: 100%;
+    height: 100%;
+    padding: 10px 0;
     h5 {
       margin: 0;
     }
     p {
       margin: 0;
-    }
-    a {
-      margin-left: 100px;
     }
   }
 }

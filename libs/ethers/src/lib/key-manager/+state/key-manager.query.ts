@@ -20,6 +20,17 @@ export class KeyManagerQuery extends QueryEntity<KeyState, Key> {
   }
 
   /**
+   * Return an Observable of all keys stored for the logged user that are linked to its erc10777,
+   * i.e. all the keys that are able to send tx
+   * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)
+   */
+  selectAllLinkedKeysOfUser$(ensDomain: string) {
+    return this.selectAll().pipe(
+      map(keys => keys.filter(key => key.ensDomain === ensDomain && (key.isLinked || key.isMainKey))),
+    );
+  }
+
+  /**
    * Await that at least one key exist and return it as soon as it was created,
    * or simply return the first key if keys already exists
    * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)

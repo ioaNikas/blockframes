@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { KeyManagerStore, Key } from './key-manager.store';
-import { utils, Wallet as EthersWallet } from 'ethers';
+import { utils, Wallet as EthersWallet, getDefaultProvider, Contract } from 'ethers';
 import { KeyManagerQuery } from './key-manager.query';
+import { network } from '@env';
+import { ERC1077 } from '@blockframes/contracts';
 
 @Injectable({ providedIn: 'root' })
 export class KeyManagerService {
@@ -31,7 +33,7 @@ export class KeyManagerService {
     if (this.query.getKeyCountOfUser(ensDomain) === 0) {
       isMainKey = true;
     }
-    const key = {name: keyName, address: wallet.address, ensDomain, keyStore, isMainKey};
+    const key = {name: keyName, address: wallet.address, ensDomain, keyStore, isMainKey, isLinked: false};
     this.store.setLoading(false);
     return key;
   }
@@ -61,18 +63,23 @@ export class KeyManagerService {
     const wallet = new EthersWallet(privateKey);
     return this.encrypt(keyName, wallet, ensDomain, encryptionPassword);
   }
-  /** store an encrypted key to the storage */
+  /** store an encrypted key to the storage,
+  * if the key doesn't exists in the storage it will be created
+  * otherwise it will be simply updated
+  */
   public storeKey(key: Key) {
-    this.store.add(key);
+    this.store.upsert(key.address, key);
   }
 
-  importFromJsonFile(jsonString: string) {
+  async importFromJsonFile(jsonString: string) {
     const {address, ensDomain, keyStore} = JSON.parse(jsonString);
     let isMainKey = false;
     if (this.query.getKeyCountOfUser(ensDomain) === 0) {
       isMainKey = true;
     }
-    this.store.add({name, address, ensDomain, keyStore, isMainKey});
+    const erc1077 = new Contract(ensDomain, ERC1077.abi, getDefaultProvider(network));
+    const isLinked = await erc1077.keyExist(address);
+    this.store.add({name, address, ensDomain, keyStore, isMainKey, isLinked});
   }
 
   /** load key (retreive / decrypt, set into process memory) */
