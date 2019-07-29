@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   createOrganization,
   Organization,
-  OrganizationMemberRequest,
   OrganizationAction,
   OrganizationMember,
   OrganizationOperation,
