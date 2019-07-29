@@ -71,7 +71,7 @@ export class OrganizationService {
     );
 
     // Then set organization in the second transaction (rules from permissions will apply)
-    await this.db.firestore
+    this.db.firestore
       .runTransaction(transaction => {
         const promises = [
           // Set the new organization in orgs collection.

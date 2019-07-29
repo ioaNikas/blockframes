@@ -9,6 +9,7 @@ import { IconComponent } from '@blockframes/ui';
 })
 export class AppComponent {
   constructor(private query: AuthQuery, private icons: IconComponent) {}
+  // Remove IconComponent import and find a clean way to use icons => ISSUE#695
 
   @HostListener('window:beforeunload', ['$event'])
   closeProtection($event: any) {

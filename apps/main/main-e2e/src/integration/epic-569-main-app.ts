@@ -3,7 +3,7 @@
 beforeEach(() => {
   cy.clearCookies();
   cy.clearLocalStorage();
-  cy.visit('/'); // TODO: we should visit the root path instead of /auth
+  cy.visit('/');
   cy.viewport('macbook-15');
 });
 

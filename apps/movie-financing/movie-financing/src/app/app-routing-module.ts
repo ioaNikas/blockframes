@@ -1,17 +1,22 @@
 // Angular
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MovieActiveGuard } from '@blockframes/movie';
 import { LayoutComponent } from './layout/layout.component';
-
-// Components
-import { HomeComponent } from './home/home.component';
-
-// Guards
 import { AuthGuard } from '@blockframes/auth';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
 
-// Routes
-export const authPath: Routes = [
+// Movie Financing Sub App Routes
+export const subMovieFinancingRoutes: Routes = [
+  { path: '', redirectTo: 'movie', pathMatch: 'full' },
+  {
+    path: 'movie',
+    loadChildren: () => import('@blockframes/movie').then(m => m.MovieModule)
+  }
+];
+
+// Movie Financing App Routes
+export const movieFinancingRoutes: Routes = [
   {
     path: '',
     redirectTo: 'layout',
@@ -20,22 +25,7 @@ export const authPath: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('@blockframes/auth').then(m => m.AuthModule)
-  }
-]
-
-export const errorPath: Routes = [
-  {
-    path: 'not-found',
-    loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
   },
-  {
-    path: '**',
-    loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-  }
-];
-
-export const mainRoutes: Routes = [
-  ...authPath,
   {
     path: 'layout',
     component: LayoutComponent,
@@ -58,12 +48,8 @@ export const mainRoutes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: 'home',
+            redirectTo: 'movie-financing',
             pathMatch: 'full'
-          },
-          {
-            path: 'home',
-            component: HomeComponent
           },
           {
             path: 'account',
@@ -74,24 +60,26 @@ export const mainRoutes: Routes = [
             loadChildren: () => import('@blockframes/organization').then(m => m.OrganizationModule)
           },
           {
-            path: 'delivery',
-            loadChildren: () => import('@blockframes/delivery').then(m => m.DeliverySubModule)
-          },
-          {
             path: 'movie-financing',
-            loadChildren: () =>
-              import('@blockframes/movie-financing').then(m => m.MovieFinancingSubModule)
+            children: subMovieFinancingRoutes
           }
         ]
       },
-      ...errorPath
+      {
+        path: 'not-found',
+        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
+      },
+      {
+        path: '**',
+        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
+      }
     ]
   }
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(mainRoutes, {
+    RouterModule.forRoot(movieFinancingRoutes, {
       anchorScrolling: 'enabled',
       onSameUrlNavigation: 'reload',
       paramsInheritanceStrategy: 'always'

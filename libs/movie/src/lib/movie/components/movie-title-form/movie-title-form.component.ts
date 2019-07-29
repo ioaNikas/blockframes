@@ -40,8 +40,6 @@ export class MovieTitleFormComponent implements OnInit {
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 3000 });
       const movie = await this.service.addMovie(title);
 
-      // TODO: Figure out why router doesn't work with relative path:
-      // this.router.navigate([`../${movie.id}/edit`], {relativeTo: this.route});
       this.router.navigate([`${getBaseUrl(this.router)}/${movie.id}/edit`]);
 
       this.dialogRef.close();

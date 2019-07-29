@@ -5,10 +5,14 @@ import { AuthQuery, User } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
 import { first, takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { createOrganization, OrganizationQuery, OrganizationService, OrganizationState } from '../../+state';
+import {
+  createOrganization,
+  OrganizationQuery,
+  OrganizationService,
+  OrganizationState
+} from '../../+state';
 import { Subject } from 'rxjs';
 import { App, AppInformations, getAppInformations } from '../../permissions/+state';
-import { getBaseUrl } from '@blockframes/utils';
 
 @Component({
   selector: 'organization-create',
@@ -25,7 +29,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
     App.mediaDelivering,
     App.storiesAndMore,
     App.biggerBoat
-  ]
+  ];
   public applications: AppInformations[];
   public selectedApp: AppInformations;
   private destroyed$ = new Subject();
@@ -38,23 +42,24 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
     private builder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.applications = this.availablesApps.map(app => getAppInformations(app));
     this.user = this.auth.user;
     this.form = this.builder.group({
-      'id': [''],
-      'name': ['', [Validators.required]],
-      'address': ['', [Validators.required]]
+      id: [''],
+      name: ['', [Validators.required]],
+      address: ['', [Validators.required]]
     });
 
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
     this.persistForm.setForm(this.form);
     this.route.data
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(({ org }) => org ? this.form.setValue(createOrganization(org)) : this.form.reset());
+      .subscribe(({ org }) =>
+        org ? this.form.setValue(createOrganization(org)) : this.form.reset()
+      );
   }
 
   ngOnDestroy() {
@@ -79,9 +84,9 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    await this.service.add(this.form.value, await this.user, this.selectedApp);
+    await this.service.add(this.form.value, this.user, this.selectedApp);
 
-    this.router.navigate([`layout/o/organization/edit`])
+    this.router.navigate([`/layout/o/organization/edit`]);
     this.snackBar.open(`Created ${this.form.get('name').value}`, 'close', { duration: 1000 });
     this.form.reset();
     this.persistForm.reset();
@@ -93,7 +98,8 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
     this.selectedApp = null;
     this.form.reset();
     this.persistForm.reset();
-    this.snackBar.open('Cleared', 'Cancel', { duration: 1000 })
+    this.snackBar
+      .open('Cleared', 'Cancel', { duration: 1000 })
       .onAction()
       .pipe(first())
       .subscribe(_ => this.form.setValue(oldState));

@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppRoutingModule } from './app-routing.module';
@@ -33,7 +32,6 @@ import { AccountModule, ProfileModule } from '@blockframes/account';
   declarations: [AppComponent, LayoutComponent],
   imports: [
     BrowserModule,
-    HttpClientModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     BrowserAnimationsModule,

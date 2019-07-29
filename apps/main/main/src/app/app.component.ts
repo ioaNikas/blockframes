@@ -8,10 +8,8 @@ import { IconComponent } from '@blockframes/ui';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor(
-    private query: AuthQuery,
-    private icon: IconComponent // Find another way to load icons
-    ) {}
+  constructor(private query: AuthQuery, private icon: IconComponent) {}
+  // Remove IconComponent import and find a clean way to use icons => ISSUE#695
 
   @HostListener('window:beforeunload', ['$event'])
   closeProtection($event: any) {

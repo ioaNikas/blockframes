@@ -1,1 +1,1 @@
-export * from './app/movie-financing.module';
+export * from './app/movie-financing.sub.module';

@@ -91,7 +91,7 @@ export class DeliveryEditableComponent implements OnInit {
   private async deleteDelivery() {
     const activeMovieId = this.movieQuery.getActiveId();
     await this.service.deleteDelivery();
-    this.router.navigate([`layout/o/delivery/${activeMovieId}/list`]);
+    this.router.navigate([`/layout/o/delivery/${activeMovieId}/list`]);
     this.snackBar.open('Delivery deleted', 'close', { duration: 2000 });
   }
 
