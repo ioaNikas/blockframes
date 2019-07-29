@@ -45,7 +45,21 @@ export class OrganizationService {
    * Add a new organization to the database and create/update
    * related documents (permissions, apps permissions, user...).
    */
-  public async add(organization: Organization, user: User, app: AppInformations): Promise<string> {
+  public async add(organization: Organization, user: User, app: App): Promise<string> {
+    let collection: string;
+    switch (app) {
+      case App.mediaDelivering:
+        collection = 'mediaDelivering';
+        break;
+      case App.mediaFinanciers:
+        collection = 'mediaFinanciers';
+        break;
+      case App.biggerBoat:
+        collection = 'catalog';
+        break;
+      case App.storiesAndMore:
+        collection = 'storiesAndMore';
+    }
     const orgId: string = this.db.createId();
     const newOrganization: Organization = createOrganization({
       ...organization,
@@ -59,16 +73,16 @@ export class OrganizationService {
     const userDoc = this.db.doc(`users/${user.uid}`);
 
     // Set permissions in the first transaction
-    await this.db.firestore.runTransaction(tx =>{
-      const newApp = this.db.doc(`permissions/${orgId}/userAppsPermissions/${app.collection}`);
-      const appPermissions = createAppPermissions(app.collection)
+    await this.db.firestore.runTransaction(tx => {
+      const newApp = this.db.doc(`permissions/${orgId}/userAppsPermissions/${collection}`);
+      const appPermissions = createAppPermissions(app);
       return Promise.all([
         // Set the new organization in permissions collection.
         tx.set(permissionsDoc.ref, permissions),
         // Initialize app permissions documents in permissions apps sub-collection.
         tx.set(newApp.ref, appPermissions)
-      ])}
-    );
+      ]);
+    });
 
     // Then set organization in the second transaction (rules from permissions will apply)
     this.db.firestore
@@ -119,14 +133,14 @@ export class OrganizationService {
 
   /** create a newOperation, or update it if it already exists */
   private async upsertOperation(newOperation: OrganizationOperation) {
-    const { operations } = this.query.getValue().org // get every actions
+    const { operations } = this.query.getValue().org; // get every actions
 
     // add the updated action to the action list
     // we could not use `operations.push(newOperation)` direclty otherwise the operation will have been duplicated
     const newOperations = [
-      ...operations.filter(currentOperation => currentOperation.id !== newOperation.id),// get all operations except the one we want to upsert
+      ...operations.filter(currentOperation => currentOperation.id !== newOperation.id), // get all operations except the one we want to upsert
       newOperation
-    ]
+    ];
     try {
       // send tx to the org smart-contract and wait for result // TODO replace with the real implemntation : issue 676
 
@@ -134,20 +148,20 @@ export class OrganizationService {
       this.store.update(state => {
         return {
           ...state, // keep everything of the state
-          org: { ...state.org, operations: newOperations }, // update only the operations array
-        }
+          org: { ...state.org, operations: newOperations } // update only the operations array
+        };
       });
-    } catch(err) {
+    } catch (err) {
       console.error('The transaction has failed :', err); // TODO better error handling : issue 671
     }
   }
 
   updateOperationQuorum(id: string, newQuorum: number) {
     const operation = this.query.getOperationById(id);
-    if(!operation) throw new Error('This operation doesn\'t exists');
+    if (!operation) throw new Error("This operation doesn't exists");
     this.upsertOperation({
       ...operation,
-      quorum: newQuorum,
+      quorum: newQuorum
     });
   }
 
@@ -160,7 +174,7 @@ export class OrganizationService {
 
     this.upsertOperation({
       ...operation,
-      members: [...operation.members, newMember],
+      members: [...operation.members, newMember]
     });
   }
 
@@ -176,10 +190,9 @@ export class OrganizationService {
 
   // TODO REMOVE THIS ASAP : issue 676
   public instantiateMockData() {
-
     const oldOrgMembers = this.query.getValue().org.members;
     const newOrgMembers = mockOrgMembers.concat(oldOrgMembers);
 
-    this.update({actions: mockActions, operations: mockOperations, members: newOrgMembers});
+    this.update({ actions: mockActions, operations: mockOperations, members: newOrgMembers });
   }
 }

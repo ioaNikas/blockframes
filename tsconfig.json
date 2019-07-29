@@ -21,6 +21,7 @@
       "@blockframes/auth": ["libs/auth/src/index.ts"],
       "@blockframes/ui": ["libs/ui/src/index.ts"],
       "@blockframes/utils": ["libs/utils/src/index.ts"],
+      "@blockframes/routes": ["libs/utils/src/lib/routes/index.ts"],
       "@blockframes/ethers": ["libs/ethers/src/index.ts"],
       "@blockframes/movie": ["libs/movie/src/index.ts"],
       "@blockframes/movie/*": ["libs/movie/src/lib/*"],

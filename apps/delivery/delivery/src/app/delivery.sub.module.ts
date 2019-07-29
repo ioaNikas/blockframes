@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { subDeliveryRoutes } from './app-routing-module'
+import { subDeliveryRoutes } from './app-routing-module';
+import { LayoutComponent } from './layout/layout.component';
+
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forChild(subDeliveryRoutes)
+    RouterModule.forChild(subDeliveryRoutes),
   ],
-  providers: [],
+  declarations: [LayoutComponent]
 })
 export class DeliverySubModule {}

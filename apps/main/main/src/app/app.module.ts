@@ -38,7 +38,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent, HomeComponent],
+  declarations: [
+    AppComponent,
+    LayoutComponent,
+    HomeComponent
+  ],
   imports: [
     // Angular
     BrowserModule,
@@ -76,4 +80,3 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-

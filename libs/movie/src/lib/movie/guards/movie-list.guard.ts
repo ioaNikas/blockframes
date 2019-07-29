@@ -4,7 +4,8 @@ import { StateListGuard, FireQuery, Query } from '@blockframes/utils';
 import { Movie, MovieStore } from '../+state';
 import { OrganizationQuery } from '@blockframes/organization';
 import { combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
+import { RouterQuery } from '@datorama/akita-ng-router-store';
 
 const movieQuery = (id: string): Query<Movie> => ({
   path: `movies/${id}`
@@ -13,14 +14,14 @@ const movieQuery = (id: string): Query<Movie> => ({
 @Injectable({ providedIn: 'root' })
 export class MovieListGuard extends StateListGuard<Movie> {
   public get urlFallback() {
-    const nav = this.router.getCurrentNavigation();
-    const appName = nav.finalUrl.root.children.primary.segments[2].path;
-    return `/layout/o/${appName}/movie/create`;
+    const routeData = this.routerQuery.getValue().state.root.data
+    return `/layout/o/${routeData.app}/movie/create`;
   }
 
   constructor(
     private fireQuery: FireQuery,
     private organizationQuery: OrganizationQuery,
+    private routerQuery: RouterQuery,
     store: MovieStore,
     router: Router
   ) {

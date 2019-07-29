@@ -2,10 +2,10 @@ import 'hammerjs';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { MovieFinancingAppModule } from './app/movie-financing.module';
 import { environment } from './environments/environment';
-import { enableAkitaProdMode, persistState } from '@datorama/akita';
+import { enableAkitaProdMode } from '@datorama/akita';
 import { hmrBootstrap } from './hmr';
+import { MovieFinancingAppModule } from './app/movie-financing.app.module';
 
 const bootstrap = () => platformBrowserDynamic().bootstrapModule(MovieFinancingAppModule);
 

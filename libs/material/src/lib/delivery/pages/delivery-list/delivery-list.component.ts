@@ -4,7 +4,7 @@ import { Movie } from 'libs/movie/src/lib/movie/+state/movie.model';
 import { MovieQuery } from 'libs/movie/src/lib/movie/+state/movie.query';
 import { DeliveryService, DeliveryQuery, Delivery } from '../../+state';
 import { Router } from '@angular/router';
-import { getBaseUrl } from '@blockframes/utils';
+import { getBaseUrl } from '@blockframes/routes';
 
 @Component({
   selector: 'delivery-list',

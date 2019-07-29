@@ -2,6 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { deliveryRoutes } from './app-routing-module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -12,7 +13,6 @@ import { environment } from '../environments/environment';
 
 // Components
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
 
 // Angular Fire
@@ -37,6 +37,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [AppComponent, LayoutComponent],
@@ -44,7 +45,6 @@ import { MatDividerModule } from '@angular/material';
     // Angular
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
 
@@ -75,9 +75,15 @@ import { MatDividerModule } from '@angular/material';
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
-    environment.production ? [] : [AkitaNgDevtools.forRoot()]
+    environment.production ? [] : [AkitaNgDevtools.forRoot()],
+
+    RouterModule.forRoot(deliveryRoutes, {
+      anchorScrolling: 'enabled',
+      onSameUrlNavigation: 'reload',
+      paramsInheritanceStrategy: 'always'
+    })
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class DeliveryAppModule {}
+

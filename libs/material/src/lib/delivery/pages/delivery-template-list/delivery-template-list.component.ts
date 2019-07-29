@@ -4,7 +4,7 @@ import { Template, TemplateQuery } from '../../../template/+state';
 import { DeliveryService } from '../../+state';
 import { MovieQuery } from '@blockframes/movie';
 import { Router } from '@angular/router';
-import { getBaseUrl } from '@blockframes/utils';
+import { getBaseUrl } from '@blockframes/routes';
 
 @Component({
   selector: 'material-delivery-template-list',

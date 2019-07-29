@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MovieService } from '../../+state';
 import { Router } from '@angular/router';
-import { getBaseUrl } from '@blockframes/utils';
+import { getBaseUrl } from '@blockframes/routes';
 
 @Component({
   selector: 'movie-title-form',

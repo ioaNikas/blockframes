@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TemplateService } from '../../+state';
 import { Router } from '@angular/router';
-import { getBaseUrl } from '@blockframes/utils';
+import { getBaseUrl } from '@blockframes/routes';
 
 @Component({
   selector: 'material-template-add',

@@ -177,7 +177,7 @@ const ICONS_SVG = [
  *  <mat-icon svgIcon="notPayed"></mat-icon>
  */
 @Injectable({ providedIn: 'root' })
-export class IconComponent {
+export class IconRegistry {
   constructor(private matIconRegistry: MatIconRegistry,
               private domSanitizer: DomSanitizer
   ) {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthQuery, User } from '@blockframes/auth';
 import { PersistNgFormPlugin } from '@datorama/akita';
@@ -12,7 +12,7 @@ import {
   OrganizationState
 } from '../../+state';
 import { Subject } from 'rxjs';
-import { App, AppInformations, getAppInformations } from '../../permissions/+state';
+import { App } from '../../permissions/+state';
 
 @Component({
   selector: 'organization-create',
@@ -24,14 +24,8 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   public persistForm: PersistNgFormPlugin<OrganizationState>;
   public user: User;
   public form: FormGroup;
-  public availablesApps: App[] = [
-    App.mediaFinanciers,
-    App.mediaDelivering,
-    App.storiesAndMore,
-    App.biggerBoat
-  ];
-  public applications: AppInformations[];
-  public selectedApp: AppInformations;
+  public application: FormGroup;
+  public availableApps: App[];
   private destroyed$ = new Subject();
 
   constructor(
@@ -45,12 +39,18 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.applications = this.availablesApps.map(app => getAppInformations(app));
+    this.availableApps = [
+      App.mediaFinanciers,
+      App.mediaDelivering,
+      App.storiesAndMore,
+      App.biggerBoat
+    ];
     this.user = this.auth.user;
     this.form = this.builder.group({
       id: [''],
       name: ['', [Validators.required]],
-      address: ['', [Validators.required]]
+      address: ['', [Validators.required]],
+      selectedApp: ['', [Validators.required]]
     });
 
     this.persistForm = new PersistNgFormPlugin(this.query, 'form');
@@ -79,12 +79,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.selectedApp) {
-      this.snackBar.open('You must select a DApp', 'close', { duration: 1000 });
-      return;
-    }
-
-    await this.service.add(this.form.value, this.user, this.selectedApp);
+    await this.service.add(this.form.value, this.user, this.form.value.selectedApp);
 
     this.router.navigate([`/layout/o/organization/edit`]);
     this.snackBar.open(`Created ${this.form.get('name').value}`, 'close', { duration: 1000 });
@@ -95,7 +90,6 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
   /** Clear current form with cancellation */
   public clear() {
     const oldState = this.form.value;
-    this.selectedApp = null;
     this.form.reset();
     this.persistForm.reset();
     this.snackBar

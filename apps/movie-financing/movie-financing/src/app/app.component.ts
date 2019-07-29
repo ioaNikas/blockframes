@@ -3,7 +3,8 @@ import { AuthQuery } from '@blockframes/auth';
 import { IconRegistry } from '@blockframes/ui';
 
 @Component({
-  selector: 'ip-upload-root',
+  // tslint:disable-next-line: component-selector
+  selector: 'movie-financing-root',
   template: `<router-outlet></router-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

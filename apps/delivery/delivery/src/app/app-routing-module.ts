@@ -1,10 +1,10 @@
 // Angular
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { MovieActiveGuard } from '@blockframes/movie';
 import { LayoutComponent } from './layout/layout.component';
 import { AuthGuard } from '@blockframes/auth';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
+import { authRoutes, commonRoutes, errorRoutes } from '@blockframes/routes';
 
 // Delivery Sub App Routes
 export const subDeliveryRoutes: Routes = [
@@ -27,15 +27,7 @@ export const subDeliveryRoutes: Routes = [
 
 // Delivery App Routes
 export const deliveryRoutes: Routes = [
-  {
-    path: '',
-    redirectTo: 'layout',
-    pathMatch: 'full'
-  },
-  {
-    path: 'auth',
-    loadChildren: () => import('@blockframes/auth').then(m => m.AuthModule)
-  },
+  ...authRoutes,
   {
     path: 'layout',
     component: LayoutComponent,
@@ -61,40 +53,17 @@ export const deliveryRoutes: Routes = [
             redirectTo: 'delivery',
             pathMatch: 'full'
           },
-          {
-            path: 'account',
-            loadChildren: () => import('@blockframes/account').then(m => m.AccountModule)
-          },
-          {
-            path: 'organization',
-            loadChildren: () => import('@blockframes/organization').then(m => m.OrganizationModule)
-          },
+          ...commonRoutes,
           {
             path: 'delivery',
-            children: subDeliveryRoutes
+            children: subDeliveryRoutes,
+            data: { app: 'delivery' },
           }
         ]
       },
-      {
-        path: 'not-found',
-        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-      },
-      {
-        path: '**',
-        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-      }
+      ...errorRoutes
     ]
   }
 ];
 
-@NgModule({
-  imports: [
-    RouterModule.forRoot(deliveryRoutes, {
-      anchorScrolling: 'enabled',
-      onSameUrlNavigation: 'reload',
-      paramsInheritanceStrategy: 'always'
-    })
-  ],
-  exports: [RouterModule]
-})
 export class AppRoutingModule {}
