@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import {
   createOrganization,
   Organization,
+  OrganizationAction,
+  OrganizationMember,
+  OrganizationOperation,
   OrganizationMemberRequest
 } from './organization.model';
 import { OrganizationStore } from './organization.store';
@@ -15,13 +18,14 @@ import {
   PermissionsQuery
 } from '../permissions/+state';
 import firebase from 'firebase';
+import { mockActions, mockOperations, mockOrgMembers } from './organization.mock';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
   constructor(
     private store: OrganizationStore,
     private query: OrganizationQuery,
-    private permissionsQuery: PermissionsQuery,
+    // private permissionsQuery: PermissionsQuery,
     private authStore: AuthStore,
     private authService: AuthService,
     private db: FireQuery
@@ -103,15 +107,86 @@ export class OrganizationService {
   // TODO(#679): somehow the updateActiveMembers array don't filter correctly
   // the id out of the activeMembersArray.
   /* public async deleteActiveSigner(member: OrganizationMember) {
+  public async deleteActiveSigner(member: OrganizationMember, action: OrganizationActionOld) {
     const organizationId = this.query.getValue().org.id;
-    const actionData = await this.db.snapshot<OrganizationAction>(
+    const actionData = await this.db.snapshot<OrganizationActionOld>(
       `orgs/${organizationId}/actions/${action.id}`
     );
     const updatedActiveMembers = actionData.activeMembers.filter(
       _member => _member.uid !== member.uid
     );
     return this.db
-      .doc<OrganizationAction>(`orgs/${organizationId}/actions/${action.id}`)
+      .doc<OrganizationActionOld>(`orgs/${organizationId}/actions/${action.id}`)
       .update({ activeMembers: updatedActiveMembers });
   }*/
+  
+  //-------------------------------------------------
+  //            BLOCKCHAIN PART OF ORGS
+  //-------------------------------------------------
+
+  /** create a newOperation, or update it if it already exists */
+  private async upsertOperation(newOperation: OrganizationOperation) {
+    const { operations } = this.query.getValue().org // get every actions
+
+    // add the updated action to the action list
+    // we could not use `operations.push(newOperation)` direclty otherwise the operation will have been duplicated
+    const newOperations = [
+      ...operations.filter(currentOperation => currentOperation.id !== newOperation.id),// get all operations except the one we want to upsert
+      newOperation
+    ]
+    try {
+      // send tx to the org smart-contract and wait for result // TODO replace with the real implemntation : issue 676
+
+      // update the store
+      this.store.update(state => {
+        return {
+          ...state, // keep everything of the state
+          org: { ...state.org, operations: newOperations }, // update only the operations array
+        }
+      });
+    } catch(err) {
+      console.error('The transaction has failed :', err); // TODO better error handling : issue 671
+    }
+  }
+
+  updateOperationQuorum(id: string, newQuorum: number) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This operation doesn\'t exists');
+    this.upsertOperation({
+      ...operation,
+      quorum: newQuorum,
+    });
+  }
+
+  addOperationMember(id: string, newMember: OrganizationMember) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This operation doesn\'t exists');
+    
+    const memberExists = operation.members.some(member => member.uid === newMember.uid);
+    if (!!memberExists) throw new Error('This member is already a signer of this operation');
+    
+    this.upsertOperation({
+      ...operation,
+      members: [...operation.members, newMember],
+    });
+  }
+
+  removeOperationMember(id: string, memberToRemove: OrganizationMember) {
+    const operation = this.query.getOperationById(id);
+    if(!operation) throw new Error('This operation doesn\'t exists');
+    
+    const members = operation.members.filter(member => member.uid !== memberToRemove.uid);
+    const newOperation = { ...operation, members };
+    
+    this.upsertOperation(newOperation);
+  }
+
+  // TODO REMOVE THIS ASAP : issue 676
+  public instantiateMockData() {
+    
+    const oldOrgMembers = this.query.getValue().org.members;
+    const newOrgMembers = mockOrgMembers.concat(oldOrgMembers);
+
+    this.update({actions: mockActions, operations: mockOperations, members: newOrgMembers});
+  }
 }

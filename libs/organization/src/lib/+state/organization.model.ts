@@ -8,6 +8,23 @@ export interface OrganizationMemberRequest {
 export interface OrganizationMember extends OrganizationMemberRequest {
   uid: string;
   name?: string;
+  avatar?: string;
+}
+
+export interface OrganizationOperation {
+  id: string;
+  name: string;
+	quorum: number;
+	members: OrganizationMember[]
+}
+
+export interface OrganizationAction {
+  id: string,
+  opid: string,
+  name: string,
+  signers: OrganizationMember[],
+  isApproved: boolean,
+  approvalDate?: string,
 }
 
 export interface Organization {
@@ -21,16 +38,15 @@ export interface Organization {
   templateIds: string[];
   userIds: string[];
   members?: OrganizationMember[];
-  actions: OrganizationAction[]
+  operations?: OrganizationOperation[];
+  actions?: OrganizationAction[]
 }
 
-export interface OrganizationAction {
-  id: string;
-  actionName: string;
-  quorumMembers: number;
-  /** Array of uids from OrganizationMember. The u of uids stands for user not unique */
-  activeMembers: OrganizationMember[];
+export interface OrganizationForm {
+  name: string;
+  adress: string;
 }
+
 /**
  * A factory function that creates an Organization
  */

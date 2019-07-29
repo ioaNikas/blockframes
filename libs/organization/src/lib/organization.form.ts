@@ -1,36 +1,36 @@
 import { FormControl, FormArray } from '@angular/forms';
 import { FormEntity, FormField, FormList } from '@blockframes/utils';
-import { Organization, createOrganization, OrganizationAction, OrganizationMember } from './+state';
+import { Organization, createOrganization, OrganizationMember, OrganizationOperation } from './+state';
 
 interface OrganizationControl {
   name: FormControl;
   address: FormControl;
-  actions: FormList<OrganizationAction>;
+  operations: FormList<OrganizationOperation>;
 }
 
-interface OrganizatoinActionControl {
-  activeMembers: FormField<OrganizationMember[]>;
-  quorumMembers: FormControl;
+interface OrganizationOperationControl {
+  members: FormField<OrganizationMember[]>;
+  quorum: FormControl;
 }
 
-export class OrganizationActionForm extends FormEntity<
-  OrganizationAction,
-  OrganizatoinActionControl
+export class OrganizationOperationForm extends FormEntity<
+OrganizationOperation,
+  OrganizationOperationControl
 > {
-  constructor(action: OrganizationAction) {
+  constructor(operation: OrganizationOperation) {
     super({
-      activeMembers: new FormField<OrganizationMember[]>(action.activeMembers),
-      quorumMembers: new FormControl(action.quorumMembers)
+      members: new FormField<OrganizationMember[]>(operation.members),
+      quorum: new FormControl(operation.quorum)
     });
   }
   
   get activeMembers() {
-    return this.get('activeMembers');
+    return this.get('members');
   }
 
   removeMember(id: string) {
-    const activeMembers = this.value.activeMembers.filter(member => member.uid !== id);
-    this.patchValue({ activeMembers });
+    const members = this.value.members.filter(member => member.uid !== id);
+    this.patchValue({ members });
   }
 }
 
@@ -40,10 +40,10 @@ export class OrganizationForm extends FormEntity<Organization, OrganizationContr
     super({
       name: new FormControl(org.name),
       address: new FormControl(org.address),
-      actions: FormList.factory(org.actions, action => new OrganizationActionForm(action))
+      operations: FormList.factory(org.operations, operation => new OrganizationOperationForm(operation))
     });
   }
-  action(index: number): OrganizationActionForm {
-    return (<FormArray>this.get('actions')).at(index) as OrganizationActionForm;
+  action(index: number): OrganizationOperationForm {
+    return (<FormArray>this.get('operations')).at(index) as OrganizationOperationForm;
   }
 }

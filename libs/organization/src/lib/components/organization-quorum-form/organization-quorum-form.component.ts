@@ -1,6 +1,6 @@
 import { ControlContainer } from '@angular/forms';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { OrganizationActionForm } from '../../organization.form';
+import { OrganizationOperationForm } from '../../organization.form';
 
 @Component({
   selector: '[formGroup] activeMembers, organization-quorum-form',
@@ -15,7 +15,7 @@ export class OrganizationQuorumFormComponent {
   constructor(public controlContainer: ControlContainer) {
   }
 
-  public get control(): OrganizationActionForm {
-    return this.controlContainer.control as OrganizationActionForm;
+  public get control(): OrganizationOperationForm {
+    return this.controlContainer.control as OrganizationOperationForm;
   }
 }

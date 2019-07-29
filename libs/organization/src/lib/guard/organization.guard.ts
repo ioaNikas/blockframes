@@ -13,15 +13,15 @@ export const orgQuery = (orgId: string): Query<Organization> => ({
       path: `users/${id}`
     })),
     // TODO(#681): refactoring
-  actions: (organization: Organization) => ({
-    path: `orgs/${organization.id}/actions`,
-    // TODO(#681): remove activeMembers subscripton 
-    activeMembers: (action: OrganizationAction) => {
-      return action.activeMembers.map(id => ({
-        path: `users/${id}`
-      }))
-    }
-  })
+  // actions: (organization: Organization) => ({
+  //   path: `orgs/${organization.id}/actions`,
+  //   // TODO(#681): remove activeMembers subscripton 
+  //   activeMembers: (action: OrganizationAction) => {
+  //     return action.activeMembers.map(id => ({
+  //       path: `users/${id}`
+  //     }))
+  //   }
+  // })
 });
 
 @Injectable({ providedIn: 'root' })
