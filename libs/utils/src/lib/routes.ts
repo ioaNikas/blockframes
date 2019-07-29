@@ -5,12 +5,13 @@
 //  * and takes children routes as an argument.
 //  * @param children must be an array of Route objects. Usually, we use app specific routes for this param.
 //  */
+// // Find a way to use this function to build our routes => ISSUE#694
 // export function routeFactory(children: Route[], appName?: string) {
 //   const layout = {
 //     path: 'layout',
 //     component: LayoutComponent,
 //     canActivate: [AuthGuard],
-//     // canDeactivate: [AuthGuard], // TODO: Fix the bug we're getting when trying to logout => ISSUE#670
+//     canDeactivate: [AuthGuard],
 //     children: [
 //       {
 //         path: '',

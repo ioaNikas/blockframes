@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 
-import { AuthGuard } from '@blockframes/auth';
-import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
+// Components
 import { HomeComponent } from './home/home.component';
 
-export const mainRoutes: Routes = [
+// Guards
+import { AuthGuard } from '@blockframes/auth';
+import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
+
+// Routes
+export const authPath: Routes = [
   {
     path: '',
     redirectTo: 'layout',
@@ -16,7 +20,22 @@ export const mainRoutes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('@blockframes/auth').then(m => m.AuthModule)
+  }
+]
+
+export const errorPath: Routes = [
+  {
+    path: 'not-found',
+    loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
   },
+  {
+    path: '**',
+    loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
+  }
+];
+
+export const mainRoutes: Routes = [
+  ...authPath,
   {
     path: 'layout',
     component: LayoutComponent,
@@ -65,14 +84,7 @@ export const mainRoutes: Routes = [
           }
         ]
       },
-      {
-        path: 'not-found',
-        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-      },
-      {
-        path: '**',
-        loadChildren: () => import('@blockframes/ui').then(m => m.ErrorNotFoundModule)
-      }
+      ...errorPath
     ]
   }
 ];

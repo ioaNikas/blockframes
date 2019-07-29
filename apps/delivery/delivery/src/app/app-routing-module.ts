@@ -72,8 +72,7 @@ export const deliveryRoutes: Routes = [
           {
             path: 'delivery',
             children: subDeliveryRoutes
-          },
-
+          }
         ]
       },
       {
