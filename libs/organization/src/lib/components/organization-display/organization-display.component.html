@@ -6,8 +6,7 @@
         <img
           mat-card-avatar
           src="https://medias.unifrance.org/medias/22/212/185366/format_hd/the-jokers-films.png"
-          alt="Profile picture"
-        />
+          alt="Profile picture"/>
         <article class="information" fxLayout="column" fxLayoutAlign="start start">
           <div>
             <h2>{{ organization.name }}</h2>
@@ -15,7 +14,10 @@
           </div>
           <mat-divider [inset]="true"></mat-divider>
           <div fxLayout="column">
-            <span><b>Phone number:</b> {{ organizationInformations.phoneNumber }}</span>
+            <span *ngIf="organizationInformations.phoneNumber">
+              <b>Phone number:</b>
+              {{ organizationInformations.phoneNumber }}
+            </span>
             <span><b>Email:</b> info@{{ organization.name }}.com</span>
             <span><b>Address:</b> {{ organizationInformations.address }}</span>
           </div>
