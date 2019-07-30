@@ -13,15 +13,22 @@
     <div class="image" [ngStyle]="{ 'background-color': backgroundColor }">
       <img src="/assets/icons/keyIcon.svg">
     </div>
-    <div>
+    <div class="key-info">
       <h5>{{ keyObject.name }}</h5>
       <p>Lorem Ipsum</p>
-      <a mat-icon-button [href]="jsonKeystore">
-        <mat-icon class="material-icons-outlined">cloud_download</mat-icon>
-      </a>
-      <button mat-icon-button (click)="deleteKey.emit(keyObject)">
-        <mat-icon class="material-icons-outlined">delete</mat-icon>
-      </button>
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <ng-container *ngIf="!keyObject.isLinked && !keyObject.isMainKey">
+          <button mat-icon-button color="accent" (click)="linkKey.emit(keyObject)">
+            <mat-icon class="material-icons">cloud_upload</mat-icon>
+          </button>
+        </ng-container>
+        <a mat-icon-button [href]="jsonKeystore">
+          <mat-icon class="material-icons-outlined">cloud_download</mat-icon>
+        </a>
+        <button mat-icon-button (click)="deleteKey.emit(keyObject)">
+          <mat-icon class="material-icons-outlined">delete</mat-icon>
+        </button>
+      </div>
     </div>
   </article>
 </ng-template>

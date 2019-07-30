@@ -81,7 +81,7 @@ export class WalletSendTxTunnelComponent implements OnInit {
     try {
       this.isPending$.next(true);
       const signedMetaTx = await this.walletService.prepareMetaTx(this.activeKey);
-      this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx);
+      await this.walletService.sendSignedMetaTx(this.key.ensDomain, signedMetaTx); // await to ensure tx has been mined (tx failure will throw)
       this.isPending$.next(false);
     } catch(err) {
       console.warn('Ooops', err); // TODO better error handling issue#671

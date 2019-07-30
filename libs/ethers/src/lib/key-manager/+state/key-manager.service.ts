@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { KeyManagerStore, Key } from './key-manager.store';
-import { utils, Wallet as EthersWallet } from 'ethers';
+import { utils, Wallet as EthersWallet, getDefaultProvider, Contract } from 'ethers';
 import { KeyManagerQuery } from './key-manager.query';
+import { network } from '@env';
+import { ERC1077 } from '@blockframes/contracts';
 
 @Injectable({ providedIn: 'root' })
 export class KeyManagerService {
@@ -31,7 +33,7 @@ export class KeyManagerService {
     if (this.query.getKeyCountOfUser(ensDomain) === 0) {
       isMainKey = true;
     }
-    const key = {name: keyName, address: wallet.address, ensDomain, keyStore, isMainKey};
+    const key = {name: keyName, address: wallet.address, ensDomain, keyStore, isMainKey, isLinked: false};
     this.store.setLoading(false);
     return key;
   }
@@ -41,6 +43,7 @@ export class KeyManagerService {
     const wallet = EthersWallet.createRandom();
     return await this.encrypt(keyName, wallet, ensDomain, password);
   }
+  
   /** create / encrypt / from mnemonic
   * @param keyName the name of the new key
   * @param ensDomain the ens name of the new key owner
@@ -51,6 +54,7 @@ export class KeyManagerService {
     const privateKey = utils.HDNode.mnemonicToEntropy(mnemonic); // mnemonic is a 24 word phrase corresponding to private key !== BIP32/39 seed phrase
     return this.importFromPrivateKey(keyName, ensDomain, privateKey, encryptionPassword);
   }
+
   /** create / encrypt / from private key
   * @param keyName the name of the new key
   * @param ensDomain the ens name of the new key owner
@@ -61,18 +65,23 @@ export class KeyManagerService {
     const wallet = new EthersWallet(privateKey);
     return this.encrypt(keyName, wallet, ensDomain, encryptionPassword);
   }
-  /** store an encrypted key to the storage */
+
+  /**
+  * create or update a key into the vault
+  */
   public storeKey(key: Key) {
-    this.store.add(key);
+    this.store.upsert(key.address, key);
   }
 
-  importFromJsonFile(jsonString: string) {
+  async importFromJsonFile(jsonString: string) {
     const {address, ensDomain, keyStore} = JSON.parse(jsonString);
     let isMainKey = false;
     if (this.query.getKeyCountOfUser(ensDomain) === 0) {
       isMainKey = true;
     }
-    this.store.add({name, address, ensDomain, keyStore, isMainKey});
+    const erc1077 = new Contract(ensDomain, ERC1077.abi, getDefaultProvider(network));
+    const isLinked = await erc1077.keyExist(address);
+    this.store.add({name, address, ensDomain, keyStore, isMainKey, isLinked});
   }
 
   /** load key (retreive / decrypt, set into process memory) */

@@ -1,5 +1,4 @@
 import { ContractFunction } from 'ethers';
-import { FeedbackMessage } from '@blockframes/ui';
 
 export interface INgContract {
   [methods: string]: ContractFunction;
@@ -35,7 +34,6 @@ export interface SignedMetaTx extends MetaTx {
 }
 
 export interface LocalTx extends Tx {
-  message: FeedbackMessage;
   callback: (...args) => void;
 }
 

@@ -5,11 +5,11 @@ import { toASCII } from 'punycode';
 import { baseEnsDomain, network, factoryContract } from '@env';
 import { ERC1077 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
-import { KeyManagerService } from '../../key-manager/+state';
+import { KeyManagerService, Key } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
 import { MetaTx, SignedMetaTx, LocalTx } from '../../types';
 import { WalletQuery } from './wallet.query';
-import { getMockTx } from './wallet-known-tx';
+import { createDeleteKeyTx, createAddKeyTx } from './wallet-known-tx';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -122,9 +122,12 @@ export class WalletService {
     return new Contract(ensDomainOrAddress, ERC1077.abi, this.provider);
   }
 
-  public async setDeleteKeyTx(pubKey: string) {
-    this.setTx(getMockTx(() => console.log('Mock Tx callback !!!'))); // TODO use getDeleteKeyTx : issue#655
-    // TODO call key manager delete key to delete localy after the tx has been mined : issue#655
+  public async setDeleteKeyTx(erc1077Address: string, key: Key) {
+    this.setTx(createDeleteKeyTx(erc1077Address, key.address, () => this.keyManager.deleteKey(key)));
+  }
+
+  public async setLinkKeyTx(erc1077Address: string, key: Key) {
+    this.setTx(createAddKeyTx(erc1077Address, key.address, () => this.keyManager.storeKey({...key, isLinked: true})));
   }
 
   public setTx(tx: LocalTx) {
@@ -193,13 +196,17 @@ export class WalletService {
   }
 
   public async sendSignedMetaTx(ensDomain: string, signedMetaTx: SignedMetaTx, ...args: any[]) {
-    const txResponse = await this.relayer.send(await this.retreiveAddress(this.getNameFromENS(ensDomain)), signedMetaTx);
+    const txReceipt = await this.relayer.send(await this.retreiveAddress(this.getNameFromENS(ensDomain)), signedMetaTx);
+    if (txReceipt.status === 0) {
+      throw new Error(`The transaction ${txReceipt.transactionHash} has failed !`);
+    }
     this.query.getValue().tx.callback(...args); // execute tx callback (ex: delete local key)
-    return txResponse;
+    return txReceipt;
   }
 
   public async waitForTx(txHash: string) {
     this._requireProvider();
+    console.log('wait for :', txHash);
     return this.provider.waitForTransaction(txHash);
   }
 }

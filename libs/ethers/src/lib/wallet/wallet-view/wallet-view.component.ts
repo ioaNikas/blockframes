@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, OnInit, Component } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { WalletQuery, WalletService } from "../+state";
-import { Key } from "../../key-manager/+state";
+import { Key, KeyManagerService } from "../../key-manager/+state";
 import { Router } from "@angular/router";
 import { Wallet } from "../../types";
 
@@ -21,6 +21,7 @@ export class WalletViewComponent implements OnInit {
   constructor(
     public router: Router,
     public service: WalletService,
+    public keyService: KeyManagerService,
     public query: WalletQuery
   ) {}
 
@@ -30,7 +31,20 @@ export class WalletViewComponent implements OnInit {
   }
 
   async deleteKey(key: Key) {
-    await this.service.setDeleteKeyTx(key.address);
-    this.router.navigateByUrl('/layout/o/account/wallet/send');
+    if (key.isLinked || key.isMainKey) {
+      await this.service.setDeleteKeyTx(this.query.getValue().address, key);
+      this.router.navigateByUrl('/layout/o/account/wallet/send');
+    } else {
+      this.keyService.deleteKey(key);
+    }
+  }
+
+  async linkKey(key: Key) {
+    if (!key.isMainKey && !key.isLinked) {
+      await this.service.setLinkKeyTx(this.query.getValue().address, key);
+      this.router.navigateByUrl('/layout/o/account/wallet/send');
+    } else {
+      console.warn('This key is already linked !'); // TODO BETTER ERROR HANDLING : issue 671
+    }
   }
 }

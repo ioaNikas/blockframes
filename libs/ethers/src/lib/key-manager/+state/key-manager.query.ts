@@ -13,9 +13,20 @@ export class KeyManagerQuery extends QueryEntity<KeyState, Key> {
    * Return an Observable of all keys stored for the logged user,
    * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)
    */
-  selectAllKeysOfUser$(ensDomain: string) {
+  selectUserKeys$(ensDomain: string) {
     return this.selectAll().pipe(
       map(keys => keys.filter(key => key.ensDomain === ensDomain)),
+    );
+  }
+
+  /**
+   * Return an Observable of all keys stored for the logged user that are linked to its erc10777,
+   * i.e. all the keys that are able to send tx
+   * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)
+   */
+  selectUserLinkedKeys$(ensDomain: string) {
+    return this.selectAll().pipe(
+      map(keys => keys.filter(key => key.ensDomain === ensDomain && (key.isLinked || key.isMainKey))),
     );
   }
 
@@ -25,7 +36,7 @@ export class KeyManagerQuery extends QueryEntity<KeyState, Key> {
    * @param ensDomain the ENS domain name of the logged user (ex: `bob.blockframes.eth`)
    */
   async waitForFirstKeyOfUser(ensDomain: string) {
-    return await this.selectAllKeysOfUser$(ensDomain).pipe(
+    return await this.selectUserKeys$(ensDomain).pipe(
       filter(keys => !!keys && keys.length > 0),
       map(keys => keys[0]),
       first()
