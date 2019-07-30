@@ -9,7 +9,7 @@ import { KeyManagerService, Key } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
 import { MetaTx, SignedMetaTx, LocalTx } from '../../types';
 import { WalletQuery } from './wallet.query';
-import { getDeleteKeyTx, getAddKeyTx } from './wallet-known-tx';
+import { createDeleteKeyTx, createAddKeyTx } from './wallet-known-tx';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -123,11 +123,11 @@ export class WalletService {
   }
 
   public async setDeleteKeyTx(erc1077Address: string, key: Key) {
-    this.setTx(getDeleteKeyTx(erc1077Address, key.address, () => this.keyManager.deleteKey(key)));
+    this.setTx(createDeleteKeyTx(erc1077Address, key.address, () => this.keyManager.deleteKey(key)));
   }
 
   public async setLinkKeyTx(erc1077Address: string, key: Key) {
-    this.setTx(getAddKeyTx(erc1077Address, key.address, () => this.keyManager.storeKey({...key, isLinked: true})));
+    this.setTx(createAddKeyTx(erc1077Address, key.address, () => this.keyManager.storeKey({...key, isLinked: true})));
   }
 
   public setTx(tx: LocalTx) {

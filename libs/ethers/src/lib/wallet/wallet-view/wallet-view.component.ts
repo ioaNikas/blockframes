@@ -44,7 +44,7 @@ export class WalletViewComponent implements OnInit {
       await this.service.setLinkKeyTx(this.query.getValue().address, key);
       this.router.navigateByUrl('/layout/o/account/wallet/send');
     } else {
-      throw new Error('This key is already linked !');
+      console.warn('This key is already linked !'); // TODO BETTER ERROR HANDLING : issue 671
     }
   }
 }

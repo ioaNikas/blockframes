@@ -1,7 +1,7 @@
 import { LocalTx, Tx } from "../../types";
 
 /** Craft a transaction that will trigger the user ERC1077.deleteKey() function */
-export function getDeleteKeyTx(erc1077Address:string, pubKey: string, callback: (...args) => void): LocalTx {
+export function createDeleteKeyTx(erc1077Address:string, pubKey: string, callback: (...args) => void): LocalTx {
   const tx: Tx = {
     to: erc1077Address,
     value: '0x0',
@@ -13,7 +13,7 @@ export function getDeleteKeyTx(erc1077Address:string, pubKey: string, callback: 
 }
 
 /** Craft a transaction that will trigger the user ERC1077.addKey() function */
-export function getAddKeyTx(erc1077Address:string, pubKey: string, callback: (...args) => void): LocalTx {
+export function createAddKeyTx(erc1077Address:string, pubKey: string, callback: (...args) => void): LocalTx {
   const tx: Tx = {
     to: erc1077Address,
     value: '0x0',

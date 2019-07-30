@@ -43,6 +43,7 @@ export class KeyManagerService {
     const wallet = EthersWallet.createRandom();
     return await this.encrypt(keyName, wallet, ensDomain, password);
   }
+  
   /** create / encrypt / from mnemonic
   * @param keyName the name of the new key
   * @param ensDomain the ens name of the new key owner
@@ -53,6 +54,7 @@ export class KeyManagerService {
     const privateKey = utils.HDNode.mnemonicToEntropy(mnemonic); // mnemonic is a 24 word phrase corresponding to private key !== BIP32/39 seed phrase
     return this.importFromPrivateKey(keyName, ensDomain, privateKey, encryptionPassword);
   }
+
   /** create / encrypt / from private key
   * @param keyName the name of the new key
   * @param ensDomain the ens name of the new key owner
@@ -63,7 +65,9 @@ export class KeyManagerService {
     const wallet = new EthersWallet(privateKey);
     return this.encrypt(keyName, wallet, ensDomain, encryptionPassword);
   }
-  /** store an encrypted key to the storage,
+
+  /**
+  * store an encrypted key to the storage,
   * if the key doesn't exists in the storage it will be created
   * otherwise it will be simply updated
   */
