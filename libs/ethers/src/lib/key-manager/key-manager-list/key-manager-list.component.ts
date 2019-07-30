@@ -25,7 +25,7 @@ export class KeyManagerListComponent implements OnInit {
   ){}
 
   ngOnInit() {
-    this.keys$ = this.query.selectUsersKeys$(this.ensDomain);
-    this.linkedKeys$ = this.query.selectUsersLinkedKeys$(this.ensDomain);
+    this.keys$ = this.query.selectUserKeys$(this.ensDomain);
+    this.linkedKeys$ = this.query.selectUserLinkedKeys$(this.ensDomain);
   }
 }

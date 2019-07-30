@@ -67,9 +67,7 @@ export class KeyManagerService {
   }
 
   /**
-  * store an encrypted key to the storage,
-  * if the key doesn't exists in the storage it will be created
-  * otherwise it will be simply updated
+  * create or update a key into the vault
   */
   public storeKey(key: Key) {
     this.store.upsert(key.address, key);
