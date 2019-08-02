@@ -1,8 +1,9 @@
-import { init as SentryInit, captureException } from '@sentry/node';
+import { init as sentryInit, flush as sentryFlush, captureException } from '@sentry/node';
 import { sentryDsn } from '../environments/environment';
 
 if (sentryDsn) {
-  SentryInit({ dsn: sentryDsn });
+  console.info("using sentry:", sentryDsn, "to log errors");
+  sentryInit({ dsn: sentryDsn });
 }
 
 /**
@@ -14,13 +15,16 @@ if (sentryDsn) {
  * as of today (2019-07-02).
  */
 export function logErrors(f: any): any {
-  return (...args: any[]) => {
+  return async (...args: any[]) => {
     try {
-      return f(...args);
+      return await f(...args);
     } catch (err) {
       // Send the exception to sentry IF we have a configuration.
       if (sentryDsn) {
         captureException(err);
+        // the function runtime we are in might get killed immediately,
+        // flush events.
+        await sentryFlush();
       }
       throw err;
     }
