@@ -7,7 +7,7 @@
  */
 import * as functions from 'firebase-functions';
 
-export { factoryContract, backupBucket, relayer, appUrl } from '@env';
+export { factoryContract, backupBucket, relayer, appUrl, sentryDsn } from '@env';
 
 /**
  * Helper to work in local / remote dev mode:

@@ -1,5 +1,6 @@
 import { functions } from './internals/firebase';
-import * as backup from './backup';
+import { skipWhenRestoring } from './backup';
+import { logErrors } from './internals/sentry';
 import { Material } from './data/types';
 
 ///////////////////////////////////
@@ -12,21 +13,15 @@ import { Material } from './data/types';
  * Handles internal features such as skipping functions when we backup / restore the db.
  */
 export function onDocumentWrite(docPath: string, fn: Function) {
-  return functions.firestore
-    .document(docPath)
-    .onWrite(backup.skipWhenRestoring(fn))
+  return functions.firestore.document(docPath).onWrite(skipWhenRestoring(logErrors(fn)));
 }
 
 export function onDocumentDelete(docPath: string, fn: Function) {
-  return functions.firestore
-  .document(docPath)
-  .onDelete(backup.skipWhenRestoring(fn))
+  return functions.firestore.document(docPath).onDelete(skipWhenRestoring(logErrors(fn)));
 }
 
 export function onDocumentUpdate(docPath: string, fn: Function) {
-  return functions.firestore
-  .document(docPath)
-  .onUpdate(backup.skipWhenRestoring(fn));
+  return functions.firestore.document(docPath).onUpdate(skipWhenRestoring(logErrors(fn)));
 }
 
 export function onOrganizationDocumentUpdate(docPath: string, fn: Function) {
@@ -36,9 +31,7 @@ export function onOrganizationDocumentUpdate(docPath: string, fn: Function) {
 }
 
 export function onDocumentCreate(docPath: string, fn: Function) {
-  return functions.firestore
-  .document(docPath)
-  .onCreate(backup.skipWhenRestoring(fn));
+  return functions.firestore.document(docPath).onCreate(skipWhenRestoring(logErrors(fn)));
 }
 
 ////////////////////

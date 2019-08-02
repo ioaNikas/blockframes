@@ -6,7 +6,7 @@
  */
 import * as functions from 'firebase-functions';
 
-export { backupBucket, relayer, firebase, appUrl } from '@env';
+export { backupBucket, relayer, firebase, appUrl, sentryDsn } from '@env';
 
 export const sendgridAPIKey = functions.config().sendgrid.api_key;
 export const mnemonic = functions.config().relayer.mnemonic;

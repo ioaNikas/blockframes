@@ -1,13 +1,22 @@
-// import * as gcs from '@google-cloud/storage';
+import { mnemonic, relayer } from './environments/environment';
+import {
+  onDocumentCreate,
+  onDocumentDelete,
+  onDocumentUpdate,
+  onDocumentWrite,
+  onOrganizationDocumentUpdate
+} from './utils';
+import { functions } from './internals/firebase';
+import { onGenerateDeliveryPDFRequest } from './internals/pdf';
+import { logErrors } from './internals/sentry';
 import { hashToFirestore } from './generateHash';
 import { onIpHash } from './ipHash';
 import { onDeliveryUpdate } from './delivery';
-import { functions } from './internals/firebase';
 import {
   RelayerConfig,
   relayerDeployLogic,
   relayerRegisterENSLogic,
-  relayerSendLogic,
+  relayerSendLogic
 } from './relayer';
 import {
   deleteFirestoreDelivery,
@@ -24,9 +33,6 @@ import {
 import * as users from './users';
 import * as backup from './backup';
 import * as migrations from './migrations';
-import { onDocumentCreate, onDocumentDelete, onDocumentUpdate, onDocumentWrite, onOrganizationDocumentUpdate } from './utils';
-import { mnemonic, relayer } from './environments/environment';
-import { onGenerateDeliveryPDFRequest } from './internals/pdf';
 import { onInvitationWrite } from './invitation';
 import { onOrganizationCreate, onOrganizationDelete, onOrganizationUpdate } from './orgs';
 import { adminApp, onRequestAccessToAppWrite } from './admin';
@@ -43,54 +49,44 @@ export const onIpHashEvent = functions.pubsub.topic('eth-events.ipHash').onPubli
  * depending on the file path. Or use different storage buckets
  * (one per app maybe).
  */
-export const generateHash = functions.storage
-  .object()
-  .onFinalize(hashToFirestore);
+export const generateHash = functions.storage.object().onFinalize(hashToFirestore);
 
 /**
  * Trigger: when user creates an account.
  *
  * We create a corresponding document in `users/userID`.
  */
-export const onUserCreate = functions.auth
-  .user()
-  .onCreate(users.onUserCreate);
+export const onUserCreate = functions.auth.user().onCreate(logErrors(users.onUserCreate));
 
 /**
  * Trigger: REST call to find a list of users by email.
  */
-export const findUserByMail = functions.https
-  .onCall(users.findUserByMail);
+export const findUserByMail = functions.https.onCall(logErrors(users.findUserByMail));
 
 /**
  * Trigger: REST call to find a list of organizations by name.
  */
-export const findOrgByName = functions.https
-  .onCall(users.findOrgByName);
+export const findOrgByName = functions.https.onCall(logErrors(users.findOrgByName));
 
 /**
  * Trigger: REST call to get or create a user.
  */
-export const getOrCreateUserByMail = functions.https
-  .onCall(users.getOrCreateUserByMail);
+export const getOrCreateUserByMail = functions.https.onCall(logErrors(users.getOrCreateUserByMail));
 
 /**
  * Trigger: REST call to backup firestore
  */
-export const backupFirestore = functions.https
-  .onRequest(backup.freeze);
+export const backupFirestore = functions.https.onRequest(backup.freeze);
 
 /**
  * Trigger: REST call to restore firestore
  */
-export const restoreFirestore = functions.https
-  .onRequest(backup.restore);
+export const restoreFirestore = functions.https.onRequest(backup.restore);
 
 /**
  * Trigger: REST call to migrate the database to V2
  */
-export const updateToV2 = functions.https
-  .onRequest(migrations.updateToV2);
+export const updateToV2 = functions.https.onRequest(migrations.updateToV2);
 
 /**
  * Trigger: REST call to the /admin app
@@ -102,8 +98,7 @@ export const updateToV2 = functions.https
  *    Organization cannot access applications until they requested it and
  *    a cascade8 administrator accept their request.
  */
-export const admin = functions.https
-  .onRequest(adminApp);
+export const admin = functions.https.onRequest(adminApp);
 
 /**
  * Trigger: when signature (`orgId`) is added to or removed from `validated[]`
@@ -157,10 +152,7 @@ export const onInvitationUpdateEvent = onDocumentWrite(
 /**
  * Trigger: when an organization requests access to apps
  */
-export const onAccessToApp= onDocumentWrite(
-  'app-requests/{orgId}',
-  onRequestAccessToAppWrite
-);
+export const onAccessToApp = onDocumentWrite('app-requests/{orgId}', onRequestAccessToAppWrite);
 
 //--------------------------------
 //       Orgs Management        //
@@ -169,15 +161,13 @@ export const onAccessToApp= onDocumentWrite(
 /**
  * Trigger: when an organization is created
  */
-export const onOrganizationCreateEvent = onDocumentCreate(
-  'orgs/{orgID}',
-  onOrganizationCreate
-);
+export const onOrganizationCreateEvent = onDocumentCreate('orgs/{orgID}', onOrganizationCreate);
 
 /**
  * Trigger: when an organization is updated
  */
-export const onOrganizationUpdateEvent = onOrganizationDocumentUpdate( // using `onOrganizationDocumentUpdate` instead of `onDocument` for an increase timout of 540s
+export const onOrganizationUpdateEvent = onOrganizationDocumentUpdate(
+  // using `onOrganizationDocumentUpdate` instead of `onDocument` for an increase timeout of 540s
   'orgs/{orgID}',
   onOrganizationUpdate
 );
@@ -185,11 +175,7 @@ export const onOrganizationUpdateEvent = onOrganizationDocumentUpdate( // using 
 /**
  * Trigger: when an organization is removed
  */
-export const onOrganizationDeleteEvent = onDocumentDelete(
-  'orgs/{orgID}',
-  onOrganizationDelete
-);
-
+export const onOrganizationDeleteEvent = onDocumentDelete('orgs/{orgID}', onOrganizationDelete);
 
 //--------------------------------
 //        GENERATE PDF          //
@@ -198,8 +184,9 @@ export const onOrganizationDeleteEvent = onDocumentDelete(
 /**
  * Trigger: REST call to generate a delivery PDF
  */
-export const generateDeliveryPDF = functions.https.onRequest(onGenerateDeliveryPDFRequest);
-
+export const generateDeliveryPDF = functions.https.onRequest(
+  logErrors(onGenerateDeliveryPDFRequest)
+);
 
 //--------------------------------
 //            RELAYER           //
@@ -210,14 +197,17 @@ const RELAYER_CONFIG: RelayerConfig = {
   mnemonic
 };
 
-export const relayerDeploy = functions.runWith({timeoutSeconds: 540}).https
-  .onCall((data, context) => relayerDeployLogic(data, RELAYER_CONFIG));
+export const relayerDeploy = functions
+  .runWith({ timeoutSeconds: 540 })
+  .https.onCall(data => logErrors(relayerDeployLogic(data, RELAYER_CONFIG)));
 
-export const relayerRegister = functions.runWith({timeoutSeconds: 540}).https
-  .onCall((data, context) => relayerRegisterENSLogic(data, RELAYER_CONFIG));
+export const relayerRegister = functions
+  .runWith({ timeoutSeconds: 540 })
+  .https.onCall(data => logErrors(relayerRegisterENSLogic(data, RELAYER_CONFIG)));
 
-export const relayerSend = functions.https
-  .onCall((data, context) => relayerSendLogic(data, RELAYER_CONFIG));
+export const relayerSend = functions.https.onCall(data =>
+  logErrors(relayerSendLogic(data, RELAYER_CONFIG))
+);
 
 //--------------------------------
 //   PROPER FIRESTORE DELETION  //
@@ -227,6 +217,9 @@ export const deleteMovie = onDocumentDelete('movies/{movieId}', deleteFirestoreM
 
 export const deleteDelivery = onDocumentDelete('deliveries/{deliveryId}', deleteFirestoreDelivery);
 
-export const deleteMaterial = onDocumentDelete('deliveries/{deliveryId}/materials/{materialId}', deleteFirestoreMaterial);
+export const deleteMaterial = onDocumentDelete(
+  'deliveries/{deliveryId}/materials/{materialId}',
+  deleteFirestoreMaterial
+);
 
 export const deleteTemplate = onDocumentDelete('templates/{templateId}', deleteFirestoreTemplate);
