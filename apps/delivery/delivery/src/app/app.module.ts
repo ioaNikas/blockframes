@@ -5,9 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
-// Analytics
-import { SentryModule } from 'libs/utils/src/lib/sentry.module';
-
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
@@ -106,10 +103,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
-    environment.production ? [] : [AkitaNgDevtools.forRoot()],
-
-    // Analytics
-    SentryModule
+    environment.production ? [] : [AkitaNgDevtools.forRoot()]
   ],
   providers: [],
   bootstrap: [AppComponent]
