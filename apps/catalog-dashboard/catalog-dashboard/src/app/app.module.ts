@@ -5,11 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
-
 // Akita
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
+
+// Analytics
+import { AnalyticsModule } from '@blockframes/utils';
 
 // Components
 import { AppComponent } from './app.component';
@@ -97,6 +99,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(environment.persistenceSettings),
     AngularFireFunctionsModule,
+
+    AnalyticsModule,
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),

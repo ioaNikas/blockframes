@@ -10,6 +10,9 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 
+// Analytics
+import { AnalyticsModule } from '@blockframes/utils';
+
 // Components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
@@ -96,6 +99,8 @@ import { AppGridComponent } from './app-grid/app-grid.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(environment.persistenceSettings),
     AngularFireFunctionsModule,
+
+    AnalyticsModule,
 
     // Akita
     AkitaNgRouterStoreModule.forRoot(),

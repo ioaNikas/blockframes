@@ -1,9 +1,17 @@
 // Angular
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
 import { RouterModule } from '@angular/router';
+// Akita
+// import { MatButtonModule } from '@angular/material/button';
+// Akita
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { environment } from '../environments/environment';
+// Analytics
+import { AnalyticsModule, UtilsModule } from '@blockframes/utils';
 // Material
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -20,18 +28,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-// import { MatButtonModule } from '@angular/material/button';
-// Akita
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
-import { environment } from '../environments/environment';
-
-// Modules
-
-
 // Angular Fire
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-
 // Components
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -52,16 +50,16 @@ import { ToolbarModule } from '@blockframes/ui';
 import { MovieModule } from '@blockframes/movie';
 import { AuthModule } from '@blockframes/auth';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
-import { FlexModule } from '@angular/flex-layout';
 import { AngularFullpageModule } from '@fullpage/angular-fullpage';
 import { FinancingMovieCardHorizontalComponent } from './explorer/movie-card-horizontal/movie-card-horizontal.component';
 import { registerLocaleData } from '@angular/common';
 import { FinancingExplorerCompareComponent } from './explorer/compare/compare.component';
-import { UtilsModule } from '@blockframes/utils';
 import { AccountModule, ProfileModule } from '@blockframes/account';
-import { WalletModule, KeyManagerModule } from '@blockframes/ethers';
+import { KeyManagerModule, WalletModule } from '@blockframes/ethers';
 
-registerLocaleData(localeFr)
+// Modules
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -78,7 +76,7 @@ registerLocaleData(localeFr)
     FinancingExplorerNavbarComponent,
     FinancingExplorerMovieHomeComponent,
     FinancingExplorerProfileComponent,
-    FinancingExplorerCompareComponent,
+    FinancingExplorerCompareComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +88,7 @@ registerLocaleData(localeFr)
     ToolbarModule,
     AccountModule,
     ProfileModule,
+    FinancingRangeSliderModule,
     UtilsModule,
     WalletModule,
     KeyManagerModule,
@@ -109,22 +108,23 @@ registerLocaleData(localeFr)
     MatExpansionModule,
     MatBadgeModule,
     MatMenuModule,
+    MatProgressBarModule,
+    FinancingRangeSliderModule,
+    // Analytics
+    AnalyticsModule,
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
     environment.production ? [] : [AkitaNgDevtools.forRoot()],
     AngularFireFunctionsModule,
     AngularFirestoreModule.enablePersistence(environment.persistenceSettings),
-    FlexModule,
-    // Fullpage (homepage)
-    AngularFullpageModule,
-    MatProgressBarModule,
-    FinancingRangeSliderModule,
 
+    // Fullpage (homepage)
+    AngularFullpageModule
   ],
   providers: [{
-      provide: LOCALE_ID,
-      useValue: 'fr-FR'
-    },
+    provide: LOCALE_ID,
+    useValue: 'fr-FR'
+  }
   ],
   bootstrap: [AppComponent]
 })

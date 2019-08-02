@@ -26,7 +26,7 @@ import { OrganizationModule } from '@blockframes/organization';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LayoutComponent } from './layout/layout.component';
-import { UtilsModule } from '@blockframes/utils';
+import { AnalyticsModule, UtilsModule } from '@blockframes/utils';
 import { AccountModule, ProfileModule } from '@blockframes/account';
 
 @NgModule({
@@ -56,6 +56,7 @@ import { AccountModule, ProfileModule } from '@blockframes/account';
     MatToolbarModule,
     MatListModule,
     MatIconModule,
+    AnalyticsModule,
     // Akita
     AkitaNgRouterStoreModule.forRoot(),
     environment.production ? [] : [AkitaNgDevtools.forRoot()],

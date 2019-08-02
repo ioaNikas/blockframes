@@ -9,7 +9,7 @@ export const persistenceSettings = {
 // Analytics
 // =========
 
-export const sentryDsn = null;
+export const sentryDsn = undefined;
 
 // Firebase
 // ========
