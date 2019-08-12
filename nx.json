@@ -79,6 +79,9 @@
     },
     "catalog-marketplace": {
       "tags": []
+    },
+    "catalog": {
+      "tags": ["catalog"]
     }
   }
 }
