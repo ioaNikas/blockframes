@@ -29,11 +29,7 @@
       <span>File with {{ sheets.length }} sheets found!</span>
     </ng-container>
     <ng-template #fileUpload>
-      <file-upload accept="['.xls', '.xlsx', '.ods', '.csv']" [types]="[
-          'application/vnd.ms-excel',
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          'application/vnd.oasis.opendocument.spreadsheet',
-          'text/csv']" (uploaded)="importSpreadsheet($event)"></file-upload>
+      <file-upload [accept]="allowedExtensions" [types]="allowedTypes" (uploaded)="importSpreadsheet($event)"></file-upload>
     </ng-template>
   </section>
 
@@ -49,8 +45,8 @@
           <mat-icon>open_in_new</mat-icon>
         </button>
       </ng-container>
-      <button mat-raised-button color="primary" matStepperNext (click)="next()" [disabled]="sheets.length === 0">Import
-        your doc
+      <button mat-raised-button color="primary" matStepperNext (click)="next()" [disabled]="sheets.length === 0">
+        <span>Import your doc</span>
         <mat-icon>arrow_downward</mat-icon></button>
     </section>
   </section>

@@ -22,6 +22,13 @@ export class ImportSpreadsheetComponent {
   @Output() importEvent = new EventEmitter<{ sheet: SheetTab, fileType: string }>();
   public sheets: SheetTab[] = [];
   public fileType = new FormControl();
+  public allowedExtensions = ['.xls', '.xlsx', '.ods', '.csv'];
+  public allowedTypes = [
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.oasis.opendocument.spreadsheet',
+    'text/csv'
+  ];
 
   constructor(
     private dialog: MatDialog,
