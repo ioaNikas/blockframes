@@ -4,12 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
+import { MovieEmptyComponent } from '@blockframes/movie/movie/components/movie-empty/movie-empty.component';
+import { CatalogDashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
+import { CatalogMovieEditableComponent } from './pages/movie-editable/movie-editable.component';
 
 // Guards
 import { AuthGuard } from '@blockframes/auth';
-import { MovieActiveGuard } from '@blockframes/movie';
+import { MovieActiveGuard, MovieListComponent, MovieListGuard } from '@blockframes/movie';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
-import { MovieEmptyComponent } from '@blockframes/movie/movie/components/movie-empty/movie-empty.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'layout', pathMatch: 'full' },
@@ -61,14 +63,31 @@ export const routes: Routes = [
           },
           {
             path: 'catalog',
-            loadChildren: () => import('./pages/dashboard-home/dashboard-home.module').then(m => m.DashboardHomeModule)
+            children: [
+              
+                { path: '', redirectTo: 'home', pathMatch: 'full' },
+                {
+                  path: 'home',
+                  component: CatalogDashboardHomeComponent
+                },
+                {
+                  path: 'list',
+                  component: MovieListComponent,
+                  canActivate: [MovieListGuard],
+                  canDeactivate: [MovieListGuard],
+                },
+                {
+                  path: ':movieId',
+                  canActivate: [MovieActiveGuard],
+                  canDeactivate: [MovieActiveGuard],
+                  children: [
+                    { path: '', redirectTo: 'edit', pathMatch: 'full' },
+                    { path: 'edit', component: CatalogMovieEditableComponent }
+                  ]
+                }
+              
+            ]
           },
-          /*{
-            path: ':movieId',
-            canActivate: [MovieActiveGuard],
-            canDeactivate: [MovieActiveGuard],
-            loadChildren: () => import('@blockframes/material').then(m => m.DeliveryModule)
-          }*/
         ]
       },
     ]

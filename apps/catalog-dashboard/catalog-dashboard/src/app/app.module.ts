@@ -15,6 +15,8 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing-module';
 import { LayoutComponent } from './layout/layout.component';
+import { CatalogDashboardHomeComponent } from './pages/dashboard-home/dashboard-home.component';
+import { CatalogMovieEditableComponent } from './pages/movie-editable/movie-editable.component';
 
 // Angular Fire
 import { AngularFireModule } from '@angular/fire';
@@ -23,7 +25,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 // Libraries
 import { AuthModule } from '@blockframes/auth';
-import { UiFormModule, UploadModule, ToolbarModule } from '@blockframes/ui';
+import { UiFormModule, UploadModule, ToolbarModule, EditableSidenavModule } from '@blockframes/ui';
 import { MovieModule } from '@blockframes/movie';
 import { OrganizationModule } from '@blockframes/organization';
 import { ProfileModule } from '@blockframes/account';
@@ -50,9 +52,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MovieFormModule } from '@blockframes/movie/movie/form/form.module';
 
 @NgModule({
-  declarations: [AppComponent, LayoutComponent],
+  declarations: [
+    AppComponent,
+    LayoutComponent,
+    CatalogDashboardHomeComponent,
+    CatalogMovieEditableComponent,
+  ],
   imports: [
     // Angular
     BrowserModule,
@@ -60,6 +69,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AppRoutingModule,
     FlexLayoutModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
 
     // Material
     MatSnackBarModule,
@@ -87,11 +98,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     OrganizationModule,
     ToolbarModule,
     MovieModule,
+    MovieFormModule,
     AccountModule,
     ProfileModule,
     WalletModule,
     KeyManagerModule,
     NotificationModule,
+    EditableSidenavModule,
 
     // Firebase
     AngularFireModule.initializeApp(environment.firebase),
