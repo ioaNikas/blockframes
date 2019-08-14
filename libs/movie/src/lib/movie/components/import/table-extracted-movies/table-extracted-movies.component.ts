@@ -83,7 +83,7 @@ export class TableExtractedMoviesComponent implements OnInit {
    */
   private async addMovie(importState: MovieImportState) : Promise<boolean> {
     const data = this.rows.data;
-    await this.movieService.addMovie(importState.movie.main.title.original, importState.movie);
+    await this.movieService.addMovie(importState.movie);
     importState.errors.push({
       type: 'error',
       field: 'main.internalRef',

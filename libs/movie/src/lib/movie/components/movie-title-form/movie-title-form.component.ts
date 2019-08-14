@@ -37,7 +37,7 @@ export class MovieTitleFormComponent implements OnInit {
     try {
       const { title } = this.titleForm.value;
       this.snackBar.open('Movie created! Redirecting..', 'close', { duration: 3000 });
-      const movie = await this.service.addMovie(title);
+      const movie = await this.service.addMovie({ main: { title: { original: title } } });
 
       this.router.navigate([`/layout/o/home/${movie.id}/edit`]);
       this.dialogRef.close();
