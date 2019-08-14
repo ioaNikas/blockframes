@@ -103,6 +103,10 @@ import { MoviePickerComponent } from '@blockframes/movie/movie/components/movie-
     { provide: FirestoreSettingsToken, useValue: {} },// TODO: Remove when @angular/fire is updated
   ],
   entryComponents: [MovieTitleFormComponent],
-  exports: [MovieTitleFormComponent, MoviePickerComponent],
+  exports: [
+    MovieTitleFormComponent,
+    MoviePickerComponent,
+    MovieListComponent
+  ],
 })
 export class MovieModule {}

@@ -1,0 +1,56 @@
+<editable-sidenav (closed)="opened = false" [opened]="opened" (saved)="update()">
+  <ng-container content>
+    <section>
+      <span>Here goes display components related to main movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('main')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+    <section>
+      <span>Here goes display components related to promotionalDescription movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('promotionalDescription')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+    <section>
+      <span>Here goes display components related to salesAgentDeal movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('salesAgentDeal')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+    <section>
+      <span>Here goes display components related to salesCast movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('salesCast')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+    <section>
+      <span>Here goes display components related to salesInfo movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('salesInfo')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+    <section>
+      <span>Here goes display components related to versionInfo movie section (@see #587)</span>
+      <button mat-icon-button (click)="openSidenav('versionInfo')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </section>
+  </ng-container>
+  <ng-container sidenav [ngSwitch]="editContent">
+    <form [formGroup]="form">
+      <movie-form-main formGroupName="main" *ngSwitchCase="'main'"></movie-form-main>
+      <movie-form-promotional-description formGroupName="promotionalDescription"
+        *ngSwitchCase="'promotionalDescription'"></movie-form-promotional-description>
+      <movie-form-salesdeal formGroupName="salesAgentDeal" *ngSwitchCase="'salesAgentDeal'"></movie-form-salesdeal>
+      <movie-form-sales-cast formGroupName="salesCast" *ngSwitchCase="'salesCast'"></movie-form-sales-cast>
+      <movie-form-sales-info formGroupName="salesInfo" *ngSwitchCase="'salesInfo'"></movie-form-sales-info>
+      <movie-form-version-info formGroupName="versionInfo" *ngSwitchCase="'versionInfo'"></movie-form-version-info>
+      <section class="movie-card-actions">
+        <button mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+        <button testId="saveMovie" class="save-btn" mat-raised-button (click)="submit()" type="submit">Save movie
+          <mat-icon>save</mat-icon></button>
+      </section>
+    </form>
+  </ng-container>
+</editable-sidenav>

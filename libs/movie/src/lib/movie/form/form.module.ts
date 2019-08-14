@@ -70,7 +70,13 @@ import { MovieFormSalesAgentDealComponent } from './sales-agent-deal/sales-agent
     MovieFormSalesAgentDealComponent,
   ],
   exports: [
-    MovieFormRootComponent
+    MovieFormRootComponent,
+    MovieFormMainComponent,
+    MovieFormPromotionalDescriptionComponent,
+    MovieFormSalesAgentDealComponent,
+    MovieFormSalesCastComponent,
+    MovieFormSalesInfoComponent,
+    MovieFormVersionInfoComponent
   ]
 })
 export class MovieFormModule {}

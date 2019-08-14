@@ -25,8 +25,7 @@ export class MovieFormRootComponent implements OnInit, OnDestroy {
    
 
   ngOnInit() {
-    // @todo #643 => navigation arrows , not mat-tab
-    // @see https://projects.invisionapp.com/d/main#/console/17971669/374982976/preview
+    // @todo #587 is this component still usefull since each app will have this component?
 
     this.form = new MovieForm(this.query.getActive());
 
