@@ -90,12 +90,6 @@ export class DeliveryService {
     });
   }
 
-  /** Changes material 'delivered' property value to true or false when triggered */
-  public toggleApproved(materialId: string, approved: boolean) {
-    const movieId = this.movieQuery.getActiveId();
-    return this.db.doc<Material>(`movies/${movieId}/materials/${materialId}`).update({ approved });
-  }
-
   /** Update the property state of movie's materials */
   public updateMaterialState(materials: Material[], state: string) {
     const batch = this.db.firestore.batch();
@@ -224,7 +218,7 @@ export class DeliveryService {
 
     // We also set the concerned materials .step to an empty string
     const batch = this.db.firestore.batch();
-    const materials = this.materialQuery.getAll().filter(material => material.stepId === step.id);
+    const materials = this.materialQuery.getAll().filter(material => material.step.id === step.id);
     materials.forEach(material => {
       const doc = this.db.doc(`deliveries/${delivery.id}/materials/${material.id}`);
       return batch.update(doc.ref, { step: '' });
