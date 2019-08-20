@@ -21,6 +21,7 @@ import { DeliveryInformationsDatesFormComponent } from './components/delivery-in
 import { DeliveryDisplayComponent } from './components/delivery-display/delivery-display.component';
 import { DeliveryMaterialFormComponent } from './components/delivery-material-form/delivery-material-form.component';
 import { DeliveryInformationsStepsFormComponent } from './components/delivery-informations-steps-form/delivery-informations-steps-form.component';
+import { DeliveryInformationsStepsRepertoryComponent } from './components/delivery-informations-steps-repertory/delivery-informations-steps-repertory.component';
 
 // Pages
 import { MovieMaterialsViewComponent } from './pages/movie-materials-view/movie-materials-view.component';
@@ -83,7 +84,6 @@ import { DeliveryAddSpecificDeliveryListPickerComponent } from './pages/delivery
 import { DeliveryAddCompleteComponent } from './pages/delivery-add-complete/delivery-add-complete.component';
 import { DeliveryStatusesComponent } from './components/delivery-statuses/delivery-statuses.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { DeliveryInformationsStepsRepertoryComponent } from './components/delivery-informations-steps-repertory/delivery-informations-steps-repertory.component';
 
 const routes: Routes = [
   {
@@ -241,8 +241,7 @@ const routes: Routes = [
     DeliveryMaterialFormComponent,
     DeliveryInformationsStepsFormComponent,
     DeliveryInformationsStepsRepertoryComponent,
-    DeliveryStatusesComponent,
-    DeliveryMaterialFormComponent
+    DeliveryStatusesComponent
   ],
   imports: [
     CommonModule,
