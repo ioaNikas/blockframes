@@ -2,7 +2,7 @@ import { Stakeholder } from '@blockframes/movie';
 import { firestore } from 'firebase/app';
 type Timestamp = firestore.Timestamp;
 
-interface AbstractDelivery {
+export interface AbstractDelivery {
   id: string;
   movieId: string;
   validated: string[]; // Stakeholder.id[];
@@ -10,7 +10,7 @@ interface AbstractDelivery {
   stakeholders: Stakeholder[];
   steps: Step[] | StepDB[];
   dueDate?: Date | Timestamp;
-  state: State;
+  status: Status;
   isPaid: boolean;
   mustChargeMaterials?: boolean;
   mustBeSigned?: boolean;
@@ -45,19 +45,19 @@ export interface StepDB extends AbstractStep {
   date: Timestamp;
 }
 
-export enum State {
-  pending = 'pending',
-  available = 'available',
-  delivered = 'delivered',
-  accepted = 'accepted',
-  refused = 'refused'
+export const enum Status {
+  negociation = 'Delivery in negociation',
+  pending = 'Materials pending',
+  noa = 'NOA',
+  nod = 'NOD',
+  accepted = 'Materials accepted'
 }
 
 export function createDelivery(params: Partial<Delivery>) {
   return {
     validated: [],
     steps: [],
-    state: State.pending,
+    status: Status.pending,
     isPaid: false,
     _type: 'deliveries',
     mustChargeMaterials: params.mustChargeMaterials || false,
