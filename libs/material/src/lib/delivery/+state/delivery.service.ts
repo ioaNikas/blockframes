@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DeliveryQuery } from './delivery.query';
 import { Material } from '../../material/+state/material.model';
-import {
-  createDelivery,
-  Delivery,
-  DeliveryDB,
-  deliveryStatuses,
-  State,
-  Step
-} from './delivery.model';
+import { createDelivery, Delivery, DeliveryDB, deliveryStatuses, Step } from './delivery.model';
 import {
   createDeliveryStakeholder,
   Movie,
@@ -324,64 +317,20 @@ export class DeliveryService {
     const deletedSteps = oldSteps.filter(
       oldStep => !stepsWithId.some(newStep => newStep.id === oldStep.id)
     );
+
     // Remove stepId from the materials according to this array
     this.removeMaterialsStepId(deletedSteps, batch);
 
     return batch.update(deliveryDocRef, { steps: stepsWithId });
   }
 
-  /** Add step in array steps of delivery */
-  public createStep(step: Step): Promise<any> {
-    // TODO(issue#773): this should happen in a transaction:
-    //  we should load the array of steps and update it in the same transaction,
-    //  a race condition might erase a step.
-    const delivery = this.query.getActive();
-    step.id = this.db.createId();
-    const steps = [...delivery.steps, step];
-    return this.deliveryDoc(delivery.id).update({ steps: steps.map(dateObjectsToTimestamp) });
-  }
-
-  /** Update step in array steps of delivery */
-  public updateStep(step: Step, form: Step): Promise<any> {
-    // TODO(issue#773): this should happen in a transaction, same as createStep
-
-    const delivery = this.query.getActive();
-    const steps = [...delivery.steps];
-    const index = steps.indexOf(step);
-    steps.splice(index, 1, { ...step, ...form });
-
-    return this.deliveryDoc(delivery.id).update({ steps: steps.map(dateObjectsToTimestamp) });
-  }
-
-  /** Remove step in array steps of delivery */
-  public removeStep(step: Step): Promise<any> {
-    // TODO(issue#773): this should happen in a transaction, same as createStep
-    const delivery = this.query.getActive();
-    const steps = [...delivery.steps];
-    const index = steps.indexOf(step);
-    steps.splice(index, 1);
-
-    const batch = this.db.firestore.batch();
-    batch.update(this.deliveryDoc(delivery.id).ref, { steps });
-
-    // We also set the concerned materials .step to an empty string
-    const materials = this.materialQuery.getAll().filter(material => material.stepId === step.id);
-    materials.forEach(material => {
-      return batch.update(this.materialDoc(delivery.id, material.id).ref, { step: '' });
-    });
-
-    return batch.commit();
-  }
-
   /** Remove stepId of materials of delivery for an array of steps */
   private removeMaterialsStepId(steps: Step[], batch: firebase.firestore.WriteBatch) {
-    // TODO : Use a transaction to make sure we don't lose data: issue#773
+    // TODO(issue#773): Use a transaction to make sure we don't lose data:
     const deliveryId = this.query.getActiveId();
-
     // We also set the concerned materials stepId to an empty string
     steps.forEach(step => {
       const materials = this.materialQuery.getAll().filter(material => material.stepId === step.id);
-
       materials.forEach(material => {
         batch.update(this.materialDoc(deliveryId, material.id).ref, { stepId: '' });
       });
