@@ -141,8 +141,8 @@ export class DeliveryService {
 
       // Update the movie deliveryIds
       const nextDeliveryIds = [...deliveryIds, delivery.id];
-      tx.update(movieDoc.ref, { deliveryIds: nextDeliveryIds });
-    });
+      tx.update(movieDoc.ref, {deliveryIds: nextDeliveryIds});
+    })
 
     return id;
   }
@@ -169,15 +169,15 @@ export class DeliveryService {
       await this.permissionsService.createDocAndPermissions(delivery, organization, tx);
 
       // Copy movie materials to the delivery
-      this.copyMaterials(delivery, movie);
+      this.copyMaterials(delivery, movie)
 
       // Create the stakeholder in the sub-collection
       await this.shService.addStakeholder(delivery, organization.id, true, tx);
 
       // Update the movie deliveryIds
       const nextDeliveryIds = [...deliveryIds, delivery.id];
-      tx.update(movieDoc.ref, { deliveryIds: nextDeliveryIds });
-    });
+      tx.update(movieDoc.ref, {deliveryIds: nextDeliveryIds});
+    })
 
     return id;
   }
@@ -254,7 +254,7 @@ export class DeliveryService {
     }
   }
 
-  /** Create a transaction to copy the template/movie materials into the delivery materials */
+  /** Create a transaction to copy the template/movie materials into the movie materials */
   public async copyMaterials(delivery: Delivery, document: BFDoc) {
     const materials = await this.db.snapshot<Material[]>(
       `${document._type}/${document.id}/materials`
@@ -262,10 +262,11 @@ export class DeliveryService {
 
     return this.db.firestore.runTransaction(async (tx: firebase.firestore.Transaction) => {
       const promises = materials.map(material => {
+        const id = this.db.createId();
         const materialRef = this.db.doc<Material>(
-          `deliveries/${delivery.id}/materials/${material.id}`
+          `deliveries/${delivery.id}/materials/${id}`
         ).ref;
-        return tx.set(materialRef, { ...material, state: '', stepId: '' });
+        return tx.set(materialRef, { ...material, id, state: State.pending });
       });
 
       return Promise.all(promises);
