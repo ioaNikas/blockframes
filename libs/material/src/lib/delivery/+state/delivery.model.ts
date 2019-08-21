@@ -10,7 +10,7 @@ export interface AbstractDelivery {
   stakeholders: Stakeholder[];
   steps: Step[] | StepDB[];
   dueDate?: Date | Timestamp;
-  status: Status;
+  status: DeliveryStatus;
   isPaid: boolean;
   mustChargeMaterials?: boolean;
   mustBeSigned?: boolean;
@@ -45,7 +45,7 @@ export interface StepDB extends AbstractStep {
   date: Timestamp;
 }
 
-export const enum Status {
+export const enum DeliveryStatus {
   negociation = 'Delivery in negociation',
   pending = 'Materials pending',
   noa = 'NOA',
@@ -57,7 +57,7 @@ export function createDelivery(params: Partial<Delivery>) {
   return {
     validated: [],
     steps: [],
-    status: Status.pending,
+    status: DeliveryStatus.pending,
     isPaid: false,
     _type: 'deliveries',
     mustChargeMaterials: params.mustChargeMaterials || false,
