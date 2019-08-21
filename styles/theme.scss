@@ -1,6 +1,7 @@
 @import '~@angular/material/theming';
 @include mat-core();
 @import './palette.scss';
+@import '~saturn-datepicker/theming';
 
 // Main theme
 $blockframes-theme-primary: mat-palette($mat-bf-blue);
@@ -13,6 +14,7 @@ $blockframes-theme: mat-light-theme(
   $blockframes-theme-warn
 );
 
+@include sat-datepicker-theme($blockframes-theme);
 @include angular-material-theme($blockframes-theme);
 
 // Dark theme

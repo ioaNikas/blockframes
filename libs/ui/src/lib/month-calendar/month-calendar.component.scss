@@ -1,0 +1,24 @@
+.header {
+  color: var(--textGrey);
+  background-color: var(--whiteBackground);
+  border: 1px solid var(--borderGrey);
+  text-align: left;	
+  cursor: pointer;
+}
+
+.month{
+  color: black;
+  background-color: var(--whiteBackground);
+  border: 1px solid var(--borderGrey);
+  cursor: pointer;
+  text-align: right;
+}
+
+.half-taken{
+  background-color: var(--label);
+}
+
+.full-taken{
+  color: var(--whiteText);
+  background-color: var(--lightGrey);
+}
