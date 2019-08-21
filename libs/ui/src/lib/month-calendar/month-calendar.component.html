@@ -4,7 +4,6 @@
   <mat-grid-tile
     [colspan]="headerTile.cols"
     [rowspan]="headerTile.rows"
-    [style.background]="headerTile.color" 
     class="header"
   >
     <button mat-icon-button (click)="prevYear()">
@@ -21,7 +20,6 @@
     [ngClass]="tile.state"
     [colspan]="tile.cols"
     [rowspan]="tile.rows"
-    [style.background]="tile.color" 
     (click)="getMonthRange(i)"
     (mouseenter)="displayDetails[i] = true"
     (mouseleave)="displayDetails[i] = false"
