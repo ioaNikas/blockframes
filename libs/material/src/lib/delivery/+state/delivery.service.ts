@@ -253,7 +253,7 @@ export class DeliveryService {
     return id;
   }
 
-  async addDeliveryFromWizard(wizard: DeliveryWizard, movieId: string, templateId: string) {
+  public async addDeliveryFromWizard(wizard: DeliveryWizard, movieId: string, templateId: string) {
     const mustBeSigned = wizard.options.includes(DeliveryOption.mustBeSigned);
     const mustChargeMaterials = wizard.options.includes(DeliveryOption.mustChargeMaterials);
 
@@ -303,30 +303,28 @@ export class DeliveryService {
   }
 
   /** Update steps of delivery */
-  public async updateSteps(steps: Step[]) {
-    const deliveryId = this.query.getActiveId();
-    const deliveryDocRef = this.db.doc<Delivery>(`deliveries/${deliveryId}`).ref;
+  private updateSteps(
+    steps: Step[],
+    deliveryDocRef: firebase.firestore.DocumentReference,
+    batch: firebase.firestore.WriteBatch
+  ) {
     const oldSteps = this.query.getActive().steps;
 
-    return this.db.firestore.runTransaction(async tx => {
-      const stepsWithId = steps.map(
-        step => (step.id ? step : { ...step, id: this.db.createId() })
-      );
+    const stepsWithId = steps.map(step => (step.id ? step : { ...step, id: this.db.createId() }));
 
-      const deletedSteps = [];
-      oldSteps.forEach(step => stepsWithId.some(newStep => newStep.id === step.id) ? null : deletedSteps.push(step));
+    const deletedSteps = oldSteps.filter(
+      oldStep => !stepsWithId.some(newStep => newStep.id === oldStep.id)
+    );
 
-      this.removeMaterialsStepId(deletedSteps, deliveryId);
-
-      return tx.update(deliveryDocRef, { steps: stepsWithId });
-    });
+    this.removeMaterialsStepId(deletedSteps, batch);
+    return batch.update(deliveryDocRef, { steps: stepsWithId });
   }
 
-  /** Remove step in array steps of delivery */
-  public removeMaterialsStepId(steps: Step[], deliveryId: string) {
-    // We also set the concerned materials .step to an empty string
-    const batch = this.db.firestore.batch();
-    steps.forEach(step =>{
+  /** Remove stepId of materials of delivery for an array of steps */
+  private removeMaterialsStepId(steps: Step[], batch: firebase.firestore.WriteBatch) {
+    const deliveryId = this.query.getActiveId();
+    // We also set the concerned materials stepId to an empty string
+    steps.forEach(step => {
       const materials = this.materialQuery.getAll().filter(material => material.stepId === step.id);
       materials.forEach(material => {
         const doc = this.db.doc(`deliveries/${deliveryId}/materials/${material.id}`);
