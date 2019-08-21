@@ -1,0 +1,25 @@
+  <mat-form-field appearance="outline" class="">
+    <mat-label>Start date - End date</mat-label>
+    <input 
+      matInput
+      [formControl]="range"
+      [matDatepickerFilter]="disableDates"
+      placeholder="Choose a date"
+      [satDatepicker]="picker"
+      (dateChange)="datepickerRangeChange($event.value)"
+      (blur)="datepickerRangeChange($event.value)"
+    >
+    <mat-error *ngIf="range.invalid">{{getErrorMessage()}}</mat-error>
+    <sat-datepicker 
+      #picker 
+      [rangeMode]="true" 
+      [startAt]="selectedRange.begin" 
+      startView="month" 
+      orderPeriodLabel="month"
+    >
+    </sat-datepicker>
+  </mat-form-field>
+  <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+  <mat-card-actions>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!isValidRange" (click)="addRange()">Add on selection</button>
+  </mat-card-actions>
