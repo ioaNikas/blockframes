@@ -51,7 +51,7 @@ export function modifyTimestampToDate(delivery: DeliveryDB): Delivery {
 
   return {
     ...delivery,
-    dueDate: delivery.dueDate ? delivery.dueDate.toDate() : undefined,
+    dueDate: delivery.dueDate ? delivery.dueDate.toDate() : null,
     steps: delivery.steps.map(timestampObjectsToDate),
     mgDeadlines: mgDeadlines.map(timestampObjectsToDate)
   };
@@ -282,11 +282,24 @@ export class DeliveryService {
     const deliveryId = this.query.getActiveId();
     const deliveryDocRef = this.db.doc<Delivery>(`deliveries/${deliveryId}`).ref;
 
+    this.updateMGDeadlines(delivery, deliveryDocRef, batch);
     this.updateDates(delivery, deliveryDocRef, batch);
     this.updateSteps(delivery.steps, deliveryDocRef, batch);
     // TODO: Update Guaranteed Minimum Informations: issue#764
 
     return batch.commit();
+  }
+
+  private updateMGDeadlines(
+    delivery: Partial<Delivery>,
+    deliveryDocRef: firebase.firestore.DocumentReference,
+    batch: firebase.firestore.WriteBatch
+  ) {
+    return batch.update(deliveryDocRef, {
+      amount: delivery.amount,
+      currency: delivery.currency,
+      deadlines: delivery.deadlines
+    });
   }
 
   /** Update dates of delivery */
