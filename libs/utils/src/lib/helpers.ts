@@ -12,9 +12,9 @@ export function keyToAddressPart(key: Key, length: number): AddressParts {
 }
 
 /** need it for calendar components */
-export interface CalendarRange {
-  begin: Date;
-  end: Date;
+export interface DateRange {
+  from: Date;
+  to: Date;
 }
 
  /** check if a date is in a range */

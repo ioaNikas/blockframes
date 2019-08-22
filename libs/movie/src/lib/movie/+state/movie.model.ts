@@ -1,6 +1,7 @@
 import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
+import { DateRange } from "@blockframes/utils";
 
 export interface MovieSale { 
   operatorName: string;
@@ -23,11 +24,6 @@ export interface Prize {
   name: string,
   year: number,
   prize?: string,
-}
-
-export interface DateRange {
-  from: Date;
-  to: Date;
 }
 
 export interface Credit {

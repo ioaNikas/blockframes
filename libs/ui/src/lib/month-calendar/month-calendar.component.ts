@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy, Input} from '@angular/core';
-import { isBetween } from '@blockframes/utils';
-import { DateRange } from 'libs/movie/src/lib/movie/+state/movie.model';
+import { isBetween, DateRange } from '@blockframes/utils';
 
 interface Tile {
   cols: number;
