@@ -1,19 +1,19 @@
-  <mat-form-field appearance="outline" class="">
+  <mat-form-field appearance="outline">
     <mat-label>Start date - End date</mat-label>
     <input 
       matInput
-      [formControl]="range"
+      [formControl]="rangeForm"
       [matDatepickerFilter]="disableDates"
       placeholder="Choose a date"
       [satDatepicker]="picker"
-      (dateChange)="datepickerRangeChange($event.value)"
-      (blur)="datepickerRangeChange($event.value)"
+      (dateChange)="rangeChange($event.value)"
+      (blur)="rangeChange($event.value)"
     >
-    <mat-error *ngIf="range.invalid">{{getErrorMessage()}}</mat-error>
+    <mat-error *ngIf="rangeForm.invalid">{{getErrorMessage()}}</mat-error>
     <sat-datepicker 
       #picker 
       [rangeMode]="true" 
-      [startAt]="selectedRange.begin" 
+      [startAt]="selectedRange.from" 
       startView="month" 
       orderPeriodLabel="month"
     >

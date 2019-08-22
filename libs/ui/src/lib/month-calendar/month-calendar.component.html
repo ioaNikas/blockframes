@@ -1,4 +1,4 @@
-<div class="month-calendar">  
+<div>  
 
 <mat-grid-list cols="4" rowHeight="100px">
   <mat-grid-tile
@@ -26,12 +26,12 @@
   >
   <ng-container *ngIf="displayDetails[i]; else displayMonth">
     <ng-container select="details[tile.date]">
-        {{tile.state}}
+      <span>{{tile.state}}</span>
       <!-- Here is the content givent by the developer -->
     </ng-container>
   </ng-container>
   <ng-template #displayMonth>
-    <span>{{tile.date | date:'MMM' }}</span>
+    <span>{{tile.date | date:'MMM.' }}</span>
   </ng-template>
   </mat-grid-tile>
 </mat-grid-list>

@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import {
-    //MatNativeDateModule, 
-    MatDatepickerModule, MatIconModule, MatButtonModule, MatInputModule, MatCardModule, 
+    MatDatepickerModule, 
+    MatIconModule, 
+    MatButtonModule, 
+    MatInputModule, 
+    MatCardModule, 
   } from "@angular/material";
 import { CommonModule } from '@angular/common';
-import { DatepickerComponent } from './datepicker.component';
+import { DatepickerRangeComponent } from './datepicker.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {SatDatepickerModule, SatNativeDateModule} from 'saturn-datepicker';
 
-/**
- * A list of action to pick,
- * Used to ask the user to choose a template.
- */
+
 @NgModule({
-  declarations: [DatepickerComponent],
+  declarations: [DatepickerRangeComponent],
   imports: [ 
     MatIconModule,
     CommonModule,
@@ -27,6 +27,6 @@ import {SatDatepickerModule, SatNativeDateModule} from 'saturn-datepicker';
     ReactiveFormsModule,
     FormsModule
 ],
-  exports: [DatepickerComponent]
+  exports: [DatepickerRangeComponent]
 })
 export class DatepickerModule {}
