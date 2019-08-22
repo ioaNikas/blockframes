@@ -98,7 +98,7 @@ export const deliveryStatuses: State[] = [
   State.accepted,
   State.refused,
   State.delivered,
-]
+];
 
 export function createDelivery(params: Partial<Delivery>) {
   return {
