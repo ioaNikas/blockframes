@@ -290,6 +290,7 @@ export class DeliveryService {
     return batch.commit();
   }
 
+  /** Update minimum guaranteed informations of delivery */
   private updateMGDeadlines(
     delivery: Partial<Delivery>,
     deliveryDocRef: firebase.firestore.DocumentReference,
