@@ -2,8 +2,10 @@ import { Component, Input, ChangeDetectionStrategy, ViewChild, Output, EventEmit
 import { MatDatepicker} from '@angular/material';
 
 import { FormControl, Validators } from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import { CalendarRange, isBetween } from '@blockframes/utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { isBetween } from '@blockframes/utils';
+import { DateRange } from 'libs/movie/src/lib/movie/+state/movie.model';
+import { SatDatepickerRangeValue } from 'saturn-datepicker';
 
 @Component({
   selector: 'datepicker-range',
@@ -11,28 +13,28 @@ import { CalendarRange, isBetween } from '@blockframes/utils';
   styleUrls: ['./datepicker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DatepickerComponent {
+export class DatepickerRangeComponent {
   
-  @Input() selectedRange: CalendarRange;
-  @Input() disabledDates: CalendarRange[];
+  @Input() selectedRange: DateRange;
+  @Input() disabledDates: DateRange[];
 
-  @Output() wantedRange = new EventEmitter<CalendarRange>();
+  @Output() wantedRange = new EventEmitter<DateRange>();
   
   @ViewChild('picker', {static: false}) picker: MatDatepicker<Date>;
 
-  datepickerRange: CalendarRange = {
-    begin: new Date(),
-    end: new Date(),
+  range: DateRange = {
+    from: new Date(),
+    to: new Date(),
   };
   
   isValidRange= false;
-  range = new FormControl('', [Validators.required]);
+  rangeForm = new FormControl('', [Validators.required]);
 
 
   constructor(private _snackBar: MatSnackBar) {}
     
   public addRange(){
-    this.wantedRange.emit(this.datepickerRange);
+    this.wantedRange.emit(this.range);
   }
 
   initDatePicker(){
@@ -40,30 +42,23 @@ export class DatepickerComponent {
   }    
 
   disableDates = (date: Date): boolean => {
-    return !this.disabledDates.some(range => isBetween(date, range.begin, range.end));
+    return !this.disabledDates.some(range => isBetween(date, range.from, range.to));
   }
 
-  datepickerRangeChange(range: CalendarRange) {
-    if(range){
-      if(range.end < range.begin){
-        this.datepickerRange = {
-          begin: range.end,
-          end: range.begin
-        }
-      }
-      else{
-      this.datepickerRange = range;
-      }
-      this.validateDatepickerInput(this.datepickerRange);
+  rangeChange(range: SatDatepickerRangeValue<Date>) {
+    if (range) {
+      this.range = (range.end < range.begin) ? { from: range.end, to: range.begin } : {from: range.begin, to: range.end };
+      this.validateDatepickerInput(this.range);
     }
   }
 
-  validateDatepickerInput(datepickerRange: CalendarRange){
-    const isInvalid = (disabledDate: CalendarRange) => {
-      return isBetween(disabledDate.begin, datepickerRange.begin, datepickerRange.end) || 
-      isBetween(disabledDate.end, datepickerRange.begin, datepickerRange.end);    
+  validateDatepickerInput(range: DateRange){
+    const isInvalid = (disabledDate: DateRange) => {
+      return isBetween(disabledDate.from, range.from, range.to) || 
+      isBetween(disabledDate.to, range.from, range.to);    
     }
     this.isValidRange = !this.disabledDates.some(disabledDate => isInvalid(disabledDate));
+    
     if (!this.isValidRange){
       this.openSnackBar();
     }
@@ -71,13 +66,13 @@ export class DatepickerComponent {
   }
 
   openSnackBar(){
-    let snackBarRef = this._snackBar.open("Your selection contain a reserved date range.", "Change it", {
+    const snackBarRef = this._snackBar.open("Your selection contain a reserved date range.", "Change it", {
       duration: 5000,
     });
     snackBarRef.onAction().subscribe(()=> this.initDatePicker());
   }
 
   getErrorMessage() {
-    return this.range.hasError('required') ? 'You must enter correct dates' : '';
+    return this.rangeForm.hasError('required') ? 'You must enter correct dates' : '';
   }  
 }

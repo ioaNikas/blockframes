@@ -5,10 +5,6 @@ import {
 import { CalendarComponent } from './month-calendar.component';
 import { CommonModule } from '@angular/common';
 
-/**
- * A list of action to pick,
- * Used to ask the user to choose a template.
- */
 @NgModule({
   declarations: [CalendarComponent],
   imports: [MatGridListModule, 

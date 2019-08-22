@@ -1,11 +1,12 @@
 import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy, Input} from '@angular/core';
-import { CalendarRange, isBetween } from '@blockframes/utils';
+import { isBetween } from '@blockframes/utils';
+import { DateRange } from 'libs/movie/src/lib/movie/+state/movie.model';
 
 interface Tile {
   cols: number;
   rows: number;
   date: Date;
-  state: string;
+  state?: 'empty' | 'partial' | 'full';
 }
 
 @Component({
@@ -16,8 +17,8 @@ interface Tile {
 })
 export class CalendarComponent implements OnInit {
 
-  @Input() selectedRange: CalendarRange;
-  @Input() disabledDates: CalendarRange[];
+  @Input() selectedRange: DateRange;
+  @Input() disabledDates: DateRange[];
   @Output() rangeSelected = new EventEmitter();
 
   months: Date[];
@@ -25,17 +26,19 @@ export class CalendarComponent implements OnInit {
   monthTiles: Tile[];
   headerTile: Tile;  
   displayedDates: Date[];
-  begin: Date;
-  end: Date;
+  from: Date;
+  to: Date;
   isClicked = [];
   displayDetails: boolean[];
 
   ngOnInit(): void {
-    this.headerTile = {date: this.currentDate = new Date(), cols: 4, rows: 1, state:''};
+    this.currentDate = new Date();
+    this.headerTile = { date: this.currentDate, cols: 4, rows: 1 };
     this.monthTiles = [];
     this.generateCalendar();
   }
 
+ 
   // actions from calendar
 
   prevYear() {
@@ -51,22 +54,22 @@ export class CalendarComponent implements OnInit {
   }
 
   getMonthRange(month:number){
-    const begin = new Date(this.currentDate.getFullYear(), month, 1);
-    const end = new Date(this.currentDate.getFullYear(), month + 1, 0);
-    this.rangeSelected.emit({begin, end});
+    const from = new Date(this.currentDate.getFullYear(), month, 1);
+    const to = new Date(this.currentDate.getFullYear(), month + 1, 0);
+    this.rangeSelected.emit({from, to});
     
   }
 
-  getRange(month: number): CalendarRange{
-    this.begin = new Date(this.currentDate.getFullYear(), month, 1);
-    this.end = new Date(this.currentDate.getFullYear(), month + 1, 0);
-    return {begin: this.begin, end: this.end};
+  getRange(month: number): DateRange{
+    this.from = new Date(this.currentDate.getFullYear(), month, 1);
+    this.to = new Date(this.currentDate.getFullYear(), month + 1, 0);
+    return {from: this.from, to: this.to};
   }
 
   /** generate the calendar grid */
   generateCalendar() {
     this.months = this.fillDates();
-    this.months.forEach((month) => this.monthTiles.push({date: month, cols: 1, rows:1, state: 'empty'}));
+    this.monthTiles = this.months.map(month => ({ date: month, cols: 1, rows: 1, state: 'empty' }));
     this.monthClass(this.displayedDates);
   }
 
@@ -93,32 +96,33 @@ export class CalendarComponent implements OnInit {
         this.getRange(i);
 
         if(this.checkRangeInclusion(disableRange)){
-          this.monthTiles[i].state = 'full-taken';
+          this.monthTiles[i].state = 'full';
         }
 
         else if (this.checkRangesIntersections(disableRange)){
-          this.monthTiles[i].state = 'half-taken'; 
+          this.monthTiles[i].state = 'partial'; 
         }
       });
     });
   }
 
   /** check if a range got an intersection with an other range */
-  checkRangesIntersections(disableRange: CalendarRange){
-    return isBetween(this.begin, disableRange.begin, disableRange.end)  
-        || isBetween(this.end, disableRange.begin, disableRange.end) 
-        || isBetween(disableRange.begin, this.begin, this.end) 
-        || isBetween(disableRange.end, this.begin, this.end);
+  checkRangesIntersections(disableRange: DateRange){
+    return isBetween(this.from, disableRange.from, disableRange.to)  
+        || isBetween(this.to, disableRange.from, disableRange.to) 
+        || isBetween(disableRange.from, this.from, this.to) 
+        || isBetween(disableRange.to, this.from, this.to);
   }
 
   /** check if a date is in a range */
   dateInRange(tDate: Date){
-    return tDate >= this.selectedRange.begin && tDate <= this.selectedRange.end;
+    return tDate >= this.selectedRange.from && tDate <= this.selectedRange.to;
   }
 
   /** check if a range is fully in an other range */
-  checkRangeInclusion(disableRange: CalendarRange){
-    return isBetween(this.begin, disableRange.begin, disableRange.end) 
-        && isBetween(this.end, disableRange.begin, disableRange.end);
+  checkRangeInclusion(disableRange: DateRange){
+    console.log(this.from, this.to, disableRange.from, disableRange.to);
+    return isBetween(this.from, disableRange.from, disableRange.to) 
+        && isBetween(this.to, disableRange.from, disableRange.to);
   }
 }
