@@ -3,8 +3,7 @@ import { MatDatepicker} from '@angular/material';
 
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { isBetween } from '@blockframes/utils';
-import { DateRange } from 'libs/movie/src/lib/movie/+state/movie.model';
+import { isBetween, DateRange } from '@blockframes/utils';
 import { SatDatepickerRangeValue } from 'saturn-datepicker';
 
 @Component({
@@ -30,6 +29,9 @@ export class DatepickerRangeComponent {
   isValidRange= false;
   rangeForm = new FormControl('', [Validators.required]);
 
+  disableDates = (date: Date) => {
+    return !this.disabledDates.some(range => isBetween(date, range.from, range.to));
+  }
 
   constructor(private _snackBar: MatSnackBar) {}
     
@@ -40,10 +42,6 @@ export class DatepickerRangeComponent {
   initDatePicker(){
     this.picker.open();
   }    
-
-  disableDates = (date: Date): boolean => {
-    return !this.disabledDates.some(range => isBetween(date, range.from, range.to));
-  }
 
   rangeChange(range: SatDatepickerRangeValue<Date>) {
     if (range) {
