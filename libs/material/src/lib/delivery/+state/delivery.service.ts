@@ -296,9 +296,9 @@ export class DeliveryService {
     batch: firebase.firestore.WriteBatch
   ) {
     return batch.update(deliveryDocRef, {
-      amount: delivery.amount,
-      currency: delivery.currency,
-      deadlines: delivery.deadlines
+      mgAmount: delivery.mgAmount,
+      mgCurrency: delivery.mgCurrency,
+      mgDeadlines: delivery.mgDeadlines
     });
   }
 
