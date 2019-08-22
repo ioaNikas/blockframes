@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [CalendarComponent],
-  imports: [MatGridListModule, 
+  imports: [
+    MatGridListModule, 
     MatIconModule,
     CommonModule,
     MatButtonModule
