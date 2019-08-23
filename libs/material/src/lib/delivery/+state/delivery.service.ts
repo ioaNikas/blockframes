@@ -284,11 +284,11 @@ export class DeliveryService {
   public updateInformations(delivery: Partial<Delivery>) {
     const batch = this.db.firestore.batch();
     const deliveryId = this.query.getActiveId();
-    const deliveryDocRef = this.db.doc<Delivery>(`deliveries/${deliveryId}`).ref;
+    const deliveryRef = this.deliveryDoc(deliveryId).ref;
 
-    this.updateMGDeadlines(delivery, deliveryDocRef, batch);
-    this.updateDates(delivery, deliveryDocRef, batch);
-    this.updateSteps(delivery.steps, deliveryDocRef, batch);
+    this.updateMGDeadlines(delivery, deliveryRef, batch);
+    this.updateDates(delivery, deliveryRef, batch);
+    this.updateSteps(delivery.steps, deliveryRef, batch);
 
     return batch.commit();
   }
@@ -296,10 +296,10 @@ export class DeliveryService {
   /** Update minimum guaranteed informations of delivery */
   private updateMGDeadlines(
     delivery: Partial<Delivery>,
-    deliveryDocRef: firebase.firestore.DocumentReference,
+    deliveryRef: firebase.firestore.DocumentReference,
     batch: firebase.firestore.WriteBatch
   ) {
-    return batch.update(deliveryDocRef, {
+    return batch.update(deliveryRef, {
       mgAmount: delivery.mgAmount,
       mgCurrency: delivery.mgCurrency,
       mgDeadlines: delivery.mgDeadlines
@@ -309,10 +309,10 @@ export class DeliveryService {
   /** Update dates of delivery */
   private updateDates(
     delivery: Partial<Delivery>,
-    deliveryDocRef: firebase.firestore.DocumentReference,
+    deliveryRef: firebase.firestore.DocumentReference,
     batch: firebase.firestore.WriteBatch
   ) {
-    return batch.update(deliveryDocRef, {
+    return batch.update(deliveryRef, {
       dueDate: delivery.dueDate,
       acceptationPeriod: delivery.acceptationPeriod,
       reWorkingPeriod: delivery.reWorkingPeriod
@@ -322,7 +322,7 @@ export class DeliveryService {
   /** Update steps of delivery */
   private updateSteps(
     steps: Step[],
-    deliveryDocRef: firebase.firestore.DocumentReference,
+    deliveryRef: firebase.firestore.DocumentReference,
     batch: firebase.firestore.WriteBatch
   ) {
     const oldSteps = this.query.getActive().steps;
@@ -337,19 +337,20 @@ export class DeliveryService {
     // Remove stepId from the materials according to this array
     this.removeMaterialsStepId(deletedSteps, batch);
 
-    return batch.update(deliveryDocRef, { steps: stepsWithId });
+    return batch.update(deliveryRef, { steps: stepsWithId });
   }
 
   /** Remove stepId of materials of delivery for an array of steps */
   private removeMaterialsStepId(steps: Step[], batch: firebase.firestore.WriteBatch) {
-    // TODO : Use a transaction for be sure to don't loose datas: issue#773
+    // TODO(issue#773): Use a transaction to make sure we don't lose data
     const deliveryId = this.query.getActiveId();
     // We also set the concerned materials stepId to an empty string
     steps.forEach(step => {
       const materials = this.materialQuery.getAll().filter(material => material.stepId === step.id);
+
       materials.forEach(material => {
-        const docRef = this.db.doc(`deliveries/${deliveryId}/materials/${material.id}`).ref;
-        batch.update(docRef, { stepId: '' });
+        const ref = this.materialDoc(deliveryId, material.id).ref;
+        batch.update(ref, { stepId: '' });
       });
     });
   }
