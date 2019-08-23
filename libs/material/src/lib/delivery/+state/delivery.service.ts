@@ -285,7 +285,6 @@ export class DeliveryService {
     this.updateMGDeadlines(delivery, deliveryDocRef, batch);
     this.updateDates(delivery, deliveryDocRef, batch);
     this.updateSteps(delivery.steps, deliveryDocRef, batch);
-    // TODO: Update Guaranteed Minimum Informations: issue#764
 
     return batch.commit();
   }
