@@ -4,12 +4,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'delivery-display',
-  templateUrl: './delivery-display.component.html',
-  styleUrls: ['./delivery-display.component.scss'],
+  selector: 'delivery-movie-material-list',
+  templateUrl: './delivery-movie-material-list.component.html',
+  styleUrls: ['./delivery-movie-material-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeliveryDisplayComponent {
+export class DeliveryMovieMaterialListComponent {
   @Input()
   set materials(materials: Material[]) {
     this.dataSource = new MatTableDataSource(materials);
@@ -21,6 +21,6 @@ export class DeliveryDisplayComponent {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   public dataSource: MatTableDataSource<Material>;
-  public displayedColumns: string[] = ['title', 'description', 'step', 'category', 'action'];
+  public displayedColumns: string[] = ['value', 'description', 'step', 'price', 'owner', 'storage', 'action'];
 
 }

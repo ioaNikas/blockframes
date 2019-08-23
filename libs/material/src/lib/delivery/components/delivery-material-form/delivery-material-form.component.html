@@ -13,10 +13,11 @@
       <mat-label>Description</mat-label>
       <textarea
         matInput
-        placeholder="Description"
-        type="text"
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
         formControlName="description">
       </textarea>
+      <mat-hint>Only the first 4 lines will be visible on the list</mat-hint>
     </mat-form-field>
 
     <!-- Material Step Select -->
@@ -35,6 +36,8 @@
       <mat-label>Category</mat-label>
       <input matInput placeholder="Category" type="text" formControlName="category" />
     </mat-form-field>
+
+    <mat-divider inset></mat-divider>
 
     <button
       mat-raised-button

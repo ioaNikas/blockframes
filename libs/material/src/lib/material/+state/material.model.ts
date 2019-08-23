@@ -1,15 +1,28 @@
-import { Step, Delivery } from "../../delivery/+state";
+import { Step } from "../../delivery/+state";
+import { utils } from "ethers";
 
 export interface Material {
   id: string;
   category: string;
   value: string;
   description: string;
-  stepId?: string;
-  step?: Step,
-  state?: string,
-  approved?: boolean;
-  deliveriesIds?: string[];
+  owner?: string;
+  step?: Step;
+  status: MaterialStatus;
+  deliveryIds?: string[];
+  price?: {
+    amount: number;
+    currency: string;
+  };
+  isOrdered?: boolean;
+  isPaid?: boolean;
+  storage?: string;
+}
+
+export const enum MaterialStatus {
+  pending = 'pending',
+  available = 'available',
+  delivered = 'delivered'
 }
 
 export interface MaterialTemplateForm {
@@ -18,27 +31,14 @@ export interface MaterialTemplateForm {
   category: string;
 }
 
-export interface MaterialDeliveryForm {
-  value: string;
-  description: string;
-  category: string;
-  step: Step;
-}
-
-export function createMaterial(material: Partial<Material>) {
-  return material ? {
+// TODO: Type safety => ISSUE#774
+export function createMaterial(material: Partial<Material>): Material {
+  return {
+    id: material.id,
     category: '',
     value: '',
     description: '',
-    step: {},
+    status: material.status || MaterialStatus.pending,
     ...material
-  } as Material : {} as Material
+  }
 }
-
-export function getMaterialStep(material: Material, delivery: Delivery) {
-  return ({
-    ...material,
-    step: delivery.steps.find(step => step.id === material.stepId)
-  })
-}
-

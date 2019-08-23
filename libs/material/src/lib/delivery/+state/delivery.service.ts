@@ -11,9 +11,10 @@ import {
 } from '@blockframes/movie';
 import { OrganizationQuery, PermissionsService } from '@blockframes/organization';
 import { BFDoc, FireQuery } from '@blockframes/utils';
-import { createMaterial, MaterialQuery } from '../../material/+state';
+import { createMaterial, MaterialQuery, MaterialStatus } from '../../material/+state';
 import { TemplateQuery } from '../../template/+state';
 import { DeliveryOption, DeliveryWizard, DeliveryWizardKind } from './delivery.store';
+import { utils } from 'ethers';
 import { AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 
@@ -391,9 +392,12 @@ export class DeliveryService {
     );
 
     materials.forEach(material => {
+
+      const id = this.db.createId();
       tx.set(this.materialDoc(delivery.id, material.id).ref, {
         ...material,
-        state: '',
+        id: id,
+        status: MaterialStatus.pending,
         stepId: ''
       });
     });

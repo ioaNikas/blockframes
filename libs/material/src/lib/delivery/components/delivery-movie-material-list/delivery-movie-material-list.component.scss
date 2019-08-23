@@ -1,0 +1,21 @@
+table {
+  width: 100%;
+}
+
+td.mat-cell {
+  padding: 10px;
+}
+
+.step-text {
+  color: var(--warn);
+  font-weight: 500;
+}
+
+// Limit description cell height to 4 lines
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
