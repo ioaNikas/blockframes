@@ -13,6 +13,7 @@ import { BFDoc, FireQuery } from '@blockframes/utils';
 import { createMaterial, MaterialQuery, MaterialStatus } from '../../material/+state';
 import { TemplateQuery } from '../../template/+state';
 import { DeliveryOption, DeliveryWizard, DeliveryWizardKind } from './delivery.store';
+import { utils } from 'ethers';
 
 interface AddDeliveryOptions {
   templateId?: string;
@@ -49,16 +50,15 @@ export class DeliveryService {
   // CRUD MATERIAL //
   ///////////////////
 
-  /** Adds an empty material to the delivery sub-collection in firebase */
+  /** Adds an empty material to the movie sub-collection in firebase */
   public addMaterial(): string {
-    const deliveryId = this.query.getActiveId();
+    const delivery = this.query.getActive();
     const materialId = this.db.createId();
-    const materialRef = this.db.doc<Material>(`deliveries/${deliveryId}/materials/${materialId}`)
-      .ref;
-    const deliveryRef = this.db.doc<Delivery>(`deliveries/${deliveryId}`).ref;
+    const materialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${materialId}`).ref;
+    const deliveryRef = this.db.doc<Delivery>(`deliveries/${delivery.id}`).ref;
 
     this.db.firestore.runTransaction(async (tx: firebase.firestore.Transaction) => {
-      const newMaterial = createMaterial({ id: materialId });
+      const newMaterial = createMaterial({ id: materialId, deliveryIds: [delivery.id] });
       tx.set(materialRef, newMaterial);
       tx.update(deliveryRef, { validated: [] });
     });
@@ -66,23 +66,10 @@ export class DeliveryService {
     return materialId;
   }
 
-  /** Update materials of a delivery */
-  public async updateMaterials(materials: Material[], deliveryId: string) {
-    return this.db.firestore.runTransaction(async tx => {
-      materials.forEach(material => {
-        const materialRef = this.db.doc<Material>(
-          `deliveries/${deliveryId}/materials/${material.id}`
-        ).ref;
-        return tx.update(materialRef, material);
-      });
-    });
-  }
-
-  /** Deletes material of the delivery sub-collection in firebase */
-  public deleteMaterial(materialId: string, deliveryId: string) {
-    const materialRef = this.db.doc<Material>(`deliveries/${deliveryId}/materials/${materialId}`)
-      .ref;
-    const deliveryRef = this.db.doc<Delivery>(`deliveries/${deliveryId}`).ref;
+  /** Deletes material of the movie sub-collection in firebase */
+  public deleteMaterial(materialId: string, delivery: Delivery) {
+    const materialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${materialId}`).ref;
+    const deliveryRef = this.db.doc<Delivery>(`deliveries/${delivery.id}`).ref;
 
     return this.db.firestore.runTransaction(async (tx: firebase.firestore.Transaction) => {
       tx.delete(materialRef);
