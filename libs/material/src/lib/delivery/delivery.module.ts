@@ -22,6 +22,8 @@ import { DeliveryDisplayComponent } from './components/delivery-display/delivery
 import { DeliveryMaterialFormComponent } from './components/delivery-material-form/delivery-material-form.component';
 import { DeliveryInformationsStepsFormComponent } from './components/delivery-informations-steps-form/delivery-informations-steps-form.component';
 import { DeliveryInformationsStepsRepertoryComponent } from './components/delivery-informations-steps-repertory/delivery-informations-steps-repertory.component';
+import { DeliveryInformationsDeadlinesFormComponent } from './components/delivery-informations-deadlines-form/delivery-informations-deadlines-form.component';
+import { DeliveryInformationsDeadlinesRepertoryComponent } from './components/delivery-informations-deadlines-repertory/delivery-informations-deadlines-repertory.component';
 
 // Pages
 import { MovieMaterialsViewComponent } from './pages/movie-materials-view/movie-materials-view.component';
@@ -77,14 +79,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MovieActiveGuard, MovieListGuard, MovieModule } from '@blockframes/movie';
 import { DeliveryActiveGuard } from './guards/delivery-active.guard';
 import { DeliveryListGuard } from './guards/delivery-list.guard';
-import {
-  DeliveryMaterialsGuard,
-  MovieMaterialsGuard
-} from '../material';
+import { DeliveryMaterialsGuard, MovieMaterialsGuard } from '../material';
 import { TemplateActiveGuard } from '../template/guards/template-active.guard';
 import { TemplateListGuard } from '../template/guards/template-list.guard';
 import { DeliveryAddSpecificDeliveryListPickerComponent } from './pages/delivery-add-specific-delivery-list-picker/delivery-add-specific-delivery-list-picker.component';
 import { DeliveryAddCompleteComponent } from './pages/delivery-add-complete/delivery-add-complete.component';
+import { DeliveryStatusesComponent } from './components/delivery-statuses/delivery-statuses.component';
+import { MatStepperModule } from '@angular/material/stepper';
 
 const routes: Routes = [
   {
@@ -241,7 +242,10 @@ const routes: Routes = [
     DeliveryInformationsDatesFormComponent,
     DeliveryMaterialFormComponent,
     DeliveryInformationsStepsFormComponent,
-    DeliveryInformationsStepsRepertoryComponent
+    DeliveryInformationsStepsRepertoryComponent,
+    DeliveryStatusesComponent,
+    DeliveryInformationsDeadlinesFormComponent,
+    DeliveryInformationsDeadlinesRepertoryComponent
   ],
   imports: [
     CommonModule,
@@ -285,7 +289,8 @@ const routes: Routes = [
 
     RouterModule.forChild(routes),
     MovieModule,
-    FeedbackMessageModule
+    FeedbackMessageModule,
+    MatStepperModule
   ],
   entryComponents: [NewTemplateComponent, DeliverySignComponent]
 })

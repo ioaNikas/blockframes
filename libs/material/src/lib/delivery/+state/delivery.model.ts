@@ -1,49 +1,88 @@
 import { Stakeholder } from '@blockframes/movie';
 import { firestore } from 'firebase/app';
+
 type Timestamp = firestore.Timestamp;
 
-interface AbstractDelivery {
+export enum Currency {
+  EURO = 'EUR',
+  DOLLAR = 'USD',
+  JAPANESE_YEN = 'JPY',
+  POUND_STERLING = 'GBP',
+  DOLLAR_AUSTRALIAN = 'AUD',
+  DOLLAR_CANADIAN = 'CAD',
+  SWISS_FRANC = 'CHD',
+  CHINESE_RENMINBI = 'CNY',
+  SWEDISH_KRONA = 'SEK',
+  DOLLAR_NEW_ZEALAND = 'NZD'
+}
+
+/**
+ * This is a Minimum Guarantee deadline,
+ * can be used to interact with the frontend (D = Date) or backend (D = Timestamp).
+ */
+interface MGDeadlineRaw<D> {
+  percentage: number;
+  date?: D;
+  label: string;
+}
+
+/**
+ * The Step of a given delivery,
+ * can be used to interact with the frontend (D = Date) or backend (D = Timestamp).
+ */
+interface StepRaw<D> {
+  id: string;
+  name: string;
+  date: D;
+}
+
+/**
+ * A given delivery,
+ * can be used to interact with the frontend (D = Date) or backend (D = Timestamp).
+ */
+interface DeliveryRaw<D> {
   id: string;
   movieId: string;
   validated: string[]; // Stakeholder.id[];
   delivered: boolean;
   stakeholders: Stakeholder[];
-  steps: Step[] | StepDB[];
-  dueDate?: Date | Timestamp;
-  // Time to accept a material
-  acceptationPeriod?: number;
-  // Time to return a refused material
-  reWorkingPeriod?: number;
+  dueDate?: D;
   state: State;
   isPaid: boolean;
   mustChargeMaterials?: boolean;
   mustBeSigned?: boolean;
   _type: 'deliveries';
+  steps: StepRaw<D>[];
+  // Time to accept a material
+  acceptationPeriod?: number;
+  // Time to return a refused material
+  reWorkingPeriod?: number;
+  // Minimum Guarantee:
+  mgCurrentDeadline?: number;
+  mgAmount?: number;
+  mgCurrency?: Currency;
+  mgDeadlines: MGDeadlineRaw<D>[];
 }
 
-export interface Delivery extends AbstractDelivery {
-  dueDate?: Date;
-  steps: Step[];
-}
+/**
+ * Extends a Raw Delivery with fields that are specific to the local data model.
+ */
+export interface Delivery extends DeliveryRaw<Date> {}
 
-export interface DeliveryDB extends AbstractDelivery {
-  dueDate?: Timestamp;
-  steps: StepDB[];
-}
+/**
+ * Syntaxic Sugar: the Delivery type in firestore.
+ */
+export interface DeliveryDB extends DeliveryRaw<Timestamp> {}
 
-interface AbstractStep {
-  id: string;
-  name: string;
-  date: Date | Timestamp;
-}
+/**
+ * Syntaxic Sugar: the Delivery Step type used in the frontend.
+ */
+export interface Step extends StepRaw<Date> {}
 
-export interface Step extends AbstractStep {
-  date: Date;
-}
-
-export interface StepDB extends AbstractStep {
-  date: Timestamp;
-}
+/**
+ * Syntaxic Sugar: the Delivery Minumum Guaratee Deadline type used in the frontend.
+ */
+export interface MGDeadline extends MGDeadlineRaw<Date> {}
 
 export enum State {
   pending = 'pending',
@@ -52,6 +91,14 @@ export enum State {
   accepted = 'accepted',
   refused = 'refused'
 }
+
+export const deliveryStatuses: State[] = [
+  State.pending,
+  State.available,
+  State.accepted,
+  State.refused,
+  State.delivered
+];
 
 export function createDelivery(params: Partial<Delivery>) {
   return {
