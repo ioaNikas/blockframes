@@ -3,7 +3,7 @@ import { firestore } from 'firebase/app';
 
 type Timestamp = firestore.Timestamp;
 
-export const enum Currency {
+export enum Currency {
   EURO = 'EUR',
   DOLLAR = 'USD',
   JAPANESE_YEN = 'JPY',
