@@ -1,5 +1,4 @@
 import { Step } from "../../delivery/+state";
-import { utils } from "ethers";
 
 export interface Material {
   id: string;
@@ -8,6 +7,7 @@ export interface Material {
   description: string;
   owner?: string;
   step?: Step;
+  stepId?: string;
   status: MaterialStatus;
   deliveryIds?: string[];
   price?: {

@@ -149,11 +149,6 @@ export class DeliveryService {
     });
   }
 
-  /** Changes material 'delivered' property value to true or false when triggered */
-  public toggleApproved(materialId: string, approved: boolean) {
-    return this.movieMaterialDoc(this.movieQuery.getActiveId(), materialId).update({ approved });
-  }
-
   /** Update the property state of movie's materials */
   public updateMaterialState(materials: Material[], state: string) {
     const batch = this.db.firestore.batch();
@@ -173,7 +168,7 @@ export class DeliveryService {
   ///////////////////
 
   public updateDeliveryStatus(index: number): Promise<any> {
-    return this.currentDeliveryDoc.update({ state: deliveryStatuses[index] });
+    return this.currentDeliveryDoc.update({ status: deliveryStatuses[index] });
   }
 
   public updateCurrentMGDeadline(index: number): Promise<any> {
