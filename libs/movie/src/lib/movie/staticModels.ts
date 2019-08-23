@@ -205,53 +205,43 @@ const models = {
   'MOVIE_CURRENCIES': [
     {
       'slug': 'us-dollar',
-      'label': 'US dollar',
-      'code': 'USD'
+      'label': 'US dollar'
     },
     {
       'slug': 'euro',
-      'label': 'Euro',
-      'code': 'EUR'
+      'label': 'Euro'
     },
     {
       'slug': 'japanese-yen',
-      'label': 'Japanese yen',
-      'code': 'JPY'
+      'label': 'Japanese yen'
     },
     {
       'slug': 'pound-sterling',
-      'label': 'Pound sterling',
-      'code': 'GBP'
+      'label': 'Pound sterling'
     },
     {
       'slug': 'australian-dollar',
-      'label': 'Australian Dollar',
-      'code': 'AUD'
+      'label': 'Australian Dollar'
     },
     {
       'slug': 'canadian-dollar',
-      'label': 'Canadian Dollar',
-      'code': 'CAD'
+      'label': 'Canadian Dollar'
     },
     {
       'slug': 'swiss-franc',
-      'label': 'Swiss Franc',
-      'code': 'CHF'
+      'label': 'Swiss Franc'
     },
     {
       'slug': 'chinese-renminbi',
-      'label': 'Chinese Renminbi',
-      'code': 'CNY'
+      'label': 'Chinese Renminbi'
     },
     {
       'slug': 'swedish-krona',
-      'label': 'Swedish krona',
-      'code': 'SEK'
+      'label': 'Swedish krona'
     },
     {
       'slug': 'new-zealand-dollar',
-      'label': 'New Zealand dollar',
-      'code': 'NZD'
+      'label': 'New Zealand dollar'
     }
   ] as const,
   'SELECTION_CATEGORIES': [

@@ -7,8 +7,8 @@
   </ng-container>
   <!-- Sidenav -->
   <ng-container sidenav [ngSwitch]="editContent">
+    <delivery-informations-deadlines-form [formGroup]="informationsFormGroup" *ngSwitchCase="'deadlines'"></delivery-informations-deadlines-form>
     <delivery-informations-dates-form [formGroup]="informationsFormGroup" *ngSwitchCase="'dates'"></delivery-informations-dates-form>
     <delivery-informations-steps-form [formGroup]="informationsFormGroup" *ngSwitchCase="'steps'"></delivery-informations-steps-form>
-    <delivery-informations-deadlines-form [formGroup]="informationsFormGroup" *ngSwitchCase="'deadlines'"></delivery-informations-deadlines-form>
   </ng-container>
 </editable-sidenav>
