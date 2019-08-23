@@ -1,6 +1,6 @@
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormList } from '@blockframes/utils';
-import { Step } from '../+state';
+import { Step, MGDeadline } from '../+state';
 
 export function createStepFormGroup(step: Step) {
   return new FormGroup({
@@ -14,7 +14,7 @@ function createStepsFormList() {
   return FormList.factory([], createStepFormGroup);
 }
 
-export function createDeadlineFormGroup(deadline: any) {
+export function createDeadlineFormGroup(deadline: MGDeadline) {
   return new FormGroup({
     label: new FormControl(deadline.label),
     percentage: new FormControl(deadline.percentage),
