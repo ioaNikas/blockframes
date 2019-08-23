@@ -35,7 +35,11 @@ export function dateObjectsToTimestamp(docs) {
     }
   });
 }
-export function timestampObjectsToDate(docs) {
+export function timestampObjectsToDate(docs: any[]) {
+  if (!docs) {
+    return [];
+  }
+
   return docs.map(doc => {
     if (doc.date) {
       return { ...doc, date: doc.date.toDate() };
@@ -52,8 +56,8 @@ export function modifyTimestampToDate(delivery: DeliveryDB): Delivery {
   return {
     ...delivery,
     dueDate: delivery.dueDate ? delivery.dueDate.toDate() : null,
-    steps: delivery.steps.map(timestampObjectsToDate),
-    mgDeadlines: mgDeadlines.map(timestampObjectsToDate)
+    steps: timestampObjectsToDate(delivery.steps),
+    mgDeadlines: timestampObjectsToDate(mgDeadlines)
   };
 }
 
