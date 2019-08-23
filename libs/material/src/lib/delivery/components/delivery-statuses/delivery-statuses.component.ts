@@ -25,10 +25,10 @@ export class DeliveryStatusesComponent implements OnInit {
     this.currentDeadline$ = this.query.currentDeadline$;
 
     this.deliveryStatuses$ = this.query.statuses$;
-    this.currentStatus$ = combineLatest(
+    this.currentStatus$ = combineLatest([
       this.query.statuses$,
-      this.query.currentStatus$,
-    ).pipe(
+      this.query.currentStatus$
+    ]).pipe(
       map(([statuses, currentStatus]) => {
         return statuses.indexOf(currentStatus);
       })

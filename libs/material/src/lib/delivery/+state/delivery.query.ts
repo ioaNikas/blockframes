@@ -25,6 +25,17 @@ export class DeliveryQuery extends QueryEntity<DeliveryState, Delivery> {
 
   public steps$ = this.selectActive(delivery => delivery.steps);
 
+  public mgDeadlines$ = this.selectActive(delivery => delivery.mgDeadlines);
+
+  public currentDeadline$ = this.selectActive(delivery => delivery.mgCurrentDeadline);
+
+  public currentStatus$ = this.selectActive(delivery => delivery.state);
+
+  // Note: this code uses an observable to match other states systems,
+  // this would be the right place to edit if deliveries statuses can be
+  // customized by the user.
+  public statuses$ = of(deliveryStatuses);
+
   /** Returns the active delivery materials sorted by category */
   public currentTemplate$: Observable<TemplateView> = this.materialQuery
     .selectAll()
@@ -92,24 +103,5 @@ export class DeliveryQuery extends QueryEntity<DeliveryState, Delivery> {
     const organizationId = this.organizationQuery.getValue().org.id;
     const stakeholders = this.movieQuery.getActive().stakeholders;
     return stakeholders.find(({ id }) => id === organizationId);
-  }
-
-  public get mgDeadlines$(): Observable<MGDeadline[]> {
-    return this.selectActive().pipe(map(delivery => delivery.mgDeadlines || []));
-  }
-
-  public get currentDeadline$(): Observable<number | undefined> {
-    return this.selectActive().pipe(map(delivery => delivery.mgCurrentDeadline));
-  }
-
-  public get statuses$(): Observable<State[]> {
-    // Note: this code uses an observable to match other states systems,
-    // this would be the right place to edit if deliveries statuses can be
-    // customized by the user.
-    return of(deliveryStatuses);
-  }
-
-  public get currentStatus$(): Observable<State> {
-    return this.selectActive().pipe(map(delivery => delivery.state));
   }
 }
