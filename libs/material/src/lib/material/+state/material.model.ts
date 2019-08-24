@@ -17,6 +17,7 @@ export interface Material {
   isOrdered?: boolean;
   isPaid?: boolean;
   storage?: string;
+  approved?: boolean;
 }
 
 export const enum MaterialStatus {
