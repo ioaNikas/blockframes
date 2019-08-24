@@ -103,7 +103,7 @@ export class DeliveryEditableComponent implements OnInit {
   public deleteMaterial(materialId: string) {
     try {
       const delivery = this.query.getActive();
-      this.service.deleteMaterial(materialId, delivery);
+      this.service.deleteMaterial(materialId, delivery.id);
       this.snackBar.open('Material deleted', 'close', { duration: 2000 });
       this.opened = false;
     } catch (error) {
