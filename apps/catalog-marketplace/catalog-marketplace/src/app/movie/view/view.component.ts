@@ -18,6 +18,7 @@ export class MovieViewComponent implements OnInit {
 
   constructor(private query: MovieQuery) {}
 
+
   ngOnInit() {
     this.getMovie();
   }
@@ -38,6 +39,7 @@ export class MovieViewComponent implements OnInit {
   public internationalPremiere(movie: Movie) {
     const name = movie.main.title.international;
     const year = movie.main.productionYear;
+
     return name !== '' ? `${name}, ${year}` : null;
   }
 

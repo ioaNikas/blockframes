@@ -87,7 +87,6 @@ export const routes: Routes = [
                     loadChildren: () =>
                       import('./movie/view/view.module').then(m => m.MovieViewModule)
                   },
-                  
                   {
                     path: 'create',
                     loadChildren: () =>

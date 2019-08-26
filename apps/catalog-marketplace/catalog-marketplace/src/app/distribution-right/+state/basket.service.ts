@@ -7,7 +7,7 @@ import { OrganizationQuery } from '@blockframes/organization';
 export class BasketService {
 
   constructor(private db: FireQuery, private organizationQuery: OrganizationQuery) {}
-
+  
   public add(distributionRight: DistributionRight){
     const organizationId = this.organizationQuery.getValue();
     this.db.doc<DistributionRight>(`orgs/${organizationId}/distributionRight`).set(distributionRight);

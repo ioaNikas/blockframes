@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 
+
 @NgModule({
   declarations: [MovieViewComponent],
   imports: [
