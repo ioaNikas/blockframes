@@ -1,7 +1,9 @@
-mat-radio-group {
-  margin: 15px 0;
-}
+@import 'variables';
 
 mat-radio-button {
   margin: 5px;
+}
+
+:host{
+  width: 100%;
 }
