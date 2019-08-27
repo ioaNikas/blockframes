@@ -1,9 +1,7 @@
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import { FireQuery } from '@blockframes/utils';
 import { Movie } from '@blockframes/movie';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { of, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
+import { MovieQuery } from '@blockframes/movie';
 
 @Component({
   selector: 'catalog-movie-view',
@@ -13,26 +11,23 @@ import { of, Observable } from 'rxjs';
 })
 export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
-  public endRights;
+  public loading$: Observable<boolean>;
+  public movieId: string;
+  public parsedRightEnds: Date;
 
-  constructor(
-    private fireQuery: FireQuery,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {}
+  constructor(private query: MovieQuery) {}
 
   ngOnInit() {
     this.getMovie();
   }
 
   private async getMovie() {
-    const movieId = this.activatedRoute.snapshot.params['movieId'];
-    this.movie$ = of(await this.fireQuery.snapshot<Movie>(`movies/${movieId}`));
-    this.movie$.subscribe(data => this.endRights = (data.salesAgentDeal.rightsEnd.to as any).toDate());
-  }
-
-  public goToCreateDistribution(movieId: string) {
-    this.router.navigateByUrl(`layout/o/catalog/${movieId}/create`);
+    this.loading$ = this.query.selectLoading();
+    this.movieId = this.query.getActiveId();
+    this.movie$ = this.query.selectActive();
+    this.movie$.subscribe(
+      data => (this.parsedRightEnds = (data.salesAgentDeal.rightsEnd as any).to.toDate())
+    );
   }
 
   get internationalPremiere() {

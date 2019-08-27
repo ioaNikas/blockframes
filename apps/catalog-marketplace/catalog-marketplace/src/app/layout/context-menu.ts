@@ -2,8 +2,14 @@ export const CONTEXT_MENU = [
   {
     route: '/layout/o/catalog',
     items: [
-      { name: 'home', path: '/layout/o/catalog/home' },
-      { name: 'search', path: '/layout/o/catalog/search' }
+      { 
+        name: 'home', 
+        path: '/layout/o/catalog/home' 
+      },
+      { 
+        name: 'search',
+        path: '/layout/o/catalog/search' 
+      }
     ]
   },
   {

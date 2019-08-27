@@ -2,7 +2,10 @@ import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
 import { DateRange } from "@blockframes/utils";
-import { DistributionRight } from "apps/catalog-marketplace/catalog-marketplace/src/app/distribution-right/+state/basket.model";
+import { DistributionRights } from '@blockframes/catalog-marketplace';
+import { firestore } from 'firebase/app';
+
+type Timestamp = firestore.Timestamp;
 
 export interface MovieSale { 
   operatorName: string;
@@ -94,7 +97,7 @@ export interface MovieFestivalPrizes {
 }
 
 export interface MovieSalesAgentDeal {
-  rightsEnd: any,
+  rightsEnd: Date,
   territories: string[],
   medias: string[],
 }
@@ -107,7 +110,7 @@ export interface Movie {
   materials?: Material[];
   stakeholders?: Stakeholder[];
   sales: MovieSale[], //@todo 581 => move to subcollection
-  distributionRight: DistributionRight[],
+  distributionRight: DistributionRights[],
 
   // @todo #643 not main movie attributes WIP
   

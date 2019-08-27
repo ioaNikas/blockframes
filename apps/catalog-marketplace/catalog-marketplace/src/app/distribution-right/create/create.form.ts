@@ -1,11 +1,11 @@
 import { FormEntity } from '@blockframes/utils';
-import { DistributionRight, DistributionLanguage } from '../+state/basket.model';
+import { DistributionRights, DistributionLanguage } from '../+state/basket.model';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
 import { staticModels } from '@blockframes/movie';
 
 const movieTerritories = staticModels['TERRITORIES'].map(key => key.slug)
 
-export class DistributionRightForm extends FormEntity<DistributionRight> {
+export class DistributionRightForm extends FormEntity<DistributionRights> {
   constructor() {
     super({
       medias: new FormArray([]),

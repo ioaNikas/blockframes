@@ -1,5 +1,6 @@
 import { staticModels } from '@blockframes/movie';
 
+// TODO #818
 type Languages = ((typeof staticModels)['LANGUAGES'])[number]['slug'];
 type Currency = ((typeof staticModels)['MOVIE_CURRENCIES'])[number]['slug'];
 type Media = ((typeof staticModels)['MEDIAS'])[number]['slug'];
@@ -23,7 +24,7 @@ export interface DistributionLanguage {
   subtitle: boolean;
 }
 
-export interface DistributionRight {
+export interface DistributionRights {
   id: string;
   movieId: string;
   medias: Media[];
@@ -39,7 +40,7 @@ export interface DistributionRight {
 
 export interface CatalogBasket {
   status: BasketStatus;
-  rights: DistributionRight[];
+  rights: DistributionRights[];
   price: Price;
 }
 

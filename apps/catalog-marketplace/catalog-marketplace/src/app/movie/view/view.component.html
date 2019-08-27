@@ -1,7 +1,7 @@
-<ng-template #loading>
+<ng-template *ngIf="loading$ | async">
   <mat-spinner color="accent" #loading></mat-spinner>
 </ng-template>
-<main *ngIf="(movie$ | async) as movie; else loading">
+<main *ngIf="(movie$ | async) as movie;">
   <section class="header">
     <img class="header-img" [src]="movie.main.poster" />
     <h1 class="mat-display-3">{{movie.main.title.original}}</h1>
@@ -21,7 +21,7 @@
             <h3 class="mat-title">Availabilities</h3>
             <article>
               <ul>
-                <li fxLayout="row"><b>End of rights</b><span>{{ endRights | date:'LLL-dd, yyyy' }}</span></li>
+                <li fxLayout="row"><b>End of rights</b><span>{{ parsedRightEnds | date:'LLL-dd, yyyy' }}</span></li>
               </ul>
             </article>
             <mat-divider></mat-divider>
@@ -199,5 +199,6 @@
       </mat-card>
     </section>
   </section>
-  <a mat-raised-button color="accent" (click)="goToCreateDistribution(movie.id)">Create distribution right</a>
+  <a mat-raised-button color="accent" [routerLink]="['layout/o/catalog', movieId, 'create']">Create distribution
+    right</a>
 </main>
