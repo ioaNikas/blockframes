@@ -14,7 +14,6 @@ export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
   public movieId: string;
-
   public parseRightEnds: Date;
 
   constructor(private query: MovieQuery) {}
@@ -40,7 +39,6 @@ export class MovieViewComponent implements OnInit {
   public internationalPremiere(movie: Movie) {
     const name = movie.main.title.international;
     const year = movie.main.productionYear;
-
     return name !== '' ? `${name}, ${year}` : null;
   }
 

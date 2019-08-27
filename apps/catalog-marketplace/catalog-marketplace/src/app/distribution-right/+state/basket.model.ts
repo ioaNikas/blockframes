@@ -24,7 +24,7 @@ export interface DistributionLanguage {
   subtitle: boolean;
 }
 
-export interface DistributionRights {
+export interface DistributionRight {
   id: string;
   movieId: string;
   medias: Media[];
@@ -40,7 +40,7 @@ export interface DistributionRights {
 
 export interface CatalogBasket {
   status: BasketStatus;
-  rights: DistributionRights[];
+  rights: DistributionRight[];
   price: Price;
 }
 

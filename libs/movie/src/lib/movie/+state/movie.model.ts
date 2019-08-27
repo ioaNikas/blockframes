@@ -2,15 +2,8 @@ import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
 import { DateRange } from "@blockframes/utils";
-<<<<<<< HEAD
 import { DistributionRight } from "apps/catalog-marketplace/catalog-marketplace/src/app/distribution-right/+state/basket.model";
-=======
-import { DistributionRights } from '@blockframes/catalog-marketplace';
-import { firestore } from 'firebase/app';
 
-type Timestamp = firestore.Timestamp;
-
->>>>>>> added guard
 export interface MovieSale { 
   operatorName: string;
   showOperatorName: boolean; //@todo #581 Promotional Distribution Deal
@@ -114,12 +107,7 @@ export interface Movie {
   materials?: Material[];
   stakeholders?: Stakeholder[];
   sales: MovieSale[], //@todo 581 => move to subcollection
-<<<<<<< HEAD
   distributionRights: DistributionRight[],
-
-=======
-  distributionRight: DistributionRights[],
->>>>>>> added guard
 
   // @todo #643 not main movie attributes WIP
   
