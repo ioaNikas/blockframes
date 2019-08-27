@@ -1,9 +1,7 @@
-@import 'variables';
+:host{
+  width: 100%;
+}
 
 mat-radio-button {
   margin: 5px;
-}
-
-:host{
-  width: 100%;
 }
