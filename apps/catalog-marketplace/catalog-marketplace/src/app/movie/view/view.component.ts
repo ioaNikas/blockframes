@@ -2,10 +2,7 @@ import { Movie } from '@blockframes/movie';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MovieQuery } from '@blockframes/movie';
-<<<<<<< HEAD
 import { tap } from 'rxjs/operators';
-=======
->>>>>>> added guard
 
 @Component({
   selector: 'catalog-movie-view',
@@ -17,16 +14,11 @@ export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
   public movieId: string;
-<<<<<<< HEAD
+
   public parseRightEnds: Date;
 
   constructor(private query: MovieQuery) {}
 
-=======
-  public parsedRightEnds: Date;
-
-  constructor(private query: MovieQuery) {}
->>>>>>> added guard
 
   ngOnInit() {
     this.getMovie();
@@ -35,7 +27,6 @@ export class MovieViewComponent implements OnInit {
   private async getMovie() {
     this.loading$ = this.query.selectLoading();
     this.movieId = this.query.getActiveId();
-<<<<<<< HEAD
     this.movie$ = this.query
       .selectActive()
       .pipe(
@@ -49,13 +40,6 @@ export class MovieViewComponent implements OnInit {
   public internationalPremiere(movie: Movie) {
     const name = movie.main.title.international;
     const year = movie.main.productionYear;
-=======
-    this.movie$ = this.query.selectActive();
-    this.movie$.subscribe(
-      data => (this.parsedRightEnds = (data.salesAgentDeal.rightsEnd as any).to.toDate())
-    );
-  }
->>>>>>> added guard
 
     return name !== '' ? `${name}, ${year}` : null;
   }
