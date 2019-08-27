@@ -87,6 +87,10 @@ export const routes: Routes = [
                     loadChildren: () =>
                       import('./movie/view/view.module').then(m => m.MovieViewModule)
                   },
+<<<<<<< HEAD
+=======
+                  
+>>>>>>> added guard
                   {
                     path: 'create',
                     loadChildren: () =>
