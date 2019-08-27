@@ -3,7 +3,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewTemplateComponent } from '../../components/delivery-new-template/new-template.component';
-import { Material, MaterialService } from '../../../material/+state';
+import { Material, MaterialService, createMaterial } from '../../../material/+state';
 import { MaterialQuery } from '../../../material/+state';
 import { DeliveryService } from '../../+state/delivery.service';
 import { Router } from '@angular/router';
@@ -11,8 +11,9 @@ import { MovieQuery, Movie } from '@blockframes/movie';
 import { DeliveryQuery, Delivery } from '../../+state';
 import { ConfirmComponent } from '@blockframes/ui';
 import { map, startWith, tap, switchMap, filter } from 'rxjs/operators';
-import { createMaterialFormList } from '../../forms/material.form';
+import { createMaterialFormList, createMaterialFormGroup } from '../../forms/material.form';
 import { FormGroup } from '@angular/forms';
+import { FireQuery } from '@blockframes/utils';
 
 @Component({
   selector: 'delivery-editable',
@@ -24,6 +25,7 @@ export class DeliveryEditableComponent implements OnInit {
   public delivery$: Observable<Delivery>;
   public materials$: Observable<Material[]>;
   public movie$: Observable<Movie>;
+  public pdfLink: string;
   public opened = false;
 
   public materialsFormList = createMaterialFormList();
@@ -39,6 +41,7 @@ export class DeliveryEditableComponent implements OnInit {
     private materialService: MaterialService,
     private service: DeliveryService,
     private snackBar: MatSnackBar,
+    private db: FireQuery,
     private router: Router
   ) {}
 
@@ -57,6 +60,7 @@ export class DeliveryEditableComponent implements OnInit {
 
     this.movie$ = this.movieQuery.selectActive();
     this.delivery$ = this.query.selectActive();
+    this.pdfLink = `/delivery/contract.pdf?deliveryId=${this.query.getActiveId()}`
   }
 
   public openSidenav(materialId: string) {
@@ -68,7 +72,8 @@ export class DeliveryEditableComponent implements OnInit {
   public async update() {
     try {
       const deliveryId = this.query.getActiveId();
-      this.materialService.updateMaterials(this.materialsFormList.value, deliveryId);
+      const movieId = this.movieQuery.getActiveId();
+      await this.materialService.updateMaterials(this.materialsFormList.value, deliveryId, movieId);
       this.snackBar.open('Material updated', 'close', { duration: 2000 });
     } catch (error) {
       this.snackBar.open(error.message, 'close', { duration: 2000 });
@@ -76,9 +81,9 @@ export class DeliveryEditableComponent implements OnInit {
   }
 
   public addMaterial() {
-    // Blank sidenav. User have to click again on new material edit icon to show inputs => ISSUE#760
-    const materialId = this.service.addMaterial();
-    this.openSidenav(materialId);
+    const newMaterial = this.materialService.addMaterial();
+    this.materialsFormList.push(createMaterialFormGroup(newMaterial));
+    this.openSidenav(newMaterial.id);
   }
 
   public saveAsTemplate() {
@@ -99,8 +104,8 @@ export class DeliveryEditableComponent implements OnInit {
 
   public deleteMaterial(materialId: string) {
     try {
-      const deliveryId = this.query.getActiveId();
-      this.service.deleteMaterial(materialId, deliveryId);
+      const delivery = this.query.getActive();
+      this.materialService.deleteMaterial(materialId, delivery);
       this.snackBar.open('Material deleted', 'close', { duration: 2000 });
       this.opened = false;
     } catch (error) {

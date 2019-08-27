@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { Delivery } from './delivery.model';
+import { Delivery, deliveryStatuses } from './delivery.model';
 import { DeliveryState, DeliveryStore, DeliveryWizard } from './delivery.store';
 import { MovieQuery } from '@blockframes/movie';
-import { Material } from '../../material/+state/material.model';
-import { switchMap, map, filter } from 'rxjs/operators';
-import { materialsByCategory, MaterialQuery } from '../../material/+state/material.query';
-import { combineLatest, Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { MaterialQuery, materialsByCategory } from '../../material/+state/material.query';
+import { combineLatest, Observable, of } from 'rxjs';
 import { OrganizationQuery } from '@blockframes/organization';
 import { TemplateView } from '../../template/+state';
 import { FireQuery } from '@blockframes/utils';
@@ -25,6 +24,17 @@ export class DeliveryQuery extends QueryEntity<DeliveryState, Delivery> {
 
   public steps$ = this.selectActive(delivery => delivery.steps);
 
+  public mgDeadlines$ = this.selectActive(delivery => delivery.mgDeadlines);
+
+  public currentDeadline$ = this.selectActive(delivery => delivery.mgCurrentDeadline);
+
+  public currentStatus$ = this.selectActive(delivery => delivery.status);
+
+  // Note: this code uses an observable to match other states systems,
+  // this would be the right place to edit if deliveries statuses can be
+  // customized by the user.
+  public statuses$ = of(deliveryStatuses);
+
   /** Returns the active delivery materials sorted by category */
   public currentTemplate$: Observable<TemplateView> = this.materialQuery
     .selectAll()
@@ -42,38 +52,6 @@ export class DeliveryQuery extends QueryEntity<DeliveryState, Delivery> {
 
   get hasStep(): boolean {
     return this.getActive().steps.length > 0;
-  }
-
-  /** Returns the progression % of the delivery */
-  public get deliveryProgression$() {
-    return this.movieQuery.selectActive().pipe(
-      switchMap(movie =>
-        this.db.collection<Material>(`movies/${movie.id}/materials`).valueChanges()
-      ),
-      map(materials => {
-        const id = this.getActiveId();
-        const totalMaterials = materials.filter(material => material.deliveriesIds.includes(id));
-        const acceptedMaterials = totalMaterials.filter(material => material.state === 'accepted');
-        const deliveryMaterialsProgress =
-          Math.round((acceptedMaterials.length / (totalMaterials.length / 100)) * 10) / 10;
-        return deliveryMaterialsProgress;
-      })
-    );
-  }
-
-  /** Returns the progression % of the movie's deliveries */
-  public get movieProgression$() {
-    return this.movieQuery.selectActive().pipe(
-      switchMap(movie =>
-        this.db.collection<Material>(`movies/${movie.id}/materials`).valueChanges()
-      ),
-      map(materials => {
-        const acceptedMaterials = materials.filter(material => material.state === 'accepted');
-        const movieMaterialsProgress =
-          Math.round((acceptedMaterials.length / (materials.length / 100)) * 10) / 10;
-        return movieMaterialsProgress;
-      })
-    );
   }
 
   public hasStakeholderSigned$(id: string) {

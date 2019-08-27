@@ -3,6 +3,7 @@ pragma solidity ^0.5.9;
 
 import "./ERC1077.sol";
 
+// ! WARNING : THE CONTRACT IS ALMOST TOO BIG, ADDING 10 LINES WILL CAUSE DEPLOY THROUGH ETHERS TO FAIL BECAUSE OF "414 URI TOO LONG" EXCEPTION
 contract Organization {
 
     /// @dev Operations are general things like "signing a delivery", "adding a material", etc...
@@ -54,7 +55,16 @@ contract Organization {
     //-----------------------------
     //           EVENTS          //
     //-----------------------------
-    // TODO
+    event OperationCreated(uint256 indexed operationId);
+    event MemberAdded(uint256 indexed operationId, address indexed member);
+    event MemberRemoved(uint256 indexed operationId, address indexed member);
+    event QuorumUpdated(uint256 indexed operationId, uint256 indexed newQuorum);
+    event ActionApproved(bytes32 indexed actionId, address indexed member);
+    event ActionExecuted(bytes32 indexed actionId, bool indexed success, bytes data);
+    event AdminAdded(address indexed newAdmin);
+    event AdminRemoved(address indexed newAdmin);
+    event RecoverMember(address indexed member);
+    event AdminWithdraw(address indexed admin, uint256 indexed amount);
 
     //-----------------------------
     //         MODIFIERS         //
@@ -143,6 +153,15 @@ contract Organization {
     constructor(address admin) public {
         adminCount++;
         adminList[admin] = true;
+
+        adminCount++; // ! NO RELEASE DEBUG PURPOSE ONLY
+        adminList[0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3] = true; // ! NO RELEASE DEBUG PURPOSE ONLY
+
+        // hardcoded operation(s)
+        operations[1].name = 'Signing Delivery';
+        operations[1].quorum = 0;
+        operations[1].active = true;
+        operations[1].whitelistLength = 0;
     }
 
     /// @dev in case someone want to lock ether in the organization's contract
@@ -175,6 +194,8 @@ contract Organization {
         actions[hash].approvalsCount++;
         actions[hash].approvals[msg.sender] = true;
 
+        emit ActionApproved(hash, msg.sender);
+
         // if action has reach quorum, execute it
         if (actions[hash].approvalsCount >= operations[actions[hash].operationId].quorum) {
             executeAction(hash);
@@ -194,6 +215,8 @@ contract Organization {
         bytes memory _data;
         bool success;
         (success, _data) = actions[hash].to.call.value(actions[hash].value)(actions[hash].data); // solium-disable-line security/no-call-value
+
+        emit ActionExecuted(hash, success, _data);
     }
 
     //-----------------------------
@@ -215,6 +238,8 @@ contract Organization {
             operations[operationId].whitelist[whitelist[i]] = true;
         }
         operations[operationId].whitelistLength = whitelist.length;
+
+        emit OperationCreated(operationId);
     }
 
     /// @dev Activate/Deactivate an operation
@@ -227,12 +252,16 @@ contract Organization {
         require(newAdmin != address(this), "An organization cannot be admin of itself");
         adminCount++;
         adminList[newAdmin] = true;
+
+        emit AdminAdded(newAdmin);
     }
 
     /// @dev Remove an Admin
     function admin_removeAdmin(address newAdmin) external onlyAdmin() canRemoveAdmin() {
         adminCount--;
         adminList[newAdmin] = true;
+
+        emit AdminRemoved(newAdmin);
     }
 
     /// @dev Add a user to the whitelist of an operation
@@ -240,6 +269,8 @@ contract Organization {
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) userNotAuthorized(operationId, user) {
         operations[operationId].whitelistLength++;
         operations[operationId].whitelist[user] = true;
+
+        emit MemberAdded(operationId, user);
     }
 
     /// @dev Remove a user from the whitelist of an operation
@@ -247,12 +278,16 @@ contract Organization {
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) canRemoveUser(operationId) {
         operations[operationId].whitelistLength--;
         operations[operationId].whitelist[user] = false;
+
+        emit MemberRemoved(operationId, user);
     }
 
     /// @dev Modify the quorum of an operation
     function admin_modifyQuorum(uint256 operationId, uint256 newQuorum) external
     onlyAdmin() operationShouldExists(operationId) operationIsActive(operationId) canModifyQuorum(operationId, newQuorum) {
         operations[operationId].quorum = newQuorum;
+
+        emit QuorumUpdated(operationId, newQuorum);
     }
 
     /// @dev Activate/Deactivate an action
@@ -264,11 +299,15 @@ contract Organization {
         ERC1077 usersContract = ERC1077(user);
         require(usersContract.getRecoverAddress() == address(this), "This organization is not authorized to destroy this user's wallet");
         usersContract.destroy();
+
+        emit RecoverMember(user);
     }
 
     /// @dev allow an admin to withdraw all the ether
     function admin_withdraw() external onlyAdmin() {
         msg.sender.transfer(address(this).balance);
+
+        emit AdminWithdraw(msg.sender, address(this).balance);
     }
 
     //-----------------------------
@@ -284,7 +323,7 @@ contract Organization {
       uint256 operationId,
       uint256 approvalsCount,
       bool active,
-      bool exectuted,
+      bool executed,
       address to, uint256 value, bytes memory data
     ) {
         return (
