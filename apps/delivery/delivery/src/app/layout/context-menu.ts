@@ -29,6 +29,10 @@ export const CONTEXT_MENU = [
     items: [{ name: 'templates', path: '/layout/o/templates/list' }]
   },
   {
+    route: '/layout/o/templates/create',
+    items: [{ name: 'templates', path: '/layout/o/templates/create' }]
+  },
+  {
     route: '/layout/o/templates/:templateId',
     items: [
       { name: 'templates', path: '/layout/o/templates/list' },

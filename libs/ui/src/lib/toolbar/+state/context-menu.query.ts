@@ -48,7 +48,7 @@ export class ContextMenuQuery extends QueryEntity<ContextMenuState, ContextMenu>
       map(menu => {
         const items = menu.items.map(item => {
           const i = { ...item } as MenuItem;
-          // replace param kays by param values
+          // replace param keys by param values
           Object.keys(snapshot.root.params).forEach((paramKey) => {
             i.path = i.path.replace(`:${paramKey}`, snapshot.root.params[paramKey]);
           });
