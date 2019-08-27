@@ -21,7 +21,7 @@
             <h3 class="mat-title">Availabilities</h3>
             <article>
               <ul>
-                <li fxLayout="row"><b>End of rights</b><span>{{ parsedRightEnds | date:'LLL-dd, yyyy' }}</span></li>
+                <li fxLayout="row"><b>End of rights</b><span>{{ parseRightEnds | date:'LLL-dd, yyyy' }}</span></li>
               </ul>
             </article>
             <mat-divider></mat-divider>
@@ -132,7 +132,7 @@
                 {{ certification }} {{isLast ? '' : ', '}}
               </li>
               <li fxLayout="row"><b>Rating</b> <span>{{ salesInfo.pegi }}</span></li>
-              <li fxLayout="row"><b>International Premiere</b> <span>{{ internationalPremiere }}</span></li>
+              <li fxLayout="row"><b>International Premiere</b> <span>{{ internationalPremiere(movie) }}</span></li>
               <li fxLayout="row">
                 <b>Release date in Origin Country</b>
                 <span>{{ salesInfo.originCountryReleaseDate | date:'LLL-dd, yyyy' }}</span></li>

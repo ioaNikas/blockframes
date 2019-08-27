@@ -2,7 +2,7 @@ import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
 import { DateRange } from "@blockframes/utils";
-import { DistributionRights } from '@blockframes/catalog-marketplace';
+import { DistributionRight } from '@blockframes/catalog-marketplace';
 import { firestore } from 'firebase/app';
 
 type Timestamp = firestore.Timestamp;
@@ -110,7 +110,7 @@ export interface Movie {
   materials?: Material[];
   stakeholders?: Stakeholder[];
   sales: MovieSale[], //@todo 581 => move to subcollection
-  distributionRight: DistributionRights[],
+  distributionRights: DistributionRight[],
 
   // @todo #643 not main movie attributes WIP
   

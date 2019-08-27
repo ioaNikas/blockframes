@@ -2,6 +2,7 @@ import { Movie } from '@blockframes/movie';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MovieQuery } from '@blockframes/movie';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'catalog-movie-view',
@@ -13,7 +14,7 @@ export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
   public movieId: string;
-  public parsedRightEnds: Date;
+  public parseRightEnds: Date;
 
   constructor(private query: MovieQuery) {}
 
@@ -24,30 +25,29 @@ export class MovieViewComponent implements OnInit {
   private async getMovie() {
     this.loading$ = this.query.selectLoading();
     this.movieId = this.query.getActiveId();
-    this.movie$ = this.query.selectActive();
-    this.movie$.subscribe(
-      data => (this.parsedRightEnds = (data.salesAgentDeal.rightsEnd as any).to.toDate())
-    );
+    this.movie$ = this.query
+      .selectActive()
+      .pipe(
+        tap(
+          ({ salesAgentDeal }) =>
+            (this.parseRightEnds = (salesAgentDeal.rightsEnd as any).to.toDate())
+        )
+      );
   }
 
-  get internationalPremiere() {
-    let name, year;
-    this.movie$.subscribe(data => {
-      name = data.salesInfo.internationalPremiere.name;
-      year = data.salesInfo.internationalPremiere.year;
-    });
+  public internationalPremiere(movie: Movie) {
+    const name = movie.main.title.international;
+    const year = movie.main.productionYear;
     return name !== '' ? `${name}, ${year}` : null;
   }
 
   get color() {
-    let color;
-    this.movie$.subscribe(data => (color = data.salesInfo.color));
+    const color = this.query.getActive().salesInfo.color;
     return color === 'c' ? 'color' : 'black & white';
   }
 
   get europeanQualification() {
-    let europeanQualification;
-    this.movie$.subscribe(data => (europeanQualification = data.salesInfo.europeanQualification));
+    const europeanQualification = this.query.getActive().salesInfo.europeanQualification;
     return europeanQualification ? 'Yes' : 'No';
   }
 }
