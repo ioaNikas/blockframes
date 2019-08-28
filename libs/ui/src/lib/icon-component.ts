@@ -214,6 +214,17 @@ const ICONS_SVG = [
   {
     name: 'paid',
     url: 'assets/icons/paid.svg'
+  {
+    name: 'arrowOpen',
+    url: 'assets/icons/icon_40px_ArrowOpen.svg'
+  },
+  {
+    name: 'chevronLeft',
+    url: 'assets/icons/icon_40px_ChevronLeft.svg'
+  },
+  {
+    name: 'arrowRight',
+    url: 'assets/icons/icon_32px_ArrowRight.svg'
   }
 ];
 
