@@ -132,7 +132,7 @@
                 {{ certification }} {{isLast ? '' : ', '}}
               </li>
               <li fxLayout="row"><b>Rating</b> <span>{{ salesInfo.pegi }}</span></li>
-              <li fxLayout="row"><b>International Premiere</b> <span>{{ internationalPremiere(movie) }}</span></li>
+              <li fxLayout="row"><b>International Premiere</b> <span>{{ internationalPremiere }}</span></li>
               <li fxLayout="row">
                 <b>Release date in Origin Country</b>
                 <span>{{ salesInfo.originCountryReleaseDate | date:'LLL-dd, yyyy' }}</span></li>
