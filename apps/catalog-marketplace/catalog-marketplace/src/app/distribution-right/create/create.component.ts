@@ -15,12 +15,7 @@ export class DistributionRightCreateComponent implements OnInit {
   public movieMedias: string[] = staticModels['MEDIAS'].map(key => key.label);
   constructor(private query: MovieQuery) {}
 
-<<<<<<< HEAD
   ngOnInit() { 
-=======
-  ngOnInit() {
-    
->>>>>>> added guard
   }
 
   // function for second PR

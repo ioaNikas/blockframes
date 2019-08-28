@@ -13,10 +13,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
-<<<<<<< HEAD
-
-=======
->>>>>>> added guard
 
 @NgModule({
   declarations: [MovieViewComponent],
