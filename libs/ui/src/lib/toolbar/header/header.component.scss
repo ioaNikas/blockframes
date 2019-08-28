@@ -15,20 +15,6 @@ mat-toolbar {
   padding: 0 40px;
 }
 
-::ng-deep .appMenu .mat-menu-content {
-  display: flex;
-
-  .mat-menu-item {
-    padding: 10px;
-    min-height: 82px;
-    min-width: 90px;
-
-    img {
-      margin: 10px;
-    }
-  }
-}
-
 ::ng-deep .notifMenu .mat-menu-content {
   padding: 0!important;
 }
