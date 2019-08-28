@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
 
 import { providers, getDefaultProvider, utils, Contract, Wallet as EthersWallet } from 'ethers';
-import { toASCII } from 'punycode';
-import { baseEnsDomain, network, factoryContract } from '@env';
+import { network } from '@env';
 import { ERC1077 } from '@blockframes/contracts';
 import { WalletStore } from './wallet.store';
 import { KeyManagerService } from '../../key-manager/+state';
 import { Relayer } from '../../relayer/relayer';
-import { MetaTx, SignedMetaTx, LocalTx } from '../../types';
+import { MetaTx, SignedMetaTx, ActionTx } from '../../types';
 import { WalletQuery } from './wallet.query';
-import { createDeleteKeyTx, createAddKeyTx } from './wallet-known-tx';
+import {
+  createTx_DeleteKey,
+  createTx_AddKey,
+  createTx_ModifyQuorum,
+  createTx_AddMember,
+  createTx_RemoveMember
+} from './wallet-known-tx';
 import { emailToEnsDomain, precomputeAddress, getNameFromENS, Key } from '@blockframes/utils';
 
 @Injectable({ providedIn: 'root' })
@@ -90,15 +95,27 @@ export class WalletService {
     return new Contract(ensDomainOrAddress, ERC1077.abi, this.provider);
   }
 
-  public async setDeleteKeyTx(erc1077Address: string, key: Key) {
-    this.setTx(createDeleteKeyTx(erc1077Address, key.address, () => this.keyManager.deleteKey(key)));
+  public setDeleteKeyTx(erc1077Address: string, key: Key) {
+    this.setTx(createTx_DeleteKey(erc1077Address, key.address, () => this.keyManager.deleteKey(key)));
   }
 
-  public async setLinkKeyTx(erc1077Address: string, key: Key) {
-    this.setTx(createAddKeyTx(erc1077Address, key.address, () => this.keyManager.storeKey({...key, isLinked: true})));
+  public setLinkKeyTx(erc1077Address: string, key: Key) {
+    this.setTx(createTx_AddKey(erc1077Address, key.address, () => this.keyManager.storeKey({...key, isLinked: true})));
   }
 
-  public setTx(tx: LocalTx) {
+  public setUpdateQuorumTx(orgAddress: string, operationId: string, newQuroum: number) {
+    this.setTx(createTx_ModifyQuorum(orgAddress, operationId, newQuroum));
+  }
+
+  public setAddMemeberTx(orgAddress: string, operationId: string, memberAddress: string) {
+    this.setTx(createTx_AddMember(orgAddress, operationId, memberAddress));
+  }
+
+  public setRemoveMemeberTx(orgAddress: string, operationId: string, memberAddress: string) {
+    this.setTx(createTx_RemoveMember(orgAddress, operationId, memberAddress));
+  }
+
+  public setTx(tx: ActionTx) {
     this.store.update({tx});
   }
 
@@ -169,7 +186,11 @@ export class WalletService {
     if (txReceipt.status === 0) {
       throw new Error(`The transaction ${txReceipt.transactionHash} has failed !`);
     }
-    this.query.getValue().tx.callback(...args); // execute tx callback (ex: delete local key)
+
+    const hasCallback = !!this.query.getValue().tx.callback;
+    if(hasCallback) {
+      this.query.getValue().tx.callback(...args); // execute tx callback (ex: delete local key)
+    }
     return txReceipt;
   }
 
