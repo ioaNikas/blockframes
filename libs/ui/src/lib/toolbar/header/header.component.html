@@ -1,4 +1,9 @@
-<mat-toolbar class="mat-elevation-z2" fxLayout="row-reverse" fxLayoutAlign="space-between center">
+<mat-toolbar class="mat-elevation-z2 top-mat-toolbar" fxLayout="row-reverse" fxLayoutAlign="space-between center">
+  <!-- Applications panel-->
+  <button mat-icon-button [matMenuTriggerFor]="apps" class="apps-button">
+    <mat-icon svgIcon="applications"></mat-icon>
+  </button>
+  
   <!-- Dynamic content -->
   <section class="app-icon-container-toolbar">
     <ng-content select="[app-icon]"></ng-content>
@@ -20,9 +25,6 @@
 
   <ng-content select="[email-verify]"></ng-content>
 
-  <button mat-icon-button [matMenuTriggerFor]="apps" class="apps-button">
-    <mat-icon svgIcon="applications"></mat-icon>
-  </button>
   <mat-menu #apps="matMenu" class="appMenu mat-elevation-z6">
     <a mat-menu-item href="/delivery">
       <img src="/assets/fake-data/media_delivering.svg" alt="Media Delivering" />
