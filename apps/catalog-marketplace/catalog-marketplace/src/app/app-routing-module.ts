@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 
 // Guards
+import { CatalogMarketPlaceGuard } from './guards/catalog-marketplace.guard';
 import { AuthGuard } from '@blockframes/auth';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
 import { MovieEmptyComponent } from '@blockframes/movie/movie/components/movie-empty/movie-empty.component';
@@ -77,9 +78,10 @@ export const routes: Routes = [
               },
               {
                 path: ':movieId',
-                // canActivate: [MovieActiveGuard],
-                // canDeactivate: [MovieActiveGuard],
+                canActivate: [CatalogMarketPlaceGuard],
+                canDeactivate: [CatalogMarketPlaceGuard],
                 children: [
+                  { path: '', redirectTo: 'view', pathMatch: 'full' },
                   {
                     path: 'view',
                     loadChildren: () =>

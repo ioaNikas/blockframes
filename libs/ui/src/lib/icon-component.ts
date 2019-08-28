@@ -204,10 +204,6 @@ const ICONS_SVG = [
     url: 'assets/icons/icon_40px_ArrowOpen.svg'
   },
   {
-    name: 'arrowOpen',
-    url: 'assets/icons/icon_40px_ArrowOpen.svg'
-  },
-  {
     name: 'chevronLeft',
     url: 'assets/icons/icon_40px_ChevronLeft.svg'
   },
@@ -238,6 +234,18 @@ const ICONS_SVG = [
   {
     name: 'catalog-dashboard',
     url: 'assets/apps/catalog-dashboard.svg'
+  },
+  {
+    name: 'blank',
+    url: 'assets/icons/blank.svg'
+  },
+  {
+    name: 'ordered',
+    url: 'assets/icons/ordered.svg'
+  },
+  {
+    name: 'paid',
+    url: 'assets/icons/paid.svg'
   }
 ];
 

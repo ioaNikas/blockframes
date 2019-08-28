@@ -1,15 +1,28 @@
 export const CONTEXT_MENU = [
   {
-    route: 'default',
+    route: '/layout/o/catalog',
     items: [
-      { name: 'import', path: '/layout/o/home/import' } // temp until good place for this route is found
+      { 
+        name: 'home', 
+        path: '/layout/o/catalog/home' 
+      },
+      { 
+        name: 'search',
+        path: '/layout/o/catalog/search' 
+      }
     ]
   },
   {
-    route: '/layout/o/catalog',
+    route: '/layout/o/catalog/:movieId',
     items: [
-      { name: 'home', path: '/layout/o/catalog/home' },
-      { name: 'search', path: '/layout/o/catalog/search' }
+      {
+        name: 'view',
+        path: '/layout/o/catalog/:movieId/view'
+      },
+      {
+        name: 'create',
+        path: '/layout/o/catalog/:movieId/create'
+      }
     ]
   }
 ];

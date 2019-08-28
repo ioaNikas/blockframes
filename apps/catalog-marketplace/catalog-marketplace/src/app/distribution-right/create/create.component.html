@@ -1,6 +1,40 @@
 <aside>
   <form [formGroup]="form">
-
+    <mat-accordion>
+      <!-- Dates -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Dates
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <span formGroupName="duration">
+          <input matInput type="text" formControlName="from" placeholder="From">
+          <input matInput type="text" formControlName="to" placeholder="To">
+        </span>
+      </mat-expansion-panel>
+      <!-- Territories -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Territories
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <span>
+          <mat-checkbox *ngFor="let territory of movieTerritories" (change)="addTerritories(territory)">{{territory}}
+          </mat-checkbox>
+        </span>
+      </mat-expansion-panel>
+      <!-- Media -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Mandate Media</mat-panel-title>
+        </mat-expansion-panel-header>
+        <span>
+          <mat-checkbox *ngFor="let media of movieMedias">{{media}}</mat-checkbox>
+        </span>
+      </mat-expansion-panel>
+    </mat-accordion>
   </form>
 </aside>
 
