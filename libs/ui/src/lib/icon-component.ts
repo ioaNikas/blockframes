@@ -228,10 +228,6 @@ const ICONS_SVG = [
     url: 'assets/icons/icon_32px_ArrowRight.svg'
   },
   {
-    name: 'listMaterial',
-    url: 'assets/icons/icon_40px_ListMaterial.svg'
-  },
-  {
     name: 'movie-financing',
     url: 'assets/apps/movie-financing.svg'
   },
