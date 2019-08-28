@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
 import { ContextMenuComponent } from './context-menu/context-menu.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 //Modules
 import { RouterModule } from '@angular/router';
@@ -47,7 +48,11 @@ import { MatTabsModule } from '@angular/material/tabs';
   declarations: [
     HeaderComponent,
     ContextMenuComponent,
+    LeftMenuComponent,
   ],
-  exports: [HeaderComponent]
+  exports: [
+    HeaderComponent,
+    LeftMenuComponent
+  ]
 })
 export class ToolbarModule {}
