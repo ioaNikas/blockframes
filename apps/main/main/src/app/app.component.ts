@@ -9,8 +9,9 @@ import { IconComponent } from '@blockframes/ui';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor(private query: AuthQuery,
-              private icons: IconComponent
+  constructor(
+    private query: AuthQuery,
+    private icons: IconComponent  // even if not used in component, keep this to load icons
   ) {
   }
 
