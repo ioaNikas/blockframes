@@ -3,8 +3,8 @@
     <!-- TODO: issue#579 import picture -->
     <img class="profile-picture-menu" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Profile picture" />
   </button>
-  <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button" test-id="profile-button">
-    <mat-icon class="account-icon">arrow_drop_down</mat-icon>
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="profile-button" test-id="profile-button"> <!--merge buttons ?-->
+    <mat-icon svgIcon="arrowOpen" class="account-icon"></mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="mat-elevation-z6">
     <mat-list>
