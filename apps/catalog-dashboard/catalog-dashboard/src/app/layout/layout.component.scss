@@ -1,6 +1,7 @@
-.app-icon {
-  height: 40px;
-  width: 40px;
+.app-icon,
+.app-icon-button {
+  height: 32px;
+  width: 157px;
 }
 
 button {
@@ -12,4 +13,14 @@ button {
 main {
   height: 100%;
   padding-top: var(--toolbarHeight);
+}
+
+account-profile-menu {
+  margin-left: 20px;
+}
+
+mat-sidenav {
+  position: fixed;
+  width: 360px;
+  border-radius: 0 5px 5px 0;
 }

@@ -3,16 +3,28 @@ header {
 }
 
 main {
-  overflow: auto;
+  height: 100%;
+  padding-top: var(--toolbarHeight);
 }
 
-.app-icon {
-  height: 40px;
-  width: 40px;
+.app-icon,
+.app-icon-button {
+  height: 32px;
+  width: 157px;
 }
 
 button {
   margin-top: 5px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+
+account-profile-menu {
+  margin-left: 20px;
+}
+
+mat-sidenav {
+  position: fixed;
+  width: 360px;
+  border-radius: 0 5px 5px 0;
 }
