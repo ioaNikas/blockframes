@@ -18,3 +18,9 @@ main {
 account-profile-menu {
   margin-left: 20px;
 }
+
+mat-sidenav {
+  position: fixed;
+  width: 360px;
+  border-radius: 0 5px 5px 0;
+}
