@@ -226,6 +226,30 @@ const ICONS_SVG = [
   {
     name: 'arrowRight',
     url: 'assets/icons/icon_32px_ArrowRight.svg'
+  },
+  {
+    name: 'listMaterial',
+    url: 'assets/icons/icon_40px_ListMaterial.svg'
+  },
+  {
+    name: 'movie-financing',
+    url: 'assets/apps/movie-financing.svg'
+  },
+  {
+    name: 'stories-and-more',
+    url: 'assets/apps/stories-and-more.svg'
+  },
+  {
+    name: 'delivery',
+    url: 'assets/apps/delivery.svg'
+  },
+  {
+    name: 'catalog-marketplace',
+    url: 'assets/apps/catalog-marketplace.svg'
+  },
+  {
+    name: 'catalog-dashboard',
+    url: 'assets/apps/catalog-dashboard.svg'
   }
 ];
 

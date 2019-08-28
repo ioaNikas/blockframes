@@ -17,31 +17,31 @@ import { OrganizationMember, UserRole } from './organization.model';
 const APPS_DETAILS: AppDetails[] = [
   {
     name: 'Media Financiers',
-    logo: 'listMaterial',
+    logo: 'movie-financing',
     href: '/movie-financing',
     id: App.mediaFinanciers
   },
   {
     name: 'Stories and More',
-    logo: 'listMaterial',
+    logo: 'stories-and-more',
     href: '/stories-and-more',
     id: App.storiesAndMore
   },
   {
     name: 'Media Delivering',
-    logo: 'listMaterial',
+    logo: 'delivery',
     href: '/delivery',
     id: App.mediaDelivering
   },
   {
-    name: 'Bigger Boat - Dashboard',
-    logo: 'listMaterial',
-    href: '/catalog-dashboard',
+    name: 'Bigger Boat - Marketplace',
+    logo: 'catalog-marketplace',
+    href: '/catalog-marketplace',
     id: App.biggerBoat
   },
   {
-    name: 'Bigger Boat - Marketplace',
-    logo: 'listMaterial',
+    name: 'Bigger Boat - Dashboard',
+    logo: 'catalog-dashboard',
     href: '/catalog-dashboard',
     id: App.biggerBoat
   }
