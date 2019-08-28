@@ -2,6 +2,7 @@ import { Organization } from "@blockframes/organization";
 import { Material } from "@blockframes/material";
 import { Stakeholder } from "../../stakeholder/+state";
 import { DateRange } from "@blockframes/utils";
+import { DistributionRight } from "apps/catalog-marketplace/catalog-marketplace/src/app/distribution-right/+state/basket.model";
 
 export interface MovieSale { 
   operatorName: string;
@@ -106,6 +107,7 @@ export interface Movie {
   materials?: Material[];
   stakeholders?: Stakeholder[];
   sales: MovieSale[], //@todo 581 => move to subcollection
+  distributionRights: DistributionRight[],
 
   // @todo #643 not main movie attributes WIP
   

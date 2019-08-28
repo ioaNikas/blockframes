@@ -27,7 +27,8 @@
       "@blockframes/template": ["libs/material/src/index.ts"],
       "@blockframes/contracts": ["contracts/build"],
       "@blockframes/notification": ["libs/notification/index.ts"],
-      "@blockframes/catalog": ["libs/catalog/src/index.ts"]
+      "@blockframes/catalog": ["libs/catalog/src/index.ts"],
+      "@blockframes/catalog-marketplace": ["apps/catalog-marketplace/catalog-marketplace/src/index.ts"]
     },
     "module": "commonjs",
     "rootDir": "."
