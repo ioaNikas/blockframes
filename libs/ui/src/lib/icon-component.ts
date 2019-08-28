@@ -198,6 +198,26 @@ const ICONS_SVG = [
   {
     name: 'pdf',
     url: 'assets/icons/pdf.svg'
+  },
+  {
+    name: 'arrowOpen',
+    url: 'assets/icons/icon_40px_ArrowOpen.svg'
+  },
+  {
+    name: 'arrowOpen',
+    url: 'assets/icons/icon_40px_ArrowOpen.svg'
+  },
+  {
+    name: 'chevronLeft',
+    url: 'assets/icons/icon_40px_ChevronLeft.svg'
+  },
+  {
+    name: 'arrowRight',
+    url: 'assets/icons/icon_32px_ArrowRight.svg'
+  },
+  {
+    name: 'listMaterial',
+    url: 'assets/icons/icon_40px_ListMaterial.svg'
   }
 ];
 
