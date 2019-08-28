@@ -1,5 +1,5 @@
 <article test-id="apps-grid">
-  <h3>Apps</h3>
+  <h3>My DApps</h3>
   <article fxLayout="row wrap"  fxLayoutAlign="space-between center">
     <mat-card *ngFor="let app of (apps$ | async)">
       <a [href]="app.href">
