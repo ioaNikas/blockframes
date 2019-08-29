@@ -214,6 +214,10 @@ const ICONS_SVG = [
   {
     name: 'paid',
     url: 'assets/icons/paid.svg'
+  },
+  {
+    name: 'deliveries',
+    url: 'assets/icons/deliveries.svg'
   }
 ];
 

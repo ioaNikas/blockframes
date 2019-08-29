@@ -17,19 +17,25 @@ import { OrganizationMember, UserRole } from './organization.model';
 const APPS_DETAILS: AppDetails[] = [
   {
     name: 'Media Financiers',
-    logo: 'http://graphouille.g.r.pic.centerblog.net/6c2aaddd.png',
+    logo: 'deliveries',
     href: '/movie-financing',
     id: App.mediaFinanciers
   },
   {
     name: 'Stories and More',
-    logo: 'http://recueil-de-png.r.e.pic.centerblog.net/8cc2960d.png',
+    logo: 'deliveries',
     href: '/stories-and-more',
     id: App.storiesAndMore
   },
   {
     name: 'Media Delivering',
-    logo: 'http://recueil-de-png.r.e.pic.centerblog.net/22f09c18.png',
+    logo: 'deliveries',
+    href: '/delivery',
+    id: App.mediaDelivering
+  },
+  {
+    name: 'Media Delivering',
+    logo: 'deliveries',
     href: '/delivery',
     id: App.mediaDelivering
   }

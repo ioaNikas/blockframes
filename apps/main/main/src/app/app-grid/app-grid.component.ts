@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   AppDetailsWithStatus,
   OrganizationQuery,
@@ -10,7 +10,8 @@ import {
   selector: 'app-grid',
   templateUrl: './app-grid.component.html',
   styleUrls: ['./app-grid.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class AppGridComponent implements OnInit {
   public apps$: Observable<AppDetailsWithStatus[]>;
