@@ -218,6 +218,22 @@ const ICONS_SVG = [
   {
     name: 'deliveries',
     url: 'assets/icons/deliveries.svg'
+  },
+  {
+    name: 'deliveriesBlue',
+    url: 'assets/icons/deliveriesBlue.svg'
+  },
+  {
+    name: 'deliveriesGreen',
+    url: 'assets/icons/deliveriesGreen.svg'
+  },
+  {
+    name: 'deliveriesRed',
+    url: 'assets/icons/deliveriesRed.svg'
+  },
+  {
+    name: 'deliveriesYellow',
+    url: 'assets/icons/deliveriesYellow.svg'
   }
 ];
 

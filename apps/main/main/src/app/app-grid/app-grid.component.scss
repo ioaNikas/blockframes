@@ -1,15 +1,9 @@
-img {
-  max-width: 100%;
-  max-height: 100%;
-}
-
 mat-divider {
   width: 100%;
 }
 
 mat-card-content {
   height: 200px;
-  
 }
 
 mat-card-footer {
@@ -20,25 +14,7 @@ mat-card {
   width: 23%;
 }
 
-mat-icon.logoColor-0 svg g#Icons g#Artboard{
-  fill: #15BCF6;
-}
-
-mat-icon.logoColor-1 svg g#Icons g#Artboard{
-  fill: #34E4B6;
-}
-
-mat-icon.logoColor-2 svg g#Icons g#Artboard{
-  fill: #FFB90E;
-}
-
-mat-icon.logoColor-3 svg g#Icons g#Artboard{
-  fill: #FF0E48;
-}
-
-svg{
-  max-width: 100%;
-  max-height: 100%;
+.mat-icon {
   height: 30px;	
   width: 60px;
 }

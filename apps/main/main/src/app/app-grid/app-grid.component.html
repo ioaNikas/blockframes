@@ -1,10 +1,10 @@
 <article test-id="apps-grid">
   <h3>Apps</h3>
   <article fxLayout="row" fxLayoutAlign="space-between center">
-    <mat-card *ngFor="let app of (apps$ | async); let i = index">
+    <mat-card *ngFor="let app of (apps$ | async)">
       <a [href]="app.href">
         <mat-card-content fxLayout="column" fxLayoutAlign="center center">
-            <mat-icon matListIcon [svgIcon]="app.logo" [class]="'logoColor-'+i"></mat-icon>
+            <mat-icon matListIcon [svgIcon]="app.logo"></mat-icon>
         </mat-card-content>
       </a>
       <mat-divider></mat-divider>
