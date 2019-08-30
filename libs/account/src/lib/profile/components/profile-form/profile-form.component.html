@@ -2,15 +2,11 @@
 <article class="actions" fxLayout="column" fxLayoutAlign="center center">
   <img mat-card-image [src]="avatar">
   <mat-card-actions>
-    <button-upload 
-      accept="['.jpg', '.png']" 
-      path='avatar' 
-      [types]="['image/jpeg', 'image/png']"
-      [uploadOnFirestore]="true" 
-      (storeUploaded)="avatar = $event">
+    <button-upload accept="['.jpg', '.png']" path='avatar' [types]="['image/jpeg', 'image/png']"
+      [uploadOnFirestore]="true" (storeUploaded)="avatar = $event">
     </button-upload>
     <button mat-button color="primary" (click)="avatar = 'undefined'">
-      Delete this picture 
+      Delete this picture
     </button>
   </mat-card-actions>
 </article>

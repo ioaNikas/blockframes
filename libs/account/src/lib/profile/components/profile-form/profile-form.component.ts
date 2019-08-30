@@ -14,12 +14,12 @@ export class ProfileFormComponent {
   public get control() {
     return this.controlContainer.control;
   }
-  
+
   public get avatar() {
     return this.control.get('avatar').value;
   }
 
-  public set avatar(avatarPath: string | undefined){
+  public set avatar(avatarPath: string | undefined) {
     console.log(avatarPath);
     this.control.get('avatar').patchValue(avatarPath || PLACEHOLDER_AVATAR);
   }
