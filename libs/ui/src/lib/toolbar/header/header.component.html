@@ -1,4 +1,9 @@
-<mat-toolbar class="mat-elevation-z2" fxLayout="row-reverse" fxLayoutAlign="space-between center">
+<mat-toolbar class="mat-elevation-z2 top-mat-toolbar" fxLayout="row-reverse" fxLayoutAlign="space-between center">
+  <!-- Applications panel-->
+  <button mat-icon-button (click)="sidenav.toggle();" class="apps-button">
+    <mat-icon svgIcon="applications"></mat-icon>
+  </button>
+  
   <!-- Dynamic content -->
   <section class="app-icon-container-toolbar">
     <ng-content select="[app-icon]"></ng-content>
@@ -20,23 +25,6 @@
 
   <ng-content select="[email-verify]"></ng-content>
 
-  <button mat-icon-button [matMenuTriggerFor]="apps" class="apps-button">
-    <mat-icon svgIcon="applications"></mat-icon>
-  </button>
-  <mat-menu #apps="matMenu" class="appMenu mat-elevation-z6">
-    <a mat-menu-item href="/delivery">
-      <img src="/assets/fake-data/media_delivering.svg" alt="Media Delivering" />
-    </a>
-    <a mat-menu-item href="/movie-financing">
-      <img src="/assets/fake-data/media_financiers.svg" alt="Media Financiers" />
-    </a>
-    <a mat-menu-item href="https://invis.io/ZKRW20VCWTU#/361964437_IP_Center_-_Home" target="_blank">
-      <img src="/assets/fake-data/home_of_scripts.svg" alt="Home Of Scripts" />
-    </a>
-    <a mat-menu-item href="/bigger-boat">
-      <img src="/assets/fake-data/home_of_scripts.svg" alt="Bigger Boat" />
-    </a>
-  </mat-menu>
   <ng-content select="[apps-icons]"></ng-content>
   <ng-content select="[notifications]"></ng-content>
   <ng-content select="[profile-menu]"></ng-content>

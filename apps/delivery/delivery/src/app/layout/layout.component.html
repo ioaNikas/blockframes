@@ -1,35 +1,41 @@
-<toolbar-header id="navbar" >
-  <ng-container app-icon>
-    <button test-id="home" mat-icon-button routerLink="/layout">
-      <mat-icon svgIcon="media_delivering" class="app-icon"></mat-icon>
-    </button>
-  </ng-container>
-
-    <ng-container email-verify>
-      <auth-email-verify></auth-email-verify>
-    </ng-container>
-
-    <ng-container encrypting>
-      <encrypting-chips></encrypting-chips>
-    </ng-container>
-
-    <ng-container notifications>
-      <notification-widget></notification-widget>
-    </ng-container>
-
-  <ng-container profile-menu>
-    <account-profile-menu>
-      <ng-container widgets>
-        <account-profile-widget></account-profile-widget>
-        <wallet-widget></wallet-widget>
-        <mat-divider></mat-divider>
-        <organization-widget></organization-widget>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #leftSidenav mode="over">
+    <toolbar-left-menu [sidenav]="leftSidenav"></toolbar-left-menu>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <toolbar-header id="navbar" [sidenav]="leftSidenav">
+      <ng-container app-icon>
+        <button test-id="home" mat-icon-button class="app-icon-button" routerLink="/layout">
+          <mat-icon svgIcon="logoBFblue" class="app-icon"></mat-icon>
+        </button>
       </ng-container>
-    </account-profile-menu>
-  </ng-container>
 
-</toolbar-header>
+      <ng-container email-verify>
+        <auth-email-verify></auth-email-verify>
+      </ng-container>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+      <ng-container encrypting>
+        <encrypting-chips></encrypting-chips>
+      </ng-container>
+
+      <ng-container notifications>
+        <notification-widget></notification-widget>
+      </ng-container>
+
+      <ng-container profile-menu>
+        <account-profile-menu>
+          <ng-container widgets>
+            <account-profile-widget></account-profile-widget>
+            <wallet-widget></wallet-widget>
+            <mat-divider></mat-divider>
+            <organization-widget></organization-widget>
+          </ng-container>
+        </account-profile-menu>
+      </ng-container>
+
+    </toolbar-header>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

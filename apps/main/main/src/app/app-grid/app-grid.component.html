@@ -1,9 +1,11 @@
 <article test-id="apps-grid">
-  <h3>Apps</h3>
-  <article fxLayout="row" fxLayoutAlign="space-between center">
+  <h3>My DApps</h3>
+  <article fxLayout="row wrap"  fxLayoutAlign="space-between center">
     <mat-card *ngFor="let app of (apps$ | async)">
       <a [href]="app.href">
-        <mat-card-content><img [src]="app.logo" alt="App logo"/></mat-card-content>
+        <mat-card-content fxLayoutAlign="center center" fxLayout="row">
+          <mat-icon [svgIcon]="app.logo"></mat-icon>
+        </mat-card-content>
       </a>
       <mat-divider></mat-divider>
       <mat-card-actions [ngSwitch]="app.status">

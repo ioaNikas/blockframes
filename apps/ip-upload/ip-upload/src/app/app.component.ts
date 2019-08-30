@@ -9,7 +9,7 @@ import { IconComponent } from '@blockframes/ui';
 export class AppComponent {
   constructor(
     private query: AuthQuery,
-    private icons: IconComponent
+    private icons: IconComponent // even if not used in component, keep this to load icons
   ) {
   }
 

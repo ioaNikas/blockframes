@@ -214,6 +214,38 @@ const ICONS_SVG = [
   {
     name: 'paid',
     url: 'assets/icons/paid.svg'
+  },
+  {
+    name: 'arrowOpen',
+    url: 'assets/icons/icon_40px_ArrowOpen.svg'
+  },
+  {
+    name: 'chevronLeft',
+    url: 'assets/icons/icon_40px_ChevronLeft.svg'
+  },
+  {
+    name: 'arrowRight',
+    url: 'assets/icons/icon_32px_ArrowRight.svg'
+  },
+  {
+    name: 'movie-financing',
+    url: 'assets/apps/movie-financing.svg'
+  },
+  {
+    name: 'stories-and-more',
+    url: 'assets/apps/stories-and-more.svg'
+  },
+  {
+    name: 'delivery',
+    url: 'assets/apps/delivery.svg'
+  },
+  {
+    name: 'catalog-marketplace',
+    url: 'assets/apps/catalog-marketplace.svg'
+  },
+  {
+    name: 'catalog-dashboard',
+    url: 'assets/apps/catalog-dashboard.svg'
   }
 ];
 
