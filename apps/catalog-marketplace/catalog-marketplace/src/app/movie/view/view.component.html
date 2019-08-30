@@ -4,7 +4,6 @@
 <main *ngIf="(movie$ | async) as movie;">
   <header>
     <div class="background-movie" [style.backgroundImage]="'url('+movie.main.poster+')'"></div>
-    <!-- <img class="header-img" [src]="movie.main.poster"> -->
     <div fxLayout="row" fxLayoutAlign="center center">
       <h1 class="mat-display-3">{{movie.main.title.original}}</h1>
       <b class="mat-body-1" *ngFor="let director of movie.main.directors">
