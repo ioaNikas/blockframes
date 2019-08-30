@@ -2,12 +2,15 @@
   <mat-spinner color="accent" #loading></mat-spinner>
 </ng-template>
 <main *ngIf="(movie$ | async) as movie;">
-  <section class="header">
-    <img class="header-img" [src]="movie.main.poster" />
-    <h1 class="mat-display-3">{{movie.main.title.original}}</h1>
-    <span class="mat-body-1" *ngFor="let director of movie.main.directors">a film by {{director.firstName}}
-      {{director.lastName}}</span>
-  </section>
+  <header>
+    <div class="background-movie" [style.backgroundImage]="'url('+movie.main.poster+')'"></div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <h1 class="mat-display-3">{{movie.main.title.original}}</h1>
+      <b class="mat-body-1" *ngFor="let director of movie.main.directors">
+        a film by {{director.firstName}} {{director.lastName}}
+      </b>
+    </div>
+  </header>
   <section fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="50px">
     <aside fxLayout="column">
       <mat-card>
@@ -24,7 +27,7 @@
                 <li fxLayout="row"><b>End of rights</b><span>{{ parseRightEnds | date:'LLL-dd, yyyy' }}</span></li>
               </ul>
             </article>
-            <mat-divider></mat-divider>
+            <mat-divider [inset]="true"></mat-divider>
           </ng-container>
 
           <!-- Production -->
@@ -33,15 +36,19 @@
             <article>
               <ul>
                 <ng-container *ngIf="movie.main as main">
-                  <b>Production Companie(s)</b>
-                  <li fxLayout="row" *ngFor="let productionCompanies of movie.main.productionCompanies">
-                    {{ productionCompanies.firstName }}
+                  <li fxLayout="row">
+                      <b>Production Companie(s)</b>
+                      <span  *ngFor="let productionCompanies of movie.main.productionCompanies">
+                        {{ productionCompanies.firstName }}
+                      </span>
                   </li>
                 </ng-container>
                 <ng-container *ngIf="movie.salesInfo as salesInfo">
-                  <b>TV / Platform coproducer(s)</b>
-                  <li fxLayout="row" *ngFor="let broadcasterCoproducer of movie.salesInfo.broadcasterCoproducers">
-                    {{ broadcasterCoproducer }}
+                  <li fxLayout="row">
+                      <b>TV / Platform coproducer(s)</b>
+                      <span *ngFor="let broadcasterCoproducer of movie.salesInfo.broadcasterCoproducers">
+                        {{ broadcasterCoproducer }}
+                      </span>
                   </li>
                 </ng-container>
               </ul>
@@ -61,7 +68,7 @@
         <h3 class="mat-title">Principal Informations</h3>
         <article fxLayout="row" fxLayoutAlign="space-between start">
           <!-- First Column -->
-          <ng-container *ngIf="movie.main as main">
+          <ng-container *ngIf="movie.main as main" fxFlex="50%">
             <ul>
               <li fxLayout="row">
                 <b>Production Year</b>
@@ -75,24 +82,30 @@
                 <b>Original Title</b>
                 <span>{{ main.title.original }}</span>
               </li>
-              <b>Director</b>
-              <li fxLayout="row" *ngFor="let director of main.directors; let isLast=last">
-                <span>{{ director.lastName }} {{ director.firstName }} {{isLast ? '' : ', '}}</span>
+              <li fxLayout="row">
+                <b>Director</b>
+                <span *ngFor="let director of main.directors; let isLast=last">
+                  {{ director.lastName }} {{ director.firstName }} {{isLast ? '' : ', '}}
+                </span>
               </li>
             </ul>
           </ng-container>
           <!-- Second Column -->
-          <ul>
+          <ul fxFlex="50%">
             <ng-container *ngIf="movie.salesCast as salesCast">
-              <b>Principal Cast</b>
-              <li fxLayout="row" *ngFor="let cast of salesCast.credits; let isLast=last">
-                {{ cast.lastName }}{{ cast.firstName }} {{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Principal Cast</b>
+                <span *ngFor="let cast of salesCast.credits; let isLast=last">
+                  {{ cast.lastName }}{{ cast.firstName }} {{isLast ? '' : ', '}}
+                </span>
               </li>
             </ng-container>
             <ng-container *ngIf="movie.main as main">
-              <b>Genre</b>
-              <li fxLayout="row" *ngFor="let genre of main.genres; let isLast=last">
-                {{ genre }}{{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Genre</b>
+                <span *ngFor="let genre of main.genres; let isLast=last">
+                  {{ genre }}{{isLast ? '' : ', '}}
+                </span>
               </li>
               <li fxLayout="row">
                 <b>Country of Origin</b>
@@ -101,7 +114,7 @@
             </ng-container>
           </ul>
         </article>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Synopsis -->
         <ng-container *ngIf="movie.main as main">
           <h3 class="mat-title">Synopsis</h3>
@@ -109,12 +122,12 @@
             {{ main.shortSynopsis }}
           </article>
         </ng-container>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Film details -->
         <h3 class="mat-title">Film details</h3>
         <article fxLayout="row" fxLayoutAlign="space-between start">
           <!-- First Column -->
-          <ul>
+          <ul fxFlex="50%">
             <ng-container *ngIf="movie.main as main">
               <li fxLayout="row"><b>Length</b> <span>{{ main.length }} min</span></li>
               <li fxLayout="row"><b>ISAN Number</b> <span>{{ main.isan }}</span></li>
@@ -125,13 +138,15 @@
             </ng-container>
           </ul>
           <!-- Second Column -->
-          <ul>
+          <ul fxFlex="50%">
             <ng-container *ngIf="movie.salesInfo as salesInfo">
-              <b>Certifications</b>
-              <li fxLayout="row" *ngFor="let certification of salesInfo.certifications; let isLast=last">
-                {{ certification }} {{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Certifications</b>
+                <span *ngFor="let certification of salesInfo.certifications; let isLast=last">
+                  {{ certification }} {{isLast ? '' : ', '}}
+                </span>
               </li>
-              <li fxLayout="row"><b>Rating</b> <span>{{ salesInfo.pegi }}</span></li>
+              <li fxLayout="row" class="overflow"><b>Rating</b> <span>{{ salesInfo.pegi }}</span></li>
               <li fxLayout="row"><b>International Premiere</b> <span>{{ internationalPremiere }}</span></li>
               <li fxLayout="row">
                 <b>Release date in Origin Country</b>
@@ -139,7 +154,7 @@
             </ng-container>
           </ul>
         </article>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Festival Prizes -->
         <ng-container *ngIf="movie.festivalPrizes as festivalPrizes">
           <h3 class="mat-title">Festival Prizes</h3>
@@ -149,7 +164,7 @@
             </ng-container>
           </article>
         </ng-container>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Key Assets -->
         <ng-container *ngIf="movie.promotionalDescription as promotionalDescription">
           <h3 class="mat-title">Key Assets</h3>
@@ -157,7 +172,7 @@
             <p>{{ keyAsset }}</p>
           </article>
         </ng-container>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Keywords -->
         <ng-container *ngIf="movie.promotionalDescription.keywords as keywords">
           <h3 class="mat-title">Keywords</h3>
@@ -167,31 +182,37 @@
             </mat-chip-list>
           </article>
         </ng-container>
-        <mat-divider></mat-divider>
+        <mat-divider [inset]="true"></mat-divider>
         <!-- Languages -->
         <h3 class="mat-title">Languages</h3>
         <article fxLayout="row" fxLayoutAlign="space-between start">
           <!-- first column -->
-          <ul>
+          <ul fxFlex="50%">
             <ng-container *ngIf="movie.main as main">
-              <b>Original language(s)</b>
-              <li fxLayout="row" *ngFor="let languages of main.languages; let isLast=last">
-                {{ languages }}{{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Original language(s)</b>
+                <span *ngFor="let languages of main.languages; let isLast=last">
+                  {{ languages }}{{isLast ? '' : ', '}}
+                </span>
               </li>
             </ng-container>
             <ng-container *ngIf="movie.versionInfo as versionInfo">
-              <b>Available dubbing(s)</b>
-              <li fxLayout="row" *ngFor="let dubbing of versionInfo.dubbings; let isLast=last">
-                {{ dubbing }}{{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Available dubbing(s)</b>
+                <span *ngFor="let dubbing of versionInfo.dubbings; let isLast=last">
+                  {{ dubbing }}{{isLast ? '' : ', '}}
+                </span>
               </li>
             </ng-container>
           </ul>
           <!-- second column -->
-          <ul>
+          <ul fxFlex="50%">
             <ng-container *ngIf="movie.versionInfo as versionInfo">
-              <b>Available subtitle(s)</b>
-              <li fxLayout="row" *ngFor="let subtitle of versionInfo.subtitles; let isLast=last">
-                {{ subtitle }}{{isLast ? '' : ', '}}
+              <li fxLayout="row">
+                <b>Available subtitle(s)</b>
+                <span *ngFor="let subtitle of versionInfo.subtitles; let isLast=last">
+                  {{ subtitle }}{{isLast ? '' : ', '}}
+                </span>
               </li>
             </ng-container>
           </ul>
