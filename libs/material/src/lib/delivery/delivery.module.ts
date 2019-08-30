@@ -8,9 +8,6 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { NewTemplateComponent } from './components/delivery-new-template/new-template.component';
 import { StakeholderRepertoryComponent } from './components/stakeholder-repertory/stakeholder-repertory.component';
 import { StakeholderItemComponent } from './components/stakeholder-item/stakeholder-item.component';
-import { DeliveryTeamworkFormComponent } from './components/delivery-teamwork-form/delivery-teamwork-form.component';
-import { DeliveryTeamworkItemComponent } from './components/delivery-teamwork-item/delivery-teamwork-item.component';
-import { DeliveryTeamworkRepertoryComponent } from './components/delivery-teamwork-repertory/delivery-teamwork-repertory.component';
 import { DeliverySignComponent } from './components/delivery-sign/delivery-sign.component';
 import { DeliveryActionsComponent } from './components/delivery-actions/delivery-actions.component';
 import { DeliveryRepertoryComponent } from './components/delivery-repertory/delivery-repertory.component';
@@ -26,12 +23,12 @@ import { MovieMaterialListComponent } from './components/movie-material-list/mov
 import { MovieMaterialFormComponent } from './components/movie-material-form/movie-material-form.component';
 import { DeliveryInformationsStakeholdersComponent } from './components/delivery-informations-stakeholders/delivery-informations-stakeholders.component';
 import { DeliveryStatusesComponent } from './components/delivery-statuses/delivery-statuses.component';
+import { DeliveryStakeholdersRepertoryComponent } from './components/delivery-stakeholders-repertory/delivery-stakeholders-repertory.component';
 
 // Pages
 import { DeliveryListComponent } from './pages/delivery-list/delivery-list.component';
 import { DeliveryEditableComponent } from './pages/delivery-editable/delivery-editable.component';
 import { DeliveryTemplateListComponent } from './pages/delivery-template-list/delivery-template-list.component';
-import { DeliveryTeamworkEditableComponent } from './pages/delivery-teamwork-editable/delivery-teamwork-editable.component';
 import { DeliveryAddFindMovieComponent } from './pages/delivery-add-find-movie/delivery-add-find-movie.component';
 import { DeliveryAddChooseStarterComponent } from './pages/delivery-add-choose-starter/delivery-add-choose-starter.component';
 import { DeliveryAddTemplatePickerComponent } from './pages/delivery-add-template-picker/delivery-add-template-picker.component';
@@ -40,6 +37,8 @@ import { DeliveryInformationsEditableComponent } from './pages/delivery-informat
 import { DeliveryAddSpecificDeliveryListPickerComponent } from './pages/delivery-add-specific-delivery-list-picker/delivery-add-specific-delivery-list-picker.component';
 import { DeliveryAddCompleteComponent } from './pages/delivery-add-complete/delivery-add-complete.component';
 import { MovieEditableComponent } from './pages/movie-editable/movie-editable.component';
+import { DeliveryStakeholdersEditableComponent } from './pages/delivery-stakeholders-editable/delivery-stakeholders-editable.component';
+
 
 // Modules
 import {
@@ -94,14 +93,10 @@ import { MatStepperModule } from '@angular/material/stepper';
     DeliveryAddSettingsComponent,
     DeliveryAddCompleteComponent,
     NewTemplateComponent,
-    DeliveryTeamworkEditableComponent,
     DeliveryTemplateListComponent,
     StakeholderRepertoryComponent,
     StakeholderItemComponent,
     DeliveryActionsComponent,
-    DeliveryTeamworkFormComponent,
-    DeliveryTeamworkItemComponent,
-    DeliveryTeamworkRepertoryComponent,
     DeliveryInformationsEditableComponent,
     DeliverySignComponent,
     DeliveryRepertoryComponent,
@@ -116,7 +111,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     DeliveryInformationsStakeholdersComponent,
     MovieEditableComponent,
     MovieMaterialListComponent,
-    MovieMaterialFormComponent
+    MovieMaterialFormComponent,
+    DeliveryStakeholdersEditableComponent,
+    DeliveryStakeholdersRepertoryComponent
   ],
   imports: [
     CommonModule,
