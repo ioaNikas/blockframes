@@ -20,7 +20,7 @@ import { ProfileDeleteComponent } from './profile-delete/profile-delete.componen
 import { ProfileWidgetComponent } from './profile-widget/profile-widget.component';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 import { ProfileEditableComponent } from './pages/profile-editable/profile-editable.component';
-import { EditableSidenavModule, UiFormModule } from '@blockframes/ui';
+import { EditableSidenavModule, UiFormModule, UploadModule } from '@blockframes/ui';
 import { PasswordFormComponent } from './components/password-form/password-form.component';
 
 export const profileRoutes: Routes = [
@@ -44,6 +44,7 @@ export const profileRoutes: Routes = [
     MatMenuModule,
     EditableSidenavModule,
     UiFormModule,
+    UploadModule,
     RouterModule.forChild(profileRoutes),
   ],
   declarations: [

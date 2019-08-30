@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 
+export const PLACEHOLDER_AVATAR = '/assets/images/placeHolder_avatar.png';
+
 export interface User {
   uid: string;
   identity: {
@@ -12,8 +14,9 @@ export interface User {
   name: string;
   surname: string;
   phoneNumber: string;
-  position: string,
+  position: string;
   orgId: string;
+  avatar: string;
 }
 
 export interface UserForm {
@@ -32,6 +35,7 @@ export interface AuthState {
 
 export function createUser(user: Partial<User> = {}) {
   return {
+    avatar: PLACEHOLDER_AVATAR,
     ...user
   } as User;
 }

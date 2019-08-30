@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
+import { PLACEHOLDER_AVATAR } from '@blockframes/auth';
 
 @Component({
   selector: '[formGroupName] profile-form, [formGroup] profile-form, profile-form',
@@ -12,5 +13,13 @@ export class ProfileFormComponent {
 
   public get control() {
     return this.controlContainer.control;
+  }
+  
+  public get avatar() {
+    return this.control.get('avatar').value;
+  }
+
+  public set avatar(avatarPath: string | undefined) {
+    this.control.get('avatar').patchValue(avatarPath || PLACEHOLDER_AVATAR);
   }
 }

@@ -12,6 +12,7 @@
 @import './components/mat-button';
 @import './components/mat-card';
 @import './components/mat-list';
+@import './components/mat-toolbar';
 
 * {
   box-sizing: border-box;
@@ -24,7 +25,6 @@ html, body {
 
 body {
   margin: 0;
-  // background-color: var(--whiteBackground);
 }
 
 h1 {
@@ -48,7 +48,6 @@ h4 {
 
 p {
   font-size: 16px;
-  // color: var(--textGrey);
 }
 
 main {

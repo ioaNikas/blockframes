@@ -1,11 +1,13 @@
 import { FormControl } from '@angular/forms';
 import { FormEntity } from '@blockframes/utils';
+import { PLACEHOLDER_AVATAR } from '@blockframes/auth';
 
 export interface Profile {
   name: string;
   surname: string;
   phoneNumber: string;
   position: string;
+  avatar: string;
 }
 
 function createProfile(params: Partial<Profile> = {}): Profile {
@@ -14,6 +16,7 @@ function createProfile(params: Partial<Profile> = {}): Profile {
     surname: '',
     phoneNumber: '',
     position: '',
+    avatar: PLACEHOLDER_AVATAR,
     ...params
   };
 }
@@ -24,7 +27,8 @@ function createProfileControls(entity: Partial<Profile>) {
     name: new FormControl(profile.name),
     surname: new FormControl(profile.surname),
     phoneNumber: new FormControl(profile.phoneNumber),
-    position: new FormControl(profile.position)
+    position: new FormControl(profile.position),
+    avatar: new FormControl(profile.avatar)
   };
 }
 
