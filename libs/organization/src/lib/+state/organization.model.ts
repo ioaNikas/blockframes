@@ -1,5 +1,6 @@
 /** Gives information about an application */
 import { App } from '../permissions/+state';
+import { CatalogBasket } from '@blockframes/catalog-marketplace';
 
 export interface AppDetails {
   name: string;
@@ -72,6 +73,7 @@ export interface Organization {
   members?: OrganizationMember[];
   operations?: OrganizationOperation[];
   actions?: OrganizationAction[];
+  catalog: CatalogBasket;
 }
 
 export interface OrganizationForm {

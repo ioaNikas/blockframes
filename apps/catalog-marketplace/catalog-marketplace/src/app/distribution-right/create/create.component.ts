@@ -1,8 +1,13 @@
 import { MyErrorStateMatcher } from './../../movie/search/search.component';
 import { Language } from './../../movie/search/search.form';
 import { BasketService } from './../+state/basket.service';
-import { CatalogBasket, createBasket, createMovieDetails, MovieData } from './../+state/basket.model';
-import { ViewChild } from '@angular/core';;
+import {
+  CatalogBasket,
+  createBasket,
+  createMovieDetails,
+  MovieData
+} from './../+state/basket.model';
+import { ViewChild } from '@angular/core';
 import { DateRange } from '@blockframes/utils';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { map } from 'rxjs/operators';
@@ -116,7 +121,14 @@ export class DistributionRightCreateComponent implements OnInit {
       });
       this.movieDetails = createMovieDetails({
         id: this.query.getActive().id,
-        movieName: this.query.getActive().main.title.original
+        movieName: this.query.getActive().main.title.original,
+        // We only want to display the first value
+        territory: data.territories[0],
+        rights: data.medias[0],
+        endRights: data.duration.to.toDateString(),
+        languages: data.languages[0],
+        dubbed: data.dubbings[0],
+        subtitle: data.subtitles[0]
       });
       this.choosenDateRange.to = data.duration.to;
       this.choosenDateRange.from = data.duration.from;
@@ -125,7 +137,6 @@ export class DistributionRightCreateComponent implements OnInit {
       to: (this.query.getActive().salesAgentDeal.rightsEnd as any).to.toDate(),
       from: (this.query.getActive().salesAgentDeal.rightsEnd as any).from.toDate()
     });
-    this.form.valueChanges.subscribe(x => console.log(x, this.catalogBasket));
   }
 
   private _languageFilter(value: string): string[] {
