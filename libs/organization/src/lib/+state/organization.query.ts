@@ -18,7 +18,7 @@ const APPS_DETAILS: AppDetails[] = [
   {
     name: 'Media Financiers',
     logo: 'movie-financing',
-    href: '/movie-financing',
+    href: '/movie-financing/explorer',
     id: App.mediaFinanciers
   },
   {
