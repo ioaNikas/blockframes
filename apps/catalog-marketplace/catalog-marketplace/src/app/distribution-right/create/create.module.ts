@@ -36,17 +36,9 @@ import { MatTableModule } from '@angular/material/table';
     MatButtonModule,
     MatSortModule,
     MatTableModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatExpansionModule,
     MatCheckboxModule,
-    MatChipsModule,
     MatIconModule,
-    MatAutocompleteModule,
-    MatOptionModule,
-    MatDatepickerModule,
-    MatListModule,
+
     RouterModule.forChild([{ path: '', component: DistributionRightCreateComponent }])
   ]
 })

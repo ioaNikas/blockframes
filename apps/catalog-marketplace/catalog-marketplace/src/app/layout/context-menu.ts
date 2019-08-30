@@ -66,5 +66,18 @@ export const CONTEXT_MENU = [
         path: '/layout/o/catalog/:movieId/create'
       }
     ]
+  },
+  {
+    route: '/layout/o/catalog/:movieId/view',
+    items: [
+      {
+        name: 'view',
+        path: '/layout/o/catalog/:movieId/view'
+      },
+      {
+        name: 'create',
+        path: '/layout/o/catalog/:movieId/create'
+      }
+    ]
   }
 ];

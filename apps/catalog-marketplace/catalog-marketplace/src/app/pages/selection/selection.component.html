@@ -4,9 +4,15 @@
         <h1 class="mat-display-3">Global Selection</h1>
     </header>
     <section>
-        <span>
-            <h4 class="mat-h4">My films selection</h4>
-            <mat-divider></mat-divider>
-        </span>
+        <article>
+            <span fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <h4 class="mat-h4">My films selection</h4>
+                <mat-divider></mat-divider>
+            </span>
+        </article>
+        <article>
+            <catalog-form-selection [selectedMovieDetail]="movieDetails" (delete)="resetMovieDistribution()">
+            </catalog-form-selection>
+        </article>
     </section>
 </div>
