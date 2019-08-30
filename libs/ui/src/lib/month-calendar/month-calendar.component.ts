@@ -120,7 +120,6 @@ export class CalendarComponent implements OnInit {
 
   /** check if a range is fully in an other range */
   checkRangeInclusion(disableRange: DateRange){
-    console.log(this.from, this.to, disableRange.from, disableRange.to);
     return isBetween(this.from, disableRange.from, disableRange.to) 
         && isBetween(this.to, disableRange.from, disableRange.to);
   }
