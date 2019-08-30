@@ -79,6 +79,6 @@ export function createMovieDetails(details: Partial<MovieData> = {}) {
       territory: details.territory,
       endRights: details.endRights,
       ...details
-    } as MovieData;
+    } as MovieData
   ];
 }

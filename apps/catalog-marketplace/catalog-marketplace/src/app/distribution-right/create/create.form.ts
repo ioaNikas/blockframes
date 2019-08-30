@@ -1,4 +1,4 @@
-import { Language } from './../../pages/marketplace-search/marketplace-search.form';
+import { Language } from './../../movie/search/search.form';
 import { Territories } from './../+state/basket.model';
 import { FormEntity } from '@blockframes/utils';
 import { DistributionRight } from '../+state/basket.model';

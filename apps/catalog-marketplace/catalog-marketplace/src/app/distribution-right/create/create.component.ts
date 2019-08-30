@@ -1,7 +1,8 @@
+import { MyErrorStateMatcher } from './../../movie/search/search.component';
+import { Language } from './../../movie/search/search.form';
 import { BasketService } from './../+state/basket.service';
 import { CatalogBasket, createBasket, createMovieDetails, MovieData } from './../+state/basket.model';
-import { ViewChild } from '@angular/core';
-import { MovieTerritories } from './../../pages/marketplace-search/marketplace-search.form';
+import { ViewChild } from '@angular/core';;
 import { DateRange } from '@blockframes/utils';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { map } from 'rxjs/operators';
@@ -12,10 +13,9 @@ import { DistributionRightForm } from './create.form';
 import { MovieQuery, Movie } from '@blockframes/movie';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { startWith, debounceTime } from 'rxjs/operators';
-import { MyErrorStateMatcher } from '../../pages/marketplace-search/marketplace-search.component';
-import { Language } from '../../pages/marketplace-search/marketplace-search.form';
 import uuid from 'uuid/v4';
 import { createLanguageValidator } from './create-validators.form';
+import { MovieTerritories } from '../../movie/search/search.form';
 
 @Component({
   selector: 'distribution-right-create',
