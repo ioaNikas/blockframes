@@ -1,14 +1,18 @@
 <h4>Picture</h4>
-<!-- TODO: issue#579 import picture -->
-<div fxLayoutAlign="center">
-  <img
-    src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-    alt="Profile picture"
-  />
-</div>
 <article class="actions" fxLayout="column" fxLayoutAlign="center center">
-  <button mat-raised-button color="accent">Import a picture</button>
-  <button mat-button color="primary">Delete this picture</button>
+  <img mat-card-image [src]="avatar">
+  <mat-card-actions>
+    <button-upload 
+      accept="['.jpg', '.png']" 
+      path='avatar' 
+      [types]="['image/jpeg', 'image/png']"
+      [uploadOnFirestore]="true" 
+      (storeUploaded)="avatar = $event">
+    </button-upload>
+    <button mat-button color="primary" (click)="avatar = 'undefined'">
+      Delete this picture 
+    </button>
+  </mat-card-actions>
 </article>
 <mat-divider></mat-divider>
 <article>

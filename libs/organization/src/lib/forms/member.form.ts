@@ -9,6 +9,7 @@ function createMemberFormGroup(member: OrganizationMember) {
     surname: new FormControl(member.surname),
     email: new FormControl(member.email),
     role: new FormControl(member.role),
+    avatar: new FormControl(member.avatar)
   });
 }
 
