@@ -1,3 +1,4 @@
+import { CatalogMarketBasketGuard } from './guards/catalog-selection.guard';
 // Angular
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -76,12 +77,15 @@ export const routes: Routes = [
               },
               {
                 path: 'selection',
+                canActivate: [CatalogMarketBasketGuard],
                 loadChildren: () =>
-                  import('./pages/selection/selection.module').then(
-                    m => m.SelectionModule
-                  )
+                  import('./pages/selection/selection.module').then(m => m.SelectionModule)
               },
               {
+                path: 'selection',
+                loadChildren: () =>
+                  import('./pages/selection/selection.module').then(m => m.SelectionModule)
+              },
                 path: ':movieId',
                 canActivate: [CatalogMarketPlaceGuard],
                 canDeactivate: [CatalogMarketPlaceGuard],

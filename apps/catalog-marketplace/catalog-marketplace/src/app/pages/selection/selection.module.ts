@@ -3,10 +3,13 @@ import { CatalogSelectionComponent } from './selection.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { MatDividerModule } from '@angular/material/divider';
+
 @NgModule({
   declarations: [CatalogSelectionComponent],
   imports: [
     FlexLayoutModule,
+    MatDividerModule,
 
     RouterModule.forChild([
       {

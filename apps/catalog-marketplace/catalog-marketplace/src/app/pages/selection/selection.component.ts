@@ -1,5 +1,5 @@
-import { BasketQuery } from '../../distribution-right/+state/basket.query';
 import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'catalog-selection',
   templateUrl: './selection.component.html',
@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CatalogSelectionComponent implements OnInit {
   public distributionRights;
-  constructor(private basketQuery: BasketQuery) {}
+  constructor() {}
   ngOnInit() {
-    console.log(this.basketQuery.getAll())
+    // TODO #855: add guard to fetch distributionRights
   }
 }
