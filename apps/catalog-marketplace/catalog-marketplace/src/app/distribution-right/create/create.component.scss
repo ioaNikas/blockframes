@@ -5,9 +5,19 @@
 }
 
 aside {
-  width: 320px;
+  min-width: 450px;
+  width: 25%;
 }
 
 section {
+  width: 65%;
   flex: 1;
+}
+
+.capitalized {
+  text-transform: capitalize;
+}
+
+month-calendar {
+  width: 100%;
 }
