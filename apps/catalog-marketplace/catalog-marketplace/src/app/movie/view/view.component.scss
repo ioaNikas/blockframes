@@ -2,33 +2,39 @@
   display: flex;
 }
 
-.header {
-  height: 300px;
-  overflow: hidden;
+header {
   position: relative;
-  color: white;
-  .header-img {
-    display: block;
+  .background-movie {
+    height: 300px;
+    overflow: hidden;
+    color: white;
     width: 100%;
-    max-width: 100%;
-    height: auto !important;
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    height: auto !important;
     filter: blur(1.5rem);
+    background-size: cover;
+    background-position: center center;
+    // .header-img {
+    //   display: block;
+    //   max-width: 100%;
+    //   height: auto !important;
+    //   display: block;
+    //   width: 100%;
+    //   max-width: 100%;
+    //   height: auto !important;
+    // }
   }
-  h1 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  b {
-    position: absolute;
-    top: 65%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  div {
+    h1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    b {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 }
 
