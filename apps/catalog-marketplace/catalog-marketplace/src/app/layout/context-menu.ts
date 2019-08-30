@@ -13,6 +13,10 @@ export const CONTEXT_MENU = [
       {
         name: 'search',
         path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
       }
     ]
   },
@@ -26,19 +30,27 @@ export const CONTEXT_MENU = [
       {
         name: 'search',
         path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
       }
     ]
   },
   {
-    route: '/layout/o/catalog/:movieId/view',
+    route: '/layout/o/catalog/selection',
     items: [
       {
-        name: 'view',
-        path: '/layout/o/catalog/:movieId/view'
+        name: 'home',
+        path: '/layout/o/catalog/home'
       },
       {
-        name: 'create',
-        path: '/layout/o/catalog/:movieId/create'
+        name: 'search',
+        path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
       }
     ]
   },

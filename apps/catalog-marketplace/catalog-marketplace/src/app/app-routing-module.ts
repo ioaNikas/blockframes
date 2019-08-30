@@ -75,6 +75,13 @@ export const routes: Routes = [
                   import('./movie/search/search.module').then(m => m.MarketplaceSearchModule)
               },
               {
+                path: 'selection',
+                loadChildren: () =>
+                  import('./pages/selection/selection.module').then(
+                    m => m.SelectionModule
+                  )
+              },
+              {
                 path: ':movieId',
                 canActivate: [CatalogMarketPlaceGuard],
                 canDeactivate: [CatalogMarketPlaceGuard],
