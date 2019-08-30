@@ -17,20 +17,20 @@ export interface Price {
   amount: number;
   currency: Currency
 }
-
-export interface DistributionLanguage {
+// @TODO(MF): Going to be needed in the slim version?
+/* export interface DistributionLanguage {
   original: boolean;
   dubbed: boolean;
   subtitle: boolean;
-}
+} */
 
 export interface DistributionRight {
   id: string;
   movieId: string;
   medias: Media[];
-  languages: Partial<{
-    [language in keyof Languages]: DistributionLanguage
-  }>;
+  languages: Languages[],
+  dubbings: Languages[],
+  subtitles: Languages[],
   duration: {
     from: Date,
     to: Date
