@@ -12,6 +12,7 @@
       <mat-card>
         <form [formGroup]="form">
           <mat-accordion multi="true">
+
             <!-- Dates -->
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -25,6 +26,7 @@
                 </datepicker-range>
               </span>
             </mat-expansion-panel>
+
             <!-- Territories -->
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -50,6 +52,7 @@
                 </mat-autocomplete>
               </mat-form-field>
             </mat-expansion-panel>
+
             <!-- Media -->
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -61,6 +64,7 @@
                 </mat-checkbox>
               </mat-list>
             </mat-expansion-panel>
+
             <!-- Language -->
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -69,6 +73,7 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <article fxLayout="column">
+
                 <!-- Original -->
                 <span fxLayout="row" fxLayoutAlign="start start">
                   <ng-container *ngIf="!(movie.main.languages.length === 0); else noLanguages">
@@ -111,6 +116,7 @@
                     </mat-list-item>
                   </mat-list>
                 </ng-container>
+
                 <!-- Dubbings -->
                 <span fxLayout="row" fxLayoutAlign="start start">
                   <ng-container *ngIf="!(movie.versionInfo.dubbings.length === 0); else noDubbings">
@@ -152,6 +158,7 @@
                     </mat-list-item>
                   </mat-list>
                 </ng-container>
+                
                 <!-- Subtitles -->
                 <span fxLayout="row" fxLayoutAlign="start start">
                   <ng-container *ngIf="!(movie.versionInfo.subtitles.length === 0); else noSubtitles">
@@ -174,8 +181,7 @@
                       </mat-autocomplete>
                     </mat-form-field>
                     <button mat-button [disabled]="!subtitlesControl.valid" color="accent"
-                      (click)="addSubtitle(subtitlesControl.value)">Add
-                      subtitle</button>
+                      (click)="addSubtitle(subtitlesControl.value)">Add subtitle</button>
                   </ng-container>
                 </span>
                 <ng-template #noSubtitles class="mat-h4">

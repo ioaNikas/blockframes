@@ -1,6 +1,5 @@
-import { MovieData } from './../selection-table/form-selection.component';
 import { BasketService } from './../+state/basket.service';
-import { CatalogBasket, createBasket } from './../+state/basket.model';
+import { CatalogBasket, createBasket, createMovieDetails, MovieData } from './../+state/basket.model';
 import { ViewChild } from '@angular/core';
 import { MovieTerritories } from './../../pages/marketplace-search/marketplace-search.form';
 import { DateRange } from '@blockframes/utils';
@@ -30,18 +29,7 @@ export class DistributionRightCreateComponent implements OnInit {
   // This variable is going to be passed down to the catalog-form-selection table component
   public catalogBasket: CatalogBasket;
   // This variable is going to be injected in catalog-form-selection and gets updated by the form
-  public movieDetails: MovieData[] = [
-    {
-      id: this.query.getActive().id,
-      movieName: this.query.getActive().main.title.original,
-      rights: '',
-      languages: '',
-      dubbed: '',
-      subtitle: '',
-      territory: '',
-      endRights: ''
-    }
-  ];
+  public movieDetails: MovieData[];
   /*  
     This variable will be input the dates inside of the datepicker 
     if the users types it in manually
@@ -69,7 +57,7 @@ export class DistributionRightCreateComponent implements OnInit {
   public disabledDates: Date;
   public matcher = new MyErrorStateMatcher();
 
-  // Territory of territory
+  // Territory section
   public territoriesFilter: Observable<string[]>;
   public territoryControl = new FormControl();
   public availableTerritories: string[] = [];
@@ -126,19 +114,10 @@ export class DistributionRightCreateComponent implements OnInit {
           }
         ]
       });
-      this.movieDetails = [
-        {
-          id: this.query.getActive().id,
-          movieName: this.query.getActive().main.title.original,
-          endRights: data.duration.to.toDateString(),
-          /* We only want to display the first value */
-          territory: data.territories[0],
-          languages: data.languages[0],
-          dubbed: data.dubbings[0],
-          subtitle: data.subtitles[0],
-          rights: data.medias[0]
-        }
-      ];
+      this.movieDetails = createMovieDetails({
+        id: this.query.getActive().id,
+        movieName: this.query.getActive().main.title.original
+      });
       this.choosenDateRange.to = data.duration.to;
       this.choosenDateRange.from = data.duration.from;
     });
@@ -258,17 +237,9 @@ export class DistributionRightCreateComponent implements OnInit {
   }
 
   public resetMovieDistribution() {
-    this.movieDetails = [
-      {
-        id: this.query.getActive().id,
-        movieName: this.query.getActive().main.title.original,
-        rights: '',
-        languages: '',
-        dubbed: '',
-        subtitle: '',
-        territory: '',
-        endRights: ''
-      }
-    ];
+    this.movieDetails = createMovieDetails({
+      id: this.query.getActive().id,
+      movieName: this.query.getActive().main.title.original
+    });
   }
 }

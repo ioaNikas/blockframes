@@ -15,7 +15,7 @@ export const enum BasketStatus {
 
 export interface Price {
   amount: number;
-  currency: Currency
+  currency: Currency;
 }
 // @TODO(MF): Going to be needed in the slim version?
 /* export interface DistributionLanguage {
@@ -28,20 +28,31 @@ export interface DistributionRight {
   id: string;
   movieId: string;
   medias: Media[];
-  languages: Languages[],
-  dubbings: Languages[],
-  subtitles: Languages[],
+  languages: Languages[];
+  dubbings: Languages[];
+  subtitles: Languages[];
   duration: {
-    from: Date,
-    to: Date
+    from: Date;
+    to: Date;
   };
-  territories: Territories[]
+  territories: Territories[];
 }
 
 export interface CatalogBasket {
   status: BasketStatus;
   rights: DistributionRight[];
   price: Price;
+}
+
+export interface MovieData {
+  id: string;
+  movieName: string;
+  endRights: string;
+  territory: string;
+  rights: string;
+  languages: string;
+  dubbed: string;
+  subtitle: string;
 }
 
 /**
@@ -54,4 +65,20 @@ export function createBasket(basket: Partial<CatalogBasket> = {}) {
     rights: [],
     ...basket
   } as CatalogBasket;
+}
+
+export function createMovieDetails(details: Partial<MovieData> = {}) {
+  return [
+    {
+      id: details.id,
+      movieName: details.movieName,
+      rights: details.rights,
+      languages: details.languages,
+      dubbed: details.dubbed,
+      subtitle: details.subtitle,
+      territory: details.territory,
+      endRights: details.endRights,
+      ...details
+    } as MovieData;
+  ];
 }
