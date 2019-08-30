@@ -1,10 +1,16 @@
 
 <div fxLayout="row" fxLayoutAlign="start center">
-  <img [src]="urls[0]">
-  <ng-container *ngIf="urls.length > 1">
-      <img [src]="urls[1]">
+  
+  <ng-container *ngFor="let url of _urls">
+
+    <img *ngIf="!!url; else unknown" [src]="url">
+    <ng-template #unknown>
+      <mat-icon>help_outline</mat-icon>
+    </ng-template>
+    
   </ng-container>
-  <ng-container *ngIf="urls.length > 2">
-    +{{urls.length - 2}}
+
+  <ng-container *ngIf="_moreDetails > 0">
+    +{{_moreDetails}}
   </ng-container>
 </div>

@@ -16,6 +16,8 @@ import { TemplateQuery } from '../../template/+state';
 import { DeliveryOption, DeliveryWizard, DeliveryWizardKind } from './delivery.store';
 import { AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
+import { WalletService } from 'libs/ethers/src/lib/wallet/+state';
+import { CreateTx } from '@blockframes/ethers';
 
 const Timestamp = firebase.firestore.Timestamp;
 
@@ -73,6 +75,7 @@ export class DeliveryService {
     private query: DeliveryQuery,
     private permissionsService: PermissionsService,
     private shService: StakeholderService,
+    private walletService: WalletService,
     private db: FireQuery
   ) {}
 
@@ -307,9 +310,9 @@ export class DeliveryService {
   }
 
   /** Remove signatures in array validated of delivery */
-  public unsealDelivery(): Promise<any> {
+  public unsealDelivery(): Promise<void> {
     // TODO(issue#775): ask all stakeholders for permission to re-open the delivery form
-    return this.currentDeliveryDoc.update({ validated: [] });
+    return this.currentDeliveryDoc.update({ validated: [], isSigned: false });
   }
 
   /** Deletes delivery and all the sub-collections in firebase */
@@ -318,17 +321,35 @@ export class DeliveryService {
   }
 
   /** Sign array validated of delivery with stakeholder logged */
-  public signDelivery(): Promise<any> {
-    const delivery = this.query.getActive();
-    const organizationId = this.organizationQuery.getValue().org.id;
-    const { id: deliveryId, validated, stakeholders } = delivery;
+  public signDelivery(deliveryId?: string): Promise<any> {
 
-    const stakeholderSignee = stakeholders.find(({ id }) => organizationId === id);
+    let delivery: Delivery;
+
+    if (!!deliveryId) {
+      delivery = this.query.getEntity(deliveryId);
+    } else {
+      delivery = this.query.getActive();
+    }
+
+    const organizationId = this.organizationQuery.getValue().org.id;
+    const { id, validated, stakeholders } = delivery;
+
+    const stakeholderSignee = stakeholders.find(({ id: stakeholderId }) => organizationId === stakeholderId);
 
     if (!validated.includes(stakeholderSignee.id)) {
       const updatedValidated = [...validated, stakeholderSignee.id];
-      return this.deliveryDoc(deliveryId).update({ validated: updatedValidated });
+      return this.deliveryDoc(id).update({ validated: updatedValidated });
     }
+  }
+
+  public setSignDeliveryTx(orgAddress: string, deliveryId: string, deliveryHash: string) {
+    const callback = async () => {
+      await Promise.all([
+        this.db.collection('actions').doc(deliveryHash).set({name: `Delivery #${deliveryId}`}),
+        this.signDelivery(deliveryId),
+      ]);
+    };
+    this.walletService.setTx(CreateTx.approveDelivery(orgAddress, deliveryHash, callback));
   }
 
   /** Create a transaction to copy the template/movie materials into the delivery materials */
@@ -392,16 +413,5 @@ export class DeliveryService {
   public removeStakeholder(stakeholderId: string) {
     const deliveryId = this.query.getActiveId();
     return this.deliveryStakeholderDoc(deliveryId, stakeholderId).delete();
-  }
-
-  /** Returns true if number of signatures in validated equals number of stakeholders in delivery sub-collection */
-  public async isDeliveryValidated(deliveryId: string): Promise<boolean> {
-    const delivery = this.query.getEntity(deliveryId);
-
-    const stakeholders = await this.deliverStakeholdersDoc(delivery.id)
-      .get()
-      .toPromise();
-
-    return delivery.validated.length === stakeholders.size;
   }
 }

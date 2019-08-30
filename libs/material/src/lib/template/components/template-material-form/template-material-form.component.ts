@@ -1,20 +1,16 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
-import { Delivery, Currencies } from '../../+state';
 import { Material } from '../../../material/+state';
+import { Currencies } from '../../../delivery/+state';
 
 @Component({
-  selector: '[formGroupName] delivery-material-form, [formGroup] delivery-material-form, delivery-material-form',
-  templateUrl: './delivery-material-form.component.html',
-  styleUrls: ['./delivery-material-form.component.scss'],
+  selector: '[formGroup] template-material-form',
+  templateUrl: './template-material-form.component.html',
+  styleUrls: ['./template-material-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class DeliveryMaterialFormComponent{
-  @Input() delivery: Delivery;
-
+export class TemplateMaterialFormComponent{
   @Output() delete = new EventEmitter<Material>();
-  @Output() enable = new EventEmitter<void>();
-  @Output() disable = new EventEmitter<void>();
 
   public currencies = Currencies;
 
@@ -23,5 +19,4 @@ export class DeliveryMaterialFormComponent{
   public get control() {
     return this.controlContainer.control;
   }
-
 }

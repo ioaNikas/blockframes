@@ -3,8 +3,9 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { OrganizationOperation, OrganizationMember, OrganizationService } from '../../+state';
 import { MatSlideToggleChange } from '@angular/material';
 import { PermissionsQuery } from '../../permissions/+state';
-import { WalletService } from 'libs/ethers/src/lib/wallet/+state';
 import { Router } from '@angular/router';
+import { WalletService } from 'libs/ethers/src/lib/wallet/+state';
+import { CreateTx } from '@blockframes/ethers';
 
 @Component({
   selector: 'organization-signer-form',
@@ -20,8 +21,8 @@ export class OrganizationSignerFormComponent {
     public controlContainer: ControlContainer,
     private permissionQuery: PermissionsQuery,
     private service: OrganizationService,
-    private walletService: WalletService,
     private router: Router,
+    private walletService: WalletService,
   ) { }
 
   public get control() {
@@ -50,8 +51,8 @@ export class OrganizationSignerFormComponent {
     const orgAddress = await this.service.getAddress();
 
     toggle.checked
-      ? this.walletService.setAddMemeberTx(orgAddress, id, memberAddress)
-      : this.walletService.setRemoveMemeberTx(orgAddress, id, memberAddress);
+      ? this.walletService.setTx(CreateTx.addMember(orgAddress, id, memberAddress))
+      : this.walletService.setTx(CreateTx.removeMember(orgAddress, id, memberAddress));
 
     this.router.navigateByUrl('/layout/o/account/wallet/send');
   }

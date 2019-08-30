@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { Step } from '../../+state';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -15,10 +9,11 @@ import { MatTableDataSource } from '@angular/material/table';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeliveryInformationsStepsRepertoryComponent {
-
-  @Input() set steps(steps: Step[]) {
+  @Input()
+  set steps(steps: Step[]) {
     this.dataSource = new MatTableDataSource(steps);
   }
+  @Input() isSigned: boolean;
 
   @Output() editing = new EventEmitter();
 

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TextFieldModule } from '@angular/cdk/text-field';
@@ -14,7 +13,6 @@ import { DeliveryTeamworkItemComponent } from './components/delivery-teamwork-it
 import { DeliveryTeamworkRepertoryComponent } from './components/delivery-teamwork-repertory/delivery-teamwork-repertory.component';
 import { DeliverySignComponent } from './components/delivery-sign/delivery-sign.component';
 import { DeliveryActionsComponent } from './components/delivery-actions/delivery-actions.component';
-import { DeliveryFiltersComponent } from './components/delivery-filters/delivery-filters.component';
 import { DeliveryRepertoryComponent } from './components/delivery-repertory/delivery-repertory.component';
 import { DeliveryInformationsDatesDisplayComponent } from './components/delivery-informations-dates-display/delivery-informations-dates-display.component';
 import { DeliveryInformationsDatesFormComponent } from './components/delivery-informations-dates-form/delivery-informations-dates-form.component';
@@ -26,6 +24,8 @@ import { DeliveryInformationsDeadlinesFormComponent } from './components/deliver
 import { DeliveryInformationsDeadlinesRepertoryComponent } from './components/delivery-informations-deadlines-repertory/delivery-informations-deadlines-repertory.component';
 import { MovieMaterialListComponent } from './components/movie-material-list/movie-material-list.component';
 import { MovieMaterialFormComponent } from './components/movie-material-form/movie-material-form.component';
+import { DeliveryInformationsStakeholdersComponent } from './components/delivery-informations-stakeholders/delivery-informations-stakeholders.component';
+import { DeliveryStatusesComponent } from './components/delivery-statuses/delivery-statuses.component';
 
 // Pages
 import { DeliveryListComponent } from './pages/delivery-list/delivery-list.component';
@@ -37,6 +37,8 @@ import { DeliveryAddChooseStarterComponent } from './pages/delivery-add-choose-s
 import { DeliveryAddTemplatePickerComponent } from './pages/delivery-add-template-picker/delivery-add-template-picker.component';
 import { DeliveryAddSettingsComponent } from './pages/delivery-add-settings/delivery-add-settings.component';
 import { DeliveryInformationsEditableComponent } from './pages/delivery-informations-editable/delivery-informations-editable.component';
+import { DeliveryAddSpecificDeliveryListPickerComponent } from './pages/delivery-add-specific-delivery-list-picker/delivery-add-specific-delivery-list-picker.component';
+import { DeliveryAddCompleteComponent } from './pages/delivery-add-complete/delivery-add-complete.component';
 import { MovieEditableComponent } from './pages/movie-editable/movie-editable.component';
 
 // Modules
@@ -54,6 +56,8 @@ import {
 } from '@blockframes/ui';
 import { OrganizationModule } from '@blockframes/organization';
 import { MaterialModule } from '../material/material.module';
+import { DeliveryRoutingModule } from './delivery-routing-module';
+import { MovieModule } from '@blockframes/movie';
 
 // Material
 import { MatCardModule } from '@angular/material/card';
@@ -76,143 +80,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
-
-// Guards
-import { MovieActiveGuard, MovieListGuard, MovieModule } from '@blockframes/movie';
-import { DeliveryActiveGuard } from './guards/delivery-active.guard';
-import { DeliveryListGuard } from './guards/delivery-list.guard';
-import { DeliveryMaterialsGuard, MovieMaterialsGuard } from '../material';
-import { TemplateActiveGuard } from '../template/guards/template-active.guard';
-import { TemplateListGuard } from '../template/guards/template-list.guard';
-import { DeliveryAddSpecificDeliveryListPickerComponent } from './pages/delivery-add-specific-delivery-list-picker/delivery-add-specific-delivery-list-picker.component';
-import { DeliveryAddCompleteComponent } from './pages/delivery-add-complete/delivery-add-complete.component';
-import { DeliveryStatusesComponent } from './components/delivery-statuses/delivery-statuses.component';
 import { MatStepperModule } from '@angular/material/stepper';
-
-const routes: Routes = [
-  {
-    path: 'add',
-    canActivate: [MovieListGuard],
-    canDeactivate: [MovieListGuard],
-    children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: '1-find-movie'
-      },
-      {
-        path: '1-find-movie',
-        pathMatch: 'full',
-        component: DeliveryAddFindMovieComponent
-      },
-      {
-        path: ':movieId',
-        canActivate: [MovieActiveGuard],
-        canDeactivate: [MovieActiveGuard],
-        children: [
-          {
-            path: '2-choose-starter',
-            pathMatch: 'full',
-            component: DeliveryAddChooseStarterComponent
-          },
-          {
-            path: '3-pick-template',
-            canActivate: [TemplateListGuard],
-            canDeactivate: [TemplateListGuard],
-            pathMatch: 'full',
-            component: DeliveryAddTemplatePickerComponent
-          },
-          {
-            path: '3-pick-specific-delivery-list',
-            pathMatch: 'full',
-            component: DeliveryAddSpecificDeliveryListPickerComponent
-          },
-          {
-            path: '4-settings',
-            pathMatch: 'full',
-            component: DeliveryAddSettingsComponent
-          },
-          {
-            path: '5-complete',
-            pathMatch: 'full',
-            component: DeliveryAddCompleteComponent
-          },
-          {
-            path: ':templateId',
-            canActivate: [TemplateActiveGuard],
-            canDeactivate: [TemplateActiveGuard],
-            children: [
-              {
-                path: '4-settings',
-                pathMatch: 'full',
-                component: DeliveryAddSettingsComponent
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    path: ':movieId',
-    canActivate: [MovieActiveGuard],
-    canDeactivate: [MovieActiveGuard],
-    children: [
-      {
-        path: '',
-        redirectTo: 'list',
-        pathMatch: 'full'
-      },
-      {
-        path: 'list',
-        canActivate: [DeliveryListGuard],
-        canDeactivate: [DeliveryListGuard],
-        component: DeliveryListComponent
-      },
-      {
-        path: 'template-picker',
-        // TODO: Getting redirected to templates/list if there is no template to load => ISSUE#648
-        canActivate: [TemplateListGuard],
-        canDeactivate: [TemplateListGuard],
-        component: DeliveryTemplateListComponent
-      },
-      {
-        path: 'materials',
-        canActivate: [MovieMaterialsGuard],
-        canDeactivate: [MovieMaterialsGuard],
-        component: MovieEditableComponent
-      },
-      {
-        path: ':deliveryId',
-        canActivate: [DeliveryActiveGuard],
-        canDeactivate: [DeliveryActiveGuard],
-        children: [
-          {
-            path: '',
-            redirectTo: 'view',
-            pathMatch: 'full'
-          },
-          {
-            path: 'list',
-            canActivate: [DeliveryMaterialsGuard],
-            canDeactivate: [DeliveryMaterialsGuard],
-            component: DeliveryEditableComponent
-          },
-          {
-            path: 'stakeholders',
-            component: DeliveryTeamworkEditableComponent
-          },
-          {
-            path: 'informations',
-            canActivate: [DeliveryMaterialsGuard],
-            canDeactivate: [DeliveryMaterialsGuard],
-            component: DeliveryInformationsEditableComponent
-          }
-        ]
-      }
-    ]
-  }
-];
 
 @NgModule({
   declarations: [
@@ -230,7 +98,6 @@ const routes: Routes = [
     DeliveryTemplateListComponent,
     StakeholderRepertoryComponent,
     StakeholderItemComponent,
-    DeliveryFiltersComponent,
     DeliveryActionsComponent,
     DeliveryTeamworkFormComponent,
     DeliveryTeamworkItemComponent,
@@ -246,6 +113,7 @@ const routes: Routes = [
     DeliveryStatusesComponent,
     DeliveryInformationsDeadlinesFormComponent,
     DeliveryInformationsDeadlinesRepertoryComponent,
+    DeliveryInformationsStakeholdersComponent,
     MovieEditableComponent,
     MovieMaterialListComponent,
     MovieMaterialFormComponent
@@ -267,6 +135,9 @@ const routes: Routes = [
     TeamWorkModule,
     OrganizationModule,
     EditableSidenavModule,
+    DeliveryRoutingModule,
+    MovieModule,
+    FeedbackMessageModule,
 
     // Material
     MatExpansionModule,
@@ -290,10 +161,6 @@ const routes: Routes = [
     MatTooltipModule,
     MatAutocompleteModule,
     MatSortModule,
-
-    RouterModule.forChild(routes),
-    MovieModule,
-    FeedbackMessageModule,
     MatStepperModule
   ],
   entryComponents: [NewTemplateComponent, DeliverySignComponent]
