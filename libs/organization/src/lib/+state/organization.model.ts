@@ -72,12 +72,17 @@ export interface Organization {
   members?: OrganizationMember[];
   operations?: OrganizationOperation[];
   actions?: OrganizationAction[];
+  logo?: string;
 }
+
 
 export interface OrganizationForm {
   name: string;
   adress: string;
 }
+
+  // TODO get a good initial logo 
+export const PLACEHOLDER_LOGO = 'https://images2.minutemediacdn.com/image/upload/c_crop,h_1193,w_2121,x_0,y_64/v1565279671/shape/mentalfloss/578211-gettyimages-542930526.jpg';
 
 /**
  * A factory function that creates an Organization
@@ -94,9 +99,11 @@ export function createOrganization(params: Partial<Organization> = {}): Organiza
     updated: Date.now(),
     actions: [],
     members: [],
+    logo: PLACEHOLDER_LOGO, 
     ...params
   } as Organization;
 }
+
 
 export function createOperation(operation: Partial<OrganizationOperation> = {}): OrganizationOperation {
   return {
