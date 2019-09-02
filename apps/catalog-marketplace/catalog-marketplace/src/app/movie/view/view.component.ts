@@ -13,7 +13,6 @@ import { tap } from 'rxjs/operators';
 export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
-  public movieId: string;
   public parseRightEnds: Date;
 
   constructor(private query: MovieQuery) {}
@@ -24,7 +23,6 @@ export class MovieViewComponent implements OnInit {
 
   private async getMovie() {
     this.loading$ = this.query.selectLoading();
-    this.movieId = this.query.getActiveId();
     this.movie$ = this.query
       .selectActive()
       .pipe(
