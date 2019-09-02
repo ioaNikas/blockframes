@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 
 // Guards
+import { CatalogMarketBasketGuard } from './guards/catalog-selection.guard';
 import { CatalogMarketPlaceGuard } from './guards/catalog-marketplace.guard';
 import { AuthGuard } from '@blockframes/auth';
 import { PermissionsGuard, OrganizationGuard } from '@blockframes/organization';
@@ -76,7 +77,7 @@ export const routes: Routes = [
               },
               {
                 path: 'selection',
-                // canActivate: [CatalogMarketBasketGuard],
+                canActivate: [CatalogMarketBasketGuard],
                 loadChildren: () =>
                   import('./pages/selection/selection.module').then(m => m.SelectionModule)
               },
