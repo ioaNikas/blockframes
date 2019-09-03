@@ -77,6 +77,7 @@ export const routes: Routes = [
               },
               {
                 path: 'selection',
+                // TODO #855 add this guard
                 // canActivate: [CatalogMarketBasketGuard],
                 loadChildren: () =>
                   import('./pages/selection/selection.module').then(m => m.SelectionModule)

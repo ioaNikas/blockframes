@@ -22,7 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
-  declarations: [DistributionRightCreateComponent, CatalogFormSelectionComponent],
+  declarations: [DistributionRightCreateComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

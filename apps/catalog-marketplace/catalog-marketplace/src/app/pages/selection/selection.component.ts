@@ -1,10 +1,8 @@
-import { MovieData, DistributionRight } from './../../distribution-right/+state/basket.model';
+import { MovieQuery } from 'libs/movie/src/lib/movie/+state/movie.query';
+import { MovieData } from './../../distribution-right/+state/basket.model';
 import { Component, OnInit } from '@angular/core';
-import { BasketQuery } from '../../distribution-right/+state/basket.query';
-import { FireQuery } from '@blockframes/utils';
 import { OrganizationQuery } from '@blockframes/organization';
-import { Observable } from 'rxjs';
-import { MovieQuery, staticModels } from '@blockframes/movie';
+import { staticModels } from '@blockframes/movie';
 import { FormControl } from '@angular/forms';
 import { BasketService } from '../../distribution-right/+state/basket.service';
 
@@ -14,38 +12,48 @@ import { BasketService } from '../../distribution-right/+state/basket.service';
   styleUrls: ['./selection.component.scss']
 })
 export class CatalogSelectionComponent implements OnInit {
-  public distributionRights;
-  public rightDetail: MovieData[];
-  public movieID;
+  public movieDistributionRights: MovieData[];
   public priceControl: FormControl = new FormControl(null);
-  public movieName: string;
   public currencyList: string[];
 
-  constructor(private basketQuery: BasketQuery, private db: FireQuery, private orgQuery: OrganizationQuery, private basketService: BasketService, private movie: MovieQuery) {}
- ngOnInit() {
-  this.distributionRights = this.orgQuery.getValue().org.catalog;
-  this.currencyList = staticModels['MOVIE_CURRENCIES'].map(key => key.label);
-  this.rightDetail = this.distributionRights.rights.map(right => this.CreateRightDetail({right}));
-  console.log(this.currencyList)
-}
-
-  public CreateRightDetail(detail) {
-    return  {
-        id: detail.right.id,
-        // TODO: get movie name
-        // movieName: this.movie.getAll().map(name=> name.id === detail.right.id),
-        territory: detail.right.territories[0],
-        rights: detail.right.medias[0],
-        endRights: (detail.right.duration as any).to.toDate().toDateString() ,
-        languages: detail.right.languages[0],
-        dubbed: detail.right.dubbings[0],
-        subtitle: detail.right.subtitles[0]
-      } as MovieData;
+  constructor(
+    private orgQuery: OrganizationQuery,
+    private basketService: BasketService,
+    private movieQuery: MovieQuery
+  ) {}
+  ngOnInit() {
+    this.currencyList = staticModels['MOVIE_CURRENCIES'].map(key => key.label);
+    this.movieDistributionRights = this.orgQuery
+      .getValue()
+      .org.catalog.rights.map(right => this.createRightDetail({ right }));
+      console.log(this.movieDistributionRights);
   }
 
-  public resetMovieDistribution(movieId: string) {
-
+  private createRightDetail(detail) {
+    return {
+      id: detail.right.id,
+      movieName: this.getMovieTitle(detail.right.id),
+      territory: detail.right.territories[0],
+      rights: detail.right.medias[0],
+      endRights: (detail.right.duration as any).to.toDate().toDateString(),
+      languages: detail.right.languages[0],
+      dubbed: detail.right.dubbings[0],
+      subtitle: detail.right.subtitles[0]
+    } as MovieData;
   }
+
+  private getMovieTitle(id: string): string {
+    let movieTitle: string;
+    this.movieQuery.getAll().map(movie => {
+      if (movie.id === id) {
+        movieTitle = movie.main.title.international;
+      }
+    });
+    console.log(movieTitle);
+    return movieTitle;
+  }
+
+  public resetMovieDistribution(movieId: string) {}
 
   public setPriceCurrency(price) {
     //TODO update price and currency
@@ -53,6 +61,5 @@ export class CatalogSelectionComponent implements OnInit {
     this.basketService.addBid(price);
   }
 
-  public selectionChange(movieData: MovieData[]) {
-  }
+  public selectionChange(movieData: MovieData[]) {}
 }
