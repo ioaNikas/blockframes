@@ -21,6 +21,7 @@ export class BasketService {
   }
 
   public addBid(price: Price) {
+    // TODO: can't update price
     const organization = this.organizationQuery.getValue().org;
     organization.catalog.price = price;
     this.db.doc<Organization>(`orgs/${organization.id}/catalog/price`).update(organization)

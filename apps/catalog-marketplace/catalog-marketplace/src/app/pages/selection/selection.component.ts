@@ -4,7 +4,7 @@ import { BasketQuery } from '../../distribution-right/+state/basket.query';
 import { FireQuery } from '@blockframes/utils';
 import { OrganizationQuery } from '@blockframes/organization';
 import { Observable } from 'rxjs';
-import { MovieQuery } from '@blockframes/movie';
+import { MovieQuery, staticModels } from '@blockframes/movie';
 import { FormControl } from '@angular/forms';
 import { BasketService } from '../../distribution-right/+state/basket.service';
 
@@ -19,10 +19,14 @@ export class CatalogSelectionComponent implements OnInit {
   public movieID;
   public priceControl: FormControl = new FormControl(null);
   public movieName: string;
+  public currencyList: string[];
+
   constructor(private basketQuery: BasketQuery, private db: FireQuery, private orgQuery: OrganizationQuery, private basketService: BasketService, private movie: MovieQuery) {}
  ngOnInit() {
   this.distributionRights = this.orgQuery.getValue().org.catalog;
+  this.currencyList = staticModels['MOVIE_CURRENCIES'].map(key => key.label);
   this.rightDetail = this.distributionRights.rights.map(right => this.CreateRightDetail({right}));
+  console.log(this.currencyList)
 }
 
   public CreateRightDetail(detail) {
@@ -43,7 +47,8 @@ export class CatalogSelectionComponent implements OnInit {
 
   }
 
-  public setPrice(price) {
+  public setPriceCurrency(price) {
+    //TODO update price and currency
     console.log(this.priceControl.value);
     this.basketService.addBid(price);
   }

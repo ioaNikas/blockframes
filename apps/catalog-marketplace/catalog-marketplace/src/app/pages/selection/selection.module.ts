@@ -22,6 +22,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [CatalogSelectionComponent, CatalogFormSelectionComponent],
@@ -45,6 +46,7 @@ import { MatListModule } from '@angular/material/list';
     MatOptionModule,
     MatDatepickerModule,
     MatListModule,
+    MatSelectModule,
 
     RouterModule.forChild([
       {
