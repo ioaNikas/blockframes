@@ -77,12 +77,7 @@ export const routes: Routes = [
               },
               {
                 path: 'selection',
-                canActivate: [CatalogMarketBasketGuard],
-                loadChildren: () =>
-                  import('./pages/selection/selection.module').then(m => m.SelectionModule)
-              },
-              {
-                path: 'selection',
+                // canActivate: [CatalogMarketBasketGuard],
                 loadChildren: () =>
                   import('./pages/selection/selection.module').then(m => m.SelectionModule)
               },
