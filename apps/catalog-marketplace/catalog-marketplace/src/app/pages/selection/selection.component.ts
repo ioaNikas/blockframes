@@ -5,6 +5,8 @@ import { FireQuery } from '@blockframes/utils';
 import { OrganizationQuery } from '@blockframes/organization';
 import { Observable } from 'rxjs';
 import { MovieQuery } from '@blockframes/movie';
+import { FormControl } from '@angular/forms';
+import { BasketService } from '../../distribution-right/+state/basket.service';
 
 @Component({
   selector: 'catalog-selection',
@@ -13,75 +15,39 @@ import { MovieQuery } from '@blockframes/movie';
 })
 export class CatalogSelectionComponent implements OnInit {
   public distributionRights;
-  public movieDetails: MovieData[];
+  public rightDetail: MovieData[];
   public movieID;
-  public movieList;
-  public mock = [
-    {
-      id: 'test',
-      // movieName: this.query.getActive().main.title.original,
-      territory: 'test',
-      rights: 'test',
-      endRights: 'test',
-      languages: 'test',
-      dubbed: 'test',
-      subtitle: 'test'
-    },
-    {
-      id: 'test2',
-      // movieName: this.query.getActive().main.title.original,
-      territory: 'test',
-      rights: 'test',
-      endRights: 'test',
-      languages: 'test',
-      dubbed: 'test',
-      subtitle: 'test'
-    },
-    {
-      id: 'test3',
-      // movieName: this.query.getActive().main.title.original,
-      territory: 'test',
-      rights: 'test',
-      endRights: 'test',
-      languages: 'test',
-      dubbed: 'test',
-      subtitle: 'test'
-    }
-  ]
-  constructor(private query: BasketQuery, private fireQuery: FireQuery, private orgQuery: OrganizationQuery) {}
+  public priceControl: FormControl = new FormControl(null);
+  public movieName: string;
+  constructor(private basketQuery: BasketQuery, private db: FireQuery, private orgQuery: OrganizationQuery, private basketService: BasketService, private movie: MovieQuery) {}
  ngOnInit() {
   this.distributionRights = this.orgQuery.getValue().org.catalog;
-  console.log(this.distributionRights[0].rights);
-  // console.log('price ', this.distributionRights[0].price);
-  // console.log('rights ', this.distributionRights[0].rights);
-  // console.log('id ', this.distributionRights[0].rights[0].movieId)
-  this.movieID = this.distributionRights[0].rights[0].movieId;
-  this.fireQuery.fromQuery(`movies/${this.movieID}`).subscribe(console.log)
-  // console.log('match movie title ', this.fireQuery.fromQuery(`movies/${this.movieID}`));
-  // this.movieDetails = this.distributionRights[0].rights.map(movie => this.createMovieDetails(movie));
-  this.movieDetails = this.createMovieDetails(this.distributionRights[0].rights[0]);
-  }
+  this.rightDetail = this.distributionRights.rights.map(right => this.CreateRightDetail({right}));
+}
 
-  public createMovieDetails(movieDetails) {
-    return [
-      {
-        id: movieDetails.id,
-        // movieName: this.query.getActive().main.title.orig?inal,
-        territory: movieDetails.territories[0],
-        rights: movieDetails.medias[0],
-        endRights: movieDetails.duration.to,
-        languages: movieDetails.languages[0],
-        dubbed: movieDetails.dubbings[0],
-        subtitle: movieDetails.subtitles[0]
-      } as MovieData
-    ];
+  public CreateRightDetail(detail) {
+    return  {
+        id: detail.right.id,
+        // TODO: get movie name
+        // movieName: this.movie.getAll().map(name=> name.id === detail.right.id),
+        territory: detail.right.territories[0],
+        rights: detail.right.medias[0],
+        endRights: (detail.right.duration as any).to.toDate().toDateString() ,
+        languages: detail.right.languages[0],
+        dubbed: detail.right.dubbings[0],
+        subtitle: detail.right.subtitles[0]
+      } as MovieData;
   }
 
   public resetMovieDistribution(movieId: string) {
 
   }
 
-  public selectionChange(movieData: MovieData[]) {
+  public setPrice(price) {
+    console.log(this.priceControl.value);
+    this.basketService.addBid(price);
+  }
 
+  public selectionChange(movieData: MovieData[]) {
   }
 }

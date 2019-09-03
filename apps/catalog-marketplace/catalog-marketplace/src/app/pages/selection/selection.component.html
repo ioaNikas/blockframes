@@ -11,8 +11,12 @@
             </span>
         </article>
         <article>
-            <catalog-form-selection [selectedMovieDetail]="movieDetails" (delete)="resetMovieDistribution()">
+            <catalog-form-selection [selectedMovieDetail]="rightDetail" (delete)="resetMovieDistribution()">
             </catalog-form-selection>
         </article>
+        <mat-form-field appearance="outline">
+          <input type="number" matInput placeholder="Enter your bid..." [formControl]="priceControl">
+        </mat-form-field>
+        <button (click)="setPrice()"> HERE</button>
     </section>
 </div>
