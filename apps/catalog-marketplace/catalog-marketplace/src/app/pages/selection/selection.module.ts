@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CatalogFormSelectionComponent } from './../../distribution-right/selection-table/form-selection.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -27,6 +28,7 @@ import { MatListModule } from '@angular/material/list';
   imports: [
     CommonModule,
     FlexLayoutModule,
+    ReactiveFormsModule,
 
     MatButtonModule,
     MatDividerModule,

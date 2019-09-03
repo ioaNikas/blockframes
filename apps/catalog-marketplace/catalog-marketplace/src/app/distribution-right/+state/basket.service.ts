@@ -1,9 +1,8 @@
 import { Organization } from '@blockframes/organization';
 import { FireQuery } from '@blockframes/utils';
 import { Injectable } from '@angular/core';
-import { DistributionRight, BasketStatus } from './basket.model';
+import { DistributionRight, BasketStatus, Price } from './basket.model';
 import { OrganizationQuery } from '@blockframes/organization';
-import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class BasketService {
@@ -19,5 +18,11 @@ export class BasketService {
         rights: newDistributionRight
       }
     });
+  }
+
+  public addBid(price: Price) {
+    const organization = this.organizationQuery.getValue().org;
+    organization.catalog.price = price;
+    this.db.doc<Organization>(`orgs/${organization.id}/catalog/price`).update(organization)
   }
 }
