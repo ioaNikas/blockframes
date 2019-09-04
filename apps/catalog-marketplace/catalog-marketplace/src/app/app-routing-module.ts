@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Components
 import { LayoutComponent } from './layout/layout.component';
+import { CatalogCompletionComponent } from './components/completion.component';
 
 // Guards
 import { CatalogMarketPlaceGuard } from './guards/catalog-marketplace.guard';
@@ -85,7 +86,8 @@ export const routes: Routes = [
               },
               {
                 path: 'success',
-                component: 
+                loadChildren: () =>
+                import('./components/completion.module').then(m => m.CatalogCompletionModule)
               },
               {
                 path: ':movieId',
