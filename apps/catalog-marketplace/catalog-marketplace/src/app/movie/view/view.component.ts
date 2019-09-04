@@ -12,6 +12,7 @@ import { MovieQuery } from '@blockframes/movie';
 export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
+  public parseRightEnds: Date;
   public movieId: string;
 
   constructor(private query: MovieQuery) {}
@@ -22,6 +23,14 @@ export class MovieViewComponent implements OnInit {
 
   private async getMovie() {
     this.loading$ = this.query.selectLoading();
+    this.movie$ = this.query
+      .selectActive()
+      .pipe(
+        tap(
+          ({ salesAgentDeal }) =>
+            (this.parseRightEnds = (salesAgentDeal.rightsEnd as any).to.toDate())
+        )
+      );
     this.movieId = this.query.getActiveId();
     this.movie$ = this.query.selectActive();
   }

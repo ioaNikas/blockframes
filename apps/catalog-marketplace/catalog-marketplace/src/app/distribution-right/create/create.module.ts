@@ -8,45 +8,42 @@ import { DatepickerModule, MonthCalendarModule } from '@blockframes/ui';
 import { DistributionRightCreateComponent } from './create.component';
 
 // Material
-import { MatChipsModule } from '@angular/material/chips';
-import { MatSortModule } from '@angular/material/sort';
-import { MatOptionModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSortModule } from '@angular/material/sort';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatAutocompleteModule } from '@angular/material';
 import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
-  declarations: [DistributionRightCreateComponent, CatalogFormSelectionComponent],
+  declarations: [DistributionRightCreateComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     DatepickerModule,
     MonthCalendarModule,
     FlexLayoutModule,
-
+    
     // Material
-    MatButtonModule,
-    MatSortModule,
-    MatTableModule,
     MatInputModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatIconModule,
+    MatButtonModule,
     MatAutocompleteModule,
-    MatOptionModule,
-    MatDatepickerModule,
+    MatExpansionModule,
+    MatCardModule,
+    MatSortModule,
+    MatChipsModule,
+    MatTableModule,
+    MatFormFieldModule,
     MatListModule,
+    MatCheckboxModule,
+    MatIconModule,
+
     RouterModule.forChild([{ path: '', component: DistributionRightCreateComponent }])
   ]
 })

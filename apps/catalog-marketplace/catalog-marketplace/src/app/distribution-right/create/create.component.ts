@@ -126,10 +126,6 @@ export class DistributionRightCreateComponent implements OnInit {
       this.choosenDateRange.to = data.duration.to;
       this.choosenDateRange.from = data.duration.from;
     });
-    /*     this.occupiedDateRanges.push({
-      to: new Date(),
-      from: new Date()
-    }); */
   }
 
   private _languageFilter(value: string): string[] {

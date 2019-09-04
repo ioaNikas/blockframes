@@ -13,6 +13,10 @@ export const CONTEXT_MENU = [
       {
         name: 'catalogue',
         path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
       }
     ]
   },
@@ -26,11 +30,32 @@ export const CONTEXT_MENU = [
       {
         name: 'catalogue',
         path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
       }
     ]
   },
   {
-    route: '/layout/o/catalog/:movieId/view',
+    route: '/layout/o/catalog/selection',
+    items: [
+      {
+        name: 'home',
+        path: '/layout/o/catalog/home'
+      },
+      {
+        name: 'search',
+        path: '/layout/o/catalog/search'
+      },
+      {
+        name: 'selection',
+        path: '/layout/o/catalog/selection'
+      }
+    ]
+  },
+  {
+    route: '/layout/o/catalog/:movieId/create',
     items: [
       {
         name: 'view',
@@ -43,7 +68,7 @@ export const CONTEXT_MENU = [
     ]
   },
   {
-    route: '/layout/o/catalog/:movieId/create',
+    route: '/layout/o/catalog/:movieId/view',
     items: [
       {
         name: 'view',
