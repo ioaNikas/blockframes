@@ -9,3 +9,7 @@
 .mat-selection-list{
   border-radius: 10px;
 }
+
+.active-list-item mat-icon {
+  color: var(--primary) !important;
+}
