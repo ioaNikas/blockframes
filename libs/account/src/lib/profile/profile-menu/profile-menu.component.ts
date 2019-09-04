@@ -1,8 +1,8 @@
 
-import { Component, ChangeDetectionStrategy, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, AuthQuery, AuthService } from '@blockframes/auth';
-import { Router } from '@angular/router';
+import { AuthQuery, AuthService, User } from '@blockframes/auth';
+import { createProfile } from '../forms/profile-edit.form';
 
 @Component({
   selector: 'account-profile-menu',
@@ -16,7 +16,6 @@ export class ProfileMenuComponent implements OnInit{
   constructor(
     private service: AuthService,
     private auth: AuthQuery,
-    private router: Router,
   ){}
 
   ngOnInit(){
@@ -25,6 +24,11 @@ export class ProfileMenuComponent implements OnInit{
 
   public async logout() {
     await this.service.logout();
-    this.router.navigate(['/auth']);
+    // TODO: issue#879, navigate with router
+    window.location.reload();
+  }
+
+  public get profile() {
+    return createProfile(this.auth.getValue().user)
   }
 }

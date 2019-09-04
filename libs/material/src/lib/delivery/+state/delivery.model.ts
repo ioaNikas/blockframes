@@ -59,7 +59,7 @@ export interface Step extends StepRaw<Date> {}
 export interface MGDeadline extends MGDeadlineRaw<Date> {}
 
 export const enum DeliveryStatus {
-  negociation = 'Delivery in negociation',
+  negociation = 'Delivery in negotiation',
   pending = 'Materials pending',
   noa = 'Notice of Availability',
   nod = 'Notice of Delivery',
@@ -78,7 +78,7 @@ export function createDelivery(params: Partial<Delivery>) {
   return {
     validated: [],
     steps: [],
-    status: DeliveryStatus.pending,
+    status: DeliveryStatus.negociation,
     isPaid: false,
     _type: 'deliveries',
     mustChargeMaterials: params.mustChargeMaterials || false,

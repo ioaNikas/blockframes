@@ -2,7 +2,6 @@ import { Movie } from '@blockframes/movie';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MovieQuery } from '@blockframes/movie';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'catalog-movie-view',
@@ -14,6 +13,7 @@ export class MovieViewComponent implements OnInit {
   public movie$: Observable<Movie>;
   public loading$: Observable<boolean>;
   public parseRightEnds: Date;
+  public movieId: string;
 
   constructor(private query: MovieQuery) {}
 
@@ -31,6 +31,8 @@ export class MovieViewComponent implements OnInit {
             (this.parseRightEnds = (salesAgentDeal.rightsEnd as any).to.toDate())
         )
       );
+    this.movieId = this.query.getActiveId();
+    this.movie$ = this.query.selectActive();
   }
 
   get internationalPremiere() {

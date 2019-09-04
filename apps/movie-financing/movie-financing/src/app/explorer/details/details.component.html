@@ -1,16 +1,15 @@
-<ng-container *ngIf="movie$ | async as movie; else loading">
-  <ng-container *ngIf="!(isBalanceLoading$ | async) && (user$ | async) as user; else loading">
-    <ng-container *ngIf="user.balance >= movie.minTokensRequired; else notEnoughTokens">
-      <financing-explorer-header
-        [poster]="movie.principalInformations.backgroundPoster">
-        <label>{{ movie.principalInformations.director }}</label>
-        <h1>{{ movie.title }}</h1>
+<ng-container *ngIf="(movie$ | async) as movie; else loading">
+  <ng-container *ngIf="isUserEnoughRanked; else rankNotHighEnough">
+    <financing-explorer-header
+      [poster]="movie.principalInformations.backgroundPoster">
+      <label>{{ movie.principalInformations.director }}</label>
+      <h1>{{ movie.title }}</h1>
 
-        <label>Logline</label>
-        <p>{{ movie.logline }}</p>
-      </financing-explorer-header>
-
-      <main class="movie-financing-details" fxLayout="row" fxLayoutAlign="center">
+      <label>Logline</label>
+      <p>{{ movie.logline }}</p>
+    </financing-explorer-header>
+    <main>
+      <article class="movie-financing-details" fxLayout="row" fxLayoutAlign="center">
         <div class="col-1">
           <img [src]="movie.principalInformations.moviePoster" alt="movie cover">
           <financing-explorer-financing-details [movie]="movie"></financing-explorer-financing-details>
@@ -261,8 +260,7 @@
                           {{ movie.artistic.directorName }}
                         </mat-panel-title>
                       </mat-expansion-panel-header>
-                      <div class="producer-history-sub-container"
-                           *ngFor="let movie of movie.artistic.directorFilmography">
+                      <div class="producer-history-sub-container" *ngFor="let movie of movie.artistic.directorFilmography">
                         <div class="poster-container">
                           <img [src]="movie.posterUrl">
                         </div>
@@ -411,15 +409,15 @@
 
                 <h3>Sales agent</h3>
                 <p>
-                  <span class="key">Guaranteed Minimum</span>
+                  <span class="key">Minimum</span>
                   <span class="value">{{ movie.waterfall.mg | currency:'EUR':'symbol' }}</span>
                 </p>
                 <p>
-                  <span class="key">Maxium fees</span>
+                  <span class="key">Maximum fees</span>
                   <span class="value">{{ movie.waterfall.fees | currency:'EUR':'symbol' }}</span>
                 </p>
                 <p>
-                  <span class="key">Commision</span>
+                  <span class="key">Commission</span>
                   <span class="value">{{ movie.waterfall.commission | number : '1.2-2' }} %</span>
                 </p>
 
@@ -512,12 +510,31 @@
             </mat-tab-group>
           </div>
         </div>
-      </main>
-    </ng-container>
+      </article>
+      <financing-explorer-footer></financing-explorer-footer>
+    </main>
   </ng-container>
+  <ng-template #rankNotHighEnough>
+    <financing-explorer-navbar></financing-explorer-navbar>
+    <main fxLayout="row" fxLayoutAlign="center">
+      <mat-card>
+        <div class="flex-content not-enough-tokens">
+          <mat-card-content class="icon">
+            <mat-icon>error</mat-icon>
+          </mat-card-content>
+          <mat-card-content>
+            Your rank is not high enough to see this movie !
+            You need to be at least ranked <strong>{{movie.minRankRequired}}</strong> and you are currently ranked <strong>{{userRank}}</strong>.
+            To request a higher rank go to your <a routerLink="/profile">profile page</a>
+          </mat-card-content>
+        </div>
+      </mat-card>
+    </main>
+    <financing-explorer-footer></financing-explorer-footer>
+  </ng-template>
 </ng-container>
-
 <ng-template #loading>
+  <financing-explorer-navbar></financing-explorer-navbar>
   <main fxLayout="row" fxLayoutAlign="center">
     <mat-progress-spinner
       class="spinner"
@@ -527,21 +544,5 @@
     >
     </mat-progress-spinner>
   </main>
+  <financing-explorer-footer></financing-explorer-footer>
 </ng-template>
-
-<ng-template #notEnoughTokens>
-  <main fxLayout="row" fxLayoutAlign="center">
-    <mat-card>
-      <div class="flex-content not-enough-tokens">
-        <mat-card-content class="icon">
-          <mat-icon>error</mat-icon>
-        </mat-card-content>
-        <mat-card-content>
-          Not Enough Tokens
-        </mat-card-content>
-      </div>
-    </mat-card>
-  </main>
-</ng-template>
-
-<financing-explorer-footer></financing-explorer-footer>

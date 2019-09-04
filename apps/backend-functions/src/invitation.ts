@@ -127,7 +127,6 @@ async function onInvitationToOrgCreate({ userId }: InvitationFromOrganizationToU
 async function onStakeholderInvitationAccept({
   docId,
   organizationId,
-  docType
 }: InvitationStakeholder): Promise<any> {
   // If the stakeholder accept the invitation, we create all permissions and notifications
   // we need to get the new users on the documents with their own (and limited) permissions.
@@ -163,6 +162,17 @@ async function onStakeholderInvitationAccept({
   const userMoviePermissions = createUserDocPermissions({ id: delivery.movieId });
 
   return db.runTransaction(tx => {
+    const promises = [];
+
+    // TODO: Seems we never enter here, need to do fix it asap, as we got duplicated ids in organization.movieIds
+    // Push the delivery's movie into stakeholder Organization's movieIds so users have access to the new doc
+    // Only if organization doesn't already have access to this movie.
+    if (!organization.movieIds.includes(delivery.movieId)) {
+      promises.push(tx.update(organizationSnap.ref, {
+        movieIds: [...organization.movieIds, delivery.movieId]
+      }))
+    }
+
     return Promise.all([
       // Initialize organization permissions on a document owned by another organization
       tx.set(organizationDocPermissionsSnap.ref, orgDocPermissions),
@@ -182,16 +192,18 @@ async function onStakeholderInvitationAccept({
       tx.set(organizationMoviePermissionsSnap.ref, orgMoviePermissions),
       tx.set(userMoviePermissionsSnap.ref, userMoviePermissions),
 
+      ...promises,
+
       // Now that permissions are in the database, notify organization users with direct link to the document
       triggerNotifications(
         organization.userIds.map(userId => {
           return prepareNotification({
             message:
-              `You can now work on ${docType} ${docId}.\n` +
-              `Click on the link below to go to the ${docType}`,
+              `You can now work on the delivery.\n` +
+              `Click on the link below to go to the delivery's page`,
             userId,
-            docInformations: { id: docId, type: docType },
-            path: '/TODO/redefine/path' // TODO: redefine paths correctly
+            docInformations: { id: docId, type: null },
+            path: `/layout/o/delivery/${delivery.movieId}/${docId}/list`
           });
         })
       )
@@ -306,7 +318,7 @@ export async function onInvitationWrite(
   const after = change.after;
 
   if (!before || !after) {
-    throw new Error(`Parameter 'change' not found`);
+    throw new Error('Parameter "change" not found');
   }
 
   const invitationDocBefore = before.data() as InvitationOrUndefined;
@@ -347,7 +359,7 @@ export async function onInvitationWrite(
         throw new Error(`Unhandled invitation: ${JSON.stringify(invitation)}`);
     }
   } catch (e) {
-    console.error('invitation management thrown:', e);
+    console.error('Invitation management thrown: ', e);
     await db.doc(`invitations/${invitation.id}`).update({ processedId: null });
     throw e;
   }

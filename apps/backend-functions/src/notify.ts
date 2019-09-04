@@ -1,11 +1,8 @@
 import { db, serverTimestamp } from './internals/firebase';
 import {
   App,
-  BaseNotification, DocType,
+  BaseNotification,
   Invitation,
-  InvitationStakeholder,
-  InvitationState,
-  InvitationType,
   Notification,
   SnapObject
 } from './data/types';
@@ -40,28 +37,11 @@ export function prepareNotification(notif: BaseNotification): Notification {
     id: db.collection('notifications').doc().id,
     isRead: false,
     date: serverTimestamp(),
-    appIcon: notif.docInformations.type === 'delivery' ? App.mediaDelivering : App.mediaFinanciers,
+    appIcon:
+      notif.docInformations.type === 'delivery' || notif.docInformations.type === null
+        ? App.mediaDelivering
+        : App.mediaFinanciers,
     ...notif
-  };
-}
-
-interface InvitationStakeholderOpts {
-  organizationId: string;
-  app: App;
-  docId: string;
-  docType: DocType;
-}
-
-export function prepareStakeholderInvitation({organizationId, app, docId, docType}: InvitationStakeholderOpts): InvitationStakeholder {
-  return {
-    type: InvitationType.stakeholder,
-    docId,
-    docType,
-    organizationId,
-    id: db.collection('invitations').doc().id,
-    app,
-    state: InvitationState.pending,
-    date: serverTimestamp(),
   };
 }
 
@@ -85,12 +65,4 @@ export function customMessage(snap: SnapObject) {
     throw new Error('Document type is not defined.');
   }
   throw new Error('Invalid message.');
-}
-
-/** Generate a simple string message for the invitation */
-export function invitationMessage(snap: SnapObject) {
-  if (snap.docInformations.type === 'delivery') {
-    return `You have been invited to work on ${snap.movie.main.title.original}'s delivery. Do you wish to join the teamwork ?`;
-  }
-  throw new Error('Invalid invitation.');
 }

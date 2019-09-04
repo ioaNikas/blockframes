@@ -1,18 +1,10 @@
 import { db, functions } from './internals/firebase';
-import {
-  customMessage,
-  prepareNotification,
-  prepareStakeholderInvitation,
-  triggerInvitations,
-  triggerNotifications
-} from './notify';
+import { customMessage, prepareNotification, triggerNotifications } from './notify';
 import { getCount, getDocument, getOrganizationsOfDocument } from './data/internals';
 import {
-  App,
   Delivery,
   DocInformations,
   DocType,
-  InvitationStakeholder,
   Movie,
   Organization,
   SnapObject,
@@ -85,9 +77,11 @@ async function stakeholdersCollectionEvent(
     if (processedId === context.eventId) {
       throw new Error(`Document already processed with this context`);
     }
-    // TODO: set processed Id to prevent duplicates firebase functions events.
 
     try {
+      await db
+        .doc(`${collection}/${document.id}/stakeholders/${newStakeholder.id}`)
+        .update({ processedId: context.eventId });
       const [organizations, stakeholderCount] = await Promise.all([
         getOrganizationsOfDocument(document.id, collection),
         getCount(`${collection}/${document.id}/stakeholders`)
@@ -113,14 +107,10 @@ async function stakeholdersCollectionEvent(
       };
 
       const notifications = createNotifications(organizations, snapInformations);
-      const invitation = createInvitation(organizations, snapInformations);
 
-      return await Promise.all([
-        triggerInvitations([invitation]),
-        triggerNotifications(notifications)
-      ]);
+      return Promise.all([triggerNotifications(notifications)]);
     } catch (e) {
-      await db.doc(`${collection}/${document.id}`).update({ processedId: null });
+      await db.doc(`${collection}/${document.id}/stakeholders/${newStakeholder.id}`).update({ processedId: null });
       throw e;
     }
   }
@@ -152,39 +142,4 @@ function createNotifications(organizations: Organization[], snap: SnapObject) {
         docInformations: snap.docInformations
       });
     });
-}
-
-/**
- * Temporary function, extract an app from a snap object,
- *
- * TODO(issue#686): refactor out the SnapObject and fix typing to keep application
- *  information down the call stack.
- */
-function extractApp(snap: SnapObject): App {
-  switch (snap.docInformations.type) {
-    case DocType.delivery:
-    case DocType.material:
-      return App.mediaDelivering;
-    case DocType.movie:
-      return App.mediaFinanciers;
-  }
-}
-
-/**
- * Takes a list of Organization and a SnapObject to generate one invitation for each users
- * invited to work on the new document, with custom path and message.
- */
-function createInvitation(organizations: Organization[], snap: SnapObject): InvitationStakeholder {
-  const app = extractApp(snap);
-
-  if (!snap.count || snap.count <= 1) {
-    throw new Error('No invitation needed for document owner.');
-  }
-
-  return prepareStakeholderInvitation({
-    organizationId: snap.newStakeholderId,
-    app,
-    docId: snap.docInformations.id,
-    docType: snap.docInformations.type
-  });
 }

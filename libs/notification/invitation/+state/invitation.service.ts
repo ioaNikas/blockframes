@@ -6,7 +6,8 @@ import { AuthQuery, AuthService } from '@blockframes/auth';
 import {
   createInvitationToJoinOrganization,
   createInvitationToOrganization,
-  Invitation
+  Invitation,
+  createInvitationToDocument
 } from './invitation.model';
 import { of } from 'rxjs';
 
@@ -87,6 +88,18 @@ export class InvitationService {
       id: this.db.createId(),
       organizationId: organizationId,
       userId: uid
+    });
+    return this.db.doc<Invitation>(`invitations/${invitation.id}`).set(invitation);
+  }
+
+  /** Create an invitation when an organization is invited to work on a document */
+  public sendDocInvitationToOrg(organizationId: string, docId: string): Promise<void> {
+    const userId = this.authQuery.userId;
+    const invitation = createInvitationToDocument({
+      id: this.db.createId(),
+      organizationId,
+      docId,
+      userId
     });
     return this.db.doc<Invitation>(`invitations/${invitation.id}`).set(invitation);
   }
