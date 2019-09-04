@@ -4,14 +4,15 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'catalog-completion-item',
   template: `
-  <section fxLayout="row" fxLayoutAlign="center center">
+  <main fxLayout="row" fxLayoutAlign="center center">
     <feedback-message
     title="Congratulation!"
     subTitle="Your bid successfuly processed."
     imageUrl="/assets/images/bid-success.png"
     (redirectUser)="navigate()">
     </feedback-message>
-  </section>`
+  </main>`,
+  styleUrls: ['./completion.component.scss']
 })
 
 export class CatalogCompletionComponent {
