@@ -11,12 +11,12 @@
             </span>
         </article>
         <article>
-            <catalog-form-selection [selectedMovieDetail]="movieDistributionRights" (delete)="resetMovieDistribution()">
+            <catalog-form-selection [selectedMovieDetail]="movieDistributionRights" (delete)="deleteDistributionRight($event)">
             </catalog-form-selection>
         </article>
-        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="center baseline" fxLayoutGap="20px" class="input">
           <mat-form-field appearance="outline">
-            <input type="number" matInput placeholder="Enter your bid..." [formControl]="priceControl">
+            <input type="number" matInput placeholder="Enter your bid..." [formControl]="priceControl" autocomplete="off">
           </mat-form-field>
           <mat-form-field appearance="outline">
               <mat-label>Currency</mat-label>
@@ -26,7 +26,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-          <button mat-rasied-button color="accent" (click)="setPriceCurrency()">Place your bid</button>
+          <button mat-raised-button color="accent" (click)="setPriceCurrency()" [routerLink]="['/layout/o/catalog/success']">Place your bid</button>
         </div>
     </section>
 </div>
