@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
-import { default as staticModels } from '../../staticModels';
+import { default as staticModels } from '../../static-model/staticModels';
 import { MovieSalesCastForm } from './sales-cast.form';
 
 @Component({

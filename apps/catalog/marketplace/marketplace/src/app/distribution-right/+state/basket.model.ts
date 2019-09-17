@@ -1,11 +1,10 @@
 import { DistributionRight } from './basket.model';
-import { staticModels } from '@blockframes/movie';
-
-// TODO #818
-type Languages = ((typeof staticModels)['LANGUAGES'])[number]['slug'];
-type Currency = ((typeof staticModels)['MOVIE_CURRENCIES'])[number]['slug'];
-type Media = ((typeof staticModels)['MEDIAS'])[number]['slug'];
-export type Territories = ((typeof staticModels)['TERRITORIES'])[number]['slug'];
+import {
+  MovieCurrenciesSlug,
+  MediasSlug,
+  LanguagesSlug,
+  TerritoriesSlug
+} from '@blockframes/movie/movie/static-model/types';
 
 export const enum BasketStatus {
   pending = 'pending',
@@ -16,21 +15,21 @@ export const enum BasketStatus {
 
 export interface Price {
   amount: number;
-  currency: Currency;
+  currency: MovieCurrenciesSlug;
 }
 
 export interface DistributionRight {
   id: string;
   movieId: string;
-  medias: Media[];
-  languages: Languages[];
-  dubbings: Languages[];
-  subtitles: Languages[];
+  medias: MediasSlug[];
+  languages: LanguagesSlug[];
+  dubbings: LanguagesSlug[];
+  subtitles: LanguagesSlug[];
   duration: {
     from: Date;
     to: Date;
   };
-  territories: Territories[];
+  territories: TerritoriesSlug[];
 }
 
 export interface CatalogBasket {
@@ -103,4 +102,4 @@ export function createDistributionRight(right: Partial<DistributionRight> = {}) 
     },
     territories: right.territories
   } as DistributionRight;
-} 
+}

@@ -1,5 +1,11 @@
+import {
+  TerritoriesSlug,
+  LanguagesLabel,
+  MediasSlug,
+  MEDIASSLUG,
+  TERRITORIESSLUG
+} from '@blockframes/movie/movie/static-model/types';
 import { Router } from '@angular/router';
-import { Language } from '../../movie/search/search.form';
 import { BasketService } from '../+state/basket.service';
 import { CatalogBasket, createBaseBasket, createDistributionRight } from '../+state/basket.model';
 import { ViewChild } from '@angular/core';
@@ -13,7 +19,6 @@ import { DistributionRightForm } from './create.form';
 import { MovieQuery, Movie, staticModels } from '@blockframes/movie';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { startWith, debounceTime } from 'rxjs/operators';
-import { MovieTerritories } from '../../movie/search/search.form';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -33,6 +38,7 @@ export class DistributionRightCreateComponent implements OnInit {
   public opened = false;
   // A flag to indicate if results should be shown
   public showResults = false;
+
   /*
     This variable will be input the dates inside of the datepicker
     if the users types it in manually
@@ -42,7 +48,7 @@ export class DistributionRightCreateComponent implements OnInit {
   public occupiedDateRanges: DateRange[] = [];
 
   // Media section
-  public movieMedia = staticModels['MEDIAS'].map(key => key.slug);
+  public movieMedia: MediasSlug[] = MEDIASSLUG;
 
   // Language section
   // TODO(MF): Think of a slim solution
@@ -65,7 +71,7 @@ export class DistributionRightCreateComponent implements OnInit {
   // Territory section
   public territoriesFilter: Observable<string[]>;
   public territoryControl = new FormControl();
-  public movieTerritories: string[] = staticModels['TERRITORIES'].map(key => key.slug);
+  public movieTerritories: TerritoriesSlug[] = TERRITORIESSLUG;
   public selectedTerritories: string[] = [];
   @ViewChild('territoryInput', { static: false }) territoryInput: ElementRef<HTMLInputElement>;
 
@@ -73,7 +79,7 @@ export class DistributionRightCreateComponent implements OnInit {
     private query: MovieQuery,
     private basketService: BasketService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -161,7 +167,7 @@ export class DistributionRightCreateComponent implements OnInit {
     if (!this.selectedTerritories.includes(territory.option.viewValue)) {
       this.selectedTerritories.push(territory.option.value);
     }
-    this.form.addTerritory(territory.option.viewValue as MovieTerritories);
+    this.form.addTerritory(territory.option.viewValue as TerritoriesSlug);
     this.territoryInput.nativeElement.value = '';
   }
 
@@ -182,42 +188,42 @@ export class DistributionRightCreateComponent implements OnInit {
     this.form.checkMedia(media);
   }
 
-  public addLanguage(language: Language) {
+  public addLanguage(language: LanguagesLabel) {
     if (!this.selectedLanguages.includes(language) && this.movieLanguages.includes(language)) {
       this.selectedLanguages.push(language);
       this.form.addLanguage(language);
     }
   }
 
-  public removeLanguage(language: Language, index: number) {
+  public removeLanguage(language: LanguagesLabel, index: number) {
     if (this.selectedLanguages.includes(language)) {
       this.selectedLanguages.splice(index, 1);
       this.form.removeLanguage(language);
     }
   }
 
-  public addDubbing(language: Language) {
+  public addDubbing(language: LanguagesLabel) {
     if (!this.selectedDubbings.includes(language) && this.movieDubbings.includes(language)) {
       this.selectedDubbings.push(language);
       this.form.addDubbings(language);
     }
   }
 
-  public removeDubbing(language: Language, index: number) {
+  public removeDubbing(language: LanguagesLabel, index: number) {
     if (this.selectedDubbings.includes(language)) {
       this.selectedDubbings.splice(index, 1);
       this.form.removeDubbings(language);
     }
   }
 
-  public addSubtitle(language: Language) {
+  public addSubtitle(language: LanguagesLabel) {
     if (!this.selectedSubtitles.includes(language) && this.movieSubtitles.includes(language)) {
       this.selectedSubtitles.push(language);
       this.form.addSubtitles(language);
     }
   }
 
-  public removeSubtitle(language: Language, index: number) {
+  public removeSubtitle(language: LanguagesLabel, index: number) {
     if (this.selectedSubtitles.includes(language)) {
       this.selectedSubtitles.splice(index, 1);
       this.form.removeSubtitles(language);

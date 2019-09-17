@@ -4,7 +4,8 @@ import { BasketQuery } from '../../distribution-right/+state/basket.query';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { BasketStatus } from '../../distribution-right/+state/basket.model';
 import { Component, OnInit } from '@angular/core';
-import { staticModels, MovieQuery } from '@blockframes/movie';
+import { MovieQuery } from '@blockframes/movie';
+import { MOVIECURRENCIESSLUG, MovieCurrenciesSlug } from '@blockframes/movie/movie/static-model/types'
 import { FormControl } from '@angular/forms';
 import { BasketService } from '../../distribution-right/+state/basket.service';
 
@@ -16,7 +17,7 @@ import { BasketService } from '../../distribution-right/+state/basket.service';
 })
 export class CatalogSelectionComponent implements OnInit {
   public priceControl: FormControl = new FormControl(null);
-  public currencyList: string[];
+  public currencyList: MovieCurrenciesSlug[];
   public selectedCurrency;
   public movieDistributionRights: MovieData[] = [];
 
@@ -27,7 +28,7 @@ export class CatalogSelectionComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.currencyList = staticModels['MOVIE_CURRENCIES'].map(key => key.slug);
+    this.currencyList = MOVIECURRENCIESSLUG
     // TODO #922: make an observable out of the basketquery
     this.basketQuery.getAll().forEach(basket =>
       basket.rights.forEach(right => {

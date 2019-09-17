@@ -6,20 +6,25 @@ import { FormControl } from '@angular/forms';
 import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 // Blockframes
-import { Movie, staticModels } from '@blockframes/movie';
+import { Movie } from '@blockframes/movie';
 import { FireQuery } from '@blockframes/utils';
+import {
+  GenresLabel,
+  GENRESLABEL,
+  LANGUAGESLABEL,
+  LanguagesLabel,
+  CertificationsLabel,
+  MediasLabel,
+  TerritoriesLabel,
+  CERTIFICATIONSLABEL,
+  MEDIASLABEL,
+  TERRITORIESLABEL
+} from '@blockframes/movie/movie/static-model/types';
 // RxJs
 import { Observable, combineLatest } from 'rxjs';
 import { startWith, map, debounceTime } from 'rxjs/operators';
 // Others
-import {
-  MovieType,
-  CatalogSearchForm,
-  Language,
-  Certifications,
-  MovieMedias,
-  MovieTerritories
-} from './search.form';
+import { CatalogSearchForm } from './search.form';
 import { languageValidator } from './search-validators.form';
 import { filterMovie } from './filter.util';
 
@@ -50,12 +55,12 @@ export class MarketplaceSearchComponent implements OnInit {
   public listView: boolean;
 
   // TODO#748: split up into compoennts
-  public movieGenres: MovieType[];
-  public movieLanguages: Language[];
+  public movieGenres: GenresLabel[];
+  public movieLanguages: LanguagesLabel[];
   public languageControl = new FormControl('', [Validators.required, languageValidator]);
   public languagesFilter: Observable<string[]>;
-  public movieCertifications: Certifications[];
-  public movieMedias: MovieMedias[];
+  public movieCertifications: CertificationsLabel[];
+  public movieMedias: MediasLabel[];
   // Observables on the languages selected
   public languages$ = this.filterForm.valueChanges.pipe(
     startWith(this.filterForm.value),
@@ -73,17 +78,17 @@ export class MarketplaceSearchComponent implements OnInit {
   public removable = true;
   public selectedMovieTerritories: string[] = [];
   public territoriesFilter: Observable<string[]>;
-  public movieTerritories: MovieTerritories[];
+  public movieTerritories: TerritoriesLabel[];
   public territoryControl: FormControl = new FormControl();
 
   constructor(private fireQuery: FireQuery, private router: Router) {}
 
   ngOnInit() {
-    this.movieGenres = staticModels['GENRES'].map(key => key.label);
-    this.movieLanguages = staticModels['LANGUAGES'].map(key => key.label);
-    this.movieCertifications = staticModels['CERTIFICATIONS'].map(key => key.label);
-    this.movieMedias = staticModels['MEDIAS'].map(key => key.label);
-    this.movieTerritories = staticModels['TERRITORIES'].map(key => key.label);
+    this.movieGenres = GENRESLABEL;
+    this.movieLanguages = LANGUAGESLABEL;
+    this.movieCertifications = CERTIFICATIONSLABEL;
+    this.movieMedias = MEDIASLABEL;
+    this.movieTerritories = TERRITORIESLABEL;
     this.languagesFilter = this.languageControl.valueChanges.pipe(
       startWith(''),
       debounceTime(300),
@@ -123,17 +128,21 @@ export class MarketplaceSearchComponent implements OnInit {
   // Form section //
   //////////////////
 
-  public addLanguage(language: Language) {
+  public addLanguage(language: LanguagesLabel) {
     if (this.movieLanguages.includes(language)) {
       this.filterForm.addLanguage(language);
     }
   }
 
-  public removeLanguage(language: Language) {
+  public removeLanguage(language: LanguagesLabel) {
     this.filterForm.removeLanguage(language);
   }
 
-  public hasGenre(genre: MovieType) {
+  public deleteLanguage(language: LanguagesLabel) {
+    this.filterForm.removeLanguage(language);
+  }
+
+  public hasGenre(genre: GenresLabel) {
     if (this.movieGenres.includes(genre) && !this.filterForm.get('type').value.includes(genre)) {
       this.filterForm.addType(genre);
     } else {
@@ -141,20 +150,16 @@ export class MarketplaceSearchComponent implements OnInit {
     }
   }
 
-  public checkCertification(certification: Certifications) {
+  public checkCertification(certification: CertificationsLabel) {
     if (this.movieCertifications.includes(certification)) {
       this.filterForm.checkCertification(certification);
     }
   }
 
-  public checkMedia(media: MovieMedias) {
+  public checkMedia(media: MediasLabel) {
     if (this.movieMedias.includes(media)) {
       this.filterForm.checkMedia(media);
     }
-  }
-
-  public deleteLanguage(language: Language) {
-    this.filterForm.removeLanguage(language);
   }
 
   public removeTerritory(territory: string, index: number) {
@@ -170,7 +175,7 @@ export class MarketplaceSearchComponent implements OnInit {
     if (!this.selectedMovieTerritories.includes(territory.option.viewValue)) {
       this.selectedMovieTerritories.push(territory.option.value);
     }
-    this.filterForm.addTerritory(territory.option.viewValue as MovieTerritories);
+    this.filterForm.addTerritory(territory.option.viewValue as TerritoriesLabel);
     this.territoryInput.nativeElement.value = '';
   }
 }
