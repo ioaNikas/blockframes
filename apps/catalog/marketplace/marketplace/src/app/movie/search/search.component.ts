@@ -1,13 +1,12 @@
 // Angular
+import { Router } from '@angular/router';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { ErrorStateMatcher, MatAccordion } from '@angular/material';
 import { Validators, FormGroupDirective, NgForm } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 // Blockframes
-import { Movie } from '@blockframes/movie';
-import { FireQuery } from '@blockframes/utils';
+import { Movie, MovieQuery } from '@blockframes/movie';
 import {
   GenresLabel,
   GENRESLABEL,
@@ -22,7 +21,7 @@ import {
 } from '@blockframes/movie/movie/static-model/types';
 // RxJs
 import { Observable, combineLatest } from 'rxjs';
-import { startWith, map, debounceTime } from 'rxjs/operators';
+import { startWith, map, debounceTime, tap } from 'rxjs/operators';
 // Others
 import { CatalogSearchForm } from './search.form';
 import { languageValidator } from './search-validators.form';
@@ -54,6 +53,9 @@ export class MarketplaceSearchComponent implements OnInit {
   /* Flag to indicate either the movies should be presented as a card or a list */
   public listView: boolean;
 
+  /* Array to hold the movies sorted by parameters */
+  public sortedMovies: Movie[];
+
   // TODO#748: split up into compoennts
   public movieGenres: GenresLabel[];
   public movieLanguages: LanguagesLabel[];
@@ -81,7 +83,7 @@ export class MarketplaceSearchComponent implements OnInit {
   public movieTerritories: TerritoriesLabel[];
   public territoryControl: FormControl = new FormControl();
 
-  constructor(private fireQuery: FireQuery, private router: Router) {}
+  constructor(private movieQuery: MovieQuery, private router: Router) {}
 
   ngOnInit() {
     this.movieGenres = GENRESLABEL;
@@ -100,16 +102,70 @@ export class MarketplaceSearchComponent implements OnInit {
       map(territory => this._territoriesFilter(territory))
     );
     this.movieSearchResults$ = combineLatest([
-      this.fireQuery.collection<Movie>('movies').valueChanges(),
+      this.movieQuery.selectAll(),
       this.filterForm.valueChanges.pipe(startWith(this.filterForm.value))
     ]).pipe(
       map(([movies, filterOptions]) => movies.filter(movie => filterMovie(movie, filterOptions)))
     );
+    this.sortBy();
   }
+
+  public goToDetails(id: string) {
+    this.router.navigateByUrl(`layout/o/catalog/${id}`);
+  } 
 
   ////////////////////
   // Filter section //
   ////////////////////
+
+  // TODO#952
+  public sortBy(option?: string) {
+    switch (option) {
+      case 'Director':
+        this.movieSearchResults$
+          .pipe(
+            tap(movies => {
+              this.sortedMovies = movies.sort((a: Movie, b: Movie) => {
+                return b.main.directors[0].lastName.localeCompare(a.main.directors[0].lastName);
+              });
+            })
+          )
+          .subscribe();
+        break;
+      case 'Title':
+        this.movieSearchResults$
+          .pipe(
+            tap(
+              movies =>
+                (this.sortedMovies = movies.sort((a: Movie, b: Movie) => {
+                  return a.main.title.original.localeCompare(b.main.title.original);
+                }))
+            )
+          )
+          .subscribe();
+        break;
+      case 'Production Year':
+        this.movieSearchResults$
+          .pipe(
+            tap(
+              movies =>
+                (this.sortedMovies = movies.sort((a: Movie, b: Movie) => {
+                  if (b.main.productionYear < a.main.productionYear) {
+                    return -1;
+                  }
+                  if (b.main.productionYear > a.main.productionYear) {
+                    return 1;
+                  }
+                  return 0;
+                }))
+            )
+          )
+          .subscribe();
+        break;
+      default:
+        this.movieSearchResults$.subscribe(movies => (this.sortedMovies = movies));
+    }
+  }
 
   private _territoriesFilter(territory: string): string[] {
     const filterValue = territory.toLowerCase();
