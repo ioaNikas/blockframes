@@ -46,7 +46,7 @@
     </ng-container>
   </div>
   <ng-container *ngIf="promotionalElements.promotionalElements.controls.length == 0">
-    <button mat-icon-button color="primary" (click)="promotionalElements.addPromotionalElement()">
+    <button testId="addPromotionalElement" mat-icon-button color="primary" (click)="promotionalElements.addPromotionalElement()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </ng-container>

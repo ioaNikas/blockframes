@@ -28,7 +28,7 @@
     </div>
   </div>
   <ng-container *ngIf="promotionalDescription.keyAssets.controls.length === 0">
-    <button mat-icon-button color="primary" (click)="promotionalDescription.addKeyAsset()">
+    <button testId="addKeyAsset" mat-icon-button color="primary" (click)="promotionalDescription.addKeyAsset()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </ng-container>

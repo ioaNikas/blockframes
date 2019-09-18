@@ -3,7 +3,7 @@ import NavbarPage from './NavbarPage';
 import OrganizationFormPage from "./OrganizationFormPage";
 
 export default class MovieEditPage extends NavbarPage {
-  public static FIELD_INTERNATIONAL_TITLE = 'internationalTitle'
+  public static FIELD_INTERNATIONAL_TITLE = 'internationalTitle' // @todo remove
   public static FIELD_DIRECTORS = 'directors';
   public static FIELD_PRODUCTION_YEAR = 'productionYear';
 
@@ -34,20 +34,47 @@ export default class MovieEditPage extends NavbarPage {
     });
   }
 
-  public assertInputAndViewValueExists(controlName: string, value: string) {
-    cy.get('mat-card').contains(value);
-    cy.get(`input[formControlName=${controlName}]`).should(input => {
-      expect(input.val()).to.contain(value);
-    })
+  public assertInputAndViewValueExists(opts : any) {
+    if(!opts.type) { opts.type = 'input' }
+    cy.get('mat-card').contains(opts.value);
+    if(opts.arrayName && opts.groupName && opts.groupName) {
+      cy.get(`[formArrayName=${opts.arrayName}] [ng-reflect-name=${opts.groupName}] ${opts.type}[formControlName=${opts.controlName}]`).should(input => {
+        expect(input.val()).to.contain(opts.value);
+      })
+    } else if(opts.arrayName && opts.groupName && !opts.groupName) {
+      cy.get(`[formArrayName=${opts.arrayName}] ${opts.type}[formControlName=${opts.controlName}]`).should(input => {
+        expect(input.val()).to.contain(opts.value);
+      })
+    } else if(opts.groupName) {
+      cy.get(`[formGroupName=${opts.groupName}] ${opts.type}[formControlName=${opts.controlName}]`).should(input => {
+        expect(input.val()).to.contain(opts.value);
+      })
+    } else {
+      cy.get(`${opts.type}[formControlName=${opts.controlName}]`).should(input => {
+        expect(input.val()).to.contain(opts.value);
+      })
+    }
   }
 
-  public fillInputValue(controlName: string, value: string) {
-    cy.get(`input[formControlName=${controlName}]`).type(value);
+  public fillInputValue(opts : any) {
+    if(!opts.type) { opts.type = 'input' }
+    if(opts.arrayName && opts.groupName && opts.groupName) {
+      cy.get(`[formArrayName=${opts.arrayName}] [ng-reflect-name=${opts.groupName}] ${opts.type}[formControlName=${opts.controlName}]`).type(opts.value);
+    } else if(opts.arrayName && opts.groupName && !opts.groupName) {
+      cy.get(`[formArrayName=${opts.arrayName}] ${opts.type}[formControlName=${opts.controlName}]`).type(opts.value);
+    } else if(opts.groupName) {
+      cy.get(`[formGroupName=${opts.groupName}] ${opts.type}[formControlName=${opts.controlName}]`).type(opts.value);
+    } else {
+      cy.get(`${opts.type}[formControlName=${opts.controlName}]`).type(opts.value);
+    }
   }
 
   public selectOptions(controlName: string, values: string[]) {
     cy.get(`mat-select[formControlName=${controlName}]`).click();
     values.forEach(value => cy.get(`mat-option[ng-reflect-value=${value}]`).scrollIntoView().click({force: true}));
+    // click elsewere to remove select
+    // @todo tester
+    cy.get(`html`).click();
   }
 
   public assertOptionsExist(values: string[]) {

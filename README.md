@@ -57,6 +57,12 @@ npm run e2e:dev # starts cypress when your server is already running
 npm run lint, npm run test, etc. # check this in your package.json
 ```
 
+Another way:
+
+```bash
+ng serve APP_NAME
+ng e2e APP_NAME-e2e --watch
+```
 
 ## Deploy
 

@@ -3,7 +3,7 @@
   <section *ngSwitchCase="'waiting'">
     <label>
         <mat-icon class="material-icons-outlined">cloud_upload</mat-icon>
-      <input [accept]="accept" type="file" (change)="upload($event.target.files)" />
+      <input testId="upload-file" [accept]="accept" type="file" (change)="upload($event.target.files)" />
     </label>
     <p>Drag and drop your file here, or click to upload it from your file explorer</p>
   </section>

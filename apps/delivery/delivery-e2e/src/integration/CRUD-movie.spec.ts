@@ -4,21 +4,34 @@ import { LoginPage, AddMovieModal, MovieEditPage, LandingPage, MovieCreatePage, 
 import { User } from "../support/utils/type";
 
 // CONSTS
-
 const INPUTS_FORM = {
-  [MovieEditPage.FIELD_INTERNATIONAL_TITLE]: 'The terminator',
-  [MovieEditPage.FIELD_DIRECTORS]: ['Bruce'],
-  [MovieEditPage.FIELD_PRODUCTION_YEAR]: '2019',
+  main: [
+    { value: '123456', controlName: 'internalRef' },
+    { value: 'ISAN 0000-0001-8947-0000-8-0000-0000-D', controlName: 'isan' },
+    { value: 'The terminator', controlName: 'international', groupName: 'title' },
+    { value: '1998', controlName: 'productionYear' },
+    { value: 'Kung foo foo', controlName: 'shortSynopsis', type: 'textarea' },
+    { value: '90', controlName: 'length' }
+  ]
 };
 
 const OPTIONS_FORM = {
-  [MovieEditPage.OPTION_TYPES]: ['fiction', 'documentary'],
+  main: [
+    { controlName: 'genres', value: ['science-fiction', 'documentary'], label: ['Science Fiction', 'Documentary'] },
+    { controlName: 'originCountries', value: ['united-states'], label: ['United States'] },
+    { controlName: 'languages', value: ['french'], label: ['French'] },
+    { controlName: 'status', value: ['finished'], label: ['Finished']}
+  ]
+};
+
+/**
+ *  [MovieEditPage.OPTION_TYPES]: ['],
   [MovieEditPage.OPTION_GENRES]: ['thriller', 'horror'],
   [MovieEditPage.OPTION_ORIGIN_COUNTRIES]: ['france'],
   [MovieEditPage.OPTION_PRODUCER_COUNTRY]: ['france'],
   [MovieEditPage.OPTION_LANGUAGES]: ['french'],
   [MovieEditPage.OPTION_STATUS]: ['shooting']
-};
+ */
 
 const LOGIN_CREDENTIALS: Partial<User> = {
   email: 'cypressCRUDMOVIE@blockframes.com',
@@ -48,7 +61,7 @@ describe('User create a movie', () => {
     const p4: AddMovieModal = p2.clickAddMovie();
     p4.fillMovieName(MOVIES_CYTEST[0]);
     const p5: MovieEditPage = p4.clickCreate();
-    p5.assertMovieTitleExists(MOVIES_CYTEST[0])
+    p5.assertMovieTitleExists(MOVIES_CYTEST[0]);
   });
 });
 
@@ -63,10 +76,91 @@ describe('User create and update another movie', () => {
     // Create a movie
     const p3: AddMovieModal = p2.clickAddMovie();
     p3.fillMovieName(MOVIES_CYTEST[1]);
-    p3.clickCreate();
+    const p4: MovieEditPage = p3.clickCreate();
+    p4.assertMovieTitleExists(MOVIES_CYTEST[1]);
 
-    // Let Master Bruce do it
+    ////////////
+    /// MAIN SECTION
+    ////////////
+
+    // Add a director
+    cy.get('button[testId=addDirector]').click({ force: true });
+    p4.fillInputValue({ value: 'Luc', controlName: 'firstName', groupName: '0', arrayName: 'directors' });
+    p4.assertInputAndViewValueExists({ value: 'Luc', controlName: 'firstName', groupName: '0', arrayName: 'directors' });
+    p4.fillInputValue({ value: 'Besson', controlName: 'lastName', groupName: '0', arrayName: 'directors' });
+    p4.assertInputAndViewValueExists({ value: 'Besson', controlName: 'lastName', groupName: '0', arrayName: 'directors' });
+
+    // Poster
+    const dropEvent = {
+      force: true,
+      dataTransfer: {
+        files: [
+        ],
+      },
+    };
+    cy.fixture('Legend_14-widebody-300x199.jpg').then((picture) => { // @todo how to put image in dist fixtures
+      return Cypress.Blob.base64StringToBlob(picture, 'image/jpeg').then((blob) => {
+        dropEvent.dataTransfer.files.push(blob);
+      });
+    });
+    cy.get('[testId=upload-file]').trigger('drop', dropEvent);
+
+    // Fill standard form inputs
+    INPUTS_FORM.main.forEach(input => {
+      p4.fillInputValue(input);
+      p4.assertInputAndViewValueExists(input);
+    });
+
+    // Fill select inputes
+    OPTIONS_FORM.main.forEach(input => {
+      p4.selectOptions(input.controlName, input.value);
+      p4.assertOptionsExist( input.label);
+    });
+
+    // Add a production company
+    cy.get('button[testId=addProductionCompany]').click({ force: true });
+    p4.fillInputValue({ value: 'Universal City Studios', controlName: 'firstName', groupName: '0', arrayName: 'productionCompanies' });
+    p4.assertInputAndViewValueExists({ value: 'Universal City Studios', controlName: 'firstName', groupName: '0', arrayName: 'productionCompanies' });
+
+
+    ////////////
+    /// PROMOTIONAL ELEMENTS SECTION
+    ////////////
+    cy.get('.mat-tab-label-content').contains('Promotional Elements').click({ force: true });
+    
+    // @todo images
+
+    // Add other promotional elements
+    cy.get('button[testId=addPromotionalElement]').click({ force: true });
+    p4.fillInputValue({ value: 'This is a label', controlName: 'label', groupName: '0', arrayName: 'promotionalElements' });
+    p4.assertInputAndViewValueExists({ value: 'Luc', controlName: 'label', groupName: '0', arrayName: 'promotionalElements' });
+    p4.fillInputValue({ value: 'https://www.test.fr/', controlName: 'url', groupName: '0', arrayName: 'promotionalElements' });
+    p4.assertInputAndViewValueExists({ value: 'Besson', controlName: 'url', groupName: '0', arrayName: 'promotionalElements' });
+
+    ////////////
+    /// PROMOTIONAL DESCRIPTION SECTION
+    ////////////
+    cy.get('.mat-tab-label-content').contains('Promotional Description').click({ force: true });
+
+    // @todo update PR imdb pr keywords separator
+
+    // Add key assets
+    cy.get('button[testId=addKeyAsset]').click({ force: true });
+    p4.fillInputValue({ value: 'This is a label', controlName: '0', arrayName: 'keyAssets', type: 'textarea' });
+    p4.assertInputAndViewValueExists({ value: 'Luc', controlName: '0', arrayName: 'keyAssets', type: 'textarea'  });
+    
+
+    // Save form
+    p4.clickSaveMovie();
+
+    // @todo remove
+    cy.wait(10000);
+
+    
+
+    // Go back and check in list for movie info // or edit ?
   });
+
 });
 
 describe('User delete two movies', () => {

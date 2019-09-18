@@ -50,7 +50,7 @@
     </div>
   </div>
   <ng-container *ngIf="main.directors.controls.length === 0">
-    <button mat-icon-button color="primary" (click)="main.addDirector()">
+    <button testId="addDirector" mat-icon-button color="primary" (click)="main.addDirector()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </ng-container>
@@ -159,7 +159,7 @@
     </div>
   </div>
   <ng-container *ngIf="main.productionCompanies.controls.length === 0">
-    <button mat-icon-button color="primary" (click)="main.addProductionCompany()">
+    <button testId="addProductionCompany" mat-icon-button color="primary" (click)="main.addProductionCompany()">
       <mat-icon>add_circle</mat-icon>
     </button>
   </ng-container>

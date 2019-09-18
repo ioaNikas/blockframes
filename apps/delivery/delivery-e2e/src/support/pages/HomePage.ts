@@ -59,7 +59,7 @@ export default class HomePage extends NavbarPage {
   }
 
   public clickDelete() {
-    cy.get('[page-id=movie-list] button').should('contain', 'Delete').contains('Delete').click();
+    cy.get('[page-id=movie-list] button').get('span').should('contain', 'Delete').contains('Delete').click();
   }
 
   public selectTemplates() {
