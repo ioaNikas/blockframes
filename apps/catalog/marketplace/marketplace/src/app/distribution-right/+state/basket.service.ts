@@ -1,7 +1,7 @@
 import { BasketQuery } from './basket.query';
 import { FireQuery } from '@blockframes/utils';
 import { Injectable } from '@angular/core';
-import { CatalogBasket, createBasket, DistributionRight, Price } from './basket.model';
+import { CatalogBasket, createBasket, DistributionRight } from './basket.model';
 import { OrganizationQuery } from '@blockframes/organization';
 
 @Injectable({ providedIn: 'root' })

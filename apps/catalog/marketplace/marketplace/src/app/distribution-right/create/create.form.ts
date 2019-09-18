@@ -1,11 +1,11 @@
-import { Languages } from '../../movie/search/search.form';
-import { Territories } from '../+state/basket.model';
 import { FormEntity } from '@blockframes/utils';
 import { DistributionRight } from '../+state/basket.model';
 import { FormArray, FormGroup, FormControl } from '@angular/forms';
-import { staticModels } from '@blockframes/movie';
-
-const movieTerritories = staticModels['TERRITORIES'].map(key => key.slug);
+import {
+  TerritoriesSlug,
+  LanguagesLabel,
+  TERRITORIESSLUG
+} from '@blockframes/movie/movie/static-model/types';
 
 export class DistributionRightForm extends FormEntity<DistributionRight> {
   constructor() {
@@ -24,7 +24,7 @@ export class DistributionRightForm extends FormEntity<DistributionRight> {
 
   addTerritory(territory: string) {
     // Check it's part of the list available
-    if (!movieTerritories.includes(territory as Territories)) {
+    if (!TERRITORIESSLUG.includes(territory as TerritoriesSlug)) {
       throw new Error(`Territory ${territory} is not part of the list`);
     }
     // Check it's not already in the form control
@@ -55,33 +55,33 @@ export class DistributionRightForm extends FormEntity<DistributionRight> {
     }
   }
 
-  addLanguage(language: Languages) {
+  addLanguage(language: LanguagesLabel) {
     this.get('languages').setValue([...this.get('languages').value, language]);
   }
 
-  addDubbings(language: Languages) {
+  addDubbings(language: LanguagesLabel) {
     this.get('dubbings').setValue([...this.get('dubbings').value, language]);
   }
 
-  addSubtitles(language: Languages) {
+  addSubtitles(language: LanguagesLabel) {
     this.get('subtitles').setValue([...this.get('subtitles').value, language]);
   }
 
-  removeLanguage(language: Languages) {
+  removeLanguage(language: LanguagesLabel) {
     const updatedLanguage = this.get('languages').value.filter(newLanguages => {
       return newLanguages !== language;
     });
     this.get('languages').setValue(updatedLanguage);
   }
 
-  removeDubbings(language: Languages) {
+  removeDubbings(language: LanguagesLabel) {
     const updatedLanguage = this.get('languages').value.filter(newLanguages => {
       return newLanguages !== language;
     });
     this.get('languages').setValue(updatedLanguage);
   }
 
-  removeSubtitles(language: Languages) {
+  removeSubtitles(language: LanguagesLabel) {
     const updatedLanguage = this.get('languages').value.filter(newLanguages => {
       return newLanguages !== language;
     });

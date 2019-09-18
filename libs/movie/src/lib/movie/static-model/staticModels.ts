@@ -574,7 +574,6 @@ const models = {
     { 'slug': 'zambia', 'label': 'Zambia' },
     { 'slug': 'zanzibar', 'label': 'Zanzibar' },
     { 'slug': 'zimbabwe', 'label': 'Zimbabwe' },
-    { 'slug': 'vatican-city', 'label': 'Vatican City' },
     { 'slug': 'antigua-&-barbuda', 'label': 'Antigua & Barbuda' },
     { 'slug': 'bosnia-&-herzegovina', 'label': 'Bosnia & Herzegovina' },
     { 'slug': 'ile-saint-helene', 'label': 'Ile Saint Helene' },

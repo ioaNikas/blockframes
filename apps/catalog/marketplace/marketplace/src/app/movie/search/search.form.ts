@@ -1,30 +1,23 @@
+import {
+  LanguagesLabel,
+  CertificationsLabel,
+  MediasLabel,
+  TerritoriesLabel,
+  GenresLabel,
+  GENRESLABEL,
+  CERTIFICATIONSLABEL,
+  MEDIASLABEL,
+  TERRITORIESLABEL
+} from '@blockframes/movie/movie/static-model/types';
 import { Validators, FormArray } from '@angular/forms';
-import { MovieMedias, MovieTerritories } from './search.form';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FormEntity } from '@blockframes/utils';
-import { staticModels } from '@blockframes/movie';
 
 /////////////////////////
 // CatalogGenresFilter //
 /////////////////////////
 
-// TODO#748: split up the foorms
-const movieGenres = staticModels['GENRES'].map(key => key.label);
-export const movieLanguages = staticModels['LANGUAGES'].map(key => key.label);
-const movieCertifications = staticModels['CERTIFICATIONS'].map(key => key.label);
-const movieMedias = staticModels['MEDIAS'].map(key => key.label);
-const movieTerritories = staticModels['TERRITORIES'].map(key => key.label);
-
-export type MovieGenres = typeof movieGenres[number];
-
-export type Certifications = typeof movieCertifications[number];
-
-export type Languages = typeof movieLanguages[number];
-
-export type MovieMedias = typeof movieMedias[number];
-
-export type MovieTerritories = typeof movieTerritories[number];
-
+// TODO#748: split up the foorms if needed
 export interface MovieLanguage {
   original: boolean;
   dubbed: boolean;
@@ -40,11 +33,11 @@ export interface CatalogSearch {
     from: Date;
     to: Date;
   };
-  type: MovieGenres[];
-  languages: { [language in Languages]: MovieLanguage };
-  certifications: Certifications[];
-  medias: MovieMedias[];
-  territories: MovieTerritories[];
+  type: GenresLabel[];
+  languages: { [language in LanguagesLabel]: MovieLanguage };
+  certifications: CertificationsLabel[];
+  medias: MediasLabel[];
+  territories: TerritoriesLabel[];
 }
 
 /* ------------- */
@@ -133,28 +126,28 @@ export class CatalogSearchForm extends FormEntity<CatalogSearch, CatalogSearchCo
     return this.get('languages') as FormGroup;
   }
 
-  addLanguage(language: Languages, value: Partial<MovieLanguage> = {}) {
+  addLanguage(language: LanguagesLabel, value: Partial<MovieLanguage> = {}) {
     const movieLanguage = createMovieLanguage(value);
     this.get('languages').addControl(language, createLanguageControl(movieLanguage));
   }
 
-  removeLanguage(language: Languages) {
+  removeLanguage(language: LanguagesLabel) {
     this.languages.removeControl(language);
     this.updateValueAndValidity();
   }
 
-  addType(type: MovieGenres) {
-    if (!movieGenres.includes(type)) {
+  addType(type: GenresLabel) {
+    if (!GENRESLABEL.includes(type)) {
       throw new Error(
-        `Type ${type} is not part of the defined types, here is the complete list currently available: ${movieGenres}`
+        `Type ${type} is not part of the defined types, here is the complete list currently available: ${GENRESLABEL}`
       );
     } else {
       this.get('type').setValue([...this.get('type').value, type]);
     }
   }
 
-  removeType(type: MovieGenres) {
-    if (movieGenres.includes(type)) {
+  removeType(type: GenresLabel) {
+    if (GENRESLABEL.includes(type)) {
       const newControls = this.get('type').value.filter(typeToRemove => typeToRemove !== type);
       this.get('type').setValue(newControls);
     } else {
@@ -162,17 +155,17 @@ export class CatalogSearchForm extends FormEntity<CatalogSearch, CatalogSearchCo
     }
   }
 
-  checkCertification(certificationChecked: Certifications) {
+  checkCertification(certificationChecked: CertificationsLabel) {
     // check if certification is already checked by the user
     if (
-      movieCertifications.includes(certificationChecked) &&
+      CERTIFICATIONSLABEL.includes(certificationChecked) &&
       !this.get('certifications').value.includes(certificationChecked)
     ) {
       this.get('certifications').setValue([
         ...this.get('certifications').value,
         certificationChecked
       ]);
-    } else if (movieCertifications.includes(certificationChecked)) {
+    } else if (CERTIFICATIONSLABEL.includes(certificationChecked)) {
       const uncheckCertification = this.get('certifications').value.filter(
         removeCef => removeCef !== certificationChecked
       );
@@ -182,12 +175,12 @@ export class CatalogSearchForm extends FormEntity<CatalogSearch, CatalogSearchCo
     }
   }
 
-  checkMedia(mediaChecked: MovieMedias) {
+  checkMedia(mediaChecked: MediasLabel) {
     // check if media is already checked by the user
-    if (movieMedias.includes(mediaChecked) && !this.get('medias').value.includes(mediaChecked)) {
+    if (MEDIASLABEL.includes(mediaChecked) && !this.get('medias').value.includes(mediaChecked)) {
       this.get('medias').setValue([...this.get('medias').value, mediaChecked]);
     } else if (
-      movieMedias.includes(mediaChecked) &&
+      MEDIASLABEL.includes(mediaChecked) &&
       this.get('medias').value.includes(mediaChecked)
     ) {
       const uncheckMedia = this.get('medias').value.filter(
@@ -199,14 +192,14 @@ export class CatalogSearchForm extends FormEntity<CatalogSearch, CatalogSearchCo
     }
   }
 
-  addTerritory(territory: MovieTerritories) {
+  addTerritory(territory: TerritoriesLabel) {
     // Check it's part of the list available
-    if (!movieTerritories.includes(territory)) {
+    if (!TERRITORIESLABEL.includes(territory)) {
       throw new Error(`Territory ${territory} is not part of the list`);
     }
     // Check it's not already in the form control
-    const territories = this.get('territories').value;
-    if (!territories.includes(territory)) {
+    const territoriesValue = this.get('territories').value;
+    if (!territoriesValue.includes(territory)) {
       this.get('territories').push(new FormControl(territory));
     }
     // Else do nothing as it's already in the list

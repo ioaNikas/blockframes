@@ -1,6 +1,6 @@
 import { AbstractControl } from '@angular/forms';
-import { movieLanguages } from './search.form';
+import { LANGUAGESLABEL } from '@blockframes/movie/movie/static-model/types';
 
 export function languageValidator(control: AbstractControl): { [key: string]: boolean } | null {
-  return !movieLanguages.includes(control.value) ? { languageNotSupported: true } : null;
+  return !LANGUAGESLABEL.includes(control.value) ? { languageNotSupported: true } : null;
 }

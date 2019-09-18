@@ -19,7 +19,7 @@ import { SheetTab } from '@blockframes/utils';
 import { SSF$Date } from 'ssf/types';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { HttpClient } from '@angular/common/http';
-import { getCodeIfExists } from '../../../staticModels';
+import { getCodeIfExists } from '../../../static-model/staticModels';
 import { SSF } from 'xlsx';
 
 export interface SpreadsheetImportError {
