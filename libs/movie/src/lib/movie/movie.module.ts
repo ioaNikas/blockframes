@@ -27,7 +27,7 @@ import { MatMenuModule} from '@angular/material/menu';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 // Libraries
-import { UploadModule, UiFormModule } from '@blockframes/ui';
+import { UploadModule, UiFormModule, MovieCardModule } from '@blockframes/ui';
 import { MovieDisplayModule } from './display/display.module';
 import { ImportMovieModule } from './components/import/import-movie.module';
 
@@ -46,7 +46,7 @@ import { HomeEmptyComponent } from './components/home-empty/home-empty.component
 import { MovieCreateComponent } from './pages/movie-create/movie-create.component';
 import { MovieViewComponent } from './pages/movie-view/movie-view.component';
 import { MovieFormModule } from './form/form.module';
-import { MoviePickerComponent } from '@blockframes/movie/movie/components/movie-picker/movie-picker.component';
+import { MoviePickerComponent } from './components/movie-picker/movie-picker.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,7 @@ import { MoviePickerComponent } from '@blockframes/movie/movie/components/movie-
     MovieEmptyComponent,
     MovieCreateComponent,
     MovieViewComponent,
-    MoviePickerComponent
+    MoviePickerComponent,
   ],
   imports: [
     CommonModule,
@@ -95,6 +95,7 @@ import { MoviePickerComponent } from '@blockframes/movie/movie/components/movie-
     ImportMovieModule,
     MovieDisplayModule,
     MovieFormModule,
+    MovieCardModule,
   ],
   providers: [
     { provide: FirestoreSettingsToken, useValue: {} },// TODO: Remove when @angular/fire is updated

@@ -29,6 +29,7 @@ mat-divider {
 
 movie-display-list {
   width: 100%;
+  cursor: pointer;
 }
 
 .movie-list {
@@ -54,9 +55,8 @@ movie-display-list {
   flex-wrap: wrap;
 }
 
-movie-display-card-item {
-  width: 320px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  outline: none;
+movie-card {
+  height: auto;
+  width: 228px;
+  margin: 15px;
 }
