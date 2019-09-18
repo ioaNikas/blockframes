@@ -23,5 +23,3 @@ export * from './lib/toolbar/+state/context-menu.model';
 export * from './lib/toolbar/+state/context-menu.query';
 export * from './lib/toolbar/+state/context-menu.service';
 export * from './lib/toolbar/+state/context-menu.store';
-
-

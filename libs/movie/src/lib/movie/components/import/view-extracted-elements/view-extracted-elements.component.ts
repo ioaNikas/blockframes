@@ -15,10 +15,8 @@ import {
   cleanModel,
   createMovieSale
 } from '../../../+state';
-import { SheetTab } from '@blockframes/utils';
+import { SheetTab, formatCredits, ImageUploader } from '@blockframes/utils';
 import { SSF$Date } from 'ssf/types';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { HttpClient } from '@angular/common/http';
 import { getCodeIfExists } from '../../../static-model/staticModels';
 import { SSF } from 'xlsx';
 
@@ -106,11 +104,9 @@ export class ViewExtractedElementsComponent {
 
   constructor(
     private movieQuery: MovieQuery,
-    private afStorage: AngularFireStorage,
-    private httpClient: HttpClient,
+    private imageUploader: ImageUploader,
     private cdRef: ChangeDetectorRef,
   ) { }
-
 
   public formatMovies(sheetTab: SheetTab) {
     this.clearDataSources();
@@ -219,28 +215,11 @@ export class ViewExtractedElementsComponent {
 
         // DIRECTORS (Director(s))
         if (spreadSheetRow[SpreadSheetMovie.directors]) {
-          movie.main.directors = [];
-          spreadSheetRow[SpreadSheetMovie.directors].split(this.separator).forEach((a: string) => {
-            const director = { firstName: '', lastName: '' };
-
-            if (a.split("\\s+").length > 1) {
-              director.firstName = a.split("\\s+")[0];
-              director.lastName = a.split("\\s+")[1];
-            } else {
-              director.lastName = a.split("\\s+")[0];
-            }
-
-            movie.main.directors.push(director);
-          });
+          movie.main.directors = formatCredits(spreadSheetRow[SpreadSheetMovie.directors], this.separator);
         }
 
         // POSTER (Poster)
-        const data = await this.getImage(spreadSheetRow[SpreadSheetMovie.poster]);
-        if (data !== false) {
-          const snapshot = await this.afStorage.upload(`movies/${spreadSheetRow[SpreadSheetMovie.poster].split('/')[spreadSheetRow[SpreadSheetMovie.poster].split('/').length - 1]}`, data)
-          const url = await snapshot.ref.getDownloadURL();
-          movie.main.poster = url;
-        }
+        movie.main.poster = await this.imageUploader.upload(spreadSheetRow[SpreadSheetMovie.poster]);
 
         //////////////////
         // OPTIONAL FIELDS
@@ -345,19 +324,8 @@ export class ViewExtractedElementsComponent {
 
         // CREDITS (Principal Cast)
         if (spreadSheetRow[SpreadSheetMovie.cast]) {
-          movie.salesCast.credits = [];
-          spreadSheetRow[SpreadSheetMovie.cast].split(this.separator).forEach((a: string) => {
-            const credit = { firstName: '', lastName: '', creditRole: 'actor' };
-
-            if (a.split("\\s+").length > 1) {
-              credit.firstName = a.split("\\s+")[0];
-              credit.lastName = a.split("\\s+")[1];
-            } else {
-              credit.lastName = a.split("\\s+")[0];
-            }
-
-            movie.salesCast.credits.push(credit);
-          });
+          movie.salesCast.credits = formatCredits(spreadSheetRow[SpreadSheetMovie.cast], this.separator)
+            .map(credit => ({ ...credit, creditRole: 'actor' }));
         }
 
         // SYNOPSIS (Short Synopsis)
@@ -502,17 +470,6 @@ export class ViewExtractedElementsComponent {
         this.cdRef.detectChanges();
       }
     });
-  }
-
-  private getImage(imageUrl: string): Promise<Blob | boolean> {
-    if (imageUrl) {
-      return this.httpClient
-        .get(imageUrl, { responseType: 'blob' })
-        .toPromise()
-        .catch(_ => new Promise((resolve) => resolve(false)))
-    } else {
-      return new Promise((resolve) => resolve(false));
-    }
   }
 
   private validateMovie(importErrors: MovieImportState): MovieImportState {

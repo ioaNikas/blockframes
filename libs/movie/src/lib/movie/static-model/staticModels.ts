@@ -20,7 +20,8 @@ const models = {
     { 'slug': 'erotic', 'label': 'Erotic' },
     { 'slug': 'tv-show', 'label': 'TV Show' },
     { 'slug': 'web-series', 'label': 'Web Series' },
-    { 'slug': 'virtual-reality', 'label': 'Virtual Reality' }
+    { 'slug': 'virtual-reality', 'label': 'Virtual Reality' },
+    { 'slug': 'family', 'label': 'Family' }
   ] as const,
   'STAKEHOLDER_ROLES': [
     {
@@ -629,7 +630,7 @@ export const getCodeIfExists = (scope: string, str: string) => {
  */
 export const getLabelByCode = (scope: string, slug: string) => {
   const item = models[scope].find(i => i.slug === slug);
-  return item.label || '';
+  return item ? item.label : '';
 };
 
 export default models;

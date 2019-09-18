@@ -10,8 +10,11 @@ export * from './lib/form/validators/validators';
 export * from './lib/form/matchers';
 export * from './lib/spreadsheet/export';
 export * from './lib/spreadsheet/import';
+export * from './lib/spreadsheet/format';
 export { OrganizationAlgoliaResult } from './lib/algolia';
 export * from './lib/apps';
+export * from './lib/imdb/service';
+export * from './lib/image-uploader';
 // forms
 export * from './lib/form/forms/types';
 export * from './lib/form/forms/field.form';
