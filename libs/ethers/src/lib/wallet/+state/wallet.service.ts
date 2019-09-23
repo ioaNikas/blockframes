@@ -15,7 +15,7 @@ import { AbiCoder } from '@ethersproject/abi';
 import { Provider, TransactionRequest } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { Wallet as EthersWallet } from '@ethersproject/wallet';
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -57,7 +57,7 @@ export class WalletService {
 
   private _requireProvider() {
     if(!this.provider) {
-      this.provider = getDefaultProvider(network);
+      this.provider = new InfuraProvider(network);
     }
   }
 

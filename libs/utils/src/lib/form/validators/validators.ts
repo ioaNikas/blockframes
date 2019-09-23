@@ -1,4 +1,3 @@
-import { ethers } from 'ethers';
 import {
   AbstractControl,
   FormControl,
@@ -9,7 +8,7 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { LANGUAGES_SLUG } from '@blockframes/movie/movie/static-model/types';
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 import { isValidMnemonic } from '@ethersproject/hdnode';
 import { orgNameToEnsDomain } from '../../helpers';
 import { network } from '@env';
@@ -59,7 +58,8 @@ export function validMnemonic(control: AbstractControl): ValidationErrors | null
 /** Check if the `name` field of an Organization create form already exists as an ENS domain */
 export async function UniqueOrgName(control: AbstractControl): Promise<ValidationErrors | null> {
   const orgENS = orgNameToEnsDomain(control.value);
-  const orgAddress = await getDefaultProvider(network).resolveName(orgENS);
+  const provider = new InfuraProvider(network);
+  const orgAddress = await provider.resolveName(orgENS);
   return !orgAddress ? null : { notUnique: true };
 }
 
@@ -95,7 +95,8 @@ export function numberRangeValidator(from: string, to: string): ValidatorFn {
 }
 
 /**
- * @description Error state matcher for only one control
+ * @description Error state matcher which is just like in the docs from angular material.
+ * Basic usage for invalid, dirty and touched checks.
  */
 export class ControlErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null): boolean {

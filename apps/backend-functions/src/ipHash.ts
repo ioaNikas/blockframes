@@ -1,7 +1,7 @@
 import { db } from './internals/firebase';
 import { Message } from 'firebase-functions/lib/providers/pubsub';
 
-const { ethers } = require('ethers');
+import { Interface } from '@ethersproject/abi';
 
 
 const abi = [
@@ -11,7 +11,7 @@ const abi = [
   'event Timestamp(bytes32 indexed scriptHash, address indexed owner)'
 ];
 
-const i = new ethers.utils.Interface(abi);
+const i = new Interface(abi);
 
 export const onIpHash = (message: Message) => {
   const { json } = message;

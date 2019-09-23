@@ -16,7 +16,7 @@ import {
 } from './organization.model';
 import { OrganizationStore, DeploySteps } from './organization.store';
 import { OrganizationQuery } from './organization.query';
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 import { Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -229,7 +229,7 @@ export class OrganizationService {
   /** ensure that the provider exist */
   private _requireProvider() {
     if(!this.provider) {
-      this.provider = getDefaultProvider(network);
+      this.provider = new InfuraProvider(network);
     }
   }
 
