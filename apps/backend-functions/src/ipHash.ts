@@ -11,11 +11,11 @@ const abi = [
   'event Timestamp(bytes32 indexed scriptHash, address indexed owner)'
 ];
 
-const i = new Interface(abi);
+const ipInterface = new Interface(abi);
 
 export const onIpHash = (message: Message) => {
   const { json } = message;
-  const l = i.parseLog(json);
+  const l = ipInterface.parseLog(json);
   const txHash = json.transactionHash;
 
   switch (l.name) {
