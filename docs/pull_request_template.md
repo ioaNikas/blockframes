@@ -1,2 +1,3 @@
-State issue number in your PR to close it when PR merged: issue #XXX
-e.g. : "Resolve the bundle size ❤️: issue #1234"
+- Include the **special keyword** syntax & **#issue number** in the body of your Pull Request or in the commit message to close your issue
+    - e.g. : **'close, closes, closed, fix, fixes, fixed, resolve, resolve, resolved #XXX'**
+
