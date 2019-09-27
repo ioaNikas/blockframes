@@ -22,7 +22,7 @@ interface OperationMember extends OrganizationMember {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OrganizationSignerRepertoryComponent {
-  /** Headline of the columns in the material table. No Headline meanse no text.*/
+  /** Headline of the columns in the material table. No Headline means no text.*/
   public displayedColumns: string[] = ['name', 'email', 'operations', 'action'];
 
   /** Variable to save the data source of the material table */

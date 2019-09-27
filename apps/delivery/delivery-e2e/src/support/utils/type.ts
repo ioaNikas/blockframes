@@ -39,7 +39,7 @@ export interface User {
 }
 
 export interface Organization {
-  address: string;
+  officeAddress: string;
   phoneNumber: string;
 }
 
@@ -53,7 +53,7 @@ export function createUser(): User {
 }
 
 export function createOrganization(): Organization {
-  return { address: randomString(), phoneNumber: randomString() };
+  return { officeAddress: randomString(), phoneNumber: randomString() };
 }
 
 export interface Material {

@@ -2,7 +2,13 @@ import firebase from 'firebase';
 import { Injectable } from '@angular/core';
 import { switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { FireQuery, Query, emailToEnsDomain, precomputeAddress, getNameFromENS, orgNameToEnsDomain } from '@blockframes/utils';
+import {
+  FireQuery,
+  Query,
+  emailToEnsDomain,
+  precomputeAddress as precomputeEthAddress,
+  getNameFromENS,
+  orgNameToEnsDomain } from '@blockframes/utils';
 import { AuthQuery, AuthService, AuthStore, User } from '@blockframes/auth';
 import { App, createAppPermissions, createPermissions, PermissionsQuery } from '../permissions/+state';
 import {
@@ -238,9 +244,9 @@ export class OrganizationService {
     if(!this.contract) {
       this._requireProvider();
       const organizationENS = orgNameToEnsDomain(this.query.getValue().org.name);
-      let address = await this.getEthAddress();
+      let ethAddress = await this.getOrganizationEthAddress();
       await new Promise(resolve => {
-        if (!address) {
+        if (!ethAddress) {
           // registered
           this.provider.on(getFilterFromTopics(relayer.registryAddress, [
             newOwnerTopic,
@@ -257,7 +263,7 @@ export class OrganizationService {
 
           // ready
           this.provider.on(getFilterFromTopics(relayer.resolverAddress, [addrChangedTopic, namehash(organizationENS)]), (log: Log) => {
-            address = `0x${log.data.slice(-40)}`; // extract address
+            ethAddress = `0x${log.data.slice(-40)}`; // extract address
             this.store.update({deployStep: DeploySteps.ready});
             resolve();
           });
@@ -268,7 +274,7 @@ export class OrganizationService {
       this.provider.removeAllListeners(getFilterFromTopics(relayer.registryAddress, [newOwnerTopic, namehash(baseEnsDomain), keccak256(getNameFromENS(organizationENS))]));
       this.provider.removeAllListeners(getFilterFromTopics(relayer.registryAddress, [newResolverTopic, namehash(organizationENS)]));
       this.provider.removeAllListeners(getFilterFromTopics(relayer.resolverAddress, [addrChangedTopic, namehash(organizationENS)]));
-      this.contract = new Contract(address, ORGANIZATION_ABI, this.provider);
+      this.contract = new Contract(ethAddress, ORGANIZATION_ABI, this.provider);
     }
   }
 
@@ -277,15 +283,16 @@ export class OrganizationService {
   //----------------------------------
 
   /** Retrieve the Ethereum address of the current org (using it's ENS name) */
-  public async getEthAddress() {
+  public async getOrganizationEthAddress() {
     this._requireProvider();
     const organizationENS = orgNameToEnsDomain(this.query.getValue().org.name);
     return this.provider.resolveName(organizationENS);
   }
 
-  public async getMemberAddress(email: string) {
+  /** Retrieve the Ethereum address of a member (using it's email and CREATE2 precompute) */
+  public async getMemberEthAddress(email: string) {
     this._requireProvider();
-    return precomputeAddress(emailToEnsDomain(email), this.provider);
+    return precomputeEthAddress(emailToEnsDomain(email), this.provider);
   }
 
   //----------------------------------
@@ -350,16 +357,16 @@ export class OrganizationService {
     const memberAddedFilter = getFilterFromTopics(this.contract.address, [memberAddedTopic]);
     this.provider.on(memberAddedFilter, (log: Log) => {
       const operationId = log.topics[1];
-      const memberAddress = log.topics[2];
-      console.log(`member ${memberAddress} added to op ${operationId}`); // TODO issue#762 : link blockchain user address to org members, then call 'addOperationMember()'
+      const memberEthAddress = log.topics[2];
+      console.log(`member ${memberEthAddress} added to op ${operationId}`); // TODO issue#762 : link blockchain user address to org members, then call 'addOperationMember()'
     });
 
     // listen for member removed
     const memberRemovedFilter = getFilterFromTopics(this.contract.address, [memberRemovedTopic]);
     this.provider.on(memberRemovedFilter, (log: Log) => {
       const operationId = log.topics[1];
-      const memberAddress = log.topics[2];
-      console.log(`member ${memberAddress} removed from op ${operationId}`); // TODO issue#762 : link blockchain user address to org members, then call 'removeOperationMember()'
+      const memberEthAddress = log.topics[2];
+      console.log(`member ${memberEthAddress} removed from op ${operationId}`); // TODO issue#762 : link blockchain user address to org members, then call 'removeOperationMember()'
     });
 
 
@@ -411,8 +418,8 @@ export class OrganizationService {
     this.query.getValue().org.members
       .filter(member => !this.permissionsQuery.isUserSuperAdmin(member.uid))
       .forEach(member => {
-        const promise = precomputeAddress(emailToEnsDomain(member.email), this.provider)
-          .then((address): boolean => this.contract.isWhitelisted(address, operationId))
+        const promise = precomputeEthAddress(emailToEnsDomain(member.email), this.provider)
+          .then((ethAddress): boolean => this.contract.isWhitelisted(ethAddress, operationId))
           .then(isWhiteListed => isWhiteListed ? operation.members.push(member) : -1);
         promises.push(promise);
       });
@@ -511,8 +518,8 @@ export class OrganizationService {
     const promises: Promise<number>[] = [];
     this.query.getValue().org.members
       .forEach(member => {
-        const promise = precomputeAddress(emailToEnsDomain(member.email), this.provider)
-          .then((address): boolean => this.contract.hasApprovedAction(address, actionId))
+        const promise = precomputeEthAddress(emailToEnsDomain(member.email), this.provider)
+          .then((ethAddress): boolean => this.contract.hasApprovedAction(ethAddress, actionId))
           .then(hasApproved => hasApproved ? action.signers.push(member) : -1);
         promises.push(promise);
       });

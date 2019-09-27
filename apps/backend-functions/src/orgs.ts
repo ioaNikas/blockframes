@@ -8,7 +8,7 @@ import { deleteSearchableOrg, storeSearchableOrg } from './internals/algolia';
 import { sendMail } from './internals/email';
 import { organizationCreated } from './assets/mail-templates';
 import { Organization, OrganizationStatus } from './data/types';
-import { precomputeAddress, emailToEnsDomain, RelayerConfig, relayerDeployOrganizationLogic, relayerRegisterENSLogic, isENSNameRegistered } from './relayer';
+import { precomputeAddress as precomputeEthAddress, emailToEnsDomain, RelayerConfig, relayerDeployOrganizationLogic, relayerRegisterENSLogic, isENSNameRegistered } from './relayer';
 import { mnemonic, relayer } from './environments/environment';
 
 export function onOrganizationCreate(
@@ -67,12 +67,12 @@ export async function onOrganizationUpdate(
       throw new Error(`This organization has already an ENS name: ${orgENS}`);
     }
 
-    const adminAddress = await precomputeAddress(emailToEnsDomain(admin.email, RELAYER_CONFIG.baseEnsDomain), RELAYER_CONFIG);
-    const orgAddress =  await relayerDeployOrganizationLogic(adminAddress, RELAYER_CONFIG);
+    const adminEthAddress = await precomputeEthAddress(emailToEnsDomain(admin.email, RELAYER_CONFIG.baseEnsDomain), RELAYER_CONFIG);
+    const orgEthAddress =  await relayerDeployOrganizationLogic(adminEthAddress, RELAYER_CONFIG);
 
-    console.log(`org ${orgENS} deployed @ ${orgAddress}!`);
-    const res = await relayerRegisterENSLogic({name: orgENS, address: orgAddress}, RELAYER_CONFIG);
-    console.log('Org deployed and registered!', orgAddress, res['link'].transactionHash);
+    console.log(`org ${orgENS} deployed @ ${orgEthAddress}!`);
+    const res = await relayerRegisterENSLogic({name: orgENS, ethAddress: orgEthAddress}, RELAYER_CONFIG);
+    console.log('Org deployed and registered!', orgEthAddress, res['link'].transactionHash);
   }
 
   return Promise.resolve(true); // no-op by default

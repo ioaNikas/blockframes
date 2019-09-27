@@ -11,7 +11,7 @@ const testData = {
   orgs: {
     id1: {
       name: 'John Doe',
-      address: 'LogicalPicture',
+      officeAddress: 'LogicalPicture',
       userIds: [],
       id: '',
       movieIds: [],
@@ -19,7 +19,7 @@ const testData = {
     },
     id2: {
       name: 'Tomme Hardy',
-      address: '20Th Century Fox',
+      officeAddress: '20Th Century Fox',
       userIds: [],
       id: '',
       movieIds: [],
@@ -27,7 +27,7 @@ const testData = {
     },
     id3: {
       name: 'Francis Munster',
-      address: 'Disney',
+      officeAddress: 'Disney',
       userIds: [],
       id: '',
       movieIds: [],

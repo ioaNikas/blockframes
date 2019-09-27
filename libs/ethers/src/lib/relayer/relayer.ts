@@ -27,18 +27,18 @@ export class Relayer {
    * @param name ENS name , this should `bob` and **NOT** `bob.blockframes.eth`
    * @param address address to link the name with
    */
-  public registerENSName(name: string, address: string): Promise<Object> {
+  public registerENSName(name: string, ethAddress: string): Promise<Object> {
     if (name.split('.').length > 1) { // if you provide a full ENS domain anyway, we've got your back !
     name = name.split('.')[0]
     }
     const callRegister = this.functions.httpsCallable('relayerRegister');
-    const registration = callRegister({ name, address }).toPromise();
+    const registration = callRegister({ name, ethAddress }).toPromise();
     return registration;
   }
 
   /** Send a transaction to the relayer  */
-  send(address: string, tx: TransactionRequest): Promise<TransactionReceipt> {
+  send(ethAddress: string, tx: TransactionRequest): Promise<TransactionReceipt> {
     const call = this.functions.httpsCallable('relayerSend');
-    return call({ address, tx }).toPromise();
+    return call({ ethAddress, tx }).toPromise();
   }
 }

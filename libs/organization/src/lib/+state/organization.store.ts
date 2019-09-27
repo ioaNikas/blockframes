@@ -13,7 +13,7 @@ export interface OrganizationState {
 const initialState: OrganizationState = {
   form: {
     name: '',
-    address: ''
+    officeAddress: ''
   },
   org: null,
   deployStep: DeploySteps.notDeployed,

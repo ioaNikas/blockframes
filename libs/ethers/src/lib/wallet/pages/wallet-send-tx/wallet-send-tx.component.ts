@@ -58,7 +58,7 @@ export class WalletSendTxTunnelComponent implements OnInit {
 
       if (!this.query.getValue().hasERC1077) { // we have to wait for password decryption to prevent deploying if the user entered a wrong password
         this.isDeploying$.next(true);
-        const orgId = this.authQuery.orgId
+        const orgId = this.authQuery.orgId;
         await this.walletService.deployERC1077(this.key.ensDomain, this.key.address, orgId);
         this.isDeploying$.next(false);
       }
