@@ -73,7 +73,7 @@
           "type": "bytes32"
         },
         {
-          "indexed": false,
+          "indexed": true,
           "name": "indexedKey",
           "type": "string"
         },
@@ -175,7 +175,7 @@
           "type": "bytes32"
         },
         {
-          "indexed": false,
+          "indexed": true,
           "name": "indexedKey",
           "type": "string"
         },
