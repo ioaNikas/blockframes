@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "./IKeyHolder.sol";
+import "../import/ERC1077/IKeyHolder.sol";
 
 contract KeyHolder is IKeyHolder {
     mapping (address => Key) public keys;
