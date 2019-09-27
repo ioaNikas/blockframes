@@ -1,13 +1,13 @@
 pragma solidity ^0.5.9;
 
 import "./Initable.sol";
-
 import "./KeyHolder.sol";
-import "./IERC1077.sol";
 
-import "../../node_modules/openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
-import "../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "../../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "../import/ERC1077/IERC1077.sol";
+
+import "../../../node_modules/openzeppelin-solidity/contracts/cryptography/ECDSA.sol";
+import "../../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "../../../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 
 contract ERC1077 is KeyHolder, IERC1077, Initable {
