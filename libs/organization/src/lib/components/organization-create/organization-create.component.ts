@@ -43,7 +43,7 @@ export class OrganizationCreateComponent implements OnInit, OnDestroy {
         asyncValidators: [UniqueOrgName],
         updateOn: 'blur',
       }),
-      'address': ['', [Validators.required]]
+      'officeAddress': ['', [Validators.required]]
     });
 
     this.form.statusChanges.subscribe(status => {

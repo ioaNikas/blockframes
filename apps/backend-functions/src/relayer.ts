@@ -56,7 +56,7 @@ export interface SignedMetaTx extends MetaTx {
   signatures: string; // bytes
 }
 export interface SendParams {
-  address: string;
+  ethAddress: string;
   tx: SignedMetaTx;
 }
 
@@ -102,7 +102,7 @@ interface DeployParams {
 
 interface RegisterParams {
   name: string;
-  address: string;
+  ethAddress: string;
 }
 
 // TODO issue#714 (Laurent work on a way to get those functions in only one place)
@@ -196,20 +196,20 @@ export async function relayerDeployLogic(
 //---------------------------------------------------
 
 export async function relayerRegisterENSLogic(
-  { name, address }: RegisterParams,
+  { name, ethAddress }: RegisterParams,
   config: RelayerConfig
 ) {
   const relayer: Relayer = initRelayer(config);
 
   // check required params
-  if (!name || !address) {
-    throw new Error('"name" and "address" are mandatory parameters !');
+  if (!name || !ethAddress) {
+    throw new Error('"name" and "ethAddress" are mandatory parameters !');
   }
 
   try {
-    getAddress(address);
+    getAddress(ethAddress);
   } catch (error) {
-    throw new Error('"address" should be a valid ethereum address !');
+    throw new Error('"ethAddress" should be a valid ethereum address !');
   }
 
   // in case name is of the form `name.blockframes.eth` we only want the first part to prevent ending with `name.blockframes.eth.blockframes.eth`
@@ -262,7 +262,7 @@ export async function relayerRegisterENSLogic(
     // (C) link the erc1077 to the ens username : require waiting for (B)
     const linkTx: TxResponse = await relayer.resolver.setAddr(
       namehash(fullName),
-      address,
+      ethAddress,
     )
     result['link'] = await linkTx.wait();
     console.log(`(C) tx sent (setAddress) : ${linkTx.hash}`); // display tx to firebase logging
@@ -281,23 +281,23 @@ export async function relayerRegisterENSLogic(
 //---------------------------------------------------
 
 export async function relayerSendLogic(
-  { address, tx }: SendParams,
+  { ethAddress, tx }: SendParams,
   config: RelayerConfig
 ) {
   const relayer: Relayer = initRelayer(config);
   // check required params
-  if (!address || !tx) {
-    throw new Error('"address" and "tx" are mandatory parameters !');
+  if (!ethAddress || !tx) {
+    throw new Error('"ethAddress" and "tx" are mandatory parameters !');
   }
 
   try {
-    getAddress(address);
+    getAddress(ethAddress);
   } catch (error) {
-    throw new Error('"address" should be a valid ethereum address !');
+    throw new Error('"ethAddress" should be a valid ethereum address !');
   }
 
   // compute needed values
-  const erc1077 = new Contract(address, ERC1077_ABI, relayer.wallet);
+  const erc1077 = new Contract(ethAddress, ERC1077_ABI, relayer.wallet);
 
   // check if tx will be accepted by erc1077
   const canExecute: boolean = await erc1077.functions.canExecute(

@@ -59,8 +59,8 @@ export function validMnemonic(control: AbstractControl): ValidationErrors | null
 export async function UniqueOrgName(control: AbstractControl): Promise<ValidationErrors | null> {
   const orgENS = orgNameToEnsDomain(control.value);
   const provider = new InfuraProvider(network);
-  const orgAddress = await provider.resolveName(orgENS);
-  return !orgAddress ? null : { notUnique: true };
+  const orgEthAddress = await provider.resolveName(orgENS);
+  return !orgEthAddress ? null : { notUnique: true };
 }
 
 /**

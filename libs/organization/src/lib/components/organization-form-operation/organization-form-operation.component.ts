@@ -44,12 +44,12 @@ export class OrganizationFormOperationComponent {
     const members = this.control.get('members').value.filter(member => member.uid !== id);
     this.control.get('members').patchValue(members);
 
-    const memberAddress = await this.service.getMemberAddress(removedMember.email);
-    const orgAddress = await this.service.getEthAddress();
+    const memberEthAddress = await this.service.getMemberEthAddress(removedMember.email);
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
     const operationId = this.control.get('id').value;
     const operationName = this.control.get('name').value;
     const orgId = this.query.id;
-    const tx = CreateTx.addMember(orgAddress, operationId, memberAddress);
+    const tx = CreateTx.addMember(orgEthAddress, operationId, memberEthAddress);
     const feedback = {
       confirmation: `You are about to blacklist ${removedMember.name} for ${operationName}`,
       success: `${removedMember.name} has been successfully blacklisted !`,
@@ -67,12 +67,12 @@ export class OrganizationFormOperationComponent {
     this.control.get('members').patchValue([...members, addedMember]);
     this.addMemberFrom.reset();
 
-    const memberAddress = await this.service.getMemberAddress(addedMember.email);
-    const orgAddress = await this.service.getEthAddress();
+    const memberEthAddress = await this.service.getMemberEthAddress(addedMember.email);
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
     const operationId = this.control.get('id').value;
     const operationName = this.control.get('name').value;
     const orgId = this.query.id;
-    const tx = CreateTx.addMember(orgAddress, operationId, memberAddress);
+    const tx = CreateTx.addMember(orgEthAddress, operationId, memberEthAddress);
     const feedback = {
       confirmation: `You are about to whitelist ${addedMember.name} for ${operationName}`,
       success: `${addedMember.name} has been successfully whitelisted !`,
@@ -85,12 +85,12 @@ export class OrganizationFormOperationComponent {
   }
 
   public async updateQuorum() {
-    const orgAddress = await this.service.getEthAddress();
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
     const operationId = this.control.get('id').value;
     const newQuorum = this.control.get('quorum').value;
     const operationName = this.control.get('name').value;
     const orgId = this.query.id;
-    const tx = CreateTx.modifyQuorum(orgAddress, operationId, newQuorum);
+    const tx = CreateTx.modifyQuorum(orgEthAddress, operationId, newQuorum);
     const feedback = {
       confirmation: `You are about to set the quorum for ${operationName} to ${newQuorum}`,
       success: 'The quorum has been successfully updated !',

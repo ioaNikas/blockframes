@@ -3,14 +3,14 @@ import { FormEntity } from '@blockframes/utils';
 import { PLACEHOLDER_LOGO } from '../+state';
 
 export interface OrganizationProfile {
-  address: string;
+  officeAddress: string;
   phoneNumber: string;
   logo?: string;
 }
 
 function createOrganizationProfile(params: Partial<OrganizationProfile> = {}): OrganizationProfile {
   return {
-    address: '',
+    officeAddress: '',
     phoneNumber: '',
     logo: PLACEHOLDER_LOGO,
     ...params
@@ -20,7 +20,7 @@ function createOrganizationProfile(params: Partial<OrganizationProfile> = {}): O
 function createOrganizationProfileControls(entity: Partial<OrganizationProfile>) {
   const organizationProfile = createOrganizationProfile(entity);
   return {
-    address: new FormControl(organizationProfile.address),
+    officeAddress: new FormControl(organizationProfile.officeAddress),
     phoneNumber: new FormControl(organizationProfile.phoneNumber),
     logo: new FormControl(organizationProfile.logo),
   };
