@@ -42,8 +42,9 @@
                     {{territory}}
                     <mat-icon matChipRemove>cancel</mat-icon>
                   </mat-chip>
-                  <input test-id="distribution-territory-input" placeholder="Territories available" [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                    [formControl]="territoryControl" #territoryInput>
+                  <input test-id="distribution-territory-input" placeholder="Territories available"
+                    [matAutocomplete]="auto" [matChipInputFor]="chipList" [formControl]="territoryControl"
+                    #territoryInput>
                 </mat-chip-list>
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTerritory($event)">
                   <mat-option *ngFor="let territory of territoriesFilter | async" [value]="territory"
@@ -81,8 +82,8 @@
                     <h6 class="mat-h4">Languages</h6>
                     <span fxLayout="row">
                       <mat-form-field appearance="outline">
-                        <input test-id="distribution-language-input" matInput type="text" [matAutocomplete]="language" [formControl]="languageControl"
-                          placeholder="Add available languages" class="capitalized" />
+                        <input test-id="distribution-language-input" matInput type="text" [matAutocomplete]="language"
+                          [formControl]="languageControl" placeholder="Add available languages" class="capitalized" />
                         <button mat-button matSuffix mat-icon-button (click)="addLanguage(languageControl.value)"
                           [disabled]="!languageControl.valid">
                           <mat-icon>search</mat-icon>
@@ -124,8 +125,8 @@
                     <h6 class="mat-h4">Dubbings</h6>
                     <span fxLayout="row">
                       <mat-form-field appearance="outline">
-                        <input test-id="distribution-dubbing-input" matInput type="text" [matAutocomplete]="dubbings" [formControl]="dubbingsControl"
-                          placeholder="Add available dubbings" class="capitalized" />
+                        <input test-id="distribution-dubbing-input" matInput type="text" [matAutocomplete]="dubbings"
+                          [formControl]="dubbingsControl" placeholder="Add available dubbings" class="capitalized" />
                         <button mat-button matSuffix mat-icon-button (click)="addDubbing(dubbingsControl.value)"
                           [disabled]="!dubbingsControl.valid">
                           <mat-icon>search</mat-icon>
@@ -203,20 +204,35 @@
                 </ng-container>
               </article>
             </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Exclusive</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div fxLayout="column" fxLayoutAlign="start space-between">
+                <mat-checkbox mat-list-item formControlName="exclusive"
+                  (click)="form.get('exclusive').value = !form.get('exclusive').value">Buy exclusive distribution right
+                </mat-checkbox>
+              </div>
+            </mat-expansion-panel>
           </mat-accordion>
           <button test-id="distribution-search" mat-button color="accent" (click)="startResearch()">Search</button>
         </form>
       </mat-card>
     </aside>
 
-    <section fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" *ngIf="showResults">
-      <month-calendar [selectedRange]="choosenDateRange" [disabledDates]="occupiedDateRanges"
-        (rangeSelected)="changeDateFocus($event)"></month-calendar>
-        <a test-id="add-distribution-button" mat-raised-button color="accent" (click)="addDistributionRight()" [disabled]="!catalogBasket">Add
-        distribution right</a>
-    </section>
-    <section>
-        <img src='assets/images/availabilities.png' *ngIf="!showResults"/>
+    <section fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="20px" [ngSwitch]="step">
+      <div *ngSwitchCase="steps.START">
+        <img src='assets/images/availabilities.png' />
+      </div>
+      <div *ngSwitchCase="steps.POSSIBLE">
+        <month-calendar [selectedRange]="choosenDateRange" [disabledDates]="occupiedDateRanges"
+          (rangeSelected)="changeDateFocus($event)"></month-calendar>
+        <a test-id="add-distribution-button" mat-raised-button color="accent" (click)="addDistributionRight()"
+          [disabled]="!catalogBasket">Add
+          distribution right</a>
+      </div>
+      <div *ngSwitchCase="steps.ERROR">
+      </div>
     </section>
   </article>
 </main>
