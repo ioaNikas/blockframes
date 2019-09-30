@@ -1,21 +1,26 @@
 @import 'mixins';
 
-mat-divider {
-  width: 100%;
-  margin: 0 20px;
-}
-
 :host {
   display: block;
   padding-left: 200px;
   padding-right: 200px;
   padding-top: 100px;
   header {
-    hr {
+    mat-divider {
       margin: 0 30px 0 30px;
     }
     button {
       margin-left: 16px;
+    }
+  }
+  section {
+    h3 {
+      color: var(--lightGrey);
+    }
+    article {
+      background-color: white;
+      border-radius: 10px;
+      border: solid 1px var(--borderGrey);
     }
   }
 }
@@ -27,7 +32,7 @@ mat-divider {
     padding-right: 50px;
     padding-top: 10px;
     header {
-      hr {
+      mat-divider {
         display: none;
       }
       button {
@@ -44,7 +49,7 @@ mat-divider {
     padding-right: 10px;
     padding-top: 10px;
     header {
-      hr {
+      mat-divider {
         display: none;
       }
     }
