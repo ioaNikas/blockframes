@@ -1,6 +1,4 @@
-:host {
-  display: flex;
-}
+@import 'mixins';
 
 header {
   padding: 100px 0;
@@ -10,73 +8,73 @@ header {
   background-attachment: fixed;
   background-size: cover;
   text-align: center;
-  div {
-    h1,
-    b {
-      margin: 0;
-      padding: 0;
-    }
-  }
 }
 
-aside {
-  width: 25%;
-  padding: 10px;
-  margin-top: 100px;
-  img {
-    padding: 10px;
-  }
+.view-content {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+.mat-divider {
+  margin: 0 20px;
+}
+
+.mat-card .mat-divider-horizontal.mat-divider-inset {
+  margin-top: 20px;
+}
+
+.film-informations {
+  margin-top: 15px;
+}
+
+.poster-column {
+  width: 50%;
+  margin-right: 15px;
+}
+
+.information-column {
+  width: 100%;
+  margin-left: 15px;
+}
+
+.movie-poster {
+  width: 410px;
+  height: 545px;;
+}
+
+.movie-presentation {
+  margin-top: 40px;
+  padding: 50px;
+  border-radius: 10px;
 }
 
 .informations {
-  width: 60%;
-  padding: 10px;
+  padding: 50px;
+  padding-top: 20px;
+  border-radius: 10px;
 }
 
-article {
-  padding: 10px 10px 10px 0px;
+.mat-flat-button {
+  margin: 10px;
 }
 
-mat-divider {
-  margin-left: 20px;
-  width: 100%;
+@include mobile {
+  .view-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
-h2 {
-  white-space: nowrap;
+@include tablet {
+  .view-content {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }
 
-h3 {
-  margin-bottom: 10px;
-}
-
-b {
-  margin: 0px 15px 5px 0px;
-}
-
-span {
-  white-space: nowrap;
-}
-
-ul {
-  padding: 0;
-  margin: 0;
-}
-
-.overflow {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.first-column {
-  width: 450px;
-}
-
-.second-column {
-  width: 450px;
-}
-
-.distribution-button {
-  margin: 0 auto;
+@include medium {
+  .view-content {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }

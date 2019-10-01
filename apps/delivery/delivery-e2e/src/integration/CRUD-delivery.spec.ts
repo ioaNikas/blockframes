@@ -14,7 +14,7 @@ import {
   ConfirmModal
 } from '../support/pages';
 import { User, DeliveryInformation } from '../support/utils/type';
-import { MATERIALS } from '../support/utils/data';
+import { MATERIALS, UPDATED_MATERIALS, Statuses } from '../support/utils/data';
 
 //////////
 // DATA //
@@ -25,12 +25,12 @@ const USER: Partial<User> = {
   password: 'blockframes'
 };
 
-const ORGANIZATION_NAME = 'Cypress Delivery Test Organization'
+const ORGANIZATION_NAME = 'Cypress Delivery Test';
 
 const MOVIES_CYTEST = ['Starship Troopers', 'Anchorman'];
 
 const DELIVERY_SETTINGS = ['Materials price list', 'Signature of the delivery'];
-const TEMPLATE = 'Test assets'
+const TEMPLATE = 'Test assets';
 
 const DELIVERY_INFORMATION: DeliveryInformation = {
   minimumGuarantee: {
@@ -64,11 +64,13 @@ const DELIVERY_INFORMATION: DeliveryInformation = {
       date: '12/25/2019'
     }
   ]
-}
+};
 
 ///////////
 // TESTS //
 ///////////
+
+// DELIVERY CRUD //
 
 beforeEach(() => {
   cy.clearCookies();
@@ -138,7 +140,7 @@ describe('User update deliveries informations', () => {
 
     // Checks informations are displayed in view after updating
     p4.assertAllInformationFieldsExists(DELIVERY_INFORMATION);
-  })
+  });
 });
 
 describe('User delete a delivery', () => {
@@ -149,5 +151,79 @@ describe('User delete a delivery', () => {
     const p4: ConfirmModal = p3.clickDeleteDelivery();
     const p5: DeliveryListPage = p4.confirmDeleteDelivery();
     p5.assertDeliveryIsDeleted();
+  });
+});
+
+// MATERIALS CRUD //
+
+describe('User add some materials', () => {
+  it('should login, click on the second movie card, click on the first delivery, then create 3 materials and assert that they exist', () => {
+    const p1: MovieListPage = new MovieListPage();
+    const p2: DeliveryListPage = p1.clickOnMovieWithDeliveries(MOVIES_CYTEST[1]);
+    const p3: DeliveryEditablePage = p2.clickFirstDelivery(ORGANIZATION_NAME);
+    MATERIALS.forEach(material => {
+      p3.addMaterial();
+      p3.fillMaterial(material);
+
+      // Check if material display works
+      p3.assertMaterialExists(material);
+    });
+    p3.saveMaterial();
+
+    // Check if materials are saved
+    MATERIALS.forEach(material => p3.assertMaterialExists(material));
+  });
+});
+
+describe('User update some materials fields', () => {
+  it('should login, click on the second movie card, click on the first delivery, then update 3 materials fields and assert that they exist', () => {
+    const p1: MovieListPage = new MovieListPage();
+    const p2: DeliveryListPage = p1.clickOnMovieWithDeliveries(MOVIES_CYTEST[1]);
+    const p3: DeliveryEditablePage = p2.clickFirstDelivery(ORGANIZATION_NAME);
+    MATERIALS.forEach((material, index) => {
+      p3.editMaterial(material);
+      p3.clearMaterial();
+      p3.fillMaterial(UPDATED_MATERIALS[index]);
+
+      // Check if material display works
+      p3.assertMaterialExists(material);
+    });
+    p3.saveMaterial();
+
+    // Check if materials are updated
+    UPDATED_MATERIALS.forEach(material => p3.assertMaterialExists(material));
+  });
+});
+
+describe('User update some materials status', () => {
+  it('should login, click on the second movie card, click on the first delivery, then update 3 materials status and assert that they exist', () => {
+    const p1: MovieListPage = new MovieListPage();
+    const p2: DeliveryListPage = p1.clickOnMovieWithDeliveries(MOVIES_CYTEST[1]);
+    const p3: DeliveryEditablePage = p2.clickFirstDelivery(ORGANIZATION_NAME);
+    p3.selectAllMaterials();
+    p3.updateStatus(Statuses.AVAILABLE);
+    p3.assertMaterialStatusChanged(UPDATED_MATERIALS, Statuses.AVAILABLE);
+    p3.selectMaterial(UPDATED_MATERIALS[0]);
+    p3.updateStatus(Statuses.PAID);
+    p3.assertMaterialsArePaid([UPDATED_MATERIALS[0]]);
+    p3.selectMaterial(UPDATED_MATERIALS[1]);
+    p3.selectMaterial(UPDATED_MATERIALS[2]);
+    p3.updateStatus(Statuses.ORDERED);
+    p3.assertMaterialsAreOrdered([UPDATED_MATERIALS[1], UPDATED_MATERIALS[2]]);
+  });
+});
+
+describe('User delete some materials', () => {
+  it('should login, click on the second movie card, click on the first delivery, then delete 3 materials and assert that they don\'t exists', () => {
+    const p1: MovieListPage = new MovieListPage();
+    const p2: DeliveryListPage = p1.clickOnMovieWithDeliveries(MOVIES_CYTEST[1]);
+    const p3: DeliveryEditablePage = p2.clickFirstDelivery(ORGANIZATION_NAME);
+    UPDATED_MATERIALS.forEach(material => {
+      p3.editMaterial(material);
+      const p4: ConfirmModal = p3.deleteMaterial();
+      p4.confirmDeleteMaterial();
+    });
+    const p5: DeliveryEditablePage = new DeliveryEditablePage();
+    p5.assertNoMaterialsExists();
   });
 });

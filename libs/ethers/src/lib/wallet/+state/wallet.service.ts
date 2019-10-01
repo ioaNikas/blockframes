@@ -15,7 +15,7 @@ import { AbiCoder } from '@ethersproject/abi';
 import { Provider, TransactionRequest } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { Wallet as EthersWallet } from '@ethersproject/wallet';
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -57,7 +57,7 @@ export class WalletService {
 
   private _requireProvider() {
     if(!this.provider) {
-      this.provider = getDefaultProvider(network);
+      this.provider = new InfuraProvider(network);
     }
   }
 
@@ -68,7 +68,13 @@ export class WalletService {
     return key;
   }
 
-  public async deployERC1077(ensDomain: string, pubKey: string) {
+  /**
+   * Ask the relayer to deploy the user's smart-wallet
+   * @param ensDomain the ens of the user : `alice.blockframes.eth`
+   * @param pubKey the address of the first key to put in the smart-wallet
+   * @param orgId the id of the user's org, it will be used to put the org address as the recover address
+   */
+  public async deployERC1077(ensDomain: string, pubKey: string, orgId: string) {
     this._requireProvider();
     if (this.query.getValue().hasERC1077) {
       throw new Error('Your smart-wallet is already deployed');
@@ -77,7 +83,7 @@ export class WalletService {
     try {
       const name =  getNameFromENS(ensDomain);
       const erc1077Address = await precomputeAddress(ensDomain, this.provider);
-      const result = await this.relayer.deploy(name, pubKey, erc1077Address);
+      const result = await this.relayer.deploy(name, pubKey, erc1077Address, orgId);
       this.relayer.registerENSName(name, erc1077Address); // do not wait for ens register, this can be done in the background
       this.store.update({hasERC1077: true})
       this.store.setLoading(false);
@@ -85,7 +91,7 @@ export class WalletService {
     } catch(err) {
       this.store.setLoading(false);
       console.error(err);
-      throw new Error('Deploy seems to have failed, but firebase function is maybe still runing');
+      throw new Error('Deploy seems to have failed, but firebase function is maybe still running');
     }
   }
 

@@ -48,8 +48,8 @@ export class OrganizationSignerFormComponent {
     currentOperation.members = members;
     this.control.patchValue([...operations, currentOperation]);
 
-    const memberAddress = await this.service.getMemberAddress(this.member.email);
-    const orgAddress = await this.service.getAddress();
+    const memberEthAddress = await this.service.getMemberEthAddress(this.member.email);
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
     const memberName = this.member.name;
     const operationName = currentOperation.name;
     const orgId = this.query.id;
@@ -57,7 +57,7 @@ export class OrganizationSignerFormComponent {
     let tx: ActionTx;
     let feedback: TxFeedback;
     if(toggle.checked) {
-      tx = CreateTx.addMember(orgAddress, id, memberAddress);
+      tx = CreateTx.addMember(orgEthAddress, id, memberEthAddress);
       feedback = {
         confirmation: `You are about to whitelist ${memberName} for ${operationName}`,
         success: `${memberName} has been successfully whitelisted !`,
@@ -65,7 +65,7 @@ export class OrganizationSignerFormComponent {
         redirectRoute: `/layout/o/organization/${orgId}/administration`,
       }
     } else {
-      tx = CreateTx.removeMember(orgAddress, id, memberAddress);
+      tx = CreateTx.removeMember(orgEthAddress, id, memberEthAddress);
       feedback = {
         confirmation: `You are about to blacklist ${memberName} for ${operationName}`,
         success: `${memberName} has been successfully blacklisted !`,

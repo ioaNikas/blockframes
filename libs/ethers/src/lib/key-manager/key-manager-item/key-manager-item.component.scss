@@ -1,29 +1,12 @@
-article {
-  background-color: white;
-  border: solid 1px var(--borderGrey);
-  border-radius: 10px;
+mat-card {
   height: 100px;
-  width: 320px;
-  div.image {
-    height: 100px;
-    width: 100px;
-    border-radius: 10px 0 0 10px;
-    margin-right: 16px;
-    img {
-      margin: 38px 29px;
-    }
-  }
-  div.key-info {
-    width: 100%;
-    height: 100%;
-    padding: 10px 0;
-    h5 {
-      margin: 0;
-    }
-    p {
-      margin: 0;
-    }
-  }
+  width: 300px;
+}
+
+img {
+  height: 100px;
+  width: 100px;
+  margin-right: 15px;
 }
 
 article.small {
@@ -38,7 +21,6 @@ article.small {
     margin-right: 0;
     button {
       margin: 5px;
-      color: white
     }
   }
 }

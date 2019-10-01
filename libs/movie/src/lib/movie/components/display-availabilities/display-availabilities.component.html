@@ -1,16 +1,15 @@
 <ng-container *ngIf="rights.from && rights.to">
-    <h3 class="mat-title">Availabilities</h3>
     <article>
+      <h3>Availabilities</h3>
       <ul>
         <li fxLayout="row">
-          <b>Beginning of rights</b>
+          <span><b>Beginning of rights</b></span>
           <span>{{ rights.from | date:'LLL-dd, yyyy' }}</span>
         </li>
         <li fxLayout="row">
-          <b>End of rights</b>
+          <span><b>End of rights</b></span>
           <span>{{ rights.to | date:'LLL-dd, yyyy' }}</span>
         </li>
       </ul>
     </article>
-    <mat-divider [inset]="true"></mat-divider>
   </ng-container>

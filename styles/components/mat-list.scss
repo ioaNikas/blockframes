@@ -1,8 +1,4 @@
-.mat-nav-list {
-  border-radius: 10px;
-}
-
-.mat-list {
+.mat-nav-list, .mat-list, .mat-selection-list {
   border-radius: 10px;
 }
 
@@ -10,13 +6,20 @@
 .light-theme .mat-list,
 .light-theme .mat-selection-list {
   background-color: mat-color($bf-light-background, app-bar);
-  border: 1px solid var(--borderGrey);
+  border: 1px solid mat-color($bf-light-background, border);
 }
 
-.mat-selection-list{
-  border-radius: 10px;
+.dark-theme .mat-nav-list,
+.dark-theme .mat-selection-list {
+  background-color: rgba(#02000F, 0.5);
+  border: 1px solid mat-color($bf-dark-background, border);
+}
+
+.dark-theme .mat-menu-content,
+.dark-theme .mat-select-panel {
+  background: #02000F;
 }
 
 .active-list-item mat-icon {
-  color: var(--primary) !important;
+  color: mat-color($bf-light-primary) !important;
 }

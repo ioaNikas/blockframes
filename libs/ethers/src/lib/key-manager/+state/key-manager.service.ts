@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { KeyManagerStore } from './key-manager.store';
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 
 // import from @ethersproject cause a weird runtime error : 'global' is undefined
-import { Wallet as EthersWallet } from 'ethers';
+import { Wallet as EthersWallet } from '@ethersproject/wallet';
 
 import { KeyManagerQuery } from './key-manager.query';
 import { network } from '@env';
@@ -87,7 +87,8 @@ export class KeyManagerService {
     if (this.query.getKeyCountOfUser(ensDomain) === 0) {
       isMainKey = true;
     }
-    const erc1077 = new Contract(ensDomain, ERC1077.abi, getDefaultProvider(network));
+    const provider = new InfuraProvider(network);
+    const erc1077 = new Contract(ensDomain, ERC1077.abi, provider);
     const isLinked = await erc1077.keyExist(address);
     this.store.add({name, address, ensDomain, keyStore, isMainKey, isLinked});
   }

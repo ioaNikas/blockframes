@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 // Material
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +20,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Libraries
 import { UploadModule, UiFormModule } from '@blockframes/ui';
@@ -34,6 +35,16 @@ import { ViewExtractedElementsComponent } from './view-extracted-elements/view-e
 import { TableExtractedMoviesComponent } from './table-extracted-movies/table-extracted-movies.component';
 import { ViewImportErrorsComponent } from './view-import-errors/view-import-errors.component';
 import { TableExtractedSalesComponent } from './table-extracted-sales/table-extracted-sales.component';
+import { MovieOrganizationListGuard } from '../../guards/movie-organization-list.guard';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ImportStepperComponent,
+    canActivate: [MovieOrganizationListGuard], // @todo #643 not working if user does not have at least one movie in his list
+    canDeactivate: [MovieOrganizationListGuard],
+  }
+];
 
 @NgModule({
   declarations: [
@@ -51,7 +62,7 @@ import { TableExtractedSalesComponent } from './table-extracted-sales/table-extr
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
+    RouterModule.forChild(routes),
 
     // Material
     MatIconModule,
@@ -68,13 +79,13 @@ import { TableExtractedSalesComponent } from './table-extracted-sales/table-extr
     MatStepperModule,
     MatExpansionModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
 
     // Librairies
     UploadModule,
     UiFormModule,
     MovieDisplayModule,
   ],
-  providers: [ ],
   entryComponents: [
     PreviewSheetComponent,
     PreviewMovieComponent,

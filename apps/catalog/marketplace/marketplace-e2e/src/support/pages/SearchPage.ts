@@ -5,10 +5,10 @@ export default class SearchPage {
 
   constructor() {
     cy.get('[page-id=catalog-search]', { timeout: 10000 });
+    cy.wait(2000);
   }
 
   public fillProductionYear(years: Dates) {
-    cy.get('[page-id=catalog-search] [test-id=production-year-panel]').click();
     cy.get('[page-id=catalog-search] input[test-id=production-year-input-from]').type(years.from);
     cy.get('[page-id=catalog-search] input[test-id=production-year-input-to]').type(years.to);
   }
@@ -56,7 +56,7 @@ export default class SearchPage {
   }
 
   public selectMovie(movieName: string) {
-    cy.get('[page-id=display-card] [test-id=movie-card-title]', { timeout: 10000 }).contains(movieName).click()
+    cy.get('[page-id=display-card]').contains('movie-card', movieName).find('a').click();
     return new ViewPage();
   }
 }

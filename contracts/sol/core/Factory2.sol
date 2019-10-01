@@ -1,6 +1,6 @@
 pragma solidity ^0.5.9;
 
-import "../../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../../../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "./ERC1077.sol";
 
 contract Factory2 is Ownable {

@@ -3,11 +3,14 @@ import { staticModels } from '@blockframes/movie';
 type CurrencyCode = ((typeof staticModels)['MOVIE_CURRENCIES'])[number]['code'];
 // TODO: Create "Price" type with currencies from static-models => ISSUE#818
 
-export interface Material {
+export interface MaterialRaw {
   id: string;
-  category: string;
   value: string;
   description: string;
+  category: string;
+}
+
+export interface Material extends MaterialRaw {
   owner?: string;
   stepId?: string;
   step?: Step;
@@ -48,18 +51,6 @@ export function createMaterial(material: Partial<Material>): Material {
     status: material.status || MaterialStatus.pending,
     isOrdered: false,
     isPaid: false,
-    ...material
-  };
-}
-
-export function createTemplateMaterial(material: Partial<Material>): Material {
-  return {
-    id: material.id,
-    category: '',
-    value: '',
-    description: '',
-    price: null,
-    currency: null,
     ...material
   };
 }

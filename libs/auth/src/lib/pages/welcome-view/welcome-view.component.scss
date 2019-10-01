@@ -1,8 +1,7 @@
-@import 'variables';
+@import 'mixins';
 
 section {
   height: 100%;
-  background-color: var(--whiteBackground);
 }
 
 h1 {

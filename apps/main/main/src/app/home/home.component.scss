@@ -1,7 +1,6 @@
-@import 'variables';
+@import 'mixins';
 
 section {
-  background-color: var(--whiteBackground);
   height: 100%;
   margin: 0 200px;
 }

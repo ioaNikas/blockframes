@@ -1,4 +1,4 @@
-import { getDefaultProvider } from 'ethers';
+import { InfuraProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 import { Contract, ContractFactory } from '@ethersproject/contracts';
 import { TransactionResponse, TransactionReceipt } from '@ethersproject/abstract-provider';
@@ -12,6 +12,7 @@ import { bytecode as ERC1077_BYTECODE, abi as ERC1077_ABI } from './contracts/ER
 import { abi as ENS_REGISTRY_ABI } from './contracts/ENSRegistry.json';
 import { abi as ENS_RESOLVER_ABI } from './contracts/PublicResolver.json';
 import {abi as ORG_CONTRACT_ABI, bytecode as ORG_CONTRACT_BYTECODE } from './contracts/Organization.json';
+import { db } from './internals/firebase';
 
 type TxResponse = TransactionResponse;
 type TxReceipt = TransactionReceipt;
@@ -19,6 +20,7 @@ type TxReceipt = TransactionReceipt;
 export interface Relayer {
   wallet: Wallet;
   contractFactory: Contract;
+  baseEnsDomain: string;
   namehash: string;
   registry: Contract;
   resolver: Contract;
@@ -54,7 +56,7 @@ export interface SignedMetaTx extends MetaTx {
   signatures: string; // bytes
 }
 export interface SendParams {
-  address: string;
+  ethAddress: string;
   tx: SignedMetaTx;
 }
 
@@ -71,11 +73,12 @@ export interface SignDeliveryParams {
 
 export function initRelayer(config: RelayerConfig): Relayer {
   let wallet = Wallet.fromMnemonic(config.mnemonic);
-  const provider = getDefaultProvider(config.network);
+  const provider = new InfuraProvider(config.network);
 
   wallet = wallet.connect(provider);
 
   const contractFactory = new Contract(config.factoryContract, CREATE2_FACTORY_ABI, wallet);
+  const baseEnsDomain = config.baseEnsDomain;
   const relayerNamehash = namehash(config.baseEnsDomain);
   const registry = new Contract(config.registryAddress, ENS_REGISTRY_ABI, wallet);
   const resolver = new Contract(config.resolverAddress, ENS_RESOLVER_ABI, wallet);
@@ -83,6 +86,7 @@ export function initRelayer(config: RelayerConfig): Relayer {
   return <Relayer>{
     wallet,
     contractFactory,
+    baseEnsDomain,
     namehash: relayerNamehash,
     registry,
     resolver,
@@ -93,11 +97,12 @@ interface DeployParams {
   username: string;
   key: string;
   erc1077address: string;
+  orgId: string;
 }
 
 interface RegisterParams {
   name: string;
-  address: string;
+  ethAddress: string;
 }
 
 // TODO issue#714 (Laurent work on a way to get those functions in only one place)
@@ -139,16 +144,14 @@ export async function isENSNameRegistered(ensName: string, config: RelayerConfig
 //---------------------------------------------------
 
 export async function relayerDeployLogic(
-  { username, key, erc1077address }: DeployParams,
+  { username, key, erc1077address, orgId }: DeployParams,
   config: RelayerConfig
 ) {
   const relayer: Relayer = initRelayer(config);
 
-  const recoverAddress = '0x4D7e2f3ab055FC5d484d15aD744310dE98dD5Bc3'; // TODO this will be the org address in the future, pass this as a function params : issue #654
-
   // check required params
-  if (!username || !key || !erc1077address) {
-    throw new Error('"username", "key" and "erc1077address" are mandatory parameters !');
+  if (!username || !key || !erc1077address || !orgId) {
+    throw new Error('"username", "key", "erc1077address", and "orgAddress" are mandatory parameters !');
   }
 
   try {
@@ -160,6 +163,9 @@ export async function relayerDeployLogic(
 
   // compute needed values
   const hash = keccak256(toUtf8Bytes(username));
+  const orgName = await db.doc(`/orgs/${orgId}`).get().then(org => org.get('name')) as string;
+  const orgEns = emailToEnsDomain(orgName.replace(' ', '-'), relayer.baseEnsDomain);
+  const orgAddress = await relayer.wallet.provider.resolveName(orgEns);
 
   try {
 
@@ -171,7 +177,7 @@ export async function relayerDeployLogic(
         hash,
         `0x${ERC1077_BYTECODE}`,
         key.toLocaleLowerCase(),
-        recoverAddress.toLocaleLowerCase(),
+        orgAddress.toLocaleLowerCase(),
       )
 
       result['deploy'] = await deployTx.wait();
@@ -190,20 +196,20 @@ export async function relayerDeployLogic(
 //---------------------------------------------------
 
 export async function relayerRegisterENSLogic(
-  { name, address }: RegisterParams,
+  { name, ethAddress }: RegisterParams,
   config: RelayerConfig
 ) {
   const relayer: Relayer = initRelayer(config);
 
   // check required params
-  if (!name || !address) {
-    throw new Error('"name" and "address" are mandatory parameters !');
+  if (!name || !ethAddress) {
+    throw new Error('"name" and "ethAddress" are mandatory parameters !');
   }
 
   try {
-    getAddress(address);
+    getAddress(ethAddress);
   } catch (error) {
-    throw new Error('"address" should be a valid ethereum address !');
+    throw new Error('"ethAddress" should be a valid ethereum address !');
   }
 
   // in case name is of the form `name.blockframes.eth` we only want the first part to prevent ending with `name.blockframes.eth.blockframes.eth`
@@ -224,9 +230,9 @@ export async function relayerRegisterENSLogic(
 
     const ZERO_ADDRESS = '0x00000000000000000000000000000000000000';
 
-    const retreivedAddress = await relayer.wallet.provider.resolveName(fullName);
-    if (!!retreivedAddress && retreivedAddress !== ZERO_ADDRESS) { // if name is already link to a non-zero address : skip
-      throw new Error(`${fullName} already linked to an address (${retreivedAddress})`);
+    const retrievedAddress = await relayer.wallet.provider.resolveName(fullName);
+    if (!!retrievedAddress && retrievedAddress !== ZERO_ADDRESS) { // if name is already link to a non-zero address : skip
+      throw new Error(`${fullName} already linked to an address (${retrievedAddress})`);
     }
     const result: Record<string, TxReceipt> = {};
 
@@ -256,7 +262,7 @@ export async function relayerRegisterENSLogic(
     // (C) link the erc1077 to the ens username : require waiting for (B)
     const linkTx: TxResponse = await relayer.resolver.setAddr(
       namehash(fullName),
-      address,
+      ethAddress,
     )
     result['link'] = await linkTx.wait();
     console.log(`(C) tx sent (setAddress) : ${linkTx.hash}`); // display tx to firebase logging
@@ -275,23 +281,23 @@ export async function relayerRegisterENSLogic(
 //---------------------------------------------------
 
 export async function relayerSendLogic(
-  { address, tx }: SendParams,
+  { ethAddress, tx }: SendParams,
   config: RelayerConfig
 ) {
   const relayer: Relayer = initRelayer(config);
   // check required params
-  if (!address || !tx) {
-    throw new Error('"address" and "tx" are mandatory parameters !');
+  if (!ethAddress || !tx) {
+    throw new Error('"ethAddress" and "tx" are mandatory parameters !');
   }
 
   try {
-    getAddress(address);
+    getAddress(ethAddress);
   } catch (error) {
-    throw new Error('"address" should be a valid ethereum address !');
+    throw new Error('"ethAddress" should be a valid ethereum address !');
   }
 
   // compute needed values
-  const erc1077 = new Contract(address, ERC1077_ABI, relayer.wallet);
+  const erc1077 = new Contract(ethAddress, ERC1077_ABI, relayer.wallet);
 
   // check if tx will be accepted by erc1077
   const canExecute: boolean = await erc1077.functions.canExecute(

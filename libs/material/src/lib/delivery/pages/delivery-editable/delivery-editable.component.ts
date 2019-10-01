@@ -223,10 +223,10 @@ export class DeliveryEditableComponent implements OnInit {
     const jsonMaterials = JSON.stringify(materials);
 
     const deliveryHash = keccak256(jsonDelivery + jsonMaterials);
-    const orgAddress = await this.organizationService.getAddress();
+    const orgEthAddress = await this.organizationService.getOrganizationEthAddress();
     const orgId = this.organizationQuery.getValue().org.id;
 
-    this.service.setSignDeliveryTx(orgAddress, delivery.id, deliveryHash, orgId);
+    this.service.setSignDeliveryTx(orgEthAddress, delivery.id, deliveryHash, orgId);
     this.router.navigateByUrl('/layout/o/account/wallet/send');
   }
 

@@ -1,5 +1,5 @@
 @import '~@angular/material/theming';
-@import 'variables';
+@import 'mixins';
 
 mat-sidenav-container {
   height: 100%;
@@ -24,15 +24,9 @@ button {
 .mat-fab {
   height: 120px;
   width: 120px;
-  background-color: var(--iconBackground);
-}
-
-mat-icon {
-  color: white;
 }
 
 mat-sidenav {
-  background-color: var(--whiteBackground);
   width: 700px;
 }
 

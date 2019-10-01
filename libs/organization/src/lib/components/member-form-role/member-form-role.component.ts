@@ -23,17 +23,22 @@ export class MemberFormRoleComponent {
     private router: Router,
   ) {}
 
+  get control() {
+    return this.controlContainer.control;
+  }
+
   public get name() {
-    return this.controlContainer.control.get('name').value;
+    const {name} = this.control.value;
+    return name;
   }
 
   public get role() {
-    return this.controlContainer.control.get('role');
+    return this.control.get('role');
   }
 
   public get canChangeRole() {
     const cannotChange =
-      this.controlContainer.control.get('role').value === UserRole.admin
+      this.role.value === UserRole.admin
       && this.permissionsQuery.superAdminCount <= 1;
     return !cannotChange;
   }
@@ -42,10 +47,9 @@ export class MemberFormRoleComponent {
     if (!this.canChangeRole) {
       throw new Error('You can not change the role of the last Admin of an organization');
     }
-    const uid = this.controlContainer.control.get('uid').value;
-    const userEmail = this.controlContainer.control.get('email').value;
-    const userAddress = await this.service.getMemberAddress(userEmail);
-    const orgAddress = await this.service.getAddress();
+    const { uid, email } = this.control.value;
+    const userEthAddress = await this.service.getMemberEthAddress(email);
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
     let tx: ActionTx;
     const callback = () => {
       const members = this.query.getValue().org.members
@@ -67,7 +71,7 @@ export class MemberFormRoleComponent {
     const orgId = this.query.id;
     let feedback: TxFeedback;
     if (role === UserRole.admin){
-      tx = CreateTx.addAdmin(orgAddress, userAddress, callback);
+      tx = CreateTx.addAdmin(orgEthAddress, userEthAddress, callback);
       feedback = {
         confirmation: `You are about to promote ${this.name} as an Admin of ${orgName}`,
         success: `${this.name} has been successfully promoted to the Admin role !`,
@@ -75,13 +79,33 @@ export class MemberFormRoleComponent {
         redirectRoute: `/layout/o/organization/${orgId}/members`,
       }
     } else if (role === UserRole.member && this.permissionsQuery.superAdminCount >= 2) {
-      tx = CreateTx.removeAdmin(orgAddress, userAddress, callback);
+      tx = CreateTx.removeAdmin(orgEthAddress, userEthAddress, callback);
       feedback = {
         confirmation: `You are about to revoke ${this.name} as an Admin of ${orgName}`,
         success: `${this.name} has been successfully revoked from the Admin role !`,
         redirectName: 'Back to Administration',
         redirectRoute: `/layout/o/organization/${orgId}/members`,
       }
+    }
+
+    this.walletService.setTx(tx);
+    this.walletService.setTxFeedback(feedback);
+    this.router.navigateByUrl('/layout/o/account/wallet/send');
+  }
+
+  /** Instantiate the transaction to destroy a member's wallet, then redirect to the send tunnel */
+  public async destroyWallet() {
+    const { email } = this.control.value;
+    const userEthAddress = await this.service.getMemberEthAddress(email);
+    const orgId = this.query.id;
+    const orgEthAddress = await this.service.getOrganizationEthAddress();
+
+    const tx = CreateTx.destroyMember(orgEthAddress, userEthAddress);
+    const feedback: TxFeedback = {
+      confirmation: `You are about to destroy ${this.name}'s Wallet.`,
+      success: `${this.name}'s Wallet has been successfully destroyed!`,
+      redirectName: 'Back to Members',
+      redirectRoute: `/layout/o/organization/${orgId}/members`
     }
 
     this.walletService.setTx(tx);

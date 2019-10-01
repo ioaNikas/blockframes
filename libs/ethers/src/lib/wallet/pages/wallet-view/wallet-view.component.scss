@@ -1,4 +1,9 @@
-@import 'variables';
+@import 'mixins';
+
+mat-divider {
+  width: 100%;
+  margin: 0 20px;
+}
 
 :host {
   display: block;
@@ -11,16 +16,6 @@
     }
     button {
       margin-left: 16px;
-    }
-  }
-  section {
-    h3 {
-      color: var(--lightGrey);
-    }
-    article {
-      background-color: white;
-      border-radius: 10px;
-      border: solid 1px var(--borderGrey);
     }
   }
 }

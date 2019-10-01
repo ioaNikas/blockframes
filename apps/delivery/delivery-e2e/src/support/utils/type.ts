@@ -27,7 +27,10 @@ export interface Step {
 export interface Material {
   title: string;
   category: string;
+  step: Step;
   description: string;
+  price: string;
+  currency: string;
 }
 export interface User {
   email: string;
@@ -39,7 +42,7 @@ export interface User {
 }
 
 export interface Organization {
-  address: string;
+  officeAddress: string;
   phoneNumber: string;
 }
 
@@ -53,7 +56,7 @@ export function createUser(): User {
 }
 
 export function createOrganization(): Organization {
-  return { address: randomString(), phoneNumber: randomString() };
+  return { officeAddress: randomString(), phoneNumber: randomString() };
 }
 
 export interface Material {

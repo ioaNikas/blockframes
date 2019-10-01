@@ -56,7 +56,7 @@ export interface Organization {
   id: string;
   status: OrganizationStatus; // is the organization accepted by cascade8 admins?
   name: string;
-  address: string;
+  officeAddress: string;
   phoneNumber: string;
   created: number;
   updated: number;
@@ -85,7 +85,7 @@ export function createOrganization(params: Partial<Organization> = {}): Organiza
   return {
     id: '',
     name: '',
-    address: '',
+    officeAddress: '',
     userIds: [],
     movieIds: [],
     templateIds: [],

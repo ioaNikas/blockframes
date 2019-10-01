@@ -3,10 +3,6 @@
   height: calc(100vh - 200px);
 }
 
-mat-toolbar {
-  background-color: white;
-}
-
 .left-sidenav-header {
   height: var(--toolbarHeight);
 }
@@ -36,18 +32,12 @@ mat-list {
   a {
     text-decoration: none;
   }
-  h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #4D5664;
-  }
 }
 
 .see-all-link {
   padding-left: 20px;
   margin-top: 30px;
   a {
-    color: var(--primary);
     font-weight: 600;
     text-decoration: none;
   }

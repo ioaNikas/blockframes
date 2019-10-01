@@ -13,12 +13,12 @@ export class Relayer {
    * @param key first address of the user (management key)
    * @param erc1077address first address of the user (management key)
    */
-  public deploy(username: string, key: string, erc1077address: string): Promise<Object> {
+  public deploy(username: string, key: string, erc1077address: string, orgId: string): Promise<Object> {
     if (username.split('.').length > 1) { // if you provide a full ENS domain anyway, we've got your back !
       username = username.split('.')[0]
     }
     const callDeploy = this.functions.httpsCallable('relayerDeploy');
-    const deploy =  callDeploy({ username, key, erc1077address }).toPromise();
+    const deploy =  callDeploy({ username, key, erc1077address, orgId }).toPromise();
     return deploy;
   }
 
@@ -27,18 +27,18 @@ export class Relayer {
    * @param name ENS name , this should `bob` and **NOT** `bob.blockframes.eth`
    * @param address address to link the name with
    */
-  public registerENSName(name: string, address: string): Promise<Object> {
+  public registerENSName(name: string, ethAddress: string): Promise<Object> {
     if (name.split('.').length > 1) { // if you provide a full ENS domain anyway, we've got your back !
     name = name.split('.')[0]
     }
     const callRegister = this.functions.httpsCallable('relayerRegister');
-    const registration = callRegister({ name, address }).toPromise();
+    const registration = callRegister({ name, ethAddress }).toPromise();
     return registration;
   }
 
   /** Send a transaction to the relayer  */
-  send(address: string, tx: TransactionRequest): Promise<TransactionReceipt> {
+  send(ethAddress: string, tx: TransactionRequest): Promise<TransactionReceipt> {
     const call = this.functions.httpsCallable('relayerSend');
-    return call({ address, tx }).toPromise();
+    return call({ ethAddress, tx }).toPromise();
   }
 }

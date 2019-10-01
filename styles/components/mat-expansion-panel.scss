@@ -6,23 +6,21 @@
 }
 
 .dark-theme .mat-accordion .mat-expansion-panel {
-  border-bottom: solid 1px #292929;
+  border-bottom: solid 1px mat-color($bf-dark-foreground, divider);
 }
 
 .light-theme .mat-accordion .mat-expansion-panel {
-  border-bottom: solid 1px #D8D8D8;
+  border-bottom: solid 1px mat-color($bf-light-foreground, divider);
 }
 
 .mat-accordion .mat-expansion-panel:last-of-type {
   border-bottom: none;
 }
 
-/*
-.mat-expansion-indicator:before {
-  color: var(--primary) !important;
+.dark-theme .mat-autocomplete-panel:not([class*=mat-elevation-z]) {
+  background: #02000F;
 }
 
-.mat-expansion-indicator:after {
-  color: var(--primary) !important;
+.dark-theme .mat-datepicker-content .mat-calendar {
+  background: #02000F;
 }
-*/

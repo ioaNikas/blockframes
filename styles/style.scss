@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,600,700,800,900');
 
 // Theme with variables
-@import "./theme.scss";
-@import "./variables.scss";
+@import './theme.scss';
+@import './variables.scss';
 
 // Components style
 @import './components/mat-expansion-panel';
@@ -14,13 +14,16 @@
 @import './components/mat-list';
 @import './components/mat-toolbar';
 @import './components/mat-divider';
+@import './components/mat-form';
+@import './components/mat-table';
 
 * {
   box-sizing: border-box;
   font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
 }
 
-html, body {
+html,
+body {
   height: calc(100%);
 }
 
@@ -38,22 +41,39 @@ h2 {
   font-weight: 800;
 }
 
-h3 {
+.light-theme h3 {
   font-size: 20px;
   font-weight: 700;
   color: mat-color($bf-light-foreground, subheading);
 }
 
-h4 {
+.dark-theme h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: mat-color($bf-dark-foreground, text);
+}
+
+.light-theme h4 {
   font-size: 16px;
   font-weight: 700;
   color: mat-color($bf-light-foreground, subheading);
 }
 
-p {
+.dark-theme h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: mat-color($bf-dark-foreground, subheading);
+}
+
+p,
+span {
   font-size: 14px;
 }
 
 main {
   height: 100%;
+}
+
+.black-bg-opacity-30 {
+  background-color: rgba(#000000, 0.3);
 }

@@ -39,7 +39,7 @@ export interface Organization {
   userIds: string[];
   movieIds: string[];
   name: string;
-  address: string;
+  officeAddress: string;
   status: OrganizationStatus;
 }
 

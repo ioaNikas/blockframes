@@ -1,13 +1,15 @@
+@import 'mixins';
+
 :host {
   height: 100%;
   display: flex;
   flex-direction: row;
 }
 
-aside {
-  min-width: 450px;
-  width: 25%;
-  padding: 10px;
+.page-content {
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 35px;
 }
 
 section {
@@ -36,21 +38,35 @@ header {
   background-attachment: fixed;
   background-size: cover;
   text-align: center;
-  div {
-    h1,
-    b {
-      margin: 0;
-      padding: 0;
-    }
+}
+
+.filter-checkboxes-media {
+  height: 260px;
+  flex-wrap: wrap;
+}
+
+.filter-checkboxes-media {
+  height: 260px;
+  flex-wrap: wrap;
+}
+
+@include mobile {
+  .page-content {
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
-.filter-checkboxes-media {
-  height: 260px;
-  flex-wrap: wrap;
+@include tablet {
+  .page-content {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }
 
-.filter-checkboxes-media {
-  height: 260px;
-  flex-wrap: wrap;
+@include medium {
+  .page-content {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }
