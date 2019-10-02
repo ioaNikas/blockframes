@@ -26,7 +26,7 @@ export interface DistributionRight {
   languages: LanguagesSlug[];
   dubbings: LanguagesSlug[];
   subtitles: LanguagesSlug[];
-  duration: DateRange
+  duration: DateRange;
   territories: TerritoriesSlug[];
   exclusive: boolean;
 }

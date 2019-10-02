@@ -38,9 +38,10 @@ export function salesAgentHasDateRange(
 export function exclusiveMovieSales(sales: MovieSale[]): MovieSale[] {
   return sales.filter(sale => sale.exclusive === true);
 }
+
 /**
- * @description This function checks if there are intersections in the sales
- * from the current movie and the specified date range from the buyer
+ * @description This function returns the sales from the current movie
+ * that are intersection with  the specified date range from the buyer
  * @param formDates The date range which got specified by the buyer
  * @param sales Array of the movie sales property.
  * Note don't put the exclusive sales array in here
@@ -88,22 +89,19 @@ export function getSalesInDateRange(formDates: DateRange, sales: MovieSale[]): M
 }
 
 /**
- * @description We want to check if formTerritories and salesAgentTerritories have territories in common
- * and what the overlapping territories from the already existing sales are
+ * @description We want to check if user search and salesAgentMedias have medias and territories in common
  * @param formTerritories The territories which got specified by the buyer
  * @param formMedias The medias which got specified by the buyer
- * @param sales The array of sales from a movie in the previously specified date range -> `hasSalesRights`
+ * @param sales The array of sales from a movie in the previously specified date range
  */
 export function getSalesWithMediasAndTerritoriesInCommon(
   formTerritories: string[],
   formMedias: string[],
   sales: MovieSale[]
 ): MovieSale[] {
-  const availableTerritories: string[] = [];
-
   /**
-   * We look for territories which the costumer wants to have and the
-   * availability on the sales agent deal
+   * We have to look on the already exisitng
+   * sales in the movie and check if there is any overlapping medias
    */
   const salesWithMediasAndTerritoriesInCommon: MovieSale[] = [];
   for (const sale of sales) {
@@ -112,17 +110,27 @@ export function getSalesWithMediasAndTerritoriesInCommon(
       for (const saleMedia of sale.medias) {
         if (saleMedia === media) {
           mediasInCommon = true;
-          let territoriesInCommon = false;
-          for (const territory of formTerritories) {
-            for (const saleTerritory of sale.territories) {
-              if (saleTerritory === territory) {
-                territoriesInCommon = true;
-              }
-            }
-          }
         }
       }
     }
+
+    let territoriesInCommon = false;
+    for (const territory of formTerritories) {
+      for (const saleTerritory of sale.territories) {
+        if (saleTerritory === territory) {
+          territoriesInCommon = true;
+        }
+      }
+    }
+
+    if (
+      mediasInCommon &&
+      territoriesInCommon &&
+      !salesWithMediasAndTerritoriesInCommon.includes(sale)
+    ) {
+      salesWithMediasAndTerritoriesInCommon.push(sale);
+    }
   }
+
   return salesWithMediasAndTerritoriesInCommon;
 }
