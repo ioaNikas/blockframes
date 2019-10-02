@@ -1,4 +1,5 @@
 import { DistributionRight } from './basket.model';
+import { DateRange } from '@blockframes/utils/helpers';
 import {
   MovieCurrenciesSlug,
   MediasSlug,
@@ -25,10 +26,7 @@ export interface DistributionRight {
   languages: LanguagesSlug[];
   dubbings: LanguagesSlug[];
   subtitles: LanguagesSlug[];
-  duration: {
-    from: Date;
-    to: Date;
-  };
+  duration: DateRange
   territories: TerritoriesSlug[];
   exclusive: boolean;
 }
