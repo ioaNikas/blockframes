@@ -28,8 +28,7 @@ export class MaterialService {
 
   /** Deletes material of the movie sub-collection in firebase. */
   public delete(materialId: string, delivery: Delivery) {
-    const materialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${materialId}`)
-      .ref;
+    const materialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${materialId}`).ref;
     const deliveryRef = this.db.doc<Delivery>(`deliveries/${delivery.id}`).ref;
 
     return this.db.firestore.runTransaction(async (tx: firebase.firestore.Transaction) => {
@@ -40,29 +39,28 @@ export class MaterialService {
       if (material.deliveryIds.length === 1) {
         tx.delete(materialRef);
       } else {
-        tx.update(materialRef, {
-          deliveryIds: material.deliveryIds.filter(id => id !== delivery.id)
-        });
+        tx.update(materialRef, { deliveryIds: material.deliveryIds.filter(id => id !== delivery.id) });
       }
       tx.update(deliveryRef, { validated: [] });
     });
   }
 
-  /** Update materials of a delivery (materials loaded from movie). */
-  public async update(materials: Material[], delivery: Delivery, isOldDelivery: boolean) {
+  /** Upsert materials of a delivery (materials loaded from movie). */
+  public async upsertDeliveryMovieMaterials(
+    materials: Material[],
+    delivery: Delivery,
+    tx?: firebase.firestore.Transaction
+  ) {
     // TODO: (ISSUE#773) We should load an update the data within a transaction.
-    const movieMaterials = await this.db.snapshot<Material[]>(
-      `movies/${delivery.movieId}/materials`
-    );
-    return this.db.firestore.runTransaction(async tx => {
-      materials.forEach(material => {
-        if (isOldDelivery) {
+    const movieMaterials = await this.db.snapshot<Material[]>(`movies/${delivery.movieId}/materials`);
+    // If we don't have a transaction, we are in the case of update a delivery
+    if (!tx) {
+      return this.db.firestore.runTransaction(async updateTx => {
+        materials.forEach(material => {
           const sameValuesMaterial = movieMaterials.find(movieMaterial =>
             this.isTheSame(movieMaterial, material)
           );
-          const isNewMaterial =
-            !movieMaterials.find(movieMaterial => movieMaterial.id === material.id) &&
-            !sameValuesMaterial;
+          const isNewMaterial = !movieMaterials.find(movieMaterial => movieMaterial.id === material.id) && !sameValuesMaterial;
 
           const sameIdMaterial = movieMaterials.find(
             movieMaterial => movieMaterial.id === material.id
@@ -74,93 +72,70 @@ export class MaterialService {
             return;
           }
 
-          // We check if material is brand new. If so, we just add it to database and return.
-          if (isNewMaterial) {
-            const newMaterialRef = this.db.doc<Material>(
-              `movies/${delivery.movieId}/materials/${material.id}`
-            ).ref;
-
-            tx.set(newMaterialRef, { ...material, deliveryIds: [delivery.id] });
-            return;
-          }
-
-          // If there already is a material with same properties (but different id), we merge this
-          // material with existing one, and push the new deliveryId into deliveryIds.
-          if (!!sameValuesMaterial) {
-            const target = sameValuesMaterial;
-
-            if (!target.deliveryIds.includes(delivery.id)) {
-              const targetRef = this.db.doc<Material>(
-                `movies/${delivery.movieId}/materials/${target.id}`
-              ).ref;
-
-              tx.update(targetRef, { deliveryIds: [...target.deliveryIds, delivery.id] });
-            }
-            // If values are not the same, this material is considered as new and we have to create
-            // and set a new material with updated fields.
-          } else {
-            const target = createMaterial({
-              ...material,
-              id: this.db.createId(),
-              deliveryIds: [delivery.id]
-            });
-            const targetRef = this.db.doc<Material>(
-              `movies/${delivery.movieId}/materials/${target.id}`
-            ).ref;
-
-            tx.set(targetRef, target);
-          }
-
-          const source = sameIdMaterial;
-          const materialRef = this.db.doc<Material>(
-            `movies/${delivery.movieId}/materials/${material.id}`
-          ).ref;
+          this.upsertOneDeliveryMovieMaterial(material, isNewMaterial, sameValuesMaterial, delivery, updateTx);
 
           // Checks if this material belongs to multiple delivery.
           // If so, update the deliveryIds, otherwise just delete it.
-          if (source.deliveryIds.length === 1) {
-            tx.delete(materialRef);
-          } else {
-            tx.update(materialRef, {
-              deliveryIds: source.deliveryIds.filter(id => id !== delivery.id)
-            });
-          }
-        } else {
-          const sameValuesMaterial = movieMaterials.find(movieMaterial =>
-            this.isTheSame(movieMaterial, material)
-          );
-          const isNewMaterial =
-            !movieMaterials.find(movieMaterial => movieMaterial.id === material.id) &&
-            !sameValuesMaterial;
-          // If there already is a material with same properties (but different id), we merge this
-          // material with existing one, and push the new deliveryId into deliveryIds.
-          if (!!sameValuesMaterial) {
-            const target = sameValuesMaterial;
+          if (!isNewMaterial) {
+            const source = sameIdMaterial;
+            const materialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${material.id}`).ref;
 
-            if (!target.deliveryIds.includes(delivery.id)) {
-              const targetRef = this.db.doc<Material>(
-                `movies/${delivery.movieId}/materials/${target.id}`
-              ).ref;
-
-              tx.update(targetRef, { deliveryIds: [...target.deliveryIds, delivery.id] });
+            if (source.deliveryIds.length === 1) {
+              updateTx.delete(materialRef);
+            } else {
+              updateTx.update(materialRef, { deliveryIds: source.deliveryIds.filter(id => id !== delivery.id) });
             }
-            // If values are not the same, this material is considered as new and we have to create
-            // and set a new material with updated fields.
-          } else {
-            const target = createMaterial({
-              ...material,
-              id: this.db.createId(),
-              deliveryIds: [delivery.id]
-            });
-            const targetRef = this.db.doc<Material>(
-              `movies/${delivery.movieId}/materials/${target.id}`
-            ).ref;
-
-            tx.set(targetRef, target);
           }
-        }
+        });
       });
-    });
+    // If we already have a transaction, we are in the case of a new delivery
+    } else {
+      materials.forEach(material => {
+        const sameValuesMaterial = movieMaterials.find(movieMaterial =>
+          this.isTheSame(movieMaterial, material)
+        );
+        const isNewMaterial = !movieMaterials.find(movieMaterial => movieMaterial.id === material.id) && !sameValuesMaterial;
+        this.upsertOneDeliveryMovieMaterial(material, isNewMaterial, sameValuesMaterial, delivery, tx);
+      });
+      return tx;
+    }
+  }
+
+  public upsertOneDeliveryMovieMaterial(
+    material: Material,
+    isNewMaterial: boolean,
+    sameValuesMaterial: Material,
+    delivery: Delivery,
+    tx: firebase.firestore.Transaction
+  ) {
+    // We check if material is brand new. If so, we just add it to database and return.
+    if (isNewMaterial) {
+      const newMaterialRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${material.id}`).ref;
+      tx.set(newMaterialRef, { ...material, deliveryIds: [delivery.id] });
+      return;
+    }
+
+    // If there already is a material with same properties (but different id), we merge this
+    // material with existing one, and push the new deliveryId into deliveryIds.
+    if (!!sameValuesMaterial) {
+      const target = sameValuesMaterial;
+
+      if (!target.deliveryIds.includes(delivery.id)) {
+        const targetRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${target.id}`).ref;
+        tx.update(targetRef, { deliveryIds: [...target.deliveryIds, delivery.id] });
+      }
+      // If values are not the same, this material is considered as new and we have to create
+      // and set a new material with updated fields.
+    } else {
+      const target = createMaterial({
+        ...material,
+        id: this.db.createId(),
+        deliveryIds: [delivery.id]
+      });
+      const targetRef = this.db.doc<Material>(`movies/${delivery.movieId}/materials/${target.id}`).ref;
+      tx.set(targetRef, target);
+    }
+    return tx;
   }
 
   /** Update the property status of selected materials. */
@@ -226,36 +201,23 @@ export class MaterialService {
   /** Update materials of a delivery (materials loaded from delivery). */
   public async updateDeliveryMaterials(materials: Material[], delivery: Delivery) {
     // TODO: (ISSUE#773) We should load an update the data within a transaction.
-    const deliveryMaterials = await this.db.snapshot<Material[]>(
-      `deliveries/${delivery.id}/materials`
-    );
+    const deliveryMaterials = await this.db.snapshot<Material[]>(`deliveries/${delivery.id}/materials`);
     return this.db.firestore.runTransaction(async tx => {
       materials.forEach(material => {
-        const materialRef = this.db.doc<Material>(
-          `deliveries/${delivery.id}/materials/${material.id}`
-        ).ref;
-        const sameIdMaterial = deliveryMaterials.find(
-          deliveryMaterial => deliveryMaterial.id === material.id
-        );
-        const sameValuesMaterial = deliveryMaterials.find(deliveryMaterial =>
-          this.isTheSame(deliveryMaterial, material)
-        );
-        const isNewMaterial =
-          !deliveryMaterials.find(deliveryMaterial => deliveryMaterial.id === material.id) &&
-          !sameValuesMaterial;
+        const materialRef = this.db.doc<Material>(`deliveries/${delivery.id}/materials/${material.id}`).ref;
+        const sameIdMaterial = deliveryMaterials.find(deliveryMaterial => deliveryMaterial.id === material.id);
+        const sameValuesMaterial = deliveryMaterials.find(deliveryMaterial => this.isTheSame(deliveryMaterial, material));
+        const isNewMaterial = !deliveryMaterials.find(deliveryMaterial => deliveryMaterial.id === material.id) && !sameValuesMaterial;
 
         // If material from the list have no change and already exists, just return.
-        const isPristine =
-          !!sameIdMaterial && !!sameValuesMaterial && sameIdMaterial.id === sameValuesMaterial.id;
+        const isPristine = !!sameIdMaterial && !!sameValuesMaterial && sameIdMaterial.id === sameValuesMaterial.id;
         if (isPristine) {
           return;
         }
 
         // We check if material is brand new. If so, we just add it to database and return.
         if (isNewMaterial) {
-          const newMaterialRef = this.db.doc<Material>(
-            `deliveries/${delivery.id}/materials/${material.id}`
-          ).ref;
+          const newMaterialRef = this.db.doc<Material>(`deliveries/${delivery.id}/materials/${material.id}`).ref;
           tx.set(newMaterialRef, material);
           return;
         }
@@ -265,11 +227,7 @@ export class MaterialService {
   }
 
   /** Update the property status of selected materials from delivery sub-collection. */
-  public updateDeliveryMaterialStatus(
-    materials: Material[],
-    status: MaterialStatus,
-    deliveryId: string
-  ) {
+  public updateDeliveryMaterialStatus(materials: Material[], status: MaterialStatus, deliveryId: string) {
     const batch = this.db.firestore.batch();
     materials.forEach(material => {
       const doc = this.db.doc(`deliveries/${deliveryId}/materials/${material.id}`);

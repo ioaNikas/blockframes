@@ -81,7 +81,7 @@ export class DeliveryEditableComponent implements OnInit {
       const materials = this.form.getAll();
       delivery.mustBeSigned
         ? this.materialService.updateDeliveryMaterials(materials, delivery)
-        : this.materialService.update(materials, delivery, true);
+        : this.materialService.upsertDeliveryMovieMaterials(materials, delivery);
       this.snackBar.open('Material updated', 'close', { duration: 2000 });
     } catch (error) {
       this.snackBar.open(error.message, 'close', { duration: 2000 });
