@@ -1,6 +1,6 @@
 <ng-container *ngIf="isSmall; else notSmall">
   <mat-card class="small" fxLayout="row" fxLayoutAlign="space-between center">
-    <h5>{{ keyObject.name }}</h5>
+    <span class="mat-h4">{{ keyObject.name }}</span>
     <div class="small" [ngStyle]="{ 'background-color': backgroundColor }">
       <button mat-icon-button (click)="selectKey.emit(keyObject)">
         <mat-icon class="material-icons-outlined" [ngStyle]="{ 'color': foregroundColor }">keyboard_arrow_right</mat-icon>
