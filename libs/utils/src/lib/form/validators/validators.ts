@@ -8,9 +8,7 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
-  LANGUAGES_SLUG,
-  TERRITORIES_SLUG,
-  MEDIAS_SLUG
+  LANGUAGES_SLUG
 } from '@blockframes/movie/movie/static-model/types';
 import { InfuraProvider } from '@ethersproject/providers';
 import { isValidMnemonic } from '@ethersproject/hdnode';
@@ -108,20 +106,3 @@ export class ControlErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-/**
- * Checks if the territory exists
- */
-export function territoryValidator(control: AbstractControl): { [key: string]: boolean } | null {
-  return !TERRITORIES_SLUG.includes(control.value.trim().toLowerCase())
-    ? { territoryNotSupported: true }
-    : null;
-}
-
-/**
- * Checks if the media exists
- */
-export function mediaValidator(control: AbstractControl): { [key: string]: boolean } | null {
-  return !MEDIAS_SLUG.includes(control.value.trim().toLowerCase())
-    ? { mediaNotSupported: true }
-    : null;
-}
