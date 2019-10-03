@@ -70,10 +70,10 @@ export interface Organization {
   logo?: string;
 }
 
-
-export interface OrganizationForm {
+/** A user interface with public informations */
+export interface PublicOrganization {
+  id: string;
   name: string;
-  adress: string;
 }
 
 export const PLACEHOLDER_LOGO = '/assets/logo/organisation_avatar_250.svg';
