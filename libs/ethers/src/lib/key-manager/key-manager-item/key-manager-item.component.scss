@@ -44,6 +44,9 @@ mat-card.small {
     margin-right: 0;
     button {
       margin: 5px;
+      mat-icon {
+        color: white; /* This is hardcoded on purpose, do not delete, TODO find a better way with th ux team */
+      }
     }
   }
 }
