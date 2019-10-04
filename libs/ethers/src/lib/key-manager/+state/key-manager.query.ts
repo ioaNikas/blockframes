@@ -44,12 +44,13 @@ export class KeyManagerQuery extends QueryEntity<KeyState, Key> {
     ).toPromise();
   }
   getKeysOfUser(ensDomain: string) {
-    return this.getAll().filter(key => key.ensDomain === ensDomain);
+    // return this.getAll().filter(key => key.ensDomain === ensDomain);
+    return this.getAll({filterBy: key => key.ensDomain === ensDomain});
   }
   getMainKeyOfUser(ensDomain: string) {
     return this.getKeysOfUser(ensDomain).find(key => key.isMainKey);
   }
   getKeyCountOfUser(ensDomain: string) {
-    return this.getAll().filter(key => key.ensDomain === ensDomain).length;
+    return this.getKeysOfUser(ensDomain).length;
   }
 }
