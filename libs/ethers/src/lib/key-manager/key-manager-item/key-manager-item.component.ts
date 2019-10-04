@@ -22,7 +22,6 @@ export class KeyManagerItemComponent implements OnInit {
   set key(key: Key) {
     this.keyObject = key;
     this.backgroundColor = this.setBackgroundColor(key.address);
-    this.foregroundColor = '#ffffff';
   }
 
   /** Flag to indicate how to display the key card */
