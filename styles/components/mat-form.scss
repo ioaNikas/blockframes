@@ -29,9 +29,11 @@ mat-form-field {
   }
 }
 
+
 .light-theme .mat-form-field-appearance-outline {
   .mat-form-field-outline {
     color: mat-color($bf-light-foreground, dynamic);
+    background: mat-color($bf-light-background, card);
   }
   .mat-form-field-outline-thick {
     color: mat-color($bf-light-primary);
@@ -41,7 +43,6 @@ mat-form-field {
       border-width: 1px;
     }
   }
-
 }
 
 .dark-theme .mat-form-field-appearance-outline {
@@ -56,5 +57,4 @@ mat-form-field {
       border-width: 1px;
     }
   }
-
 }
