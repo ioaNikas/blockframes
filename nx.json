@@ -71,6 +71,9 @@
     "catalog-marketplace": {
       "tags": []
     },
+    "notification": {
+      "tags": []
+    },
     "catalog": {
       "tags": ["catalog"]
     }
