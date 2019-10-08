@@ -8,6 +8,10 @@ mat-button { // TODO: Get rid of the !important and apply this on mat-raised-but
 }
 
 .light-theme {
+  .mat-button, .mat-flat-button, .mat-stroked-button {
+    font-size: 12px;
+    font-weight: 600;
+  }
 
   a {
     color: mat-color($bf-light-foreground, link);
@@ -26,6 +30,10 @@ mat-button { // TODO: Get rid of the !important and apply this on mat-raised-but
 }
 
 .dark-theme {
+  .mat-button, .mat-flat-button, .mat-stroked-button {
+    font-size: 12px;
+    font-weight: 600;
+  }
 
   .mat-stroked-button {
     border-radius: 50px;
