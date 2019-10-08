@@ -25,6 +25,7 @@
 html,
 body {
   height: calc(100%);
+  font-size: 14px;
 }
 
 body {
@@ -63,10 +64,6 @@ h2 {
   font-size: 16px;
   font-weight: 700;
   color: mat-color($bf-dark-foreground, subheading);
-}
-
-p, span {
-  font-size: 14px;
 }
 
 .bf-strong {
