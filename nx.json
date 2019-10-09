@@ -73,6 +73,9 @@
     },
     "catalog": {
       "tags": ["catalog"]
+    },
+    "models": {
+      "tags": ["models"]
     }
   }
 }

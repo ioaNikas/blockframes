@@ -610,7 +610,10 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["libs/notification/tsconfig.lib.json", "libs/notification/tsconfig.spec.json"],
+            "tsConfig": [
+              "libs/notification/tsconfig.lib.json",
+              "libs/notification/tsconfig.spec.json"
+            ],
             "exclude": ["**/node_modules/**"]
           }
         }
@@ -1468,6 +1471,34 @@
             "jestConfig": "libs/catalog/jest.config.js",
             "tsConfig": "libs/catalog/tsconfig.spec.json",
             "setupFile": "libs/catalog/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
+    },
+    "models": {
+      "projectType": "library",
+      "root": "libs/models",
+      "sourceRoot": "libs/models/src",
+      "prefix": "blockframes",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/models/tsconfig.lib.json", "libs/models/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**", "!libs/models/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/models/jest.config.js",
+            "tsConfig": "libs/models/tsconfig.spec.json",
+            "setupFile": "libs/models/src/test-setup.ts"
           }
         }
       },
