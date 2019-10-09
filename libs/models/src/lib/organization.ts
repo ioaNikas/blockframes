@@ -12,4 +12,6 @@ export interface OrganizationRaw {
   status: OrganizationStatus;
 }
 
-export interface Organization extends OrganizationRaw {}
+export interface Organization extends OrganizationRaw {
+  id: string;
+}
