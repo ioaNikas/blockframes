@@ -17,8 +17,8 @@ import {
   InvitationStakeholder,
   InvitationState,
   InvitationType,
-  Organization
 } from './data/types';
+import { Organization } from '@blockframes/models';
 import { prepareNotification, triggerNotifications } from './notify';
 import { sendMail } from './internals/email';
 import {

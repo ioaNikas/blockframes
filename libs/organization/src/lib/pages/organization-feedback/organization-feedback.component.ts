@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { OrganizationStatus } from '../../+state/organization.model';
 import { OrganizationQuery } from '../../+state/organization.query';
 import { OrganizationService } from '../../+state/organization.service';
+import { OrganizationStatus } from '@blockframes/models';
 
 @Component({
   selector: 'organization-feedback',

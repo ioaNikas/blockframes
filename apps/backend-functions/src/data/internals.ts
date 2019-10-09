@@ -5,12 +5,12 @@
  */
 import { db } from '../internals/firebase';
 import {
-  Organization,
   OrganizationDocPermissions,
   OrganizationPermissions,
   Stakeholder,
   UserDocPermissions
 } from './types';
+import { Organization } from '@blockframes/models';
 
 export function getCollection<T>(path: string): Promise<T[]> {
   return db

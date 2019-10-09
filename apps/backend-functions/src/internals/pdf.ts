@@ -5,8 +5,9 @@
  * and in a firebase function.
  */
 import { groupBy, sortBy, isEmpty } from 'lodash';
-import { asIDMap, Delivery, IDMap, Material, Organization, Stakeholder, Step } from '../data/types';
+import { asIDMap, Delivery, IDMap, Material, Stakeholder, Step } from '../data/types';
 import { getCollection, getDocument } from '../data/internals';
+import { Organization } from '@blockframes/models';
 
 const PdfPrinter = require('pdfmake');
 

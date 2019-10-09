@@ -1,6 +1,7 @@
 import { buildDeliveryPDF } from '../internals/pdf';
 import * as fs from 'fs';
-import { OrganizationStatus, MaterialStatus } from '../data/types';
+import { MaterialStatus } from '../data/types';
+import { OrganizationStatus } from '@blockframes/models';
 
 const testData = {
   txID: {

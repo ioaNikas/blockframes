@@ -3,14 +3,14 @@ import { Query } from '@datorama/akita';
 import { OrganizationState, OrganizationStore } from './organization.store';
 import {
   AppDetailsWithStatus,
-  AppStatus,
-  OrganizationStatus
+  AppStatus
 } from './organization.model';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { FireQuery, APPS_DETAILS } from '@blockframes/utils';
 import { PermissionsQuery } from '../permissions/+state';
 import { combineLatest, Observable } from 'rxjs';
 import { OrganizationMember, UserRole } from './organization.model';
+import { OrganizationStatus } from '@blockframes/models';
 
 @Injectable({
   providedIn: 'root'

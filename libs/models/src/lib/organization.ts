@@ -3,7 +3,7 @@ export const enum OrganizationStatus {
   accepted = 'accepted'
 }
 
-export interface Organization {
+export interface OrganizationRaw {
   id: string;
   userIds: string[];
   movieIds: string[];
@@ -11,3 +11,5 @@ export interface Organization {
   officeAddress: string;
   status: OrganizationStatus;
 }
+
+export interface Organization extends OrganizationRaw {}

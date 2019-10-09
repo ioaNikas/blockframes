@@ -2,7 +2,8 @@ import { flatten, uniqBy } from 'lodash';
 import { db, functions } from './internals/firebase';
 import { prepareNotification, triggerNotifications } from './notify';
 import { getDocument, getOrganizationsOfDocument } from './data/internals';
-import { DocType, Material, Movie, Organization, Delivery, MaterialStatus } from './data/types';
+import { DocType, Material, Movie, Delivery, MaterialStatus } from './data/types';
+import { Organization } from '@blockframes/models';
 import { isTheSame } from './utils';
 
 export const onMovieMaterialUpdate = async (

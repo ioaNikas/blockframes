@@ -6,10 +6,10 @@ import {
   DocInformations,
   DocType,
   Movie,
-  Organization,
   SnapObject,
   Stakeholder
 } from './data/types';
+import { Organization } from '@blockframes/models';
 
 const COLLECTION_DELIVERIES = 'deliveries';
 const COLLECTION_MOVIES = 'movies';

@@ -1,4 +1,5 @@
 import { CatalogBasket } from '@blockframes/marketplace';
+import { OrganizationRaw } from '@blockframes/models';
 /** Gives information about an application */
 import { AppDetails } from '@blockframes/utils';
 
@@ -11,11 +12,6 @@ export const enum AppStatus {
 /** An application details with the organization authorizations */
 export interface AppDetailsWithStatus extends AppDetails {
   status: AppStatus;
-}
-
-export const enum OrganizationStatus {
-  pending = 'pending',
-  accepted = 'accepted'
 }
 
 export interface OrganizationMemberRequest {
@@ -52,17 +48,11 @@ export interface OrganizationAction {
   approvalDate?: string;
 }
 
-export interface Organization {
-  id: string;
-  status: OrganizationStatus; // is the organization accepted by cascade8 admins?
-  name: string;
-  officeAddress: string;
+export interface Organization extends OrganizationRaw {
   phoneNumber: string;
   created: number;
   updated: number;
-  movieIds: string[];
   templateIds: string[];
-  userIds: string[];
   members?: OrganizationMember[];
   operations?: OrganizationOperation[];
   actions?: OrganizationAction[];

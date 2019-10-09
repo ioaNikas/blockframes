@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Organization, OrganizationService, OrganizationStatus } from '../+state';
+import { Organization, OrganizationService } from '../+state';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { OrganizationStatus } from '@blockframes/models';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationGuard {

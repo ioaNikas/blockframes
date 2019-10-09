@@ -17,7 +17,6 @@ import {
   OrganizationMember,
   OrganizationMemberRequest,
   OrganizationOperation,
-  OrganizationStatus,
   OrganizationAction
 } from './organization.model';
 import { OrganizationStore, DeploySteps } from './organization.store';
@@ -30,6 +29,7 @@ import { Log, Filter } from '@ethersproject/abstract-provider'
 import { namehash, id as keccak256 } from '@ethersproject/hash';
 import { network, relayer, baseEnsDomain } from '@env';
 import { abi as ORGANIZATION_ABI } from '../../../../../contracts/build/Organization.json';
+import { OrganizationStatus } from '@blockframes/models';
 
 export const orgQuery = (orgId: string): Query<Organization> => ({
   path: `orgs/${orgId}`,

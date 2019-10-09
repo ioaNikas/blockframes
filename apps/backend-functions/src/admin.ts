@@ -6,7 +6,8 @@
 import express from 'express';
 import { db, DocumentReference, functions, getUserMail } from './internals/firebase';
 import { sendMail } from './internals/email';
-import { AppAccessStatus, OrganizationStatus } from './data/types';
+import { AppAccessStatus } from './data/types';
+import { OrganizationStatus } from '@blockframes/models';
 import {
   ADMIN_ACCEPT_ORG_PATH,
   ADMIN_ACCESS_TO_APP_PATH,
